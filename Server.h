@@ -1,111 +1,130 @@
 #ifndef MYCELIUM_SERVER_H
 #define MYCELIUM_SERVER_H
 
-#include <vector>
-#include <deque>
-#include <thread>
+#include <cstdio>
+#include <cstdlib>
+#include <uv.h>
+#include <cassert>
 #include "ByteBuffer.h"
-#include <boost/bind.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/enable_shared_from_this.hpp>
-#include <boost/asio.hpp>
 
-class tcp_connection;
-void handlePacket(tcp_connection* con, ByteBuffer buf);
+void handlePacket(uv_stream_t* handle, ByteBuffer buf);
 
-using boost::asio::ip::tcp;
+typedef struct {
+    uv_write_t req;
+    uv_buf_t buf;
+} write_req_t;
 
-class tcp_connection
-        : public boost::enable_shared_from_this<tcp_connection>
-{
-public:
-    typedef boost::shared_ptr<tcp_connection> pointer;
+static uint64_t data_cntr = 0;
 
-    static pointer create(boost::asio::io_context& io_context) {
-        return pointer(new tcp_connection(io_context));
+void on_close(uv_handle_t* handle) {
+    free(handle);
+}
+
+void post_write(uv_write_t* req, int status) {
+
+    if (status == 0)
+        return;
+
+    fprintf(stderr, "uv_write error: %s\n", uv_strerror(status));
+
+    if (status == UV_ECANCELED)
+        return;
+
+    assert(status == UV_EPIPE);
+    uv_close((uv_handle_t*)req->handle, on_close);
+}
+
+void post_shutdown(uv_shutdown_t* req, int status) {
+    if(status < 0) {
+        fprintf(stderr, "post_shutdown: %s\n", uv_strerror(status));
+    }
+    data_cntr = 0;
+    uv_close((uv_handle_t*)req->handle, on_close);
+}
+
+void post_read(uv_stream_t* handle, ssize_t nread, const uv_buf_t* buf) {
+    int r;
+    uv_shutdown_t* req;
+
+    if(nread == 0)
+        return;
+
+    if(nread < 0) {
+        fprintf(stderr, "post_read: %s\n", uv_strerror(nread));
+
+        req = (uv_shutdown_t*)malloc(sizeof(*req));
+        assert(req != NULL);
+
+        r = uv_shutdown(req, handle, post_shutdown);
+        assert(r == 0);
+
+        return;
     }
 
-    tcp::socket& socket() {
-        return socket_;
-    }
+    data_cntr += nread;
+    handlePacket(handle, ByteBuffer((byte_t*)buf->base, nread));
+}
 
-    void write(const ByteBuffer& buf) {
-        outbox.push_back(buf);
-        if(outbox.size() > 1) return;
-        write();
-    }
+void write(uv_stream_t* handle, ByteBuffer buf) {
+    write_req_t* wr;
+    wr = (write_req_t*)malloc(sizeof(*wr));
+    assert(wr != NULL);
 
-    void start() {
-        boost::asio::async_read(socket_, streambuf,
-                                      boost::bind(&tcp_connection::handle_read, shared_from_this(),
-                                                  boost::asio::placeholders::error,
-                                                  boost::asio::placeholders::bytes_transferred));
-    }
+    wr->buf = uv_buf_init((char*)buf.bytes.data(), buf.bytes.size());
 
-private:
-    void write() {
-        ByteBuffer& buf = outbox[0];
-        boost::asio::async_write(socket_, boost::asio::buffer(buf.bytes), // Why it does not work ????
-                                 boost::bind(&tcp_connection::handle_write, shared_from_this(),
-                                             boost::asio::placeholders::error,
-                                             boost::asio::placeholders::bytes_transferred));
-    }
+    int r = uv_write(&wr->req, handle, &wr->buf, 1, post_write);
+    assert(r == 0);
+}
 
-    tcp_connection(boost::asio::io_context& io_context)
-            : socket_(io_context) {}
+void alloc_cb(uv_handle_t* handle, size_t suggested_size, uv_buf_t* buf) {
+    buf->base = (char*)malloc(suggested_size);
+    assert(buf->base != NULL);
+    buf->len = suggested_size;
+}
 
-    void handle_write(const boost::system::error_code& /*error*/,
-                      size_t /*bytes_transferred*/) {
-        outbox.pop_front();
-        if(!outbox.empty()) {
-            write();
-        }
-    }
+void on_connection(uv_stream_t* server, int status) {
+    uv_tcp_t* stream;
+    int r;
 
-    void handle_read(boost::system::error_code error, size_t) {
-        write(ByteBuffer(10));
-        handlePacket(this, ByteBuffer(
-                (byte_t*)(&streambuf)->data().data(),
-                (unsigned int)((&streambuf)->size())));
-    }
+    assert(status == 0);
 
-public:
-    tcp::socket socket_;
-    std::deque<ByteBuffer> outbox;
-    boost::asio::streambuf streambuf;
-};
+    stream = (uv_tcp_t*)malloc(sizeof(uv_tcp_t));
+    assert(stream != NULL);
 
-class tcp_server
-{
-public:
-    tcp_server(boost::asio::io_context& io_context, int port)
-            : io_context_(io_context),
-              acceptor_(io_context, tcp::endpoint(tcp::v4(), port)) {
-        start_accept();
-    }
+    r = uv_tcp_init(uv_default_loop(), stream);
+    assert(r == 0);
 
-private:
-    void start_accept() {
-        tcp_connection::pointer new_connection =
-                tcp_connection::create(io_context_);
+    stream->data = server;
 
-        acceptor_.async_accept(new_connection->socket(),
-                               boost::bind(&tcp_server::handle_accept, this, new_connection,
-                                           boost::asio::placeholders::error));
-    }
+    r = uv_accept(server, (uv_stream_t*)stream);
+    assert(r == 0);
 
-    void handle_accept(tcp_connection::pointer new_connection,
-                       const boost::system::error_code& error){
-        if (!error) {
-            new_connection->start();
-        }
+    r = uv_read_start((uv_stream_t*)stream, alloc_cb, post_read);
+    assert(r == 0);
+}
 
-        start_accept();
-    }
+void start() {
+    uv_tcp_t* tcp_server;
+    struct sockaddr_in addr;
+    int r;
 
-    boost::asio::io_context& io_context_;
-    tcp::acceptor acceptor_;
-};
+    r = uv_ip4_addr("0.0.0.0", 25565, &addr);
+    assert(r == 0);
 
+    tcp_server = (uv_tcp_t*)malloc(sizeof(*tcp_server));
+    assert(tcp_server != NULL);
+
+    r = uv_tcp_init(uv_default_loop(), tcp_server);
+    assert(r == 0);
+
+    r = uv_tcp_bind(tcp_server, (const struct sockaddr*)&addr, 0);
+    assert(r == 0);
+
+    r = uv_listen((uv_stream_t*)tcp_server, SOMAXCONN, on_connection);
+    assert(r == 0);
+
+    r = uv_run(uv_default_loop(), UV_RUN_DEFAULT);
+    assert(r == 0);
+}
 
 #endif //MYCELIUM_SERVER_H

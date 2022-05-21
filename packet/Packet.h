@@ -6,20 +6,19 @@
 #include "PacketInHandshake.h"
 #include "PacketOutStatusResponse.h"
 
-void sendPacket(tcp_connection* con, const std::shared_ptr<PacketOut>& packet) {
+void sendPacket(uv_stream_t* s, const std::shared_ptr<PacketOut>& packet) {
     ByteBuffer buf;
     ByteBuffer packet_buf = packet->encode();
     int packet_id = packet->getPacketID();
     buf.writeVarInt((int)sizeofVarInt(packet_id) + (int)packet_buf.bytes.size());
     buf.writeVarInt(packet->getPacketID());
     buf.writeByteBuffer(packet_buf);
-    buf.writeByte('\n');
-    con->write(buf);
+    write(s, buf);
 }
 
 int next_state = 0;
 
-void handlePacket(tcp_connection* con, ByteBuffer buf) {
+void handlePacket(uv_stream_t* s, ByteBuffer buf) {
     int length = buf.readVarInt();
     int packet_id = buf.readVarInt();
     printf("Packet Length: %d\n", length);
@@ -33,7 +32,7 @@ void handlePacket(tcp_connection* con, ByteBuffer buf) {
                 response.players.max = 1;
                 response.players.online = -4;
                 response.description.text = "§aHello world; test server core";
-                sendPacket(con, std::make_shared<PacketOutStatusResponse>(response));
+                sendPacket(s, std::make_shared<PacketOutStatusResponse>(response));
                 next_state = 0;
             } else if(next_state == 2) {
                 next_state = 0;
