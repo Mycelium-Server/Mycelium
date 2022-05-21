@@ -3,9 +3,9 @@
 
 int main()
 {
-    boost::asio::io_context io_context;
-    Server srv(io_context, 25565);
-    srv.async_accept();
-    io_context.run();
+    printf("Running on port 25565\n");
+    boost::asio::io_context context;
+    tcp_server srv(context, 25565);
+    context.run();
     return 0;
 }

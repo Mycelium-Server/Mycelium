@@ -3,6 +3,7 @@
 
 #include <cinttypes>
 #include <cstdio>
+#include <cstring>
 
 const int SEGMENT_BITS = 0x7F;
 const int CONTINUE_BIT = 0x80;

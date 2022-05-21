@@ -1,97 +1,111 @@
 #ifndef MYCELIUM_SERVER_H
 #define MYCELIUM_SERVER_H
 
-#include <iostream>
-#include <optional>
-#include <boost/asio.hpp>
 #include <vector>
-
+#include <deque>
+#include <thread>
 #include "ByteBuffer.h"
+#include <boost/bind.hpp>
+#include <boost/shared_ptr.hpp>
+#include <boost/enable_shared_from_this.hpp>
+#include <boost/asio.hpp>
 
-class Connection;
+class tcp_connection;
+void handlePacket(tcp_connection* con, ByteBuffer buf);
 
-void handlePacket(const std::shared_ptr<Connection>&, ByteBuffer);
+using boost::asio::ip::tcp;
 
-std::vector<std::shared_ptr<Connection>> connections;
-
-class Connection : public std::enable_shared_from_this<Connection> {
-public:
-    Connection(boost::asio::ip::tcp::socket&& socket)
-            : socket(std::move(socket)) {}
-
-    void start() {
-        boost::asio::async_read_until(socket, streambuf, '\n',
-          [self = shared_from_this()]
-                  (boost::system::error_code error, std::size_t bytes_transferred) {
-                handlePacket(self, ByteBuffer(
-                        (byte_t*)(&self->streambuf)->data().data(),
-                        (unsigned int)((&self->streambuf)->size())));
-          });
-    }
-
-    void async_write(ByteBuffer buf) {
-        buffers_[active_buffer_].emplace_back(buf.bytes.begin(), buf.bytes.end());
-        async_write();
-        async_write();
-    }
-
-private:
-    void async_write() {
-        active_buffer_ ^= 1; // switch buffers
-        for (const auto& data : buffers_[active_buffer_]) {
-            buffer_seq_.push_back(boost::asio::buffer(data));
-        }
-        boost::asio::async_write(socket, buffer_seq_, [this, self = shared_from_this()](const boost::system::error_code& ec, size_t bytes_transferred) {
-            std::lock_guard<std::mutex> lock(buffers_mtx_);
-            buffers_[active_buffer_].clear();
-            buffer_seq_.clear();
-            if (!ec) {
-                std::cout << "Wrote " << bytes_transferred << " bytes\n";
-                if (!buffers_[active_buffer_ ^ 1].empty()) // have more work
-                    async_write();
-            }
-        });
-    }
-
-public:
-    boost::asio::ip::tcp::socket socket;
-    boost::asio::streambuf streambuf;
-    ByteBuffer shared_buffer;
-
-    std::mutex buffers_mtx_;
-    std::vector<std::string> buffers_[2]; // a double buffer
-    std::vector<boost::asio::const_buffer> buffer_seq_;
-    int active_buffer_ = 0;
-};
-
-class Server
+class tcp_connection
+        : public boost::enable_shared_from_this<tcp_connection>
 {
 public:
+    typedef boost::shared_ptr<tcp_connection> pointer;
 
-    Server(boost::asio::io_context& io_context, std::uint16_t port)
-            : io_context(io_context)
-            , acceptor  (io_context, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port))
-    {
+    static pointer create(boost::asio::io_context& io_context) {
+        return pointer(new tcp_connection(io_context));
     }
 
-    void async_accept()
-    {
-        socket.emplace(io_context);
+    tcp::socket& socket() {
+        return socket_;
+    }
 
-        acceptor.async_accept(*socket, [&] (boost::system::error_code error)
-        {
-            std::shared_ptr<Connection> con = std::make_shared<Connection>(std::move(*socket));
-            con->start();
-            connections.push_back(con);
-            async_accept();
-        });
+    void write(const ByteBuffer& buf) {
+        outbox.push_back(buf);
+        if(outbox.size() > 1) return;
+        write();
+    }
+
+    void start() {
+        boost::asio::async_read(socket_, streambuf,
+                                      boost::bind(&tcp_connection::handle_read, shared_from_this(),
+                                                  boost::asio::placeholders::error,
+                                                  boost::asio::placeholders::bytes_transferred));
     }
 
 private:
+    void write() {
+        ByteBuffer& buf = outbox[0];
+        boost::asio::async_write(socket_, boost::asio::buffer(buf.bytes), // Why it does not work ????
+                                 boost::bind(&tcp_connection::handle_write, shared_from_this(),
+                                             boost::asio::placeholders::error,
+                                             boost::asio::placeholders::bytes_transferred));
+    }
 
-    boost::asio::io_context& io_context;
-    boost::asio::ip::tcp::acceptor acceptor;
-    std::optional<boost::asio::ip::tcp::socket> socket;
+    tcp_connection(boost::asio::io_context& io_context)
+            : socket_(io_context) {}
+
+    void handle_write(const boost::system::error_code& /*error*/,
+                      size_t /*bytes_transferred*/) {
+        outbox.pop_front();
+        if(!outbox.empty()) {
+            write();
+        }
+    }
+
+    void handle_read(boost::system::error_code error, size_t) {
+        write(ByteBuffer(10));
+        handlePacket(this, ByteBuffer(
+                (byte_t*)(&streambuf)->data().data(),
+                (unsigned int)((&streambuf)->size())));
+    }
+
+public:
+    tcp::socket socket_;
+    std::deque<ByteBuffer> outbox;
+    boost::asio::streambuf streambuf;
 };
+
+class tcp_server
+{
+public:
+    tcp_server(boost::asio::io_context& io_context, int port)
+            : io_context_(io_context),
+              acceptor_(io_context, tcp::endpoint(tcp::v4(), port)) {
+        start_accept();
+    }
+
+private:
+    void start_accept() {
+        tcp_connection::pointer new_connection =
+                tcp_connection::create(io_context_);
+
+        acceptor_.async_accept(new_connection->socket(),
+                               boost::bind(&tcp_server::handle_accept, this, new_connection,
+                                           boost::asio::placeholders::error));
+    }
+
+    void handle_accept(tcp_connection::pointer new_connection,
+                       const boost::system::error_code& error){
+        if (!error) {
+            new_connection->start();
+        }
+
+        start_accept();
+    }
+
+    boost::asio::io_context& io_context_;
+    tcp::acceptor acceptor_;
+};
+
 
 #endif //MYCELIUM_SERVER_H
