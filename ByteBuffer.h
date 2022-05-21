@@ -209,6 +209,15 @@ public:
         writeByte(value & 0x00FF);
     }
 
+    long readLong() {
+        long l = 0;
+        for(int i = 0; i < 8; i++) {
+            l <<= 8;
+            l |= readByte();
+        }
+        return l;
+    }
+
     void writeLong(int64_t value) {
         writeByte((value & 0xFF00000000000000) >> (7*8));
         writeByte((value & 0x00FF000000000000) >> (6*8));

@@ -5,6 +5,8 @@
 #include "../Server.h"
 #include "PacketInHandshake.h"
 #include "PacketOutStatusResponse.h"
+#include "PacketOutPong.h"
+#include "PacketInPing.h"
 
 void sendPacket(uv_stream_t* s, const std::shared_ptr<PacketOut>& packet) {
     ByteBuffer buf;
@@ -41,8 +43,18 @@ void handlePacket(uv_stream_t* s, ByteBuffer buf) {
                 PacketInHandshake handshake;
                 handshake.read(buf);
                 next_state = handshake.next_state;
-                printf("Packet Type: Handshake\n");
             }
+            printf("Packet Type: Handshake\n");
+            break;
+        }
+
+        case 0x01: {
+            PacketInPing ping;
+            ping.read(buf);
+            PacketOutPong pong;
+            pong.payload = ping.payload;
+            sendPacket(s, std::make_shared<PacketOutPong>(pong));
+            printf("Packet Type: Ping\n");
             break;
         }
 
