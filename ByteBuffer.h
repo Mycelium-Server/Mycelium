@@ -78,6 +78,14 @@ public:
         return bytes[position++];
     }
 
+    bool readBoolean() {
+        return readByte();
+    }
+
+    signed char readSignedByte() {
+        return (char)readByte();
+    }
+
     int readVarInt() {
         int value = 0;
         int pos = 0;

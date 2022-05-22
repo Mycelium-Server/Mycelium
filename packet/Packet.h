@@ -6,6 +6,7 @@
 #include "../Dimension.h"
 #include "../Gamemode.h"
 #include "../Keepalive.h"
+#include "../Difficulty.h"
 #include "PacketInHandshake.h"
 #include "PacketOutStatusResponse.h"
 #include "PacketOutPong.h"
@@ -14,6 +15,10 @@
 #include "PacketOutLoginSuccess.h"
 #include "PacketOutJoinGame.h"
 #include "PacketOutPluginMessage.h"
+#include "PacketInClientSettings.h"
+#include "PacketOutDifficulty.h"
+#include "PacketOutPlayerAbilities.h"
+#include "PacketOutHeldItemChange.h"
 
 void sendPacket(uv_stream_t* s, const std::shared_ptr<PacketOut>& packet) {
     ByteBuffer buf;
@@ -79,10 +84,28 @@ void handlePacket(uv_stream_t* s, ByteBuffer buf) {
                 join_game.is_flat = false;
                 sendPacket(s, std::make_shared<PacketOutJoinGame>(join_game));
 
-                PacketOutPluginMessage login_plugin_request;
-                login_plugin_request.channel = get_channel(INTERNAL_BRAND);
-                login_plugin_request.data.writeString("Mycelium");
-                sendPacket(s, std::make_shared<PacketOutPluginMessage>(login_plugin_request));
+                PacketOutPluginMessage plugin_message_brand;
+                plugin_message_brand.channel = get_channel(INTERNAL_BRAND);
+                plugin_message_brand.data.writeString("Mycelium");
+                sendPacket(s, std::make_shared<PacketOutPluginMessage>(plugin_message_brand));
+
+                PacketOutDifficulty difficulty;
+                difficulty.difficulty = DIFFICULTY_NORMAL;
+                difficulty.difficulty_locked = true;
+                sendPacket(s, std::make_shared<PacketOutDifficulty>(difficulty));
+
+                PacketOutPlayerAbilities player_abilities;
+                player_abilities.flags.allow_flying = true;
+                player_abilities.flags.creative_mode = true;
+                player_abilities.flags.flying = false;
+                player_abilities.flags.invulnerable = true;
+                player_abilities.flying_speed = PacketOutPlayerAbilities::DEFAULT_FLYING_SPEED;
+                player_abilities.field_of_view_modifier = PacketOutPlayerAbilities::DEFAULT_FIELD_OF_VIEW_MODIFIER;
+                sendPacket(s, std::make_shared<PacketOutPlayerAbilities>(player_abilities));
+
+                PacketOutHeldItemChange held_item_change;
+                held_item_change.slot = 4;
+                sendPacket(s, std::make_shared<PacketOutHeldItemChange>(held_item_change));
 
                 add_keepalive_target(s);
             }
@@ -103,6 +126,26 @@ void handlePacket(uv_stream_t* s, ByteBuffer buf) {
             pong.payload = ping.payload;
             sendPacket(s, std::make_shared<PacketOutPong>(pong));
             break;
+        }
+
+        case 0x05: {
+            printf("Packet Type: Client Settings\n");
+            PacketInClientSettings client_settings;
+            client_settings.read(buf);
+            printf("Locale: %s\n", client_settings.locale.data());
+            printf("View Distance: %d\n", client_settings.view_distance);
+            printf("Chat Mode: %d\n", client_settings.chat_mode);
+            printf("Chat Colors: %d\n", client_settings.chat_colors);
+            printf("Displayed Skin Parts: Cape: %d\n", client_settings.displayed_skin_parts.cape_enabled);
+            printf("Displayed Skin Parts: Jacket: %d\n", client_settings.displayed_skin_parts.jacket_enabled);
+            printf("Displayed Skin Parts: Left Sleeve: %d\n", client_settings.displayed_skin_parts.left_sleeve_enabled);
+            printf("Displayed Skin Parts: Right Sleeve: %d\n", client_settings.displayed_skin_parts.right_sleeve_enabled);
+            printf("Displayed Skin Parts: Left Pants Leg: %d\n", client_settings.displayed_skin_parts.left_pants_leg_enabled);
+            printf("Displayed Skin Parts: Right Pants Leg: %d\n", client_settings.displayed_skin_parts.right_pants_leg_enabled);
+            printf("Displayed Skin Parts: Hat: %d\n", client_settings.displayed_skin_parts.hat_enabled);
+            printf("Main Hand: %d\n", client_settings.main_hand);
+            printf("Enable Text Filtering: %d\n", client_settings.enable_text_filtering);
+            printf("Allow server listings: %d\n", client_settings.allow_server_listings);
         }
 
         case 0x0F: {
