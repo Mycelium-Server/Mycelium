@@ -407,7 +407,7 @@ UV_EXTERN char* uv_err_name_r(int err, char* buf, size_t buflen);
   void* reserved[6];                                                          \
   UV_REQ_PRIVATE_FIELDS                                                       \
 
-/* Abstract base class of all requests. */
+/* Abstract base class of all keep_alive_requests. */
 struct uv_req_s {
   UV_REQ_FIELDS
 };
@@ -665,7 +665,7 @@ struct uv_udp_s {
    */
   size_t send_queue_size;
   /*
-   * Number of send requests currently in the queue awaiting to be processed.
+   * Number of send keep_alive_requests currently in the queue awaiting to be processed.
    */
   size_t send_queue_count;
   UV_UDP_PRIVATE_FIELDS

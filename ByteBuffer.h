@@ -173,6 +173,10 @@ public:
 
     void writeString(const std::string& value) {
         writeVarInt((int)value.length());
+        writeRawString(value);
+    }
+
+    void writeRawString(const std::string& value) {
         for(char i : value) {
             writeByte(i);
         }
@@ -199,7 +203,7 @@ public:
     }
 
     void writeByteBuffer(ByteBuffer& buf) {
-        bytes.resize(std::max(bytes.size(), buf.bytes.size()+position));
+//        bytes.resize(std::max(bytes.size(), buf.bytes.size()+position));
         for(unsigned char byte : buf.bytes) {
             writeByte(byte);
         }

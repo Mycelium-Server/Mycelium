@@ -4,7 +4,6 @@
 #include <cstdio>
 #include <cstdlib>
 #include <uv.h>
-#include <cassert>
 #include "ByteBuffer.h"
 
 void handlePacket(uv_stream_t* handle, ByteBuffer buf);
@@ -30,7 +29,7 @@ void post_write(uv_write_t* req, int status) {
     if (status == UV_ECANCELED)
         return;
 
-    assert(status == UV_EPIPE);
+    if(status != UV_EPIPE) return;
     uv_close((uv_handle_t*)req->handle, on_close);
 }
 
@@ -53,11 +52,9 @@ void post_read(uv_stream_t* handle, ssize_t nread, const uv_buf_t* buf) {
         fprintf(stderr, "post_read: %s\n", uv_strerror(nread));
 
         req = (uv_shutdown_t*)malloc(sizeof(*req));
-        assert(req != NULL);
+        if(!req) return;
 
-        r = uv_shutdown(req, handle, post_shutdown);
-        assert(r == 0);
-
+        uv_shutdown(req, handle, post_shutdown);
         return;
     }
 
@@ -68,17 +65,16 @@ void post_read(uv_stream_t* handle, ssize_t nread, const uv_buf_t* buf) {
 void write(uv_stream_t* handle, ByteBuffer buf) {
     write_req_t* wr;
     wr = (write_req_t*)malloc(sizeof(*wr));
-    assert(wr != NULL);
+    if(!wr) return;
 
     wr->buf = uv_buf_init((char*)buf.bytes.data(), buf.bytes.size());
 
-    int r = uv_write(&wr->req, handle, &wr->buf, 1, post_write);
-    assert(r == 0);
+    uv_write(&wr->req, handle, &wr->buf, 1, post_write);
 }
 
-void alloc_cb(uv_handle_t* handle, size_t suggested_size, uv_buf_t* buf) {
+void alloc_cb(uv_handle_t*, size_t suggested_size, uv_buf_t* buf) {
     buf->base = (char*)malloc(suggested_size);
-    assert(buf->base != NULL);
+    if(!buf->base) return;
     buf->len = suggested_size;
 }
 
@@ -86,21 +82,21 @@ void on_connection(uv_stream_t* server, int status) {
     uv_tcp_t* stream;
     int r;
 
-    assert(status == 0);
+    if(status != 0) return;
 
     stream = (uv_tcp_t*)malloc(sizeof(uv_tcp_t));
-    assert(stream != NULL);
+    if(!stream) return;
 
     r = uv_tcp_init(uv_default_loop(), stream);
-    assert(r == 0);
+    if(r != 0) return;
 
     stream->data = server;
 
     r = uv_accept(server, (uv_stream_t*)stream);
-    assert(r == 0);
+    if(r != 0) return;
 
     r = uv_read_start((uv_stream_t*)stream, alloc_cb, post_read);
-    assert(r == 0);
+    if(r != 0) return;
 }
 
 void start() {
@@ -109,22 +105,22 @@ void start() {
     int r;
 
     r = uv_ip4_addr("0.0.0.0", 25565, &addr);
-    assert(r == 0);
+    if(r != 0) return;
 
     tcp_server = (uv_tcp_t*)malloc(sizeof(*tcp_server));
-    assert(tcp_server != NULL);
+    if(!tcp_server) return;
 
     r = uv_tcp_init(uv_default_loop(), tcp_server);
-    assert(r == 0);
+    if(r != 0) return;
 
     r = uv_tcp_bind(tcp_server, (const struct sockaddr*)&addr, 0);
-    assert(r == 0);
+    if(r != 0) return;
 
     r = uv_listen((uv_stream_t*)tcp_server, SOMAXCONN, on_connection);
-    assert(r == 0);
+    if(r != 0) return;
 
     r = uv_run(uv_default_loop(), UV_RUN_DEFAULT);
-    assert(r == 0);
+    if(r != 0) return;
 }
 
 #endif //MYCELIUM_SERVER_H
