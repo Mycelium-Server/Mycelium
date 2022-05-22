@@ -17,7 +17,7 @@ public:
 class PacketOut : public Packet {
 public:
     PacketOut() = default;
-    virtual ByteBuffer encode() = 0;
+    virtual void encode(ByteBuffer& buf) = 0;
 };
 
 #endif //MYCELIUM_ABSTRACTPACKET_H

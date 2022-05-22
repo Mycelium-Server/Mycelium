@@ -8,7 +8,7 @@ public:
     PacketOutStatusResponse() = default;
 
 public:
-    ByteBuffer encode() override {
+    void encode(ByteBuffer& buf) override {
         std::string response =
                 R"({"version": {"name": ")"+version.name+
                 R"(","protocol": )"+std::to_string(version.protocol)+
@@ -17,9 +17,7 @@ public:
                 R"(},"description": {"text": ")"+
                 description.text+R"("},"favicon": ")"+
                 favicon+"\"}";
-        ByteBuffer buf;
         buf.writeString(response);
-        return buf;
     }
 
     [[nodiscard]] int getPacketID() const override {

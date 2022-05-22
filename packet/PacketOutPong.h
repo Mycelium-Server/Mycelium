@@ -8,10 +8,8 @@ public:
     PacketOutPong() = default;
 
 public:
-    ByteBuffer encode() override {
-        ByteBuffer buf;
+    void encode(ByteBuffer& buf) override {
         buf.writeLong(payload);
-        return buf;
     }
 
     [[nodiscard]] int getPacketID() const override {

@@ -43,6 +43,7 @@ union UUID_t {
     };
     __uint128_t value;
 
+    explicit UUID_t() : value(0) {}
     explicit UUID_t(__uint128_t value) : value(value) {}
     UUID_t(uint64_t a, uint64_t b) : a(a), b(b) {}
 };
