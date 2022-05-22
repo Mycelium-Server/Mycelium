@@ -430,8 +430,8 @@ public:
 
 class TAG_Long_Array : public NBT_Component {
 public:
-    TAG_Long_Array(std::string name, int32_t size, long* arr) : name(std::move(name)), array_length(size), array(arr) {}
-    explicit TAG_Long_Array(int32_t size, long* arr) : TAG_Long_Array("", size, arr) {}
+    TAG_Long_Array(std::string name, int32_t size, long long* arr) : name(std::move(name)), array_length(size), array(arr) {}
+    explicit TAG_Long_Array(int32_t size, long long* arr) : TAG_Long_Array("", size, arr) {}
 
     ByteBuffer asByteBuffer() override {
         unsigned int size = 1 + 2 + name.length() + 4 + array_length*8;
@@ -458,7 +458,7 @@ public:
 public:
     std::string name;
     int32_t array_length;
-    long* array;
+    long long* array;
 };
 
 

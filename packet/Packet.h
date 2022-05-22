@@ -2,6 +2,7 @@
 #define MYCELIUM_PACKET_H
 
 #include <memory>
+#include <cmath>
 #include "../Server.h"
 #include "../Dimension.h"
 #include "../Gamemode.h"
@@ -21,6 +22,8 @@
 #include "PacketOutPlayerAbilities.h"
 #include "PacketOutHeldItemChange.h"
 #include "PacketOutPlayerInfo.h"
+#include "PacketOutUpdateViewPosition.h"
+#include "PacketOutChunk.h"
 
 void sendPacket(uv_stream_t* s, const std::shared_ptr<PacketOut>& packet) {
     ByteBuffer buf;
@@ -103,7 +106,7 @@ unsigned int handlePacket(uv_stream_t* s, ByteBuffer buf) {
                 PacketOutPlayerAbilities player_abilities;
                 player_abilities.flags.allow_flying = true;
                 player_abilities.flags.creative_mode = true;
-                player_abilities.flags.flying = false;
+                player_abilities.flags.flying = true;
                 player_abilities.flags.invulnerable = true;
                 player_abilities.flying_speed = PacketOutPlayerAbilities::DEFAULT_FLYING_SPEED;
                 player_abilities.field_of_view_modifier = PacketOutPlayerAbilities::DEFAULT_FIELD_OF_VIEW_MODIFIER;
@@ -133,9 +136,35 @@ unsigned int handlePacket(uv_stream_t* s, ByteBuffer buf) {
                 player_info_add_player.player.push_back(player_add_player);
                 sendPacket(s, std::make_shared<PacketOutPlayerInfo>(player_info_add_player));
 
-                // Update view position
+                Location_t player_loc(0, 10, 0);
+
+                PacketOutUpdateViewPosition update_view_position;
+                update_view_position.chunk_x = floor((double)player_loc.x / 16.0);
+                update_view_position.chunk_z = floor((double)player_loc.z / 16.0);
+                sendPacket(s, std::make_shared<PacketOutUpdateViewPosition>(update_view_position));
+
                 // Update light
-                // Chunk data and light
+
+                for(int chunk_x = -10; chunk_x <= 10; chunk_x++) {
+                    for(int chunk_z = -10; chunk_z <= 10; chunk_z++) {
+                        PacketOutChunk chunk_data;
+                        chunk_data.chunk_x = chunk_x;
+                        chunk_data.chunk_z = chunk_z;
+                        chunk_data.chunk = Chunk();
+                        for(int x = 0; x < 16; x++) {
+                            for(int z = 0; z < 16; z++) {
+                                for(int y = 0; y < 3; y++) {
+                                    BlockState state;
+                                    if(y == 0 || y == 1) state = minecraft_dirt;
+                                    else state = minecraft_grass;
+                                    chunk_data.chunk.set_block(x, y, z, state);
+                                }
+                            }
+                        }
+                        sendPacket(s, std::make_shared<PacketOutChunk>(chunk_data));
+                    }
+                }
+
                 // World border
                 // Spawn position
                 // Player position and look
