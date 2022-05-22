@@ -7,6 +7,7 @@
 #include "../Gamemode.h"
 #include "../Keepalive.h"
 #include "../Difficulty.h"
+#include "../random.h"
 #include "PacketInHandshake.h"
 #include "PacketOutStatusResponse.h"
 #include "PacketOutPong.h"
@@ -19,6 +20,7 @@
 #include "PacketOutDifficulty.h"
 #include "PacketOutPlayerAbilities.h"
 #include "PacketOutHeldItemChange.h"
+#include "PacketOutPlayerInfo.h"
 
 void sendPacket(uv_stream_t* s, const std::shared_ptr<PacketOut>& packet) {
     ByteBuffer buf;
@@ -34,7 +36,7 @@ void sendPacket(uv_stream_t* s, const std::shared_ptr<PacketOut>& packet) {
 
 std::map<uv_stream_t*, int> next_state;
 
-void handlePacket(uv_stream_t* s, ByteBuffer buf) {
+int handlePacket(uv_stream_t* s, ByteBuffer buf) {
     process_keepalive(s);
 
     int length = buf.readVarInt();
@@ -62,6 +64,7 @@ void handlePacket(uv_stream_t* s, ByteBuffer buf) {
 
                 PacketOutLoginSuccess login_success;
                 login_success.username = login_start.name;
+                login_success.uuid = UUID_t(unique_random(), unique_random());
                 sendPacket(s, std::make_shared<PacketOutLoginSuccess>(login_success));
 
                 PacketOutJoinGame join_game;
@@ -83,6 +86,9 @@ void handlePacket(uv_stream_t* s, ByteBuffer buf) {
                 join_game.is_debug = false;
                 join_game.is_flat = false;
                 sendPacket(s, std::make_shared<PacketOutJoinGame>(join_game));
+
+                con_to_player[s].uuid = login_success.uuid;
+                con_to_player[s].name = login_success.username;
 
                 PacketOutPluginMessage plugin_message_brand;
                 plugin_message_brand.channel = get_channel(INTERNAL_BRAND);
@@ -106,6 +112,36 @@ void handlePacket(uv_stream_t* s, ByteBuffer buf) {
                 PacketOutHeldItemChange held_item_change;
                 held_item_change.slot = 4;
                 sendPacket(s, std::make_shared<PacketOutHeldItemChange>(held_item_change));
+
+                // Declare recipes
+                // Tags
+                // Entity Status
+                // Declare commands
+                // Unlock recipes
+                // Player position and look
+
+                PacketOutPlayerInfo player_info_add_player;
+                player_info_add_player.action = PacketOutPlayerInfo::ACTION_ADD_PLAYER;
+                PacketOutPlayerInfo::AddPlayer add_player;
+                add_player.name = login_start.name;
+                add_player.gamemode = join_game.gamemode;
+                add_player.ping = -1;
+                add_player.has_display_name = false;
+                PacketOutPlayerInfo::PlayerAction player_add_player;
+                player_add_player.uuid = login_success.uuid;
+                player_add_player.action = std::make_shared<PacketOutPlayerInfo::AddPlayer>(add_player);
+                player_info_add_player.player.push_back(player_add_player);
+                sendPacket(s, std::make_shared<PacketOutPlayerInfo>(player_info_add_player));
+
+                // Update view position
+                // Update light
+                // Chunk data and light
+                // World border
+                // Spawn position
+                // Player position and look
+                // Teleport confirm
+                // Client Status ????
+                // etc
 
                 add_keepalive_target(s);
             }
@@ -150,12 +186,16 @@ void handlePacket(uv_stream_t* s, ByteBuffer buf) {
 
         case 0x0F: {
             printf("Packet Type: Keep Alive\n");
+            PacketInKeepalive keepalive;
+            keepalive.read(buf);
+            handle_keepalive_responce(s, keepalive);
         }
 
         default:
             printf("Unknown Packet ID [0x%x]\n", packet_id);
             break;
     }
+    return length + sizeofVarInt(length);
 }
 
 #endif //MYCELIUM_PACKET_H

@@ -6,7 +6,7 @@
 #include <uv.h>
 #include "ByteBuffer.h"
 
-void handlePacket(uv_stream_t* handle, ByteBuffer buf);
+int handlePacket(uv_stream_t* handle, ByteBuffer buf);
 
 typedef struct {
     uv_write_t req;
@@ -42,14 +42,13 @@ void post_shutdown(uv_shutdown_t* req, int status) {
 }
 
 void post_read(uv_stream_t* handle, ssize_t nread, const uv_buf_t* buf) {
-    int r;
     uv_shutdown_t* req;
 
     if(nread == 0)
         return;
 
     if(nread < 0) {
-        fprintf(stderr, "post_read: %s\n", uv_strerror(nread));
+        fprintf(stderr, "post_read: %s\n", uv_strerror((int)nread));
 
         req = (uv_shutdown_t*)malloc(sizeof(*req));
         if(!req) return;
@@ -59,7 +58,10 @@ void post_read(uv_stream_t* handle, ssize_t nread, const uv_buf_t* buf) {
     }
 
     data_cntr += nread;
-    handlePacket(handle, ByteBuffer((byte_t*)buf->base, nread));
+    int length = handlePacket(handle, ByteBuffer((byte_t*)buf->base, nread));
+    while(length < nread) {
+        length += handlePacket(handle, ByteBuffer((byte_t*)buf->base+length, nread-length)); // with this thing it works much better!
+    }
 }
 
 void write(uv_stream_t* handle, ByteBuffer buf) {
@@ -101,7 +103,7 @@ void on_connection(uv_stream_t* server, int status) {
 
 void start() {
     uv_tcp_t* tcp_server;
-    struct sockaddr_in addr;
+    struct sockaddr_in addr{};
     int r;
 
     r = uv_ip4_addr("0.0.0.0", 25565, &addr);
