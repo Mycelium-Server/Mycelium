@@ -36,7 +36,7 @@ void sendPacket(uv_stream_t* s, const std::shared_ptr<PacketOut>& packet) {
 
 std::map<uv_stream_t*, int> next_state;
 
-int handlePacket(uv_stream_t* s, ByteBuffer buf) {
+unsigned int handlePacket(uv_stream_t* s, ByteBuffer buf) {
     process_keepalive(s);
 
     int length = buf.readVarInt();
@@ -188,7 +188,7 @@ int handlePacket(uv_stream_t* s, ByteBuffer buf) {
             printf("Packet Type: Keep Alive\n");
             PacketInKeepalive keepalive;
             keepalive.read(buf);
-            handle_keepalive_responce(s, keepalive);
+            handle_keepalive_response(s, keepalive);
         }
 
         default:

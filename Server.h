@@ -6,7 +6,7 @@
 #include <uv.h>
 #include "ByteBuffer.h"
 
-int handlePacket(uv_stream_t* handle, ByteBuffer buf);
+unsigned int handlePacket(uv_stream_t* handle, ByteBuffer buf);
 
 typedef struct {
     uv_write_t req;
@@ -58,7 +58,7 @@ void post_read(uv_stream_t* handle, ssize_t nread, const uv_buf_t* buf) {
     }
 
     data_cntr += nread;
-    int length = handlePacket(handle, ByteBuffer((byte_t*)buf->base, nread));
+    unsigned long long length = handlePacket(handle, ByteBuffer((byte_t*)buf->base, nread));
     while(length < nread) {
         length += handlePacket(handle, ByteBuffer((byte_t*)buf->base+length, nread-length)); // with this thing it works much better!
     }

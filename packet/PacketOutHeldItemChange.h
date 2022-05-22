@@ -17,7 +17,7 @@ public:
     }
 
 public:
-    char slot;
+    char slot = 0;
 
 };
 

@@ -28,9 +28,9 @@ public:
             char unused : 4;
         };
         char value;
-    } flags;
-    float flying_speed;
-    float field_of_view_modifier;
+    } flags{};
+    float flying_speed = 0;
+    float field_of_view_modifier = 0;
 
     constexpr const static float DEFAULT_FLYING_SPEED = 0.05f;
     constexpr const static float DEFAULT_FIELD_OF_VIEW_MODIFIER = 0.1f;

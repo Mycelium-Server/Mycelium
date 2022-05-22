@@ -17,7 +17,7 @@ using namespace std::chrono_literals;
 void sendPacket(uv_stream_t*, const std::shared_ptr<PacketOut>&);
 
 std::vector<uv_stream_t*> to_keepalive;
-std::map<uv_stream_t*, long> last_keepalive;
+std::map<uv_stream_t*, long long> last_keepalive;
 
 void add_keepalive_target(uv_stream_t* handle) {
     to_keepalive.push_back(handle);
@@ -38,7 +38,7 @@ void process_keepalive(uv_stream_t* handle) {
     }
 }
 
-void handle_keepalive_responce(uv_stream_t* handle, PacketInKeepalive keepalive) {
+void handle_keepalive_response(uv_stream_t* handle, const PacketInKeepalive& keepalive) {
     if(std::find(to_keepalive.begin(), to_keepalive.end(), handle) != to_keepalive.end()) {
         uv_timeval64_t tv;
         uv_gettimeofday(&tv);
