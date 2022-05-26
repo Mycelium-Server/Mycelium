@@ -24,6 +24,9 @@
 #include "PacketOutPlayerInfo.h"
 #include "PacketOutUpdateViewPosition.h"
 #include "PacketOutChunk.h"
+#include "PacketOutInitializeWorldBorder.h"
+#include "PacketOutSpawnPosition.h"
+#include "PacketOutPositionAndLook.h"
 
 void sendPacket(uv_stream_t* s, const std::shared_ptr<PacketOut>& packet) {
     ByteBuffer buf;
@@ -106,7 +109,7 @@ unsigned int handlePacket(uv_stream_t* s, ByteBuffer buf) {
                 PacketOutPlayerAbilities player_abilities;
                 player_abilities.flags.allow_flying = true;
                 player_abilities.flags.creative_mode = true;
-                player_abilities.flags.flying = true;
+                player_abilities.flags.flying = false;
                 player_abilities.flags.invulnerable = true;
                 player_abilities.flying_speed = PacketOutPlayerAbilities::DEFAULT_FLYING_SPEED;
                 player_abilities.field_of_view_modifier = PacketOutPlayerAbilities::DEFAULT_FIELD_OF_VIEW_MODIFIER;
@@ -121,7 +124,68 @@ unsigned int handlePacket(uv_stream_t* s, ByteBuffer buf) {
                 // Entity Status
                 // Declare commands
                 // Unlock recipes
-                // Player position and look
+
+                Location_t player_loc(0, 400, 0);
+
+                PacketOutPositionAndLook position_and_look;
+                position_and_look.x = (double)player_loc.x;
+                position_and_look.y = (double)player_loc.y;
+                position_and_look.z = (double)player_loc.z;
+                position_and_look.flags.value = 0;
+                position_and_look.yaw = 0;
+                position_and_look.pitch = 0;
+                position_and_look.teleport_id = rand();
+                position_and_look.dismount_vehicle = false;
+                sendPacket(s, std::make_shared<PacketOutPositionAndLook>(position_and_look));
+
+                PacketOutUpdateViewPosition update_view_position;
+                update_view_position.chunk_x = floor((double)player_loc.x / 16.0);
+                update_view_position.chunk_z = floor((double)player_loc.z / 16.0);
+                sendPacket(s, std::make_shared<PacketOutUpdateViewPosition>(update_view_position));
+
+                // Update light
+
+                Block block(true, false, true, minecraft_bedrock);
+                PacketOutChunk chunk_data;
+                for(int x = 0; x < 4; ++x) {
+                    for(int y = 0; y < 4; ++y) {
+                        for (int z = 0; z < 4; ++z) {
+                            for (auto& section : chunk_data.chunk.sections)
+                                section->set_biome(x, y, z, Biome(minecraft_plains));
+                        }
+                    }
+                }
+                for(int x = 0; x < 16; ++x) {
+                    for(int z = 0; z < 16; ++z) {
+                        for(int y = 0; y < 16; ++y) {
+                            for (auto& section : chunk_data.chunk.sections)
+                                section->set_block(x, y, z, block);
+                        }
+                    }
+                }
+                for(int chunk_x = -3; chunk_x <= 3; chunk_x++) {
+                    for(int chunk_z = -3; chunk_z <= 3; chunk_z++) {
+                        chunk_data.chunk.chunk_x = chunk_x;
+                        chunk_data.chunk.chunk_z = chunk_z;
+                        sendPacket(s, std::make_shared<PacketOutChunk>(chunk_data));
+                    }
+                }
+
+                PacketOutInitializeWorldBorder world_border;
+                world_border.x = 0;
+                world_border.z = 0;
+                world_border.old_diameter = 320;
+                world_border.new_diameter = 320;
+                world_border.speed = 0;
+                world_border.portal_teleport_boundary = PacketOutInitializeWorldBorder::DEFAULT_PORTAL_TELEPORT_BOUNDARY;
+                world_border.warning_blocks = 0;
+                world_border.warning_time = 0;
+                sendPacket(s, std::make_shared<PacketOutInitializeWorldBorder>(world_border));
+
+                PacketOutSpawnPosition spawn_position;
+                spawn_position.location = player_loc;
+                spawn_position.angle = 0;
+                sendPacket(s, std::make_shared<PacketOutSpawnPosition>(spawn_position));
 
                 PacketOutPlayerInfo player_info_add_player;
                 player_info_add_player.action = PacketOutPlayerInfo::ACTION_ADD_PLAYER;
@@ -136,38 +200,6 @@ unsigned int handlePacket(uv_stream_t* s, ByteBuffer buf) {
                 player_info_add_player.player.push_back(player_add_player);
                 sendPacket(s, std::make_shared<PacketOutPlayerInfo>(player_info_add_player));
 
-                Location_t player_loc(0, 10, 0);
-
-                PacketOutUpdateViewPosition update_view_position;
-                update_view_position.chunk_x = floor((double)player_loc.x / 16.0);
-                update_view_position.chunk_z = floor((double)player_loc.z / 16.0);
-                sendPacket(s, std::make_shared<PacketOutUpdateViewPosition>(update_view_position));
-
-                // Update light
-
-                for(int chunk_x = -10; chunk_x <= 10; chunk_x++) {
-                    for(int chunk_z = -10; chunk_z <= 10; chunk_z++) {
-                        PacketOutChunk chunk_data;
-                        chunk_data.chunk_x = chunk_x;
-                        chunk_data.chunk_z = chunk_z;
-                        chunk_data.chunk = Chunk();
-                        for(int x = 0; x < 16; x++) {
-                            for(int z = 0; z < 16; z++) {
-                                for(int y = 0; y < 3; y++) {
-                                    BlockState state;
-                                    if(y == 0 || y == 1) state = minecraft_dirt;
-                                    else state = minecraft_grass;
-                                    chunk_data.chunk.set_block(x, y, z, state);
-                                }
-                            }
-                        }
-                        sendPacket(s, std::make_shared<PacketOutChunk>(chunk_data));
-                    }
-                }
-
-                // World border
-                // Spawn position
-                // Player position and look
                 // Teleport confirm
                 // Client Status ????
                 // etc

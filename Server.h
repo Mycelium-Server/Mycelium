@@ -6,6 +6,9 @@
 #include <uv.h>
 #include "ByteBuffer.h"
 
+#include <fstream>
+std::fstream packet_log;
+
 unsigned int handlePacket(uv_stream_t* handle, ByteBuffer buf);
 
 typedef struct {

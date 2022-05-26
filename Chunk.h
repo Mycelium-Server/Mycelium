@@ -5,33 +5,58 @@
 
 class Chunk {
 public:
-    Chunk() = default;
-
-public:
-    ChunkSection& get_chunk_section(int y) {
-        return sections[y >> 4];
+    Chunk() {
+        for(int i = 0; i < 24; i++) sections[i] = std::make_shared<ChunkSection>(i);
     }
-
-    void set_block(int x, int y, int z, BlockState state) {
-        get_chunk_section(y).set_block(x, y & 0xF, z, state);
-    }
-
-    BlockState get_block(int x, int y, int z) {
-        return get_chunk_section(y).get_block(x, y & 0xF, z);
-    }
-
-    void set_biome_by_block(int x, int y, int z, int biome) {
-        get_chunk_section(y).set_biome_from_block(x, y & 0xF, z, biome);
-    }
-
-    int get_biome_by_block(int x, int y, int z) {
-        get_chunk_section(y).get_biome_from_block(x, y & 0xF, z);
+    Chunk(int chunk_x, int chunk_z) : chunk_x(chunk_x), chunk_z(chunk_z) {
+        for(int i = 0; i < 24; i++) sections[i] = std::make_shared<ChunkSection>(i);
     }
 
 public:
-    int chunk_x;
-    int chunk_z;
-    ChunkSection sections[16]{};
+    std::shared_ptr<ChunkSection> get_chunk_section(int y) {
+        return sections[(int)floor(double(y)/16.0)];
+    }
+
+    void set_block(int x, int y, int z, Block state) {
+        get_chunk_section(y)->set_block(x, y % 16, z, state);
+    }
+
+    Block get_block(int x, int y, int z) {
+        return get_chunk_section(y)->get_block(x, y % 16, z);
+    }
+
+    void set_biome_by_block(int x, int y, int z, const Biome& biome) {
+        get_chunk_section(y)->set_biome_by_block((int)floor((double)x/4),
+                                                (int)floor((double)y/4) % 16,
+                                                (int)floor((double)z/4), biome);
+    }
+
+    Biome get_biome_by_block(int x, int y, int z) {
+        return get_chunk_section(y)->get_biome_by_block((int)floor((double)x/4),
+                                                       (int)floor((double)y/4) % 16,
+                                                       (int)floor((double)z/4));
+    }
+
+    void set_biome(int x, int y, int z, const Biome& biome) {
+        get_chunk_section(y*4)->set_biome(x, y % 16, z, biome);
+    }
+
+    Biome get_biome(int x, int y, int z) {
+        return get_chunk_section(y*4)->get_biome(x, y % 16, z);
+    }
+
+    [[nodiscard]] int get_chunk_x() const {
+        return chunk_x;
+    }
+
+    [[nodiscard]] int get_chunk_z() const {
+        return chunk_z;
+    }
+
+public:
+    int chunk_x = 0;
+    int chunk_z = 0;
+    std::shared_ptr<ChunkSection> sections[24];
 };
 
 #endif //MYCELIUM_CHUNK_H

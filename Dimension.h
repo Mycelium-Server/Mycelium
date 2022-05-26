@@ -569,7 +569,7 @@ std::shared_ptr<TAG_Compound> default_dimension_codec() {
                                             std::make_shared<TAG_String>("precipitation", "none"),
                                             std::make_shared<TAG_Float>("temperature", 2.0f)
                                     }),
-                                    std::make_shared<TAG_Int>("id", 0),
+                                    std::make_shared<TAG_Int>("id", 16),
                                     std::make_shared<TAG_String>("name", "minecraft:savanna")
                             }),
                             std::make_shared<TAG_Compound>(NBT_Components{

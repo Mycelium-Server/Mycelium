@@ -56,6 +56,7 @@ union Location_t {
     };
     int64_t l;
 
+    explicit Location_t() : l(0) {}
     explicit Location_t(int64_t l) : l(l) {}
     Location_t(int32_t x, int16_t y, int32_t z) : x(x & 0x3FFFFFF), z(z & 0x3FFFFFF), y(y & 0xFFF) {}
 };
@@ -211,7 +212,7 @@ public:
     }
 
     void writeByteBuffer(ByteBuffer& buf) {
-//        bytes.resize(std::max(bytes.size(), buf.bytes.size()+position));
+        bytes.resize(std::max(bytes.size(), buf.bytes.size()+position));
         for(unsigned char byte : buf.bytes) {
             writeByte(byte);
         }
@@ -232,14 +233,25 @@ public:
     }
 
     void writeLong(int64_t value) {
-        writeByte((value & 0xFF00000000000000) >> (7*8));
-        writeByte((value & 0x00FF000000000000) >> (6*8));
-        writeByte((value & 0x0000FF0000000000) >> (5*8));
-        writeByte((value & 0x000000FF00000000) >> (4*8));
-        writeByte((value & 0x00000000FF000000) >> (3*8));
-        writeByte((value & 0x0000000000FF0000) >> (2*8));
-        writeByte((value & 0x000000000000FF00) >> (1*8));
-        writeByte((value & 0x00000000000000FF));
+        writeByte(((uint64_t)value & 0xFF00000000000000) >> (7*8));
+        writeByte(((uint64_t)value & 0x00FF000000000000) >> (6*8));
+        writeByte(((uint64_t)value & 0x0000FF0000000000) >> (5*8));
+        writeByte(((uint64_t)value & 0x000000FF00000000) >> (4*8));
+        writeByte(((uint64_t)value & 0x00000000FF000000) >> (3*8));
+        writeByte(((uint64_t)value & 0x0000000000FF0000) >> (2*8));
+        writeByte(((uint64_t)value & 0x000000000000FF00) >> (1*8));
+        writeByte(((uint64_t)value & 0x00000000000000FF));
+    }
+
+    void writeLongUD(int64_t value) {
+        writeByte(((uint64_t)value & 0x00000000000000FF));
+        writeByte(((uint64_t)value & 0x000000000000FF00) >> (1*8));
+        writeByte(((uint64_t)value & 0x0000000000FF0000) >> (2*8));
+        writeByte(((uint64_t)value & 0x00000000FF000000) >> (3*8));
+        writeByte(((uint64_t)value & 0x000000FF00000000) >> (4*8));
+        writeByte(((uint64_t)value & 0x0000FF0000000000) >> (5*8));
+        writeByte(((uint64_t)value & 0x00FF000000000000) >> (6*8));
+        writeByte(((uint64_t)value & 0xFF00000000000000) >> (7*8));
     }
 
     void writeUnsignedLong(uint64_t value) {

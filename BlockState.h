@@ -20347,4 +20347,21 @@ enum BlockState {
     total_number_of_states = 20342
 };
 
+struct Block {
+
+    bool solid;
+    bool air;
+    bool motion_blocking;
+    BlockState block_state;
+
+    bool equals(const Block& block) {
+        return block.solid == solid && block.air == air &&
+        motion_blocking == block.motion_blocking && block_state == block.block_state;
+    }
+
+    Block() : Block(false, true, false, minecraft_air) {}
+    Block(bool solid, bool air, bool motion_blocking, BlockState block_state)
+        : solid(solid), air(air), motion_blocking(motion_blocking), block_state(block_state) {}
+};
+
 #endif //MYCELIUM_BLOCKSTATE_H
