@@ -10,6 +10,7 @@
 std::fstream packet_log;
 
 unsigned int handlePacket(uv_stream_t* handle, ByteBuffer buf);
+void handleDisconnect(uv_stream_t* handle);
 
 typedef struct {
     uv_write_t req;
@@ -42,6 +43,8 @@ void post_shutdown(uv_shutdown_t* req, int status) {
     }
     data_cntr = 0;
     uv_close((uv_handle_t*)req->handle, on_close);
+    handleDisconnect(req->handle);
+
 }
 
 void post_read(uv_stream_t* handle, ssize_t nread, const uv_buf_t* buf) {

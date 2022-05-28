@@ -29,16 +29,12 @@ public:
         packet_log << "Chunk X: " << chunk.chunk_x << "\n";
         packet_log << "Chunk Z: " << chunk.chunk_z << "\n";
 
-        BitStorage surface(9, 256);
         BitStorage motion_blocking(9, 256);
 
         for(int y = 0; y < 384; ++y) {
             for(int x = 0; x < 16; ++x) {
                 for(int z = 0; z < 16; ++z) {
                     Block block = chunk.get_block(x, y, z);
-                    if(!block.air) {
-                        surface.set(x + (z << 4), y+1);
-                    }
                     if(block.motion_blocking) {
                         motion_blocking.set(x + (z << 4), y+1);
                     }
@@ -48,18 +44,8 @@ public:
 
         ByteBuffer heightmap = TAG_Compound(NBT_Components {
             std::make_shared<TAG_Long_Array>("MOTION_BLOCKING",
-                                             motion_blocking.get_data().size(), motion_blocking.get_data().data()),
-            std::make_shared<TAG_Long_Array>("MOTION_BLOCKING_NO_LEAVES",
-                                             motion_blocking.get_data().size(), motion_blocking.get_data().data()),
-            std::make_shared<TAG_Long_Array>("WORLD_SURFACE",
-                                             surface.get_data().size(), surface.get_data().data()),
-            std::make_shared<TAG_Long_Array>("OCEAN_FLOOR",
-                                             motion_blocking.get_data().size(), motion_blocking.get_data().data()),
+                                             motion_blocking.get_data().size(), motion_blocking.get_data().data())
         }).asByteBuffer();
-
-        packet_log << "Heightmap->Surface: ";
-        for(long long l : surface.get_data()) packet_log << l << " ";
-        packet_log << "\n";
 
         packet_log << "Heightmap->Motion Blocking: ";
         for(long long l : motion_blocking.get_data()) packet_log << l << " ";
@@ -68,8 +54,7 @@ public:
         buf.writeByteBuffer(heightmap);
 
         ByteBuffer data;
-        for(int i = 23; i >= 0; i--) {
-            auto section = chunk.sections[i];
+        for(auto& section : chunk.sections) {
             packet_log << "Chunk Section #" << section->index << "\n";
             section->write(data);
         }

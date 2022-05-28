@@ -50,10 +50,12 @@ void handle_keepalive_response(uv_stream_t* handle, const PacketInKeepalive& kee
         PacketOutPlayerInfo::UpdateLatency update_latency;
         update_latency.ping = (int)ping;
         PacketOutPlayerInfo::PlayerAction player_update_latency;
-        player_update_latency.uuid = con_to_player[handle].uuid;
+        player_update_latency.uuid = con_to_player[handle]->uuid;
         player_update_latency.action = std::make_shared<PacketOutPlayerInfo::UpdateLatency>(update_latency);
         player_info_add_player.player.push_back(player_update_latency);
-        sendPacket(handle, std::make_shared<PacketOutPlayerInfo>(player_info_add_player));
+        for(auto& p : players) {
+            sendPacket(p->connection, std::make_shared<PacketOutPlayerInfo>(player_info_add_player));
+        }
     }
 }
 

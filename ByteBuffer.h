@@ -3,6 +3,7 @@
 
 #include <cinttypes>
 #include <cstdio>
+#include <cmath>
 #include <cstring>
 #include <string>
 #include <vector>
@@ -223,9 +224,27 @@ public:
         writeByte(value & 0x00FF);
     }
 
-    long readLong() {
-        long l = 0;
+    int readInt() {
+        int32_t i = 0;
+        for(int j = 0; j < 4; j++) {
+            i <<= 8;
+            i |= readByte();
+        }
+        return i;
+    }
+
+    long long readLong() {
+        long long l = 0;
         for(int i = 0; i < 8; i++) {
+            l <<= 8;
+            l |= readByte();
+        }
+        return l;
+    }
+
+    long readUDLong() {
+        long l = 0;
+        for(int i = 7; i >= 0; i--) {
             l <<= 8;
             l |= readByte();
         }
@@ -243,15 +262,22 @@ public:
         writeByte(((uint64_t)value & 0x00000000000000FF));
     }
 
+    unsigned char reverse(unsigned char b) {
+        b = (b & 0xF0) >> 4 | (b & 0x0F) << 4;
+        b = (b & 0xCC) >> 2 | (b & 0x33) << 2;
+        b = (b & 0xAA) >> 1 | (b & 0x55) << 1;
+        return b;
+    }
+
     void writeLongUD(int64_t value) {
-        writeByte(((uint64_t)value & 0x00000000000000FF));
-        writeByte(((uint64_t)value & 0x000000000000FF00) >> (1*8));
-        writeByte(((uint64_t)value & 0x0000000000FF0000) >> (2*8));
-        writeByte(((uint64_t)value & 0x00000000FF000000) >> (3*8));
-        writeByte(((uint64_t)value & 0x000000FF00000000) >> (4*8));
-        writeByte(((uint64_t)value & 0x0000FF0000000000) >> (5*8));
-        writeByte(((uint64_t)value & 0x00FF000000000000) >> (6*8));
-        writeByte(((uint64_t)value & 0xFF00000000000000) >> (7*8));
+        writeByte(reverse(((uint64_t)value & 0x00000000000000FF)));
+        writeByte(reverse(((uint64_t)value & 0x000000000000FF00) >> (1*8)));
+        writeByte(reverse(((uint64_t)value & 0x0000000000FF0000) >> (2*8)));
+        writeByte(reverse(((uint64_t)value & 0x00000000FF000000) >> (3*8)));
+        writeByte(reverse(((uint64_t)value & 0x000000FF00000000) >> (4*8)));
+        writeByte(reverse(((uint64_t)value & 0x0000FF0000000000) >> (5*8)));
+        writeByte(reverse(((uint64_t)value & 0x00FF000000000000) >> (6*8)));
+        writeByte(reverse(((uint64_t)value & 0xFF00000000000000) >> (7*8)));
     }
 
     void writeUnsignedLong(uint64_t value) {
@@ -311,6 +337,20 @@ public:
                 dst += 1;
         }
         writeLong((int64_t)dst);
+    }
+
+    double readDouble() {
+        uint64_t buf = readLong();
+        double x;
+        memcpy(&x, &buf, sizeof(double));
+        return x;
+    }
+
+    float readFloat() {
+        uint32_t buf = readInt();
+        float x;
+        memcpy(&x, &buf, sizeof(float));
+        return x;
     }
 
     void writeUnsignedShort(unsigned short value) {

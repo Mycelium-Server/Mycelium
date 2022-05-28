@@ -6,7 +6,7 @@
 
 class BitStorage {
 private:
-    const long MAGIC_VALUES[192] = {
+    const int64_t MAGIC_VALUES[192] = {
             -1, -1, 0, -2147483648, 0, 0, 1431655765, 1431655765, 0, -2147483648,
             0, 1, 858993459, 858993459, 0, 715827882, 715827882, 0, 613566756, 613566756,
             0, -2147483648, 0, 2, 477218588, 477218588, 0, 429496729, 429496729, 0,
@@ -35,9 +35,9 @@ private:
 
     long long max_value;
     int values_per_long;
-    long long divide_multiply;
-    long long divide_add;
-    int divide_shift;
+    uint64_t divide_multiply;
+    uint64_t divide_add;
+    long divide_shift;
 
 public:
     explicit BitStorage(int bits_per_entry, int size) : BitStorage(bits_per_entry, size, std::vector<long long>()) {}
@@ -52,8 +52,8 @@ public:
         } else this->data.resize(expectedLength);
 
         int magic_index = 3 * (this->values_per_long - 1);
-        divide_multiply = (unsigned int) MAGIC_VALUES[magic_index];
-        divide_add = (unsigned int) MAGIC_VALUES[magic_index+1];
+        divide_multiply = (uint32_t)MAGIC_VALUES[magic_index];
+        divide_add = (uint32_t)MAGIC_VALUES[magic_index+1];
         divide_shift = MAGIC_VALUES[magic_index + 2];
     }
 

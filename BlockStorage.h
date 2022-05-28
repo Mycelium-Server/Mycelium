@@ -54,8 +54,8 @@ public:
     }
 
     int get_index(const Block& block) {
+        raw_to_block[block.block_state] = block;
         if(storage->get_bits_per_entry() > 8) {
-            raw_to_block[block.block_state] = block;
             return block.block_state;
         }
         int id = get_index_of(block);
@@ -75,7 +75,7 @@ public:
         std::shared_ptr<BitStorage> new_storage = create_storage(new_size);
 
         for(int i = 0; i < 16*16*16; ++i) {
-            int new_id = new_size > 8 ? (int)palette[storage->get(i)].block_state : storage->get(i);
+            int new_id = new_size > 8 ? (int)raw_to_block[(BlockState)storage->get(i)].block_state : storage->get(i);
             new_storage->set(i, new_id);
         }
 

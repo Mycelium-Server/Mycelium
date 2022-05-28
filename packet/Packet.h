@@ -27,6 +27,29 @@
 #include "PacketOutInitializeWorldBorder.h"
 #include "PacketOutSpawnPosition.h"
 #include "PacketOutPositionAndLook.h"
+#include "PacketInChatMessage.h"
+#include "PacketOutChatMessage.h"
+#include "PacketOutSpawnPlayer.h"
+#include "PacketInPlayerPosition.h"
+#include "PacketOutEntityPostionAndRotation.h"
+#include "PacketInPlayerPositionAndRotation.h"
+#include "PacketOutFace.h"
+#include "PacketOutEntityHeadLook.h"
+#include "PacketOutEntityPosition.h"
+#include "PacketInPlayerRotation.h"
+#include "PacketOutEntityRotation.h"
+#include "PacketInEntityAction.h"
+#include "PacketOutEntityMetadata.h"
+#include "PacketOutDestroyEntities.h"
+#include "PlayerOutLoginDisconnect.h"
+
+enum State {
+    STATE_LOGIN = 0,
+    STATE_PLAY = 1,
+};
+
+std::vector<std::shared_ptr<Player>> pending_checks;
+std::map<uv_stream_t*, State> player_states;
 
 void sendPacket(uv_stream_t* s, const std::shared_ptr<PacketOut>& packet) {
     ByteBuffer buf;
@@ -41,6 +64,91 @@ void sendPacket(uv_stream_t* s, const std::shared_ptr<PacketOut>& packet) {
 }
 
 std::map<uv_stream_t*, int> next_state;
+
+void continue_log_in(std::shared_ptr<Player>& player) {
+    con_to_player[player->connection] = player;
+    players.push_back(player);
+
+    PacketOutChatMessage join_message;
+    join_message.uuid = UUID_t(0);
+    join_message.position = 0;
+    join_message.json_data = "{\"text\":\""+player->name+" joined the game\",\"color\":\"aqua\"}";
+
+    for(auto& p : players) {
+        sendPacket(p->connection, std::make_shared<PacketOutChatMessage>(join_message));
+    }
+
+    PacketOutPlayerInfo player_info_add_player;
+    player_info_add_player.action = PacketOutPlayerInfo::ACTION_ADD_PLAYER;
+    PacketOutPlayerInfo::AddPlayer add_player;
+    add_player.name = player->name;
+    add_player.gamemode = player->gamemode;
+    add_player.ping = -1;
+    add_player.has_display_name = false;
+    PacketOutPlayerInfo::PlayerAction player_add_player;
+    player_add_player.uuid = player->uuid;
+    player_add_player.action = std::make_shared<PacketOutPlayerInfo::AddPlayer>(add_player);
+    player_info_add_player.player.push_back(player_add_player);
+
+    for(auto& p : players) {
+        if(p->name != con_to_player[player->connection]->name)
+            sendPacket(p->connection, std::make_shared<PacketOutPlayerInfo>(player_info_add_player));
+    }
+
+    for(auto& p : players) {
+        PacketOutPlayerInfo player_info_add_other_player;
+        player_info_add_other_player.action = PacketOutPlayerInfo::ACTION_ADD_PLAYER;
+        PacketOutPlayerInfo::AddPlayer add_other_player;
+        add_other_player.name = p->name;
+        add_other_player.gamemode = p->gamemode;
+        add_other_player.ping = -1;
+        add_other_player.has_display_name = false;
+        PacketOutPlayerInfo::PlayerAction player_add_other_player;
+        player_add_other_player.uuid = p->uuid;
+        player_add_other_player.action = std::make_shared<PacketOutPlayerInfo::AddPlayer>(add_other_player);
+        player_info_add_other_player.player.push_back(player_add_other_player);
+        sendPacket(player->connection, std::make_shared<PacketOutPlayerInfo>(player_info_add_other_player));
+    }
+
+    PacketOutSpawnPlayer spawn_player;
+    spawn_player.entity_id = player->entity_id;
+    spawn_player.player_uuid = player->uuid;
+    spawn_player.x = player->location.x;
+    spawn_player.y = player->location.y;
+    spawn_player.z = player->location.z;
+    spawn_player.yaw = 0;
+    spawn_player.pitch = 0;
+
+    for(auto& p : players) {
+        if(p->connection != player->connection) {
+            sendPacket(p->connection, std::make_shared<PacketOutSpawnPlayer>(spawn_player));
+
+            PacketOutSpawnPlayer spawn_other_player;
+            spawn_other_player.entity_id = p->entity_id;
+            spawn_other_player.player_uuid = p->uuid;
+            spawn_other_player.x = p->location.x;
+            spawn_other_player.y = p->location.y;
+            spawn_other_player.z = p->location.z;
+            spawn_other_player.yaw = p->location.yaw_as_angle();
+            spawn_other_player.pitch = p->location.pitch_as_angle();
+            sendPacket(player->connection, std::make_shared<PacketOutSpawnPlayer>(spawn_other_player));
+        }
+    }
+
+    // Teleport confirm
+    // Client Status ????
+    // etc
+
+    for(auto& p : players) {
+        PacketOutEntityMetadata metadata_packet;
+        metadata_packet.entity_id = p->entity_id;
+        metadata_packet.metadata = p->metadata;
+        sendPacket(player->connection, std::make_shared<PacketOutEntityMetadata>(metadata_packet));
+    }
+
+    add_keepalive_target(player->connection);
+    player_states[player->connection] = STATE_PLAY;
+}
 
 unsigned int handlePacket(uv_stream_t* s, ByteBuffer buf) {
     process_keepalive(s);
@@ -67,14 +175,24 @@ unsigned int handlePacket(uv_stream_t* s, ByteBuffer buf) {
                 PacketInLoginStart login_start;
                 login_start.read(buf);
                 printf("Name: %s\n", login_start.name.data());
+                for(auto& p : players) {
+                    if(p->name == login_start.name) {
+                        PacketOutLoginDisconnect disconnect;
+                        disconnect.reason = "{\"text\":\"Player '"+login_start.name+"' is already playing on this server!\"}";
+                        sendPacket(s, std::make_shared<PacketOutLoginDisconnect>(disconnect));
+                        break;
+                    }
+                }
 
                 PacketOutLoginSuccess login_success;
                 login_success.username = login_start.name;
                 login_success.uuid = UUID_t(unique_random(), unique_random());
                 sendPacket(s, std::make_shared<PacketOutLoginSuccess>(login_success));
 
+                player_states[s] = STATE_LOGIN;
+
                 PacketOutJoinGame join_game;
-                join_game.entity_id = 0;
+                join_game.entity_id = rand();
                 join_game.is_hardcore = false;
                 join_game.gamemode = GM_CREATIVE;
                 join_game.previous_gamemode = PREV_GM_DEFAULT;
@@ -93,12 +211,20 @@ unsigned int handlePacket(uv_stream_t* s, ByteBuffer buf) {
                 join_game.is_flat = false;
                 sendPacket(s, std::make_shared<PacketOutJoinGame>(join_game));
 
-                con_to_player[s].uuid = login_success.uuid;
-                con_to_player[s].name = login_success.username;
+                Location player_loc(0, 300, 0, 0, 0);
+
+                Player player;
+                player.uuid = login_success.uuid;
+                player.name = login_success.username;
+                player.connection = s;
+                player.gamemode = (GAMEMODE)join_game.gamemode;
+                player.location = player_loc;
+                player.entity_id = join_game.entity_id;
+                player.metadata = std::make_shared<EntityMetadata>();
 
                 PacketOutPluginMessage plugin_message_brand;
                 plugin_message_brand.channel = get_channel(INTERNAL_BRAND);
-                plugin_message_brand.data.writeString("Mycelium");
+                plugin_message_brand.data.writeString(get_brand());
                 sendPacket(s, std::make_shared<PacketOutPluginMessage>(plugin_message_brand));
 
                 PacketOutDifficulty difficulty;
@@ -125,12 +251,10 @@ unsigned int handlePacket(uv_stream_t* s, ByteBuffer buf) {
                 // Declare commands
                 // Unlock recipes
 
-                Location_t player_loc(0, 400, 0);
-
                 PacketOutPositionAndLook position_and_look;
-                position_and_look.x = (double)player_loc.x;
-                position_and_look.y = (double)player_loc.y;
-                position_and_look.z = (double)player_loc.z;
+                position_and_look.x = player_loc.x;
+                position_and_look.y = player_loc.y;
+                position_and_look.z = player_loc.z;
                 position_and_look.flags.value = 0;
                 position_and_look.yaw = 0;
                 position_and_look.pitch = 0;
@@ -147,19 +271,21 @@ unsigned int handlePacket(uv_stream_t* s, ByteBuffer buf) {
 
                 Block block(true, false, true, minecraft_bedrock);
                 PacketOutChunk chunk_data;
-                for(int x = 0; x < 4; ++x) {
-                    for(int y = 0; y < 4; ++y) {
-                        for (int z = 0; z < 4; ++z) {
-                            for (auto& section : chunk_data.chunk.sections)
-                                section->set_biome(x, y, z, Biome(minecraft_plains));
-                        }
-                    }
-                }
+//                for(int x = 0; x < 4; ++x) {
+//                    for(int y = 0; y < 4; ++y) {
+//                        for (int z = 0; z < 4; ++z) {
+//                            for (auto& section : chunk_data.chunk.sections)
+//                                section->set_biome(x, y, z, Biome(minecraft_plains));
+//                        }
+//                    }
+//                }
                 for(int x = 0; x < 16; ++x) {
                     for(int z = 0; z < 16; ++z) {
                         for(int y = 0; y < 16; ++y) {
-                            for (auto& section : chunk_data.chunk.sections)
+                            for (auto& section : chunk_data.chunk.sections) {
+                                block.block_state = (BlockState) ((x+y+z)%3+1);
                                 section->set_block(x, y, z, block);
+                            }
                         }
                     }
                 }
@@ -183,28 +309,18 @@ unsigned int handlePacket(uv_stream_t* s, ByteBuffer buf) {
                 sendPacket(s, std::make_shared<PacketOutInitializeWorldBorder>(world_border));
 
                 PacketOutSpawnPosition spawn_position;
-                spawn_position.location = player_loc;
+                spawn_position.location = player_loc.c_location();
                 spawn_position.angle = 0;
                 sendPacket(s, std::make_shared<PacketOutSpawnPosition>(spawn_position));
 
-                PacketOutPlayerInfo player_info_add_player;
-                player_info_add_player.action = PacketOutPlayerInfo::ACTION_ADD_PLAYER;
-                PacketOutPlayerInfo::AddPlayer add_player;
-                add_player.name = login_start.name;
-                add_player.gamemode = join_game.gamemode;
-                add_player.ping = -1;
-                add_player.has_display_name = false;
-                PacketOutPlayerInfo::PlayerAction player_add_player;
-                player_add_player.uuid = login_success.uuid;
-                player_add_player.action = std::make_shared<PacketOutPlayerInfo::AddPlayer>(add_player);
-                player_info_add_player.player.push_back(player_add_player);
-                sendPacket(s, std::make_shared<PacketOutPlayerInfo>(player_info_add_player));
+                pending_checks.push_back(std::make_shared<Player>(player));
 
-                // Teleport confirm
-                // Client Status ????
-                // etc
-
-                add_keepalive_target(s);
+                PacketOutKeepalive keepalive;
+                uv_timeval64_t tv;
+                uv_gettimeofday(&tv);
+                long long millis = tv.tv_sec * 1000 + tv.tv_usec / 1000;
+                keepalive.keep_alive_id = (long)millis;
+                sendPacket(s, std::make_shared<PacketOutKeepalive>(keepalive));
             }
             else {
                 printf("Packet Type: Handshake\n");
@@ -243,13 +359,203 @@ unsigned int handlePacket(uv_stream_t* s, ByteBuffer buf) {
             printf("Main Hand: %d\n", client_settings.main_hand);
             printf("Enable Text Filtering: %d\n", client_settings.enable_text_filtering);
             printf("Allow server listings: %d\n", client_settings.allow_server_listings);
+            break;
         }
 
         case 0x0F: {
             printf("Packet Type: Keep Alive\n");
+            int index_to_remove = -1;
+            for(int i = 0; i < pending_checks.size(); i++) {
+                auto& p = pending_checks[i];
+                if(p->connection == s) {
+                    continue_log_in(p);
+                    index_to_remove = i;
+                    break;
+                }
+            }
+            if(index_to_remove >= 0) {
+                pending_checks.erase(pending_checks.begin() + index_to_remove);
+            }
+
             PacketInKeepalive keepalive;
             keepalive.read(buf);
             handle_keepalive_response(s, keepalive);
+            break;
+        }
+
+        case 0x03: {
+            if(player_states[s] != STATE_PLAY) break;
+            printf("Packet Type: Chat Message\n");
+            PacketInChatMessage chat_message_in;
+            chat_message_in.read(buf);
+            PacketOutChatMessage chat_message_out;
+            chat_message_out.json_data = "{\"text\": \"["+con_to_player[s]->name+"] "+chat_message_in.message+"\"}";
+            chat_message_out.position = 0;
+            chat_message_out.uuid = UUID_t(0);
+            for(auto& p : players) {
+                sendPacket(p->connection, std::make_shared<PacketOutChatMessage>(chat_message_out));
+            }
+            break;
+        }
+
+        case 0x11: {
+            if(player_states[s] != STATE_PLAY) break;
+            printf("Packet Type: Player Position\n");
+            PacketInPlayerPosition player_position_in;
+            player_position_in.read(buf);
+            double prev_x = con_to_player[s]->location.x;
+            double prev_y = con_to_player[s]->location.y;
+            double prev_z = con_to_player[s]->location.z;
+            con_to_player[s]->location.x = player_position_in.x;
+            con_to_player[s]->location.y = player_position_in.feet_y;
+            con_to_player[s]->location.z = player_position_in.z;
+            for(auto& p : players) {
+                if(p->connection == s) {
+                    p->location = con_to_player[s]->location;
+                }
+            }
+
+            PacketOutEntityPosition player_position;
+            player_position.entity_id = con_to_player[s]->entity_id;
+            player_position.delta_x = (short)((player_position_in.x * 32 - prev_x * 32) * 128);
+            player_position.delta_y = (short)((player_position_in.feet_y * 32 - prev_y * 32) * 128);
+            player_position.delta_z = (short)((player_position_in.z * 32 - prev_z * 32) * 128);
+            player_position.on_ground = player_position_in.on_ground;
+            for(auto& p : players) {
+                if(p->connection != s) {
+                    sendPacket(p->connection, std::make_shared<PacketOutEntityPosition>(player_position));
+                }
+            }
+            break;
+        }
+
+        case 0x12: {
+            if(player_states[s] != STATE_PLAY) break;
+            printf("Packet Type: Player Position And Rotation\n");
+            PacketInPlayerPositionAndRotation player_position_in;
+            player_position_in.read(buf);
+            double prev_x = con_to_player[s]->location.x;
+            double prev_y = con_to_player[s]->location.y;
+            double prev_z = con_to_player[s]->location.z;
+            con_to_player[s]->location.x = player_position_in.x;
+            con_to_player[s]->location.y = player_position_in.feet_y;
+            con_to_player[s]->location.z = player_position_in.z;
+            con_to_player[s]->location.yaw = player_position_in.yaw/360.f;
+            con_to_player[s]->location.pitch = player_position_in.pitch/360.f;
+            for(auto& p : players) {
+                if(p->connection == s) {
+                    p->location = con_to_player[s]->location;
+                }
+            }
+
+            PacketOutEntityPositionAndRotation player_position;
+            player_position.entity_id = con_to_player[s]->entity_id;
+            player_position.delta_x = (short)((player_position_in.x * 32 - prev_x * 32) * 128);
+            player_position.delta_y = (short)((player_position_in.feet_y * 32 - prev_y * 32) * 128);
+            player_position.delta_z = (short)((player_position_in.z * 32 - prev_z * 32) * 128);
+            player_position.yaw = con_to_player[s]->location.yaw_as_angle();
+            player_position.pitch = con_to_player[s]->location.pitch_as_angle();
+            player_position.on_ground = player_position_in.on_ground;
+
+            PacketOutEntityHeadLook player_look;
+            player_look.entity_id = player_position.entity_id;
+            player_look.head_yaw = player_position.yaw;
+
+            for(auto& p : players) {
+                if(p->connection != s) {
+                    sendPacket(p->connection, std::make_shared<PacketOutEntityPositionAndRotation>(player_position));
+                    sendPacket(p->connection, std::make_shared<PacketOutEntityHeadLook>(player_look));
+                }
+            }
+            break;
+        }
+
+        case 0x13: {
+            if(player_states[s] != STATE_PLAY) break;
+            printf("Packet Type: Player Rotation\n");
+            PacketInPlayerRotation player_rotation_in;
+            player_rotation_in.read(buf);
+            con_to_player[s]->location.yaw = player_rotation_in.yaw/360.f;
+            con_to_player[s]->location.pitch = player_rotation_in.pitch/360.f;
+            for(auto& p : players) {
+                if(p->connection == s) {
+                    p->location = con_to_player[s]->location;
+                }
+            }
+
+            PacketOutEntityRotation player_rotation;
+            player_rotation.entity_id = con_to_player[s]->entity_id;
+            player_rotation.yaw = con_to_player[s]->location.yaw_as_angle();
+            player_rotation.pitch = con_to_player[s]->location.pitch_as_angle();
+            player_rotation.on_ground = player_rotation_in.on_ground;
+
+            PacketOutEntityHeadLook player_look;
+            player_look.entity_id = player_rotation.entity_id;
+            player_look.head_yaw = player_rotation.yaw;
+
+            for(auto& p : players) {
+                if(p->connection != s) {
+                    sendPacket(p->connection, std::make_shared<PacketOutEntityRotation>(player_rotation));
+                    sendPacket(p->connection, std::make_shared<PacketOutEntityHeadLook>(player_look));
+                }
+            }
+            break;
+        }
+
+        case 0x1B: {
+            if(player_states[s] != STATE_PLAY) break;
+            printf("Packet Type: Entity Action\n");
+            PacketInEntityAction entity_action;
+            entity_action.read(buf);
+            auto& player = Player::from_entity_id(entity_action.entity_id);
+            switch(entity_action.action_id) {
+                case PacketInEntityAction::START_SNEAKING: {
+                    PacketOutEntityMetadata metadata_packet;
+                    player->metadata->bitfield.is_crouching = 1;
+                    player->metadata->pose = POSE_SNEAKING;
+                    metadata_packet.entity_id = player->entity_id;
+                    metadata_packet.metadata = player->metadata;
+                    for(auto& p : players) {
+                        sendPacket(p->connection, std::make_shared<PacketOutEntityMetadata>(metadata_packet));
+                    }
+                    break;
+                }
+
+                case PacketInEntityAction::STOP_SNEAKING: {
+                    PacketOutEntityMetadata metadata_packet;
+                    player->metadata->bitfield.is_crouching = 0;
+                    player->metadata->pose = POSE_STANDING;
+                    metadata_packet.entity_id = player->entity_id;
+                    metadata_packet.metadata = player->metadata;
+                    for(auto& p : players) {
+                        sendPacket(p->connection, std::make_shared<PacketOutEntityMetadata>(metadata_packet));
+                    }
+                    break;
+                }
+
+                case PacketInEntityAction::START_SPRINTING: {
+                    PacketOutEntityMetadata metadata_packet;
+                    player->metadata->bitfield.is_sprinting = 1;
+                    metadata_packet.entity_id = player->entity_id;
+                    metadata_packet.metadata = player->metadata;
+                    for(auto& p : players) {
+                        sendPacket(p->connection, std::make_shared<PacketOutEntityMetadata>(metadata_packet));
+                    }
+                    break;
+                }
+
+                case PacketInEntityAction::STOP_SPRINTING: {
+                    PacketOutEntityMetadata metadata_packet;
+                    player->metadata->bitfield.is_sprinting = 0;
+                    metadata_packet.entity_id = player->entity_id;
+                    metadata_packet.metadata = player->metadata;
+                    for(auto& p : players) {
+                        sendPacket(p->connection, std::make_shared<PacketOutEntityMetadata>(metadata_packet));
+                    }
+                    break;
+                }
+            }
+            break;
         }
 
         default:
@@ -257,6 +563,43 @@ unsigned int handlePacket(uv_stream_t* s, ByteBuffer buf) {
             break;
     }
     return length + sizeofVarInt(length);
+}
+
+void handleDisconnect(uv_stream_t* handle) {
+    int index = -1;
+    for(int i = 0; i < players.size(); i++) {
+        if(players[i]->connection == handle) {
+            index = i;
+            break;
+        }
+    }
+    if(index < 0) return;
+
+    PacketOutDestroyEntities destroy_entity;
+    destroy_entity.entity_ids.push_back(players[index]->entity_id);
+
+    PacketOutPlayerInfo remove_player;
+    remove_player.action = PacketOutPlayerInfo::ACTION_REMOVE_PLAYER;
+    PacketOutPlayerInfo::RemovePlayer action;
+    PacketOutPlayerInfo::PlayerAction player_action;
+    player_action.action = std::make_shared<PacketOutPlayerInfo::RemovePlayer>(action);
+    player_action.uuid = players[index]->uuid;
+    remove_player.player.push_back(player_action);
+
+    PacketOutChatMessage left_message;
+    left_message.uuid = UUID_t(0);
+    left_message.position = 0;
+    left_message.json_data = "{\"text\":\""+players[index]->name+" left the game\",\"color\":\"light_purple\"}";
+
+    con_to_player.erase(players[index]->connection);
+    players.erase(players.begin() + index);
+
+    for(auto& p : players) {
+        sendPacket(p->connection, std::make_shared<PacketOutDestroyEntities>(destroy_entity));
+        sendPacket(p->connection, std::make_shared<PacketOutPlayerInfo>(remove_player));
+        sendPacket(p->connection, std::make_shared<PacketOutChatMessage>(left_message));
+    }
+
 }
 
 #endif //MYCELIUM_PACKET_H

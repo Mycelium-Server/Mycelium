@@ -34,6 +34,12 @@ public:
     virtual ByteBuffer payload() = 0;
 };
 
+class TAG_Empty : public NBT_Component {
+public:
+    ByteBuffer asByteBuffer() override {}
+    ByteBuffer payload() override {}
+};
+
 class TAG_End : public NBT_Component {
 public:
     ByteBuffer asByteBuffer() override {
