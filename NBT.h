@@ -3,6 +3,7 @@
 
 #include <cstdlib>
 #include <string>
+#include <utility>
 #include <vector>
 #include <memory>
 #include "ByteBuffer.h"
@@ -21,23 +22,32 @@ enum TAG_TypeID {
     Type_TAG_Compound = 10,
     Type_TAG_Int_Array = 11,
     Type_TAG_Long_Array = 12,
+    Type_TAG_Undefined = 13
 };
 
 class NBT_Component {
 public:
     NBT_Component() = default;
+    explicit NBT_Component(std::string  name) : name(std::move(name)) {}
     NBT_Component(const NBT_Component&) = default;
     NBT_Component(NBT_Component&&) = default;
 
 public:
     virtual ByteBuffer asByteBuffer() = 0;
     virtual ByteBuffer payload() = 0;
+    virtual TAG_TypeID getType() = 0;
+
+public:
+    std::string name;
+
 };
 
 class TAG_Empty : public NBT_Component {
 public:
-    ByteBuffer asByteBuffer() override {}
-    ByteBuffer payload() override {}
+    ByteBuffer asByteBuffer() override { return{}; }
+    ByteBuffer payload() override { return{}; }
+    TAG_TypeID getType() override { return Type_TAG_Undefined; }
+
 };
 
 class TAG_End : public NBT_Component {
@@ -50,11 +60,15 @@ public:
         return {};
     }
 
+    TAG_TypeID getType() override {
+        return Type_TAG_End;
+    }
+
 };
 
 class TAG_Byte : public NBT_Component {
 public:
-    TAG_Byte(std::string name, signed char value) : name(std::move(name)), value(value) {}
+    TAG_Byte(const std::string& name, signed char value) : NBT_Component(name), value(value) {}
     explicit TAG_Byte(signed char value) : TAG_Byte("", value) {}
 
     ByteBuffer asByteBuffer() override {
@@ -76,14 +90,17 @@ public:
         return buf;
     }
 
+    TAG_TypeID getType() override {
+        return Type_TAG_Byte;
+    }
+
 public:
-    std::string name;
     signed char value;
 };
 
 class TAG_Short : public NBT_Component {
 public:
-    TAG_Short(std::string name, int16_t value) : name(std::move(name)), value(value) {}
+    TAG_Short(const std::string& name, int16_t value) : NBT_Component(name), value(value) {}
     explicit TAG_Short(int16_t value) : TAG_Short("", value) {}
 
     ByteBuffer asByteBuffer() override {
@@ -105,14 +122,17 @@ public:
         return buf;
     }
 
+    TAG_TypeID getType() override {
+        return Type_TAG_Short;
+    }
+
 public:
-    std::string name;
     int16_t value;
 };
 
 class TAG_Int : public NBT_Component {
 public:
-    TAG_Int(std::string name, int32_t value) : name(std::move(name)), value(value) {}
+    TAG_Int(const std::string& name, int32_t value) : NBT_Component(name), value(value) {}
     explicit TAG_Int(int32_t value) : TAG_Int("", value) {}
 
     ByteBuffer asByteBuffer() override {
@@ -134,14 +154,17 @@ public:
         return buf;
     }
 
+    TAG_TypeID getType() override {
+        return Type_TAG_Int;
+    }
+
 public:
-    std::string name;
     int32_t value;
 };
 
 class TAG_Long : public NBT_Component {
 public:
-    TAG_Long(std::string name, int64_t value) : name(std::move(name)), value(value) {}
+    TAG_Long(const std::string& name, int64_t value) : NBT_Component(name), value(value) {}
     explicit TAG_Long(int64_t value) : TAG_Long("", value) {}
 
     ByteBuffer asByteBuffer() override {
@@ -163,14 +186,17 @@ public:
         return buf;
     }
 
+    TAG_TypeID getType() override {
+        return Type_TAG_Long;
+    }
+
 public:
-    std::string name;
     int64_t value;
 };
 
 class TAG_Float : public NBT_Component {
 public:
-    TAG_Float(std::string name, float value) : name(std::move(name)), value(value) {}
+    TAG_Float(const std::string& name, float value) : NBT_Component(name), value(value) {}
     explicit TAG_Float(float value) : TAG_Float("", value) {}
 
     ByteBuffer asByteBuffer() override {
@@ -192,14 +218,17 @@ public:
         return buf;
     }
 
+    TAG_TypeID getType() override {
+        return Type_TAG_Float;
+    }
+
 public:
-    std::string name;
     float value;
 };
 
 class TAG_Double : public NBT_Component {
 public:
-    TAG_Double(std::string name, double value) : name(std::move(name)), value(value) {}
+    TAG_Double(const std::string& name, double value) : NBT_Component(name), value(value) {}
     explicit TAG_Double(double value) : TAG_Double("", value) {}
 
     ByteBuffer asByteBuffer() override {
@@ -221,14 +250,17 @@ public:
         return buf;
     }
 
+    TAG_TypeID getType() override {
+        return Type_TAG_Double;
+    }
+
 public:
-    std::string name;
     double value;
 };
 
 class TAG_Byte_Array : public NBT_Component {
 public:
-    TAG_Byte_Array(std::string name, int32_t size, byte_t* arr) : name(std::move(name)), array_length(size), array(arr) {}
+    TAG_Byte_Array(const std::string& name, int32_t size, byte_t* arr) : NBT_Component(name), array_length(size), array(arr) {}
     explicit TAG_Byte_Array(int32_t size, byte_t* arr) : TAG_Byte_Array("", size, arr) {}
 
     ByteBuffer asByteBuffer() override {
@@ -253,16 +285,19 @@ public:
         return buf;
     }
 
+    TAG_TypeID getType() override {
+        return Type_TAG_Byte_Array;
+    }
+
 public:
-    std::string name;
     int32_t array_length;
     byte_t* array;
 };
 
 class TAG_String : public NBT_Component {
 public:
-    TAG_String(std::string name, std::string value) : name(std::move(name)), value(std::move(value)) {}
-    explicit TAG_String(std::string value) : TAG_String("", value) {}
+    TAG_String(const std::string& name, std::string value) : NBT_Component(name), value(std::move(value)) {}
+    explicit TAG_String(std::string value) : TAG_String("", std::move(value)) {}
 
     ByteBuffer asByteBuffer() override {
         unsigned int size = 1 + 2 + name.length() + 2 + value.length();
@@ -286,21 +321,25 @@ public:
         return buf;
     }
 
+    TAG_TypeID getType() override {
+        return Type_TAG_String;
+    }
+
 public:
-    std::string name, value;
+    std::string value;
 };
 
 class TAG_List : public NBT_Component {
 public:
-    TAG_List(std::string name, TAG_TypeID type, std::vector<std::shared_ptr<NBT_Component>> tags)
-        : name(std::move(name)), type(type), tags(std::move(tags)) {}
+    TAG_List(const std::string& name, TAG_TypeID type, std::vector<std::shared_ptr<NBT_Component>> tags)
+        : NBT_Component(name), type(type), tags(std::move(tags)) {}
     explicit TAG_List(TAG_TypeID type, std::vector<std::shared_ptr<NBT_Component>> tags) : TAG_List("", type, std::move(tags)) {}
 
     ByteBuffer asByteBuffer() override {
         unsigned int size = 1 + 2 + name.length() + 1 + 4;
         std::vector<ByteBuffer> payloads;
-        for(int i = 0; i < tags.size(); i++) {
-            ByteBuffer payload = tags[i]->payload();
+        for(auto & tag : tags) {
+            ByteBuffer payload = tag->payload();
             size += payload.bytes.size();
             payloads.push_back(payload);
         }
@@ -336,16 +375,19 @@ public:
         return buf;
     }
 
+    TAG_TypeID getType() override {
+        return Type_TAG_List;
+    }
+
 public:
     TAG_TypeID type;
-    std::string name;
     std::vector<std::shared_ptr<NBT_Component>> tags;
 };
 
 class TAG_Compound : public NBT_Component {
 public:
-    TAG_Compound(std::string name, std::vector<std::shared_ptr<NBT_Component>> tags)
-            : name(std::move(name)), tags(std::move(tags)) {}
+    TAG_Compound(const std::string& name, std::vector<std::shared_ptr<NBT_Component>> tags)
+            : NBT_Component(name), tags(std::move(tags)) {}
     explicit TAG_Compound(std::vector<std::shared_ptr<NBT_Component>> tags) : TAG_Compound("", std::move(tags)) {}
 
     ByteBuffer asByteBuffer() override {
@@ -396,14 +438,17 @@ public:
         return buf;
     }
 
+    TAG_TypeID getType() override {
+        return Type_TAG_Compound;
+    }
+
 public:
-    std::string name;
     std::vector<std::shared_ptr<NBT_Component>> tags;
 };
 
 class TAG_Int_Array : public NBT_Component {
 public:
-    TAG_Int_Array(std::string name, int32_t size, int* arr) : name(std::move(name)), array_length(size), array(arr) {}
+    TAG_Int_Array(const std::string& name, int32_t size, int* arr) : NBT_Component(name), array_length(size), array(arr) {}
     explicit TAG_Int_Array(int32_t size, int* arr) : TAG_Int_Array("", size, arr) {}
 
     ByteBuffer asByteBuffer() override {
@@ -428,15 +473,18 @@ public:
         return buf;
     }
 
+    TAG_TypeID getType() override {
+        return Type_TAG_Int_Array;
+    }
+
 public:
-    std::string name;
     int32_t array_length;
     int* array;
 };
 
 class TAG_Long_Array : public NBT_Component {
 public:
-    TAG_Long_Array(std::string name, int32_t size, long long* arr) : name(std::move(name)), array_length(size), array(arr) {}
+    TAG_Long_Array(const std::string& name, int32_t size, long long* arr) : NBT_Component(name), array_length(size), array(arr) {}
     explicit TAG_Long_Array(int32_t size, long long* arr) : TAG_Long_Array("", size, arr) {}
 
     ByteBuffer asByteBuffer() override {
@@ -461,13 +509,113 @@ public:
         return buf;
     }
 
+    TAG_TypeID getType() override {
+        return Type_TAG_Long_Array;
+    }
+
 public:
-    std::string name;
     int32_t array_length;
     long long* array;
 };
 
 
 typedef std::vector<std::shared_ptr<NBT_Component>> NBT_Components;
+
+std::string nbt_read_name(ByteBuffer& buf) {
+    int length = buf.readByte() << 8 | buf.readByte();
+    std::string name;
+    for(int i = 0; i < length; i++) name += (char)buf.readByte();
+    return name;
+}
+
+std::shared_ptr<NBT_Component> read_nbt(ByteBuffer& buf);
+
+std::shared_ptr<NBT_Component> nbt_read_raw_data(ByteBuffer& buf, int type) {
+    switch(type) {
+        case 1: {
+            return std::make_shared<TAG_Byte>(buf.readByte());
+        }
+
+        case 2: {
+            return std::make_shared<TAG_Short>(buf.readShort());
+        }
+
+        case 3: {
+            return std::make_shared<TAG_Int>(buf.readInt());
+        }
+
+        case 4: {
+            return std::make_shared<TAG_Long>(buf.readLong());
+        }
+
+        case 5: {
+            return std::make_shared<TAG_Float>(buf.readFloat());
+        }
+
+        case 6: {
+            return std::make_shared<TAG_Double>(buf.readDouble());
+        }
+
+        case 7: {
+            int length = buf.readInt();
+            std::vector<byte_t> bytes;
+            bytes.resize(length);
+            for(int i = 0; i < length; i++) bytes[i] = buf.readByte();
+            return std::make_shared<TAG_Byte_Array>(bytes.size(), bytes.data());
+        }
+
+        case 8: {
+            int length = buf.readByte() << 8 | buf.readByte();
+            std::string name;
+            for(int i = 0; i < length; i++) name += (char)buf.readByte();
+            return std::make_shared<TAG_String>(name);
+        }
+
+        case 9: {
+            int list_type = buf.readByte();
+            int length = buf.readInt();
+            NBT_Components components;
+            components.resize(length);
+            for(int i = 0; i < length; i++) {
+                components[i] = nbt_read_raw_data(buf, list_type);
+            }
+            return std::make_shared<TAG_List>((TAG_TypeID)list_type, components);
+        }
+
+        case 10: {
+            NBT_Components components;
+            while(true) {
+                std::shared_ptr<NBT_Component> component = read_nbt(buf);
+                if(component->getType() == Type_TAG_End) return std::make_shared<TAG_Compound>(components);
+                components.push_back(component);
+            }
+        }
+
+        case 11: {
+            int length = buf.readInt();
+            std::vector<int> ints;
+            ints.resize(length);
+            for(int i = 0; i < length; i++) ints[i] = buf.readInt();
+            return std::make_shared<TAG_Int_Array>(ints.size(), ints.data());
+        }
+
+        case 12: {
+            int length = buf.readInt();
+            std::vector<long long> longs;
+            longs.resize(length);
+            for(int i = 0; i < length; i++) longs[i] = buf.readLong();
+            return std::make_shared<TAG_Long_Array>(longs.size(), longs.data());
+        }
+    }
+}
+
+std::shared_ptr<NBT_Component> read_nbt(ByteBuffer& buf) {
+    int type = buf.readByte();
+    if(type == 0) return std::make_shared<TAG_End>();
+    std::string name = nbt_read_name(buf);
+    std::shared_ptr<NBT_Component> component = nbt_read_raw_data(buf, type);
+    component->name = name;
+    return component;
+}
 
 #endif //SERVER_CORE_NBT_H

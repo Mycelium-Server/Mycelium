@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <cmath>
+#include <regex>
 #include "../Server.h"
 #include "../Dimension.h"
 #include "../Gamemode.h"
@@ -42,6 +43,7 @@
 #include "PacketOutEntityMetadata.h"
 #include "PacketOutDestroyEntities.h"
 #include "PlayerOutLoginDisconnect.h"
+#include "PacketInClickWindow.h"
 
 enum State {
     STATE_LOGIN = 0,
@@ -50,6 +52,18 @@ enum State {
 
 std::vector<std::shared_ptr<Player>> pending_checks;
 std::map<uv_stream_t*, State> player_states;
+std::map<uv_stream_t*, std::vector<std::shared_ptr<PacketIn>>> pending_packets;
+
+bool check_state(uv_stream_t* s, const std::shared_ptr<PacketIn>& packet) {
+    pending_packets[s].push_back(packet);
+    if(player_states[s] != STATE_PLAY) {
+        return true;
+    }
+    return false;
+}
+
+#define QUEUED_PLAY_PACKET_BEGIN(Packet_T, buf, packet_name) Packet_T queued_packet; queued_packet.read(buf); if(check_state(s, std::make_shared<Packet_T>(queued_packet))) break; int __idx = 0; std::vector<int> __idx_tr; for(auto& packet : pending_packets[s]) { if(packet->getPacketID() == queued_packet.getPacketID()) { Packet_T packet_name = *reinterpret_cast<Packet_T*>(packet.get());
+#define QUEUED_PLAY_PACKET_END() __idx_tr.push_back(__idx); } __idx++; } for(int idx : __idx_tr) { pending_packets[s].erase(pending_packets[s].begin() + idx); }
 
 void sendPacket(uv_stream_t* s, const std::shared_ptr<PacketOut>& packet) {
     ByteBuffer buf;
@@ -269,7 +283,7 @@ unsigned int handlePacket(uv_stream_t* s, ByteBuffer buf) {
 
                 // Update light
 
-                Block block(true, false, true, minecraft_bedrock);
+                Block block(true, false, true, block_minecraft_bedrock);
                 PacketOutChunk chunk_data;
 //                for(int x = 0; x < 4; ++x) {
 //                    for(int y = 0; y < 4; ++y) {
@@ -388,6 +402,16 @@ unsigned int handlePacket(uv_stream_t* s, ByteBuffer buf) {
             printf("Packet Type: Chat Message\n");
             PacketInChatMessage chat_message_in;
             chat_message_in.read(buf);
+            if(chat_message_in.message.length() > 0 && chat_message_in.message[0] == '/') {
+                PacketOutChatMessage chat_message_out;
+                chat_message_out.json_data = "{\"text\":\"Command not found.\",\"color\":\"red\"}";
+                chat_message_out.position = 0;
+                chat_message_out.uuid = UUID_t(0);
+                sendPacket(s, std::make_shared<PacketOutChatMessage>(chat_message_out));
+                break;
+            }
+            chat_message_in.message = std::regex_replace(chat_message_in.message, std::regex("\\\\"), "\\\\");
+            chat_message_in.message = std::regex_replace(chat_message_in.message, std::regex(R"(")"), "\\\"");
             PacketOutChatMessage chat_message_out;
             chat_message_out.json_data = "{\"text\": \"["+con_to_player[s]->name+"] "+chat_message_in.message+"\"}";
             chat_message_out.position = 0;
@@ -399,41 +423,38 @@ unsigned int handlePacket(uv_stream_t* s, ByteBuffer buf) {
         }
 
         case 0x11: {
-            if(player_states[s] != STATE_PLAY) break;
             printf("Packet Type: Player Position\n");
-            PacketInPlayerPosition player_position_in;
-            player_position_in.read(buf);
+            QUEUED_PLAY_PACKET_BEGIN(PacketInPlayerPosition, buf, player_position_in)
             double prev_x = con_to_player[s]->location.x;
             double prev_y = con_to_player[s]->location.y;
             double prev_z = con_to_player[s]->location.z;
             con_to_player[s]->location.x = player_position_in.x;
             con_to_player[s]->location.y = player_position_in.feet_y;
             con_to_player[s]->location.z = player_position_in.z;
-            for(auto& p : players) {
-                if(p->connection == s) {
+            for (auto &p: players) {
+                if (p->connection == s) {
                     p->location = con_to_player[s]->location;
                 }
             }
 
             PacketOutEntityPosition player_position;
             player_position.entity_id = con_to_player[s]->entity_id;
-            player_position.delta_x = (short)((player_position_in.x * 32 - prev_x * 32) * 128);
-            player_position.delta_y = (short)((player_position_in.feet_y * 32 - prev_y * 32) * 128);
-            player_position.delta_z = (short)((player_position_in.z * 32 - prev_z * 32) * 128);
+            player_position.delta_x = (short) ((player_position_in.x * 32 - prev_x * 32) * 128);
+            player_position.delta_y = (short) ((player_position_in.feet_y * 32 - prev_y * 32) * 128);
+            player_position.delta_z = (short) ((player_position_in.z * 32 - prev_z * 32) * 128);
             player_position.on_ground = player_position_in.on_ground;
-            for(auto& p : players) {
-                if(p->connection != s) {
+            for (auto &p: players) {
+                if (p->connection != s) {
                     sendPacket(p->connection, std::make_shared<PacketOutEntityPosition>(player_position));
                 }
             }
+            QUEUED_PLAY_PACKET_END()
             break;
         }
 
         case 0x12: {
-            if(player_states[s] != STATE_PLAY) break;
             printf("Packet Type: Player Position And Rotation\n");
-            PacketInPlayerPositionAndRotation player_position_in;
-            player_position_in.read(buf);
+            QUEUED_PLAY_PACKET_BEGIN(PacketInPlayerPositionAndRotation, buf, player_position_in)
             double prev_x = con_to_player[s]->location.x;
             double prev_y = con_to_player[s]->location.y;
             double prev_z = con_to_player[s]->location.z;
@@ -467,14 +488,13 @@ unsigned int handlePacket(uv_stream_t* s, ByteBuffer buf) {
                     sendPacket(p->connection, std::make_shared<PacketOutEntityHeadLook>(player_look));
                 }
             }
+            QUEUED_PLAY_PACKET_END()
             break;
         }
 
         case 0x13: {
-            if(player_states[s] != STATE_PLAY) break;
             printf("Packet Type: Player Rotation\n");
-            PacketInPlayerRotation player_rotation_in;
-            player_rotation_in.read(buf);
+            QUEUED_PLAY_PACKET_BEGIN(PacketInPlayerRotation, buf, player_rotation_in)
             con_to_player[s]->location.yaw = player_rotation_in.yaw/360.f;
             con_to_player[s]->location.pitch = player_rotation_in.pitch/360.f;
             for(auto& p : players) {
@@ -499,14 +519,13 @@ unsigned int handlePacket(uv_stream_t* s, ByteBuffer buf) {
                     sendPacket(p->connection, std::make_shared<PacketOutEntityHeadLook>(player_look));
                 }
             }
+            QUEUED_PLAY_PACKET_END()
             break;
         }
 
         case 0x1B: {
-            if(player_states[s] != STATE_PLAY) break;
             printf("Packet Type: Entity Action\n");
-            PacketInEntityAction entity_action;
-            entity_action.read(buf);
+            QUEUED_PLAY_PACKET_BEGIN(PacketInEntityAction, buf, entity_action)
             auto& player = Player::from_entity_id(entity_action.entity_id);
             switch(entity_action.action_id) {
                 case PacketInEntityAction::START_SNEAKING: {
@@ -555,6 +574,16 @@ unsigned int handlePacket(uv_stream_t* s, ByteBuffer buf) {
                     break;
                 }
             }
+            QUEUED_PLAY_PACKET_END()
+            break;
+        }
+
+        case 0x08: {
+            QUEUED_PLAY_PACKET_BEGIN(PacketInClickWindow, buf, click_window)
+            for(const PacketInClickWindow::slot_t& slot : click_window.slots) {
+                con_to_player[s]->inventory.items[slot.slot_number] = slot.slot_data;
+            }
+            QUEUED_PLAY_PACKET_END()
             break;
         }
 

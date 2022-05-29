@@ -399,7 +399,7 @@ public:
     }
 
 public:
-    boolean is_invulnerable = false;
+    bool is_invulnerable = false;
 
 };
 

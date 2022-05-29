@@ -12,7 +12,7 @@ public:
     BlockStorage() {
         Block air;
         palette.push_back(air);
-        raw_to_block[minecraft_air] = air;
+        raw_to_block[block_minecraft_air] = air;
         storage = create_storage(4);
     }
 

@@ -140,6 +140,13 @@ public:
         return value;
     }
 
+    short readShort() {
+        auto value = (short)readByte();
+        value <<= 8;
+        value |= readByte();
+        return value;
+    }
+
     void reset() {
         position = 0;
     }

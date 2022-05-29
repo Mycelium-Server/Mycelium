@@ -1,0 +1,3317 @@
+#ifndef MYCELIUM_ITEM_H
+#define MYCELIUM_ITEM_H
+
+#include "BlockState.h"
+
+enum ItemState {
+    item_minecraft_air = 0,
+    item_minecraft_stone = 1,
+    item_minecraft_granite = 2,
+    item_minecraft_polished_granite = 3 ,
+    item_minecraft_diorite = 4,
+    item_minecraft_polished_diorite = 5,
+    item_minecraft_andesite = 6,
+    item_minecraft_polished_andesite = 7,
+    item_minecraft_deepslate = 8,
+    item_minecraft_cobbled_deepslate = 9,
+    item_minecraft_polished_deepslate = 10,
+    item_minecraft_calcite = 11,
+    item_minecraft_tuff = 12,
+    item_minecraft_dripstone_block = 13,
+    item_minecraft_grass_block = 14,
+    item_minecraft_dirt = 15,
+    item_minecraft_coarse_dirt = 16,
+    item_minecraft_podzol = 17,
+    item_minecraft_rooted_dirt = 18,
+    item_minecraft_crimson_nylium = 19,
+    item_minecraft_warped_nylium = 20,
+    item_minecraft_cobblestone = 21,
+    item_minecraft_oak_planks = 22,
+    item_minecraft_spruce_planks = 23,
+    item_minecraft_birch_planks = 24,
+    item_minecraft_jungle_planks = 25,
+    item_minecraft_acacia_planks = 26,
+    item_minecraft_dark_oak_planks = 27,
+    item_minecraft_crimson_planks = 28,
+    item_minecraft_warped_planks = 29,
+    item_minecraft_oak_sapling = 30,
+    item_minecraft_spruce_sapling = 31,
+    item_minecraft_birch_sapling = 32,
+    item_minecraft_jungle_sapling = 33,
+    item_minecraft_acacia_sapling = 34,
+    item_minecraft_dark_oak_sapling = 35,
+    item_minecraft_bedrock = 36,
+    item_minecraft_sand = 37,
+    item_minecraft_red_sand = 38,
+    item_minecraft_gravel = 39,
+    item_minecraft_coal_ore = 40,
+    item_minecraft_deepslate_coal_ore = 41,
+    item_minecraft_iron_ore = 42,
+    item_minecraft_deepslate_iron_ore = 43,
+    item_minecraft_copper_ore = 44,
+    item_minecraft_deepslate_copper_ore = 45,
+    item_minecraft_gold_ore = 46,
+    item_minecraft_deepslate_gold_ore = 47,
+    item_minecraft_redstone_ore = 48,
+    item_minecraft_deepslate_redstone_ore = 49,
+    item_minecraft_emerald_ore = 50,
+    item_minecraft_deepslate_emerald_ore = 51,
+    item_minecraft_lapis_ore = 52,
+    item_minecraft_deepslate_lapis_ore = 53,
+    item_minecraft_diamond_ore = 54,
+    item_minecraft_deepslate_diamond_ore = 55,
+    item_minecraft_nether_gold_ore = 56,
+    item_minecraft_nether_quartz_ore = 57,
+    item_minecraft_ancient_debris = 58,
+    item_minecraft_coal_block = 59,
+    item_minecraft_raw_iron_block = 60,
+    item_minecraft_raw_copper_block = 61,
+    item_minecraft_raw_gold_block = 62,
+    item_minecraft_amethyst_block = 63,
+    item_minecraft_budding_amethyst = 64,
+    item_minecraft_iron_block = 65,
+    item_minecraft_copper_block = 66,
+    item_minecraft_gold_block = 67,
+    item_minecraft_diamond_block = 68,
+    item_minecraft_netherite_block = 69,
+    item_minecraft_exposed_copper = 70,
+    item_minecraft_weathered_copper = 71,
+    item_minecraft_oxidized_copper = 72,
+    item_minecraft_cut_copper = 73,
+    item_minecraft_exposed_cut_copper = 74,
+    item_minecraft_weathered_cut_copper = 75,
+    item_minecraft_oxidized_cut_copper = 76,
+    item_minecraft_cut_copper_stairs = 77,
+    item_minecraft_exposed_cut_copper_stairs = 78,
+    item_minecraft_weathered_cut_copper_stairs = 79,
+    item_minecraft_oxidized_cut_copper_stairs = 80,
+    item_minecraft_cut_copper_slab = 81,
+    item_minecraft_exposed_cut_copper_slab = 82,
+    item_minecraft_weathered_cut_copper_slab = 83,
+    item_minecraft_oxidized_cut_copper_slab = 84,
+    item_minecraft_waxed_copper_block = 85,
+    item_minecraft_waxed_exposed_copper = 86,
+    item_minecraft_waxed_weathered_copper = 87,
+    item_minecraft_waxed_oxidized_copper = 88,
+    item_minecraft_waxed_cut_copper = 89,
+    item_minecraft_waxed_exposed_cut_copper = 90,
+    item_minecraft_waxed_weathered_cut_copper = 91,
+    item_minecraft_waxed_oxidized_cut_copper = 92,
+    item_minecraft_waxed_cut_copper_stairs = 93,
+    item_minecraft_waxed_exposed_cut_copper_stairs = 94,
+    item_minecraft_waxed_weathered_cut_copper_stairs = 95,
+    item_minecraft_waxed_oxidized_cut_copper_stairs = 96,
+    item_minecraft_waxed_cut_copper_slab = 97,
+    item_minecraft_waxed_exposed_cut_copper_slab = 98,
+    item_minecraft_waxed_weathered_cut_copper_slab = 99,
+    item_minecraft_waxed_oxidized_cut_copper_slab = 100,
+    item_minecraft_oak_log = 101,
+    item_minecraft_spruce_log = 102,
+    item_minecraft_birch_log = 103,
+    item_minecraft_jungle_log = 104,
+    item_minecraft_acacia_log = 105,
+    item_minecraft_dark_oak_log = 106,
+    item_minecraft_crimson_stem = 107,
+    item_minecraft_warped_stem = 108,
+    item_minecraft_stripped_oak_log = 109,
+    item_minecraft_stripped_spruce_log = 110,
+    item_minecraft_stripped_birch_log = 111,
+    item_minecraft_stripped_jungle_log = 112,
+    item_minecraft_stripped_acacia_log = 113,
+    item_minecraft_stripped_dark_oak_log = 114,
+    item_minecraft_stripped_crimson_stem = 115,
+    item_minecraft_stripped_warped_stem = 116,
+    item_minecraft_stripped_oak_wood = 117,
+    item_minecraft_stripped_spruce_wood = 118,
+    item_minecraft_stripped_birch_wood = 119,
+    item_minecraft_stripped_jungle_wood = 120,
+    item_minecraft_stripped_acacia_wood = 121,
+    item_minecraft_stripped_dark_oak_wood = 122,
+    item_minecraft_stripped_crimson_hyphae = 123,
+    item_minecraft_stripped_warped_hyphae = 124,
+    item_minecraft_oak_wood = 125,
+    item_minecraft_spruce_wood = 126,
+    item_minecraft_birch_wood = 127,
+    item_minecraft_jungle_wood = 128,
+    item_minecraft_acacia_wood = 129,
+    item_minecraft_dark_oak_wood = 130,
+    item_minecraft_crimson_hyphae = 131,
+    item_minecraft_warped_hyphae = 132,
+    item_minecraft_oak_leaves = 133,
+    item_minecraft_spruce_leaves = 134,
+    item_minecraft_birch_leaves = 135,
+    item_minecraft_jungle_leaves = 136,
+    item_minecraft_acacia_leaves = 137,
+    item_minecraft_dark_oak_leaves = 138,
+    item_minecraft_azalea_leaves = 139,
+    item_minecraft_flowering_azalea_leaves = 140,
+    item_minecraft_sponge = 141,
+    item_minecraft_wet_sponge = 142,
+    item_minecraft_glass = 143,
+    item_minecraft_tinted_glass = 144,
+    item_minecraft_lapis_block = 145,
+    item_minecraft_sandstone = 146,
+    item_minecraft_chiseled_sandstone = 147,
+    item_minecraft_cut_sandstone = 148,
+    item_minecraft_cobweb = 149,
+    item_minecraft_grass = 150,
+    item_minecraft_fern = 151,
+    item_minecraft_azalea = 152,
+    item_minecraft_flowering_azalea = 153,
+    item_minecraft_dead_bush = 154,
+    item_minecraft_seagrass = 155,
+    item_minecraft_sea_pickle = 156,
+    item_minecraft_white_wool = 157,
+    item_minecraft_orange_wool = 158,
+    item_minecraft_magenta_wool = 159,
+    item_minecraft_light_blue_wool = 160,
+    item_minecraft_yellow_wool = 161,
+    item_minecraft_lime_wool = 162,
+    item_minecraft_pink_wool = 163,
+    item_minecraft_gray_wool = 164,
+    item_minecraft_light_gray_wool = 165,
+    item_minecraft_cyan_wool = 166,
+    item_minecraft_purple_wool = 167,
+    item_minecraft_blue_wool = 168,
+    item_minecraft_brown_wool = 169,
+    item_minecraft_green_wool = 170,
+    item_minecraft_red_wool = 171,
+    item_minecraft_black_wool = 172,
+    item_minecraft_dandelion = 173,
+    item_minecraft_poppy = 174,
+    item_minecraft_blue_orchid = 175,
+    item_minecraft_allium = 176,
+    item_minecraft_azure_bluet = 177,
+    item_minecraft_red_tulip = 178,
+    item_minecraft_orange_tulip = 179,
+    item_minecraft_white_tulip = 180,
+    item_minecraft_pink_tulip = 181,
+    item_minecraft_oxeye_daisy = 182,
+    item_minecraft_cornflower = 183,
+    item_minecraft_lily_of_the_valley = 184,
+    item_minecraft_wither_rose = 185,
+    item_minecraft_spore_blossom = 186,
+    item_minecraft_brown_mushroom = 187,
+    item_minecraft_red_mushroom = 188,
+    item_minecraft_crimson_fungus = 189,
+    item_minecraft_warped_fungus = 190,
+    item_minecraft_crimson_roots = 191,
+    item_minecraft_warped_roots = 192,
+    item_minecraft_nether_sprouts = 193,
+    item_minecraft_weeping_vines = 194,
+    item_minecraft_twisting_vines = 195,
+    item_minecraft_sugar_cane = 196,
+    item_minecraft_kelp = 197,
+    item_minecraft_moss_carpet = 198,
+    item_minecraft_moss_block = 199,
+    item_minecraft_hanging_roots = 200,
+    item_minecraft_big_dripleaf = 201,
+    item_minecraft_small_dripleaf = 202,
+    item_minecraft_bamboo = 203,
+    item_minecraft_oak_slab = 204,
+    item_minecraft_spruce_slab = 205,
+    item_minecraft_birch_slab = 206,
+    item_minecraft_jungle_slab = 207,
+    item_minecraft_acacia_slab = 208,
+    item_minecraft_dark_oak_slab = 209,
+    item_minecraft_crimson_slab = 210,
+    item_minecraft_warped_slab = 211,
+    item_minecraft_stone_slab = 212,
+    item_minecraft_smooth_stone_slab = 213,
+    item_minecraft_sandstone_slab = 214,
+    item_minecraft_cut_sandstone_slab = 215,
+    item_minecraft_petrified_oak_slab = 216,
+    item_minecraft_cobblestone_slab = 217,
+    item_minecraft_brick_slab = 218,
+    item_minecraft_stone_brick_slab = 219,
+    item_minecraft_nether_brick_slab = 220,
+    item_minecraft_quartz_slab = 221,
+    item_minecraft_red_sandstone_slab = 222,
+    item_minecraft_cut_red_sandstone_slab = 223,
+    item_minecraft_purpur_slab = 224,
+    item_minecraft_prismarine_slab = 225,
+    item_minecraft_prismarine_brick_slab = 226,
+    item_minecraft_dark_prismarine_slab = 227,
+    item_minecraft_smooth_quartz = 228,
+    item_minecraft_smooth_red_sandstone = 229,
+    item_minecraft_smooth_sandstone = 230,
+    item_minecraft_smooth_stone = 231,
+    item_minecraft_bricks = 232,
+    item_minecraft_bookshelf = 233,
+    item_minecraft_mossy_cobblestone = 234,
+    item_minecraft_obsidian = 235,
+    item_minecraft_torch = 236,
+    item_minecraft_end_rod = 237,
+    item_minecraft_chorus_plant = 238,
+    item_minecraft_chorus_flower = 239,
+    item_minecraft_purpur_block = 240,
+    item_minecraft_purpur_pillar = 241,
+    item_minecraft_purpur_stairs = 242,
+    item_minecraft_spawner = 243,
+    item_minecraft_oak_stairs = 244,
+    item_minecraft_chest = 245,
+    item_minecraft_crafting_table = 246,
+    item_minecraft_farmland = 247,
+    item_minecraft_furnace = 248,
+    item_minecraft_ladder = 249,
+    item_minecraft_cobblestone_stairs = 250,
+    item_minecraft_snow = 251,
+    item_minecraft_ice = 252,
+    item_minecraft_snow_block = 253,
+    item_minecraft_cactus = 254,
+    item_minecraft_clay = 255,
+    item_minecraft_jukebox = 256,
+    item_minecraft_oak_fence = 257,
+    item_minecraft_spruce_fence = 258,
+    item_minecraft_birch_fence = 259,
+    item_minecraft_jungle_fence = 260,
+    item_minecraft_acacia_fence = 261,
+    item_minecraft_dark_oak_fence = 262,
+    item_minecraft_crimson_fence = 263,
+    item_minecraft_warped_fence = 264,
+    item_minecraft_pumpkin = 265,
+    item_minecraft_carved_pumpkin = 266,
+    item_minecraft_jack_o_lantern = 267,
+    item_minecraft_netherrack = 268,
+    item_minecraft_soul_sand = 269,
+    item_minecraft_soul_soil = 270,
+    item_minecraft_basalt = 271,
+    item_minecraft_polished_basalt = 272,
+    item_minecraft_smooth_basalt = 273,
+    item_minecraft_soul_torch = 274,
+    item_minecraft_glowstone = 275,
+    item_minecraft_infested_stone = 276,
+    item_minecraft_infested_cobblestone = 277,
+    item_minecraft_infested_stone_bricks = 278,
+    item_minecraft_infested_mossy_stone_bricks = 279,
+    item_minecraft_infested_cracked_stone_bricks = 280,
+    item_minecraft_infested_chiseled_stone_bricks = 281,
+    item_minecraft_infested_deepslate = 282,
+    item_minecraft_stone_bricks = 283,
+    item_minecraft_mossy_stone_bricks = 284,
+    item_minecraft_cracked_stone_bricks = 285,
+    item_minecraft_chiseled_stone_bricks = 286,
+    item_minecraft_deepslate_bricks = 287,
+    item_minecraft_cracked_deepslate_bricks = 288,
+    item_minecraft_deepslate_tiles = 289,
+    item_minecraft_cracked_deepslate_tiles = 290,
+    item_minecraft_chiseled_deepslate = 291,
+    item_minecraft_brown_mushroom_block = 292,
+    item_minecraft_red_mushroom_block = 293,
+    item_minecraft_mushroom_stem = 294,
+    item_minecraft_iron_bars = 295,
+    item_minecraft_chain = 296,
+    item_minecraft_glass_pane = 297,
+    item_minecraft_melon = 298,
+    item_minecraft_vine = 299,
+    item_minecraft_glow_lichen = 300,
+    item_minecraft_brick_stairs = 301,
+    item_minecraft_stone_brick_stairs = 302,
+    item_minecraft_mycelium = 303,
+    item_minecraft_lily_pad = 304,
+    item_minecraft_nether_bricks = 305,
+    item_minecraft_cracked_nether_bricks = 306,
+    item_minecraft_chiseled_nether_bricks = 307,
+    item_minecraft_nether_brick_fence = 308,
+    item_minecraft_nether_brick_stairs = 309,
+    item_minecraft_enchanting_table = 310,
+    item_minecraft_end_portal_frame = 311,
+    item_minecraft_end_stone = 312,
+    item_minecraft_end_stone_bricks = 313,
+    item_minecraft_dragon_egg = 314,
+    item_minecraft_sandstone_stairs = 315,
+    item_minecraft_ender_chest = 316,
+    item_minecraft_emerald_block = 317,
+    item_minecraft_spruce_stairs = 318,
+    item_minecraft_birch_stairs = 319,
+    item_minecraft_jungle_stairs = 320,
+    item_minecraft_crimson_stairs = 321,
+    item_minecraft_warped_stairs = 322,
+    item_minecraft_command_block = 323,
+    item_minecraft_beacon = 324,
+    item_minecraft_cobblestone_wall = 325,
+    item_minecraft_mossy_cobblestone_wall = 326,
+    item_minecraft_brick_wall = 327,
+    item_minecraft_prismarine_wall = 328,
+    item_minecraft_red_sandstone_wall = 329,
+    item_minecraft_mossy_stone_brick_wall = 330,
+    item_minecraft_granite_wall = 331,
+    item_minecraft_stone_brick_wall = 332,
+    item_minecraft_nether_brick_wall = 333,
+    item_minecraft_andesite_wall = 334,
+    item_minecraft_red_nether_brick_wall = 335,
+    item_minecraft_sandstone_wall = 336,
+    item_minecraft_end_stone_brick_wall = 337,
+    item_minecraft_diorite_wall = 338,
+    item_minecraft_blackstone_wall = 339,
+    item_minecraft_polished_blackstone_wall = 340,
+    item_minecraft_polished_blackstone_brick_wall = 341,
+    item_minecraft_cobbled_deepslate_wall = 342,
+    item_minecraft_polished_deepslate_wall = 343,
+    item_minecraft_deepslate_brick_wall = 344,
+    item_minecraft_deepslate_tile_wall = 345,
+    item_minecraft_anvil = 346,
+    item_minecraft_chipped_anvil = 347,
+    item_minecraft_damaged_anvil = 348,
+    item_minecraft_chiseled_quartz_block = 349,
+    item_minecraft_quartz_block = 350,
+    item_minecraft_quartz_bricks = 351,
+    item_minecraft_quartz_pillar = 352,
+    item_minecraft_quartz_stairs = 353,
+    item_minecraft_white_terracotta = 354,
+    item_minecraft_orange_terracotta = 355,
+    item_minecraft_magenta_terracotta = 356,
+    item_minecraft_light_blue_terracotta = 357,
+    item_minecraft_yellow_terracotta = 358,
+    item_minecraft_lime_terracotta = 359,
+    item_minecraft_pink_terracotta = 360,
+    item_minecraft_gray_terracotta = 361,
+    item_minecraft_light_gray_terracotta = 362,
+    item_minecraft_cyan_terracotta = 363,
+    item_minecraft_purple_terracotta = 364,
+    item_minecraft_blue_terracotta = 365,
+    item_minecraft_brown_terracotta = 366,
+    item_minecraft_green_terracotta = 367,
+    item_minecraft_red_terracotta = 368,
+    item_minecraft_black_terracotta = 369,
+    item_minecraft_barrier = 370,
+    item_minecraft_light = 371,
+    item_minecraft_hay_block = 372,
+    item_minecraft_white_carpet = 373,
+    item_minecraft_orange_carpet = 374,
+    item_minecraft_magenta_carpet = 375,
+    item_minecraft_light_blue_carpet = 376,
+    item_minecraft_yellow_carpet = 377,
+    item_minecraft_lime_carpet = 378,
+    item_minecraft_pink_carpet = 379,
+    item_minecraft_gray_carpet = 380,
+    item_minecraft_light_gray_carpet = 381,
+    item_minecraft_cyan_carpet = 382,
+    item_minecraft_purple_carpet = 383,
+    item_minecraft_blue_carpet = 384,
+    item_minecraft_brown_carpet = 385,
+    item_minecraft_green_carpet = 386,
+    item_minecraft_red_carpet = 387,
+    item_minecraft_black_carpet = 388,
+    item_minecraft_terracotta = 389,
+    item_minecraft_packed_ice = 390,
+    item_minecraft_acacia_stairs = 391,
+    item_minecraft_dark_oak_stairs = 392,
+    item_minecraft_dirt_path = 393,
+    item_minecraft_sunflower = 394,
+    item_minecraft_lilac = 395,
+    item_minecraft_rose_bush = 396,
+    item_minecraft_peony = 397,
+    item_minecraft_tall_grass = 398,
+    item_minecraft_large_fern = 399,
+    item_minecraft_white_stained_glass = 400,
+    item_minecraft_orange_stained_glass = 401,
+    item_minecraft_magenta_stained_glass = 402,
+    item_minecraft_light_blue_stained_glass = 403,
+    item_minecraft_yellow_stained_glass = 404,
+    item_minecraft_lime_stained_glass = 405,
+    item_minecraft_pink_stained_glass = 406,
+    item_minecraft_gray_stained_glass = 407,
+    item_minecraft_light_gray_stained_glass = 408,
+    item_minecraft_cyan_stained_glass = 409,
+    item_minecraft_purple_stained_glass = 410,
+    item_minecraft_blue_stained_glass = 411,
+    item_minecraft_brown_stained_glass = 412,
+    item_minecraft_green_stained_glass = 413,
+    item_minecraft_red_stained_glass = 414,
+    item_minecraft_black_stained_glass = 415,
+    item_minecraft_white_stained_glass_pane = 416,
+    item_minecraft_orange_stained_glass_pane = 417,
+    item_minecraft_magenta_stained_glass_pane = 418,
+    item_minecraft_light_blue_stained_glass_pane = 419,
+    item_minecraft_yellow_stained_glass_pane = 420,
+    item_minecraft_lime_stained_glass_pane = 421,
+    item_minecraft_pink_stained_glass_pane = 422,
+    item_minecraft_gray_stained_glass_pane = 423,
+    item_minecraft_light_gray_stained_glass_pane = 424,
+    item_minecraft_cyan_stained_glass_pane = 425,
+    item_minecraft_purple_stained_glass_pane = 426,
+    item_minecraft_blue_stained_glass_pane = 427,
+    item_minecraft_brown_stained_glass_pane = 428,
+    item_minecraft_green_stained_glass_pane = 429,
+    item_minecraft_red_stained_glass_pane = 430,
+    item_minecraft_black_stained_glass_pane = 431,
+    item_minecraft_prismarine = 432,
+    item_minecraft_prismarine_bricks = 433,
+    item_minecraft_dark_prismarine = 434,
+    item_minecraft_prismarine_stairs = 435,
+    item_minecraft_prismarine_brick_stairs = 436,
+    item_minecraft_dark_prismarine_stairs = 437,
+    item_minecraft_sea_lantern = 438,
+    item_minecraft_red_sandstone = 439,
+    item_minecraft_chiseled_red_sandstone = 440,
+    item_minecraft_cut_red_sandstone = 441,
+    item_minecraft_red_sandstone_stairs = 442,
+    item_minecraft_repeating_command_block = 443,
+    item_minecraft_chain_command_block = 444,
+    item_minecraft_magma_block = 445,
+    item_minecraft_nether_wart_block = 446,
+    item_minecraft_warped_wart_block = 447,
+    item_minecraft_red_nether_bricks = 448,
+    item_minecraft_bone_block = 449,
+    item_minecraft_structure_void = 450,
+    item_minecraft_shulker_box = 451,
+    item_minecraft_white_shulker_box = 452,
+    item_minecraft_orange_shulker_box = 453,
+    item_minecraft_magenta_shulker_box = 454,
+    item_minecraft_light_blue_shulker_box = 455,
+    item_minecraft_yellow_shulker_box = 456,
+    item_minecraft_lime_shulker_box = 457,
+    item_minecraft_pink_shulker_box = 458,
+    item_minecraft_gray_shulker_box = 459,
+    item_minecraft_light_gray_shulker_box = 460,
+    item_minecraft_cyan_shulker_box = 461,
+    item_minecraft_purple_shulker_box = 462,
+    item_minecraft_blue_shulker_box = 463,
+    item_minecraft_brown_shulker_box = 464,
+    item_minecraft_green_shulker_box = 465,
+    item_minecraft_red_shulker_box = 466,
+    item_minecraft_black_shulker_box = 467,
+    item_minecraft_white_glazed_terracotta = 468,
+    item_minecraft_orange_glazed_terracotta = 469,
+    item_minecraft_magenta_glazed_terracotta = 470,
+    item_minecraft_light_blue_glazed_terracotta = 471,
+    item_minecraft_yellow_glazed_terracotta = 472,
+    item_minecraft_lime_glazed_terracotta = 473,
+    item_minecraft_pink_glazed_terracotta = 474,
+    item_minecraft_gray_glazed_terracotta = 475,
+    item_minecraft_light_gray_glazed_terracotta = 476,
+    item_minecraft_cyan_glazed_terracotta = 477,
+    item_minecraft_purple_glazed_terracotta = 478,
+    item_minecraft_blue_glazed_terracotta = 479,
+    item_minecraft_brown_glazed_terracotta = 480,
+    item_minecraft_green_glazed_terracotta = 481,
+    item_minecraft_red_glazed_terracotta = 482,
+    item_minecraft_black_glazed_terracotta = 483,
+    item_minecraft_white_concrete = 484,
+    item_minecraft_orange_concrete = 485,
+    item_minecraft_magenta_concrete = 486,
+    item_minecraft_light_blue_concrete = 487,
+    item_minecraft_yellow_concrete = 488,
+    item_minecraft_lime_concrete = 489,
+    item_minecraft_pink_concrete = 490,
+    item_minecraft_gray_concrete = 491,
+    item_minecraft_light_gray_concrete = 492,
+    item_minecraft_cyan_concrete = 493,
+    item_minecraft_purple_concrete = 494,
+    item_minecraft_blue_concrete = 495,
+    item_minecraft_brown_concrete = 496,
+    item_minecraft_green_concrete = 497,
+    item_minecraft_red_concrete = 498,
+    item_minecraft_black_concrete = 499,
+    item_minecraft_white_concrete_powder = 500,
+    item_minecraft_orange_concrete_powder = 501,
+    item_minecraft_magenta_concrete_powder = 502,
+    item_minecraft_light_blue_concrete_powder = 503,
+    item_minecraft_yellow_concrete_powder = 504,
+    item_minecraft_lime_concrete_powder = 505,
+    item_minecraft_pink_concrete_powder = 506,
+    item_minecraft_gray_concrete_powder = 507,
+    item_minecraft_light_gray_concrete_powder = 508,
+    item_minecraft_cyan_concrete_powder = 509,
+    item_minecraft_purple_concrete_powder = 510,
+    item_minecraft_blue_concrete_powder = 511,
+    item_minecraft_brown_concrete_powder = 512,
+    item_minecraft_green_concrete_powder = 513,
+    item_minecraft_red_concrete_powder = 514,
+    item_minecraft_black_concrete_powder = 515,
+    item_minecraft_turtle_egg = 516,
+    item_minecraft_dead_tube_coral_block = 517,
+    item_minecraft_dead_brain_coral_block = 518,
+    item_minecraft_dead_bubble_coral_block = 519,
+    item_minecraft_dead_fire_coral_block = 520,
+    item_minecraft_dead_horn_coral_block = 521,
+    item_minecraft_tube_coral_block = 522,
+    item_minecraft_brain_coral_block = 523,
+    item_minecraft_bubble_coral_block = 524,
+    item_minecraft_fire_coral_block = 525,
+    item_minecraft_horn_coral_block = 526,
+    item_minecraft_tube_coral = 527,
+    item_minecraft_brain_coral = 528,
+    item_minecraft_bubble_coral = 529,
+    item_minecraft_fire_coral = 530,
+    item_minecraft_horn_coral = 531,
+    item_minecraft_dead_brain_coral = 532,
+    item_minecraft_dead_bubble_coral = 533,
+    item_minecraft_dead_fire_coral = 534,
+    item_minecraft_dead_horn_coral = 535,
+    item_minecraft_dead_tube_coral = 536,
+    item_minecraft_tube_coral_fan = 537,
+    item_minecraft_brain_coral_fan = 538,
+    item_minecraft_bubble_coral_fan = 539,
+    item_minecraft_fire_coral_fan = 540,
+    item_minecraft_horn_coral_fan = 541,
+    item_minecraft_dead_tube_coral_fan = 542,
+    item_minecraft_dead_brain_coral_fan = 543,
+    item_minecraft_dead_bubble_coral_fan = 544,
+    item_minecraft_dead_fire_coral_fan = 545,
+    item_minecraft_dead_horn_coral_fan = 546,
+    item_minecraft_blue_ice = 547,
+    item_minecraft_conduit = 548,
+    item_minecraft_polished_granite_stairs = 549,
+    item_minecraft_smooth_red_sandstone_stairs = 550,
+    item_minecraft_mossy_stone_brick_stairs = 551,
+    item_minecraft_polished_diorite_stairs = 552,
+    item_minecraft_mossy_cobblestone_stairs = 553,
+    item_minecraft_end_stone_brick_stairs = 554,
+    item_minecraft_stone_stairs = 555,
+    item_minecraft_smooth_sandstone_stairs = 556,
+    item_minecraft_smooth_quartz_stairs = 557,
+    item_minecraft_granite_stairs = 558,
+    item_minecraft_andesite_stairs = 559,
+    item_minecraft_red_nether_brick_stairs = 560,
+    item_minecraft_polished_andesite_stairs = 561,
+    item_minecraft_diorite_stairs = 562,
+    item_minecraft_cobbled_deepslate_stairs = 563,
+    item_minecraft_polished_deepslate_stairs = 564,
+    item_minecraft_deepslate_brick_stairs = 565,
+    item_minecraft_deepslate_tile_stairs = 566,
+    item_minecraft_polished_granite_slab = 567,
+    item_minecraft_smooth_red_sandstone_slab = 568,
+    item_minecraft_mossy_stone_brick_slab = 569,
+    item_minecraft_polished_diorite_slab = 570,
+    item_minecraft_mossy_cobblestone_slab = 571,
+    item_minecraft_end_stone_brick_slab = 572,
+    item_minecraft_smooth_sandstone_slab = 573,
+    item_minecraft_smooth_quartz_slab = 574,
+    item_minecraft_granite_slab = 575,
+    item_minecraft_andesite_slab = 576,
+    item_minecraft_red_nether_brick_slab = 577,
+    item_minecraft_polished_andesite_slab = 578,
+    item_minecraft_diorite_slab = 579,
+    item_minecraft_cobbled_deepslate_slab = 580,
+    item_minecraft_polished_deepslate_slab = 581,
+    item_minecraft_deepslate_brick_slab = 582,
+    item_minecraft_deepslate_tile_slab = 583,
+    item_minecraft_scaffolding = 584,
+    item_minecraft_redstone = 585,
+    item_minecraft_redstone_torch = 586,
+    item_minecraft_redstone_block = 587,
+    item_minecraft_repeater = 588,
+    item_minecraft_comparator = 589,
+    item_minecraft_piston = 590,
+    item_minecraft_sticky_piston = 591,
+    item_minecraft_slime_block = 592,
+    item_minecraft_honey_block = 593,
+    item_minecraft_observer = 594,
+    item_minecraft_hopper = 595,
+    item_minecraft_dispenser = 596,
+    item_minecraft_dropper = 597,
+    item_minecraft_lectern = 598,
+    item_minecraft_target = 599,
+    item_minecraft_lever = 600,
+    item_minecraft_lightning_rod = 601,
+    item_minecraft_daylight_detector = 602,
+    item_minecraft_sculk_sensor = 603,
+    item_minecraft_tripwire_hook = 604,
+    item_minecraft_trapped_chest = 605,
+    item_minecraft_tnt = 606,
+    item_minecraft_redstone_lamp = 607,
+    item_minecraft_note_block = 608,
+    item_minecraft_stone_button = 609,
+    item_minecraft_polished_blackstone_button = 610,
+    item_minecraft_oak_button = 611,
+    item_minecraft_spruce_button = 612,
+    item_minecraft_birch_button = 613,
+    item_minecraft_jungle_button = 614,
+    item_minecraft_acacia_button = 615,
+    item_minecraft_dark_oak_button = 616,
+    item_minecraft_crimson_button = 617,
+    item_minecraft_warped_button = 618,
+    item_minecraft_stone_pressure_plate = 619,
+    item_minecraft_polished_blackstone_pressure_plate = 620,
+    item_minecraft_light_weighted_pressure_plate = 621,
+    item_minecraft_heavy_weighted_pressure_plate = 622,
+    item_minecraft_oak_pressure_plate = 623,
+    item_minecraft_spruce_pressure_plate = 624,
+    item_minecraft_birch_pressure_plate = 625,
+    item_minecraft_jungle_pressure_plate = 626,
+    item_minecraft_acacia_pressure_plate = 627,
+    item_minecraft_dark_oak_pressure_plate = 628,
+    item_minecraft_crimson_pressure_plate = 629,
+    item_minecraft_warped_pressure_plate = 630,
+    item_minecraft_iron_door = 631,
+    item_minecraft_oak_door = 632,
+    item_minecraft_spruce_door = 633,
+    item_minecraft_birch_door = 634,
+    item_minecraft_jungle_door = 635,
+    item_minecraft_acacia_door = 636,
+    item_minecraft_dark_oak_door = 637,
+    item_minecraft_crimson_door = 638,
+    item_minecraft_warped_door = 639,
+    item_minecraft_iron_trapdoor = 640,
+    item_minecraft_oak_trapdoor = 641,
+    item_minecraft_spruce_trapdoor = 642,
+    item_minecraft_birch_trapdoor = 643,
+    item_minecraft_jungle_trapdoor = 644,
+    item_minecraft_acacia_trapdoor = 645,
+    item_minecraft_dark_oak_trapdoor = 646,
+    item_minecraft_crimson_trapdoor = 647,
+    item_minecraft_warped_trapdoor = 648,
+    item_minecraft_oak_fence_gate = 649,
+    item_minecraft_spruce_fence_gate = 650,
+    item_minecraft_birch_fence_gate = 651,
+    item_minecraft_jungle_fence_gate = 652,
+    item_minecraft_acacia_fence_gate = 653,
+    item_minecraft_dark_oak_fence_gate = 654,
+    item_minecraft_crimson_fence_gate = 655,
+    item_minecraft_warped_fence_gate = 656,
+    item_minecraft_powered_rail = 657,
+    item_minecraft_detector_rail = 658,
+    item_minecraft_rail = 659,
+    item_minecraft_activator_rail = 660,
+    item_minecraft_saddle = 661,
+    item_minecraft_minecart = 662,
+    item_minecraft_chest_minecart = 663,
+    item_minecraft_furnace_minecart = 664,
+    item_minecraft_tnt_minecart = 665,
+    item_minecraft_hopper_minecart = 666,
+    item_minecraft_carrot_on_a_stick = 667,
+    item_minecraft_warped_fungus_on_a_stick = 668,
+    item_minecraft_elytra = 669,
+    item_minecraft_oak_boat = 670,
+    item_minecraft_spruce_boat = 671,
+    item_minecraft_birch_boat = 672,
+    item_minecraft_jungle_boat = 673,
+    item_minecraft_acacia_boat = 674,
+    item_minecraft_dark_oak_boat = 675,
+    item_minecraft_structure_block = 676,
+    item_minecraft_jigsaw = 677,
+    item_minecraft_turtle_helmet = 678,
+    item_minecraft_scute = 679,
+    item_minecraft_flint_and_steel = 680,
+    item_minecraft_apple = 681,
+    item_minecraft_bow = 682,
+    item_minecraft_arrow = 683,
+    item_minecraft_coal = 684,
+    item_minecraft_charcoal = 685,
+    item_minecraft_diamond = 686,
+    item_minecraft_emerald = 687,
+    item_minecraft_lapis_lazuli = 688,
+    item_minecraft_quartz = 689,
+    item_minecraft_amethyst_shard = 690,
+    item_minecraft_raw_iron = 691,
+    item_minecraft_iron_ingot = 692,
+    item_minecraft_raw_copper = 693,
+    item_minecraft_copper_ingot = 694,
+    item_minecraft_raw_gold = 695,
+    item_minecraft_gold_ingot = 696,
+    item_minecraft_netherite_ingot = 697,
+    item_minecraft_netherite_scrap = 698,
+    item_minecraft_wooden_sword = 699,
+    item_minecraft_wooden_shovel = 700,
+    item_minecraft_wooden_pickaxe = 701,
+    item_minecraft_wooden_axe = 702,
+    item_minecraft_wooden_hoe = 703,
+    item_minecraft_stone_sword = 704,
+    item_minecraft_stone_shovel = 705,
+    item_minecraft_stone_pickaxe = 706,
+    item_minecraft_stone_axe = 707,
+    item_minecraft_stone_hoe = 708,
+    item_minecraft_golden_sword = 709,
+    item_minecraft_golden_shovel = 710,
+    item_minecraft_golden_pickaxe = 711,
+    item_minecraft_golden_axe = 712,
+    item_minecraft_golden_hoe = 713,
+    item_minecraft_iron_sword = 714,
+    item_minecraft_iron_shovel = 715,
+    item_minecraft_iron_pickaxe = 716,
+    item_minecraft_iron_axe = 717,
+    item_minecraft_iron_hoe = 718,
+    item_minecraft_diamond_sword = 719,
+    item_minecraft_diamond_shovel = 720,
+    item_minecraft_diamond_pickaxe = 721,
+    item_minecraft_diamond_axe = 722,
+    item_minecraft_diamond_hoe = 723,
+    item_minecraft_netherite_sword = 724,
+    item_minecraft_netherite_shovel = 725,
+    item_minecraft_netherite_pickaxe = 726,
+    item_minecraft_netherite_axe = 727,
+    item_minecraft_netherite_hoe = 728,
+    item_minecraft_stick = 729,
+    item_minecraft_bowl = 730,
+    item_minecraft_mushroom_stew = 731,
+    item_minecraft_string = 732,
+    item_minecraft_feather = 733,
+    item_minecraft_gunpowder = 734,
+    item_minecraft_wheat_seeds = 735,
+    item_minecraft_wheat = 736,
+    item_minecraft_bread = 737,
+    item_minecraft_leather_helmet = 738,
+    item_minecraft_leather_chestplate = 739,
+    item_minecraft_leather_leggings = 740,
+    item_minecraft_leather_boots = 741,
+    item_minecraft_chainmail_helmet = 742,
+    item_minecraft_chainmail_chestplate = 743,
+    item_minecraft_chainmail_leggings = 744,
+    item_minecraft_chainmail_boots = 745,
+    item_minecraft_iron_helmet = 746,
+    item_minecraft_iron_chestplate = 747,
+    item_minecraft_iron_leggings = 748,
+    item_minecraft_iron_boots = 749,
+    item_minecraft_diamond_helmet = 750,
+    item_minecraft_diamond_chestplate = 751,
+    item_minecraft_diamond_leggings = 752,
+    item_minecraft_diamond_boots = 753,
+    item_minecraft_golden_helmet = 754,
+    item_minecraft_golden_chestplate = 755,
+    item_minecraft_golden_leggings = 756,
+    item_minecraft_golden_boots = 757,
+    item_minecraft_netherite_helmet = 758,
+    item_minecraft_netherite_chestplate = 759,
+    item_minecraft_netherite_leggings = 760,
+    item_minecraft_netherite_boots = 761,
+    item_minecraft_flint = 762,
+    item_minecraft_porkchop = 763,
+    item_minecraft_cooked_porkchop = 764,
+    item_minecraft_painting = 765,
+    item_minecraft_golden_apple = 766,
+    item_minecraft_enchanted_golden_apple = 767,
+    item_minecraft_oak_sign = 768,
+    item_minecraft_spruce_sign = 769,
+    item_minecraft_birch_sign = 770,
+    item_minecraft_jungle_sign = 771,
+    item_minecraft_acacia_sign = 772,
+    item_minecraft_dark_oak_sign = 773,
+    item_minecraft_crimson_sign = 774,
+    item_minecraft_warped_sign = 775,
+    item_minecraft_bucket = 776,
+    item_minecraft_water_bucket = 777,
+    item_minecraft_lava_bucket = 778,
+    item_minecraft_powder_snow_bucket = 779,
+    item_minecraft_snowball = 780,
+    item_minecraft_leather = 781,
+    item_minecraft_milk_bucket = 782,
+    item_minecraft_pufferfish_bucket = 783,
+    item_minecraft_salmon_bucket = 784,
+    item_minecraft_cod_bucket = 785,
+    item_minecraft_tropical_fish_bucket = 786,
+    item_minecraft_axolotl_bucket = 787,
+    item_minecraft_brick = 788,
+    item_minecraft_clay_ball = 789,
+    item_minecraft_dried_kelp_block = 790,
+    item_minecraft_paper = 791,
+    item_minecraft_book = 792,
+    item_minecraft_slime_ball = 793,
+    item_minecraft_egg = 794,
+    item_minecraft_compass = 795,
+    item_minecraft_bundle = 796,
+    item_minecraft_fishing_rod = 797,
+    item_minecraft_clock = 798,
+    item_minecraft_spyglass = 799,
+    item_minecraft_glowstone_dust = 800,
+    item_minecraft_cod = 801,
+    item_minecraft_salmon = 802,
+    item_minecraft_tropical_fish = 803,
+    item_minecraft_pufferfish = 804,
+    item_minecraft_cooked_cod = 805,
+    item_minecraft_cooked_salmon = 806,
+    item_minecraft_ink_sac = 807,
+    item_minecraft_glow_ink_sac = 808,
+    item_minecraft_cocoa_beans = 809,
+    item_minecraft_white_dye = 810,
+    item_minecraft_orange_dye = 811,
+    item_minecraft_magenta_dye = 812,
+    item_minecraft_light_blue_dye = 813,
+    item_minecraft_yellow_dye = 814,
+    item_minecraft_lime_dye = 815,
+    item_minecraft_pink_dye = 816,
+    item_minecraft_gray_dye = 817,
+    item_minecraft_light_gray_dye = 818,
+    item_minecraft_cyan_dye = 819,
+    item_minecraft_purple_dye = 820,
+    item_minecraft_blue_dye = 821,
+    item_minecraft_brown_dye = 822,
+    item_minecraft_green_dye = 823,
+    item_minecraft_red_dye = 824,
+    item_minecraft_black_dye = 825,
+    item_minecraft_bone_meal = 826,
+    item_minecraft_bone = 827,
+    item_minecraft_sugar = 828,
+    item_minecraft_cake = 829,
+    item_minecraft_white_bed = 830,
+    item_minecraft_orange_bed = 831,
+    item_minecraft_magenta_bed = 832,
+    item_minecraft_light_blue_bed = 833,
+    item_minecraft_yellow_bed = 834,
+    item_minecraft_lime_bed = 835,
+    item_minecraft_pink_bed = 836,
+    item_minecraft_gray_bed = 837,
+    item_minecraft_light_gray_bed = 838,
+    item_minecraft_cyan_bed = 839,
+    item_minecraft_purple_bed = 840,
+    item_minecraft_blue_bed = 841,
+    item_minecraft_brown_bed = 842,
+    item_minecraft_green_bed = 843,
+    item_minecraft_red_bed = 844,
+    item_minecraft_black_bed = 845,
+    item_minecraft_cookie = 846,
+    item_minecraft_filled_map = 847,
+    item_minecraft_shears = 848,
+    item_minecraft_melon_slice = 849,
+    item_minecraft_dried_kelp = 850,
+    item_minecraft_pumpkin_seeds = 851,
+    item_minecraft_melon_seeds = 852,
+    item_minecraft_beef = 853,
+    item_minecraft_cooked_beef = 854,
+    item_minecraft_chicken = 855,
+    item_minecraft_cooked_chicken = 856,
+    item_minecraft_rotten_flesh = 857,
+    item_minecraft_ender_pearl = 858,
+    item_minecraft_blaze_rod = 859,
+    item_minecraft_ghast_tear = 860,
+    item_minecraft_gold_nugget = 861,
+    item_minecraft_nether_wart = 862,
+    item_minecraft_potion = 863,
+    item_minecraft_glass_bottle = 864,
+    item_minecraft_spider_eye = 865,
+    item_minecraft_fermented_spider_eye = 866,
+    item_minecraft_blaze_powder = 867,
+    item_minecraft_magma_cream = 868,
+    item_minecraft_brewing_stand = 869,
+    item_minecraft_cauldron = 870,
+    item_minecraft_ender_eye = 871,
+    item_minecraft_glistering_melon_slice = 872,
+    item_minecraft_axolotl_spawn_egg = 873,
+    item_minecraft_bat_spawn_egg = 874,
+    item_minecraft_bee_spawn_egg = 875,
+    item_minecraft_blaze_spawn_egg = 876,
+    item_minecraft_cat_spawn_egg = 877,
+    item_minecraft_cave_spider_spawn_egg = 878,
+    item_minecraft_chicken_spawn_egg = 879,
+    item_minecraft_cod_spawn_egg = 880,
+    item_minecraft_cow_spawn_egg = 881,
+    item_minecraft_creeper_spawn_egg = 882,
+    item_minecraft_dolphin_spawn_egg = 883,
+    item_minecraft_donkey_spawn_egg = 884,
+    item_minecraft_drowned_spawn_egg = 885,
+    item_minecraft_elder_guardian_spawn_egg = 886,
+    item_minecraft_enderman_spawn_egg = 887,
+    item_minecraft_endermite_spawn_egg = 888,
+    item_minecraft_evoker_spawn_egg = 889,
+    item_minecraft_fox_spawn_egg = 890,
+    item_minecraft_ghast_spawn_egg = 891,
+    item_minecraft_glow_squid_spawn_egg = 892,
+    item_minecraft_goat_spawn_egg = 893,
+    item_minecraft_guardian_spawn_egg = 894,
+    item_minecraft_hoglin_spawn_egg = 895,
+    item_minecraft_horse_spawn_egg = 896,
+    item_minecraft_husk_spawn_egg = 897,
+    item_minecraft_llama_spawn_egg = 898,
+    item_minecraft_magma_cube_spawn_egg = 899,
+    item_minecraft_mooshroom_spawn_egg = 900,
+    item_minecraft_mule_spawn_egg = 901,
+    item_minecraft_ocelot_spawn_egg = 902,
+    item_minecraft_panda_spawn_egg = 903,
+    item_minecraft_parrot_spawn_egg = 904,
+    item_minecraft_phantom_spawn_egg = 905,
+    item_minecraft_pig_spawn_egg = 906,
+    item_minecraft_piglin_spawn_egg = 907,
+    item_minecraft_piglin_brute_spawn_egg = 908,
+    item_minecraft_pillager_spawn_egg = 909,
+    item_minecraft_polar_bear_spawn_egg = 910,
+    item_minecraft_pufferfish_spawn_egg = 911,
+    item_minecraft_rabbit_spawn_egg = 912,
+    item_minecraft_ravager_spawn_egg = 913,
+    item_minecraft_salmon_spawn_egg = 914,
+    item_minecraft_sheep_spawn_egg = 915,
+    item_minecraft_shulker_spawn_egg = 916,
+    item_minecraft_silverfish_spawn_egg = 917,
+    item_minecraft_skeleton_spawn_egg = 918,
+    item_minecraft_skeleton_horse_spawn_egg = 919,
+    item_minecraft_slime_spawn_egg = 920,
+    item_minecraft_spider_spawn_egg = 921,
+    item_minecraft_squid_spawn_egg = 922,
+    item_minecraft_stray_spawn_egg = 923,
+    item_minecraft_strider_spawn_egg = 924,
+    item_minecraft_trader_llama_spawn_egg = 925,
+    item_minecraft_tropical_fish_spawn_egg = 926,
+    item_minecraft_turtle_spawn_egg = 927,
+    item_minecraft_vex_spawn_egg = 928,
+    item_minecraft_villager_spawn_egg = 929,
+    item_minecraft_vindicator_spawn_egg = 930,
+    item_minecraft_wandering_trader_spawn_egg = 931,
+    item_minecraft_witch_spawn_egg = 932,
+    item_minecraft_wither_skeleton_spawn_egg = 933,
+    item_minecraft_wolf_spawn_egg = 934,
+    item_minecraft_zoglin_spawn_egg = 935,
+    item_minecraft_zombie_spawn_egg = 936,
+    item_minecraft_zombie_horse_spawn_egg = 937,
+    item_minecraft_zombie_villager_spawn_egg = 938,
+    item_minecraft_zombified_piglin_spawn_egg = 939,
+    item_minecraft_experience_bottle = 940,
+    item_minecraft_fire_charge = 941,
+    item_minecraft_writable_book = 942,
+    item_minecraft_written_book = 943,
+    item_minecraft_item_frame = 944,
+    item_minecraft_glow_item_frame = 945,
+    item_minecraft_flower_pot = 946,
+    item_minecraft_carrot = 947,
+    item_minecraft_potato = 948,
+    item_minecraft_baked_potato = 949,
+    item_minecraft_poisonous_potato = 950,
+    item_minecraft_map = 951,
+    item_minecraft_golden_carrot = 952,
+    item_minecraft_skeleton_skull = 953,
+    item_minecraft_wither_skeleton_skull = 954,
+    item_minecraft_player_head = 955,
+    item_minecraft_zombie_head = 956,
+    item_minecraft_creeper_head = 957,
+    item_minecraft_dragon_head = 958,
+    item_minecraft_nether_star = 959,
+    item_minecraft_pumpkin_pie = 960,
+    item_minecraft_firework_rocket = 961,
+    item_minecraft_firework_star = 962,
+    item_minecraft_enchanted_book = 963,
+    item_minecraft_nether_brick = 964,
+    item_minecraft_prismarine_shard = 965,
+    item_minecraft_prismarine_crystals = 966,
+    item_minecraft_rabbit = 967,
+    item_minecraft_cooked_rabbit = 968,
+    item_minecraft_rabbit_stew = 969,
+    item_minecraft_rabbit_foot = 970,
+    item_minecraft_rabbit_hide = 971,
+    item_minecraft_armor_stand = 972,
+    item_minecraft_iron_horse_armor = 973,
+    item_minecraft_golden_horse_armor = 974,
+    item_minecraft_diamond_horse_armor = 975,
+    item_minecraft_leather_horse_armor = 976,
+    item_minecraft_lead = 977,
+    item_minecraft_name_tag = 978,
+    item_minecraft_command_block_minecart = 979,
+    item_minecraft_mutton = 980,
+    item_minecraft_cooked_mutton = 981,
+    item_minecraft_white_banner = 982,
+    item_minecraft_orange_banner = 983,
+    item_minecraft_magenta_banner = 984,
+    item_minecraft_light_blue_banner = 985,
+    item_minecraft_yellow_banner = 986,
+    item_minecraft_lime_banner = 987,
+    item_minecraft_pink_banner = 988,
+    item_minecraft_gray_banner = 989,
+    item_minecraft_light_gray_banner = 990,
+    item_minecraft_cyan_banner = 991,
+    item_minecraft_purple_banner = 992,
+    item_minecraft_blue_banner = 993,
+    item_minecraft_brown_banner = 994,
+    item_minecraft_green_banner = 995,
+    item_minecraft_red_banner = 996,
+    item_minecraft_black_banner = 997,
+    item_minecraft_end_crystal = 998,
+    item_minecraft_chorus_fruit = 999,
+    item_minecraft_popped_chorus_fruit = 1000,
+    item_minecraft_beetroot = 1001,
+    item_minecraft_beetroot_seeds = 1002,
+    item_minecraft_beetroot_soup = 1003,
+    item_minecraft_dragon_breath = 1004,
+    item_minecraft_splash_potion = 1005,
+    item_minecraft_spectral_arrow = 1006,
+    item_minecraft_tipped_arrow = 1007,
+    item_minecraft_lingering_potion = 1008,
+    item_minecraft_shield = 1009,
+    item_minecraft_totem_of_undying = 1010,
+    item_minecraft_shulker_shell = 1011,
+    item_minecraft_iron_nugget = 1012,
+    item_minecraft_knowledge_book = 1013,
+    item_minecraft_debug_stick = 1014,
+    item_minecraft_music_disc_13 = 1015,
+    item_minecraft_music_disc_cat = 1016,
+    item_minecraft_music_disc_blocks = 1017,
+    item_minecraft_music_disc_chirp = 1018,
+    item_minecraft_music_disc_far = 1019,
+    item_minecraft_music_disc_mall = 1020,
+    item_minecraft_music_disc_mellohi = 1021,
+    item_minecraft_music_disc_stal = 1022,
+    item_minecraft_music_disc_strad = 1023,
+    item_minecraft_music_disc_ward = 1024,
+    item_minecraft_music_disc_11 = 1025,
+    item_minecraft_music_disc_wait = 1026,
+    item_minecraft_music_disc_otherside = 1027,
+    item_minecraft_music_disc_pigstep = 1028,
+    item_minecraft_trident = 1029,
+    item_minecraft_phantom_membrane = 1030,
+    item_minecraft_nautilus_shell = 1031,
+    item_minecraft_heart_of_the_sea = 1032,
+    item_minecraft_crossbow = 1033,
+    item_minecraft_suspicious_stew = 1034,
+    item_minecraft_loom = 1035,
+    item_minecraft_flower_banner_pattern = 1036,
+    item_minecraft_creeper_banner_pattern = 1037,
+    item_minecraft_skull_banner_pattern = 1038,
+    item_minecraft_mojang_banner_pattern = 1039,
+    item_minecraft_globe_banner_pattern = 1040,
+    item_minecraft_piglin_banner_pattern = 1041,
+    item_minecraft_composter = 1042,
+    item_minecraft_barrel = 1043,
+    item_minecraft_smoker = 1044,
+    item_minecraft_blast_furnace = 1045,
+    item_minecraft_cartography_table = 1046,
+    item_minecraft_fletching_table = 1047,
+    item_minecraft_grindstone = 1048,
+    item_minecraft_smithing_table = 1049,
+    item_minecraft_stonecutter = 1050,
+    item_minecraft_bell = 1051,
+    item_minecraft_lantern = 1052,
+    item_minecraft_soul_lantern = 1053,
+    item_minecraft_sweet_berries = 1054,
+    item_minecraft_glow_berries = 1055,
+    item_minecraft_campfire = 1056,
+    item_minecraft_soul_campfire = 1057,
+    item_minecraft_shroomlight = 1058,
+    item_minecraft_honeycomb = 1059,
+    item_minecraft_bee_nest = 1060,
+    item_minecraft_beehive = 1061,
+    item_minecraft_honey_bottle = 1062,
+    item_minecraft_honeycomb_block = 1063,
+    item_minecraft_lodestone = 1064,
+    item_minecraft_crying_obsidian = 1065,
+    item_minecraft_blackstone = 1066,
+    item_minecraft_blackstone_slab = 1067,
+    item_minecraft_blackstone_stairs = 1068,
+    item_minecraft_gilded_blackstone = 1069,
+    item_minecraft_polished_blackstone = 1070,
+    item_minecraft_polished_blackstone_slab = 1071,
+    item_minecraft_polished_blackstone_stairs = 1072,
+    item_minecraft_chiseled_polished_blackstone = 1073,
+    item_minecraft_polished_blackstone_bricks = 1074,
+    item_minecraft_polished_blackstone_brick_slab = 1075,
+    item_minecraft_polished_blackstone_brick_stairs = 1076,
+    item_minecraft_cracked_polished_blackstone_bricks = 1077,
+    item_minecraft_respawn_anchor = 1078,
+    item_minecraft_candle = 1079,
+    item_minecraft_white_candle = 1080,
+    item_minecraft_orange_candle = 1081,
+    item_minecraft_magenta_candle = 1082,
+    item_minecraft_light_blue_candle = 1083,
+    item_minecraft_yellow_candle = 1084,
+    item_minecraft_lime_candle = 1085,
+    item_minecraft_pink_candle = 1086,
+    item_minecraft_gray_candle = 1087,
+    item_minecraft_light_gray_candle = 1088,
+    item_minecraft_cyan_candle = 1089,
+    item_minecraft_purple_candle = 1090,
+    item_minecraft_blue_candle = 1091,
+    item_minecraft_brown_candle = 1092,
+    item_minecraft_green_candle = 1093,
+    item_minecraft_red_candle = 1094,
+    item_minecraft_black_candle = 1095,
+    item_minecraft_small_amethyst_bud = 1096,
+    item_minecraft_medium_amethyst_bud = 1097,
+    item_minecraft_large_amethyst_bud = 1098,
+    item_minecraft_amethyst_cluster = 1099,
+    item_minecraft_pointed_dripstone = 1100
+};
+
+//BlockState convert_item_to_block(ItemState state) {
+//    switch(state) {
+//        case item_minecraft_air:
+//            return block_minecraft_air;
+//        case item_minecraft_stone:
+//            return block_minecraft_stone;
+//        case item_minecraft_granite:
+//            return block_minecraft_granite;
+//        case item_minecraft_polished_granite:
+//            return block_minecraft_polished_granite;
+//        case item_minecraft_diorite:
+//            return block_minecraft_diorite;
+//        case item_minecraft_polished_diorite:
+//            return block_minecraft_polished_diorite;
+//        case item_minecraft_andesite:
+//            return block_minecraft_andesite;
+//        case item_minecraft_polished_andesite:
+//            return block_minecraft_polished_andesite;
+//        case item_minecraft_deepslate:
+//            return block_minecraft_deepslate_axis_x;
+//        case item_minecraft_cobbled_deepslate:
+//            return block_minecraft_cobbled_deepslate;
+//        case item_minecraft_polished_deepslate:
+//            return block_minecraft_polished_deepslate;
+//        case item_minecraft_calcite:
+//            return block_minecraft_calcite;
+//        case item_minecraft_tuff:
+//            return block_minecraft_tuff;
+//        case item_minecraft_dripstone_block:
+//            return block_minecraft_dripstone_block;
+//        case item_minecraft_grass_block:
+//            return block_minecraft_grass;
+//        case item_minecraft_dirt:
+//            return block_minecraft_dirt;
+//        case item_minecraft_coarse_dirt:
+//            return block_minecraft_coarse_dirt;
+//        case item_minecraft_podzol:
+//            return block_minecraft_podzol_snowy_false;
+//        case item_minecraft_rooted_dirt:
+//            return block_minecraft_rooted_dirt;
+//        case item_minecraft_crimson_nylium:
+//            return block_minecraft_crimson_nylium;
+//        case item_minecraft_warped_nylium:
+//            return block_minecraft_warped_nylium;
+//        case item_minecraft_cobblestone:
+//            return block_minecraft_cobblestone;
+//        case item_minecraft_oak_planks:
+//            return block_minecraft_oak_planks;
+//        case item_minecraft_spruce_planks:
+//            return block_minecraft_spruce_planks;
+//        case item_minecraft_birch_planks:
+//            return block_minecraft_birch_planks;
+//        case item_minecraft_jungle_planks:
+//            return block_minecraft_jungle_planks;
+//        case item_minecraft_acacia_planks:
+//            return block_minecraft_acacia_planks;
+//        case item_minecraft_dark_oak_planks:
+//            return block_minecraft_dark_oak_planks;
+//        case item_minecraft_crimson_planks:
+//            return block_minecraft_crimson_planks;
+//        case item_minecraft_warped_planks:
+//            return block_minecraft_warped_planks;
+//        case item_minecraft_oak_sapling:
+//            return block_minecraft_oak_sapling_stage_0;
+//        case item_minecraft_spruce_sapling:
+//            return block_minecraft_spruce_sapling_stage_0;
+//        case item_minecraft_birch_sapling:
+//            return block_minecraft_birch_sapling_stage_0;
+//        case item_minecraft_jungle_sapling:
+//            return block_minecraft_jungle_sapling_stage_0;
+//        case item_minecraft_acacia_sapling:
+//            return block_minecraft_acacia_sapling_stage_0;
+//        case item_minecraft_dark_oak_sapling:
+//            return block_minecraft_dark_oak_sapling_stage_0;
+//        case item_minecraft_bedrock:
+//            return block_minecraft_bedrock;
+//        case item_minecraft_sand:
+//            return block_minecraft_sand;
+//        case item_minecraft_red_sand:
+//            return block_minecraft_red_sand;
+//        case item_minecraft_gravel:
+//            return block_minecraft_gravel;
+//        case item_minecraft_coal_ore:
+//            return block_minecraft_coal_ore;
+//        case item_minecraft_deepslate_coal_ore:
+//            return block_minecraft_deepslate_coal_ore;
+//        case item_minecraft_iron_ore:
+//            return block_minecraft_iron_ore;
+//        case item_minecraft_deepslate_iron_ore:
+//            return block_minecraft_deepslate_iron_ore;
+//        case item_minecraft_copper_ore:
+//            return block_minecraft_copper_ore;
+//        case item_minecraft_deepslate_copper_ore:
+//            return block_minecraft_deepslate_copper_ore;
+//        case item_minecraft_gold_ore:
+//            return block_minecraft_gold_ore;
+//        case item_minecraft_deepslate_gold_ore:
+//            return block_minecraft_deepslate_gold_ore;
+//        case item_minecraft_redstone_ore:
+//            return block_minecraft_redstone_ore_lit_false;
+//        case item_minecraft_deepslate_redstone_ore:
+//            return block_minecraft_deepslate_redstone_ore_lit_false;
+//        case item_minecraft_emerald_ore:
+//            return block_minecraft_emerald_ore;
+//        case item_minecraft_deepslate_emerald_ore:
+//            return block_minecraft_deepslate_emerald_ore;
+//        case item_minecraft_lapis_ore:
+//            return block_minecraft_lapis_ore;
+//        case item_minecraft_deepslate_lapis_ore:
+//            return block_minecraft_deepslate_lapis_ore;
+//        case item_minecraft_diamond_ore:
+//            return block_minecraft_diamond_ore;
+//        case item_minecraft_deepslate_diamond_ore:
+//            return block_minecraft_deepslate_diamond_ore;
+//        case item_minecraft_nether_gold_ore:
+//            return block_minecraft_nether_gold_ore;
+//        case item_minecraft_nether_quartz_ore:
+//            return block_minecraft_nether_quartz_ore;
+//        case item_minecraft_ancient_debris:
+//            return block_minecraft_ancient_debris;
+//        case item_minecraft_coal_block:
+//            return block_minecraft_coal_block;
+//        case item_minecraft_raw_iron_block:
+//            return block_minecraft_raw_iron_block;
+//        case item_minecraft_raw_copper_block:
+//            return block_minecraft_raw_copper_block;
+//        case item_minecraft_raw_gold_block:
+//            return block_minecraft_raw_gold_block;
+//        case item_minecraft_amethyst_block:
+//            return block_minecraft_amethyst_block;
+//        case item_minecraft_budding_amethyst:
+//            return block_minecraft_budding_amethyst;
+//        case item_minecraft_iron_block:
+//            return block_minecraft_iron_block;
+//        case item_minecraft_copper_block:
+//            return block_minecraft_copper_block;
+//        case item_minecraft_gold_block:
+//            return block_minecraft_gold_block;
+//        case item_minecraft_diamond_block:
+//            return block_minecraft_diamond_block;
+//        case item_minecraft_netherite_block:
+//            return block_minecraft_netherite_block;
+//        case item_minecraft_exposed_copper:
+//            return block_minecraft_exposed_copper;
+//        case item_minecraft_weathered_copper:
+//            return block_minecraft_weathered_copper;
+//        case item_minecraft_oxidized_copper:
+//            return block_minecraft_oxidized_copper;
+//        case item_minecraft_cut_copper:
+//            return block_minecraft_cut_copper;
+//        case item_minecraft_exposed_cut_copper:
+//            return block_minecraft_exposed_cut_copper;
+//        case item_minecraft_weathered_cut_copper:
+//            return block_minecraft_weathered_cut_copper;
+//        case item_minecraft_oxidized_cut_copper:
+//            return block_minecraft_oxidized_cut_copper;
+//        case item_minecraft_cut_copper_stairs:
+//            return block_minecraft_cut_copper_stairs_facing_east_half_bottom_shape_inner_left_waterlogged_false;
+//        case item_minecraft_exposed_cut_copper_stairs:
+//            return block_minecraft_exposed_cut_copper_stairs_facing_east_half_bottom_shape_inner_left_waterlogged_false;
+//        case item_minecraft_weathered_cut_copper_stairs:
+//            return block_minecraft_weathered_cut_copper_stairs_facing_east_half_bottom_shape_inner_left_waterlogged_false;
+//        case item_minecraft_oxidized_cut_copper_stairs:
+//            return block_minecraft_oxidized_cut_copper_stairs_facing_east_half_bottom_shape_inner_left_waterlogged_false;
+//        case item_minecraft_cut_copper_slab:
+//            return block_minecraft_cut_copper_slab_type_bottom_waterlogged_false;
+//        case item_minecraft_exposed_cut_copper_slab:
+//            return block_minecraft_exposed_cut_copper_slab_type_bottom_waterlogged_false;
+//        case item_minecraft_weathered_cut_copper_slab:
+//            return block_minecraft_weathered_cut_copper_slab_type_bottom_waterlogged_false;
+//        case item_minecraft_oxidized_cut_copper_slab:
+//            return block_minecraft_oxidized_cut_copper_slab_type_bottom_waterlogged_false;
+//        case item_minecraft_waxed_copper_block:
+//            return block_minecraft_waxed_copper_block;
+//        case item_minecraft_waxed_exposed_copper:
+//            return block_minecraft_waxed_exposed_copper;
+//        case item_minecraft_waxed_weathered_copper:
+//            return block_minecraft_waxed_weathered_copper;
+//        case item_minecraft_waxed_oxidized_copper:
+//            return block_minecraft_waxed_oxidized_copper;
+//        case item_minecraft_waxed_cut_copper:
+//            return block_minecraft_waxed_cut_copper;
+//        case item_minecraft_waxed_exposed_cut_copper:
+//            return block_minecraft_waxed_exposed_cut_copper;
+//        case item_minecraft_waxed_weathered_cut_copper:
+//            return block_minecraft_waxed_weathered_cut_copper;
+//        case item_minecraft_waxed_oxidized_cut_copper:
+//            return block_minecraft_waxed_oxidized_cut_copper;
+//        case item_minecraft_waxed_cut_copper_stairs:
+//            return block_minecraft_waxed_cut_copper_stairs_facing_east_half_bottom_shape_inner_left_waterlogged_false;
+//        case item_minecraft_waxed_exposed_cut_copper_stairs:
+//            return block_minecraft_waxed_exposed_cut_copper_stairs;
+//        case item_minecraft_waxed_weathered_cut_copper_stairs:
+//            return block_minecraft_waxed_weathered_cut_copper_stairs;
+//        case item_minecraft_waxed_oxidized_cut_copper_stairs:
+//            return block_minecraft_waxed_oxidized_cut_copper_stairs;
+//        case item_minecraft_waxed_cut_copper_slab:
+//            return block_minecraft_waxed_cut_copper_slab;
+//        case item_minecraft_waxed_exposed_cut_copper_slab:
+//            return block_minecraft_waxed_exposed_cut_copper_slab;
+//        case item_minecraft_waxed_weathered_cut_copper_slab:
+//            return block_minecraft_waxed_weathered_cut_copper_slab;
+//        case item_minecraft_waxed_oxidized_cut_copper_slab:
+//            return block_minecraft_waxed_oxidized_cut_copper_slab;
+//        case item_minecraft_oak_log:
+//            return block_minecraft_oak_log;
+//        case item_minecraft_spruce_log:
+//            return block_minecraft_spruce_log;
+//        case item_minecraft_birch_log:
+//            return block_minecraft_birch_log;
+//        case item_minecraft_jungle_log:
+//            return block_minecraft_jungle_log;
+//        case item_minecraft_acacia_log:
+//            return block_minecraft_acacia_log;
+//        case item_minecraft_dark_oak_log:
+//            return block_minecraft_dark_oak_log;
+//        case item_minecraft_crimson_stem:
+//            return block_minecraft_crimson_stem;
+//        case item_minecraft_warped_stem:
+//            return block_minecraft_warped_stem;
+//        case item_minecraft_stripped_oak_log:
+//            return block_minecraft_stripped_oak_log;
+//        case item_minecraft_stripped_spruce_log:
+//            return block_minecraft_stripped_spruce_log;
+//        case item_minecraft_stripped_birch_log:
+//            return block_minecraft_stripped_birch_log;
+//        case item_minecraft_stripped_jungle_log:
+//            return block_minecraft_stripped_jungle_log;
+//        case item_minecraft_stripped_acacia_log:
+//            return block_minecraft_stripped_acacia_log;
+//        case item_minecraft_stripped_dark_oak_log:
+//            return block_minecraft_stripped_dark_oak_log;
+//        case item_minecraft_stripped_crimson_stem:
+//            return block_minecraft_stripped_crimson_stem;
+//        case item_minecraft_stripped_warped_stem:
+//            return block_minecraft_stripped_warped_stem;
+//        case item_minecraft_stripped_oak_wood:
+//            return block_minecraft_stripped_oak_wood;
+//        case item_minecraft_stripped_spruce_wood:
+//            return block_minecraft_stripped_spruce_wood;
+//        case item_minecraft_stripped_birch_wood:
+//            return block_minecraft_stripped_birch_wood;
+//        case item_minecraft_stripped_jungle_wood:
+//            return block_minecraft_stripped_jungle_wood;
+//        case item_minecraft_stripped_acacia_wood:
+//            return block_minecraft_stripped_acacia_wood;
+//        case item_minecraft_stripped_dark_oak_wood:
+//            return block_minecraft_stripped_dark_oak_wood;
+//        case item_minecraft_stripped_crimson_hyphae:
+//            return block_minecraft_stripped_crimson_hyphae;
+//        case item_minecraft_stripped_warped_hyphae:
+//            return block_minecraft_stripped_warped_hyphae;
+//        case item_minecraft_oak_wood:
+//            return block_minecraft_oak_wood;
+//        case item_minecraft_spruce_wood:
+//            return block_minecraft_spruce_wood;
+//        case item_minecraft_birch_wood:
+//            return block_minecraft_birch_wood;
+//        case item_minecraft_jungle_wood:
+//            return block_minecraft_jungle_wood;
+//        case item_minecraft_acacia_wood:
+//            return block_minecraft_acacia_wood;
+//        case item_minecraft_dark_oak_wood:
+//            return block_minecraft_dark_oak_wood;
+//        case item_minecraft_crimson_hyphae:
+//            return block_minecraft_crimson_hyphae;
+//        case item_minecraft_warped_hyphae:
+//            return block_minecraft_warped_hyphae;
+//        case item_minecraft_oak_leaves:
+//            return block_minecraft_oak_leaves;
+//        case item_minecraft_spruce_leaves:
+//            return block_minecraft_spruce_leaves;
+//        case item_minecraft_birch_leaves:
+//            return block_minecraft_birch_leaves;
+//        case item_minecraft_jungle_leaves:
+//            return block_minecraft_jungle_leaves;
+//        case item_minecraft_acacia_leaves:
+//            return block_minecraft_acacia_leaves;
+//        case item_minecraft_dark_oak_leaves:
+//            return block_minecraft_dark_oak_leaves;
+//        case item_minecraft_azalea_leaves:
+//            return block_minecraft_azalea_leaves;
+//        case item_minecraft_flowering_azalea_leaves:
+//            return block_minecraft_flowering_azalea_leaves;
+//        case item_minecraft_sponge:
+//            return block_minecraft_sponge;
+//        case item_minecraft_wet_sponge:
+//            return block_minecraft_wet_sponge;
+//        case item_minecraft_glass:
+//            return block_minecraft_glass;
+//        case item_minecraft_tinted_glass:
+//            return block_minecraft_tinted_glass;
+//        case item_minecraft_lapis_block:
+//            return block_minecraft_lapis_block;
+//        case item_minecraft_sandstone:
+//            return block_minecraft_sandstone;
+//        case item_minecraft_chiseled_sandstone:
+//            return block_minecraft_chiseled_sandstone;
+//        case item_minecraft_cut_sandstone:
+//            return block_minecraft_cut_sandstone;
+//        case item_minecraft_cobweb:
+//            return block_minecraft_cobweb;
+//        case item_minecraft_grass:
+//            return block_minecraft_grass;
+//        case item_minecraft_fern:
+//            return block_minecraft_fern;
+//        case item_minecraft_azalea:
+//            return block_minecraft_azalea;
+//        case item_minecraft_flowering_azalea:
+//            return block_minecraft_flowering_azalea;
+//        case item_minecraft_dead_bush:
+//            return block_minecraft_dead_bush;
+//        case item_minecraft_seagrass:
+//            return block_minecraft_seagrass;
+//        case item_minecraft_sea_pickle:
+//            return block_minecraft_sea_pickle;
+//        case item_minecraft_white_wool:
+//            return block_minecraft_white_wool;
+//        case item_minecraft_orange_wool:
+//            return block_minecraft_orange_wool;
+//        case item_minecraft_magenta_wool:
+//            return block_minecraft_magenta_wool;
+//        case item_minecraft_light_blue_wool:
+//            return block_minecraft_light_blue_wool;
+//        case item_minecraft_yellow_wool:
+//            return block_minecraft_yellow_wool;
+//        case item_minecraft_lime_wool:
+//            return block_minecraft_lime_wool;
+//        case item_minecraft_pink_wool:
+//            return block_minecraft_pink_wool;
+//        case item_minecraft_gray_wool:
+//            return block_minecraft_gray_wool;
+//        case item_minecraft_light_gray_wool:
+//            return block_minecraft_light_gray_wool;
+//        case item_minecraft_cyan_wool:
+//            return block_minecraft_cyan_wool;
+//        case item_minecraft_purple_wool:
+//            return block_minecraft_purple_wool;
+//        case item_minecraft_blue_wool:
+//            return block_minecraft_blue_wool;
+//        case item_minecraft_brown_wool:
+//            return block_minecraft_brown_wool;
+//        case item_minecraft_green_wool:
+//            return block_minecraft_green_wool;
+//        case item_minecraft_red_wool:
+//            return block_minecraft_red_wool;
+//        case item_minecraft_black_wool:
+//            return block_minecraft_black_wool;
+//        case item_minecraft_dandelion:
+//            return block_minecraft_dandelion;
+//        case item_minecraft_poppy:
+//            return block_minecraft_poppy;
+//        case item_minecraft_blue_orchid:
+//            return block_minecraft_blue_orchid;
+//        case item_minecraft_allium:
+//            return block_minecraft_allium;
+//        case item_minecraft_azure_bluet:
+//            return block_minecraft_azure_bluet;
+//        case item_minecraft_red_tulip:
+//            return block_minecraft_red_tulip;
+//        case item_minecraft_orange_tulip:
+//            return block_minecraft_orange_tulip;
+//        case item_minecraft_white_tulip:
+//            return block_minecraft_white_tulip;
+//        case item_minecraft_pink_tulip:
+//            return block_minecraft_pink_tulip;
+//        case item_minecraft_oxeye_daisy:
+//            return block_minecraft_oxeye_daisy;
+//        case item_minecraft_cornflower:
+//            return block_minecraft_cornflower;
+//        case item_minecraft_lily_of_the_valley:
+//            return block_minecraft_lily_of_the_valley;
+//        case item_minecraft_wither_rose:
+//            return block_minecraft_wither_rose;
+//        case item_minecraft_spore_blossom:
+//            return block_minecraft_spore_blossom;
+//        case item_minecraft_brown_mushroom:
+//            return block_minecraft_brown_mushroom;
+//        case item_minecraft_red_mushroom:
+//            return block_minecraft_red_mushroom;
+//        case item_minecraft_crimson_fungus:
+//            return block_minecraft_crimson_fungus;
+//        case item_minecraft_warped_fungus:
+//            return block_minecraft_warped_fungus;
+//        case item_minecraft_crimson_roots:
+//            return block_minecraft_crimson_roots;
+//        case item_minecraft_warped_roots:
+//            return block_minecraft_warped_roots;
+//        case item_minecraft_nether_sprouts:
+//            return block_minecraft_nether_sprouts;
+//        case item_minecraft_weeping_vines:
+//            return block_minecraft_weeping_vines;
+//        case item_minecraft_twisting_vines:
+//            return block_minecraft_twisting_vines;
+//        case item_minecraft_sugar_cane:
+//            return block_minecraft_sugar_cane;
+//        case item_minecraft_kelp:
+//            return block_minecraft_kelp;
+//        case item_minecraft_moss_carpet:
+//            return block_minecraft_moss_carpet;
+//        case item_minecraft_moss_block:
+//            return block_minecraft_moss_block;
+//        case item_minecraft_hanging_roots:
+//            return block_minecraft_hanging_roots;
+//        case item_minecraft_big_dripleaf:
+//            return block_minecraft_big_dripleaf;
+//        case item_minecraft_small_dripleaf:
+//            return block_minecraft_small_dripleaf;
+//        case item_minecraft_bamboo:
+//            return block_minecraft_bamboo;
+//        case item_minecraft_oak_slab:
+//            return block_minecraft_oak_slab;
+//        case item_minecraft_spruce_slab:
+//            return block_minecraft_spruce_slab;
+//        case item_minecraft_birch_slab:
+//            return block_minecraft_birch_slab;
+//        case item_minecraft_jungle_slab:
+//            return block_minecraft_jungle_slab;
+//        case item_minecraft_acacia_slab:
+//            return block_minecraft_acacia_slab;
+//        case item_minecraft_dark_oak_slab:
+//            return block_minecraft_dark_oak_slab;
+//        case item_minecraft_crimson_slab:
+//            return block_minecraft_crimson_slab;
+//        case item_minecraft_warped_slab:
+//            return block_minecraft_warped_slab;
+//        case item_minecraft_stone_slab:
+//            return block_minecraft_stone_slab;
+//        case item_minecraft_smooth_stone_slab:
+//            return block_minecraft_smooth_stone_slab;
+//        case item_minecraft_sandstone_slab:
+//            return block_minecraft_sandstone_slab;
+//        case item_minecraft_cut_sandstone_slab:
+//            return block_minecraft_cut_sandstone_slab;
+//        case item_minecraft_petrified_oak_slab:
+//            return block_minecraft_petrified_oak_slab;
+//        case item_minecraft_cobblestone_slab:
+//            return block_minecraft_cobblestone_slab;
+//        case item_minecraft_brick_slab:
+//            return block_minecraft_brick_slab;
+//        case item_minecraft_stone_brick_slab:
+//            return block_minecraft_stone_brick_slab;
+//        case item_minecraft_nether_brick_slab:
+//            return block_minecraft_nether_brick_slab;
+//        case item_minecraft_quartz_slab:
+//            return block_minecraft_quartz_slab;
+//        case item_minecraft_red_sandstone_slab:
+//            return block_minecraft_red_sandstone_slab;
+//        case item_minecraft_cut_red_sandstone_slab:
+//            return block_minecraft_cut_red_sandstone_slab;
+//        case item_minecraft_purpur_slab:
+//            return block_minecraft_purpur_slab;
+//        case item_minecraft_prismarine_slab:
+//            return block_minecraft_prismarine_slab;
+//        case item_minecraft_prismarine_brick_slab:
+//            return block_minecraft_prismarine_brick_slab;
+//        case item_minecraft_dark_prismarine_slab:
+//            return block_minecraft_dark_prismarine_slab;
+//        case item_minecraft_smooth_quartz:
+//            return block_minecraft_smooth_quartz;
+//        case item_minecraft_smooth_red_sandstone:
+//            return block_minecraft_smooth_red_sandstone;
+//        case item_minecraft_smooth_sandstone:
+//            return block_minecraft_smooth_sandstone;
+//        case item_minecraft_smooth_stone:
+//            return block_minecraft_smooth_stone;
+//        case item_minecraft_bricks:
+//            return block_minecraft_bricks;
+//        case item_minecraft_bookshelf:
+//            return block_minecraft_bookshelf;
+//        case item_minecraft_mossy_cobblestone:
+//            return block_minecraft_mossy_cobblestone;
+//        case item_minecraft_obsidian:
+//            return block_minecraft_obsidian;
+//        case item_minecraft_torch:
+//            return block_minecraft_torch;
+//        case item_minecraft_end_rod:
+//            return block_minecraft_end_rod;
+//        case item_minecraft_chorus_plant:
+//            return block_minecraft_chorus_plant;
+//        case item_minecraft_chorus_flower:
+//            return block_minecraft_chorus_flower;
+//        case item_minecraft_purpur_block:
+//            return block_minecraft_purpur_block;
+//        case item_minecraft_purpur_pillar:
+//            return block_minecraft_purpur_pillar;
+//        case item_minecraft_purpur_stairs:
+//            return block_minecraft_purpur_stairs;
+//        case item_minecraft_spawner:
+//            return block_minecraft_spawner;
+//        case item_minecraft_oak_stairs:
+//            return block_minecraft_oak_stairs;
+//        case item_minecraft_chest:
+//            return block_minecraft_chest;
+//        case item_minecraft_crafting_table:
+//            return block_minecraft_crafting_table;
+//        case item_minecraft_farmland:
+//            return block_minecraft_farmland;
+//        case item_minecraft_furnace:
+//            return block_minecraft_furnace;
+//        case item_minecraft_ladder:
+//            return block_minecraft_ladder;
+//        case item_minecraft_cobblestone_stairs:
+//            return block_minecraft_cobblestone_stairs;
+//        case item_minecraft_snow:
+//            return block_minecraft_snow;
+//        case item_minecraft_ice:
+//            return block_minecraft_ice;
+//        case item_minecraft_snow_block:
+//            return block_minecraft_snow_block;
+//        case item_minecraft_cactus:
+//            return block_minecraft_cactus;
+//        case item_minecraft_clay:
+//            return block_minecraft_clay;
+//        case item_minecraft_jukebox:
+//            return block_minecraft_jukebox;
+//        case item_minecraft_oak_fence:
+//            return block_minecraft_oak_fence;
+//        case item_minecraft_spruce_fence:
+//            return block_minecraft_spruce_fence;
+//        case item_minecraft_birch_fence:
+//            return block_minecraft_birch_fence;
+//        case item_minecraft_jungle_fence:
+//            return block_minecraft_jungle_fence;
+//        case item_minecraft_acacia_fence:
+//            return block_minecraft_acacia_fence;
+//        case item_minecraft_dark_oak_fence:
+//            return block_minecraft_dark_oak_fence;
+//        case item_minecraft_crimson_fence:
+//            return block_minecraft_crimson_fence;
+//        case item_minecraft_warped_fence:
+//            return block_minecraft_warped_fence;
+//        case item_minecraft_pumpkin:
+//            return block_minecraft_pumpkin;
+//        case item_minecraft_carved_pumpkin:
+//            return block_minecraft_carved_pumpkin;
+//        case item_minecraft_jack_o_lantern:
+//            return block_minecraft_jack_o_lantern;
+//        case item_minecraft_netherrack:
+//            return block_minecraft_netherrack;
+//        case item_minecraft_soul_sand:
+//            return block_minecraft_soul_sand;
+//        case item_minecraft_soul_soil:
+//            return block_minecraft_soul_soil;
+//        case item_minecraft_basalt:
+//            return block_minecraft_basalt;
+//        case item_minecraft_polished_basalt:
+//            return block_minecraft_polished_basalt;
+//        case item_minecraft_smooth_basalt:
+//            return block_minecraft_smooth_basalt;
+//        case item_minecraft_soul_torch:
+//            return block_minecraft_soul_torch;
+//        case item_minecraft_glowstone:
+//            return block_minecraft_glowstone;
+//        case item_minecraft_infested_stone:
+//            return block_minecraft_infested_stone;
+//        case item_minecraft_infested_cobblestone:
+//            return block_minecraft_infested_cobblestone;
+//        case item_minecraft_infested_stone_bricks:
+//            return block_minecraft_infested_stone_bricks;
+//        case item_minecraft_infested_mossy_stone_bricks:
+//            return block_minecraft_infested_mossy_stone_bricks;
+//        case item_minecraft_infested_cracked_stone_bricks:
+//            return block_minecraft_infested_cracked_stone_bricks;
+//        case item_minecraft_infested_chiseled_stone_bricks:
+//            return block_minecraft_infested_chiseled_stone_bricks;
+//        case item_minecraft_infested_deepslate:
+//            return block_minecraft_infested_deepslate;
+//        case item_minecraft_stone_bricks:
+//            return block_minecraft_stone_bricks;
+//        case item_minecraft_mossy_stone_bricks:
+//            return block_minecraft_mossy_stone_bricks;
+//        case item_minecraft_cracked_stone_bricks:
+//            return block_minecraft_cracked_stone_bricks;
+//        case item_minecraft_chiseled_stone_bricks:
+//            return block_minecraft_chiseled_stone_bricks;
+//        case item_minecraft_deepslate_bricks:
+//            return block_minecraft_deepslate_bricks;
+//        case item_minecraft_cracked_deepslate_bricks:
+//            return block_minecraft_cracked_deepslate_bricks;
+//        case item_minecraft_deepslate_tiles:
+//            return block_minecraft_deepslate_tiles;
+//        case item_minecraft_cracked_deepslate_tiles:
+//            return block_minecraft_cracked_deepslate_tiles;
+//        case item_minecraft_chiseled_deepslate:
+//            return block_minecraft_chiseled_deepslate;
+//        case item_minecraft_brown_mushroom_block:
+//            return block_minecraft_brown_mushroom_block;
+//        case item_minecraft_red_mushroom_block:
+//            return block_minecraft_red_mushroom_block;
+//        case item_minecraft_mushroom_stem:
+//            return block_minecraft_mushroom_stem;
+//        case item_minecraft_iron_bars:
+//            return block_minecraft_iron_bars;
+//        case item_minecraft_chain:
+//            return block_minecraft_chain;
+//        case item_minecraft_glass_pane:
+//            return block_minecraft_glass_pane;
+//        case item_minecraft_melon:
+//            return block_minecraft_melon;
+//        case item_minecraft_vine:
+//            return block_minecraft_vine;
+//        case item_minecraft_glow_lichen:
+//            return block_minecraft_glow_lichen;
+//        case item_minecraft_brick_stairs:
+//            return block_minecraft_brick_stairs;
+//        case item_minecraft_stone_brick_stairs:
+//            return block_minecraft_stone_brick_stairs;
+//        case item_minecraft_mycelium:
+//            return block_minecraft_mycelium;
+//        case item_minecraft_lily_pad:
+//            return block_minecraft_lily_pad;
+//        case item_minecraft_nether_bricks:
+//            return block_minecraft_nether_bricks;
+//        case item_minecraft_cracked_nether_bricks:
+//            return block_minecraft_cracked_nether_bricks;
+//        case item_minecraft_chiseled_nether_bricks:
+//            return block_minecraft_chiseled_nether_bricks;
+//        case item_minecraft_nether_brick_fence:
+//            return block_minecraft_nether_brick_fence;
+//        case item_minecraft_nether_brick_stairs:
+//            return block_minecraft_nether_brick_stairs;
+//        case item_minecraft_enchanting_table:
+//            return block_minecraft_enchanting_table;
+//        case item_minecraft_end_portal_frame:
+//            return block_minecraft_end_portal_frame;
+//        case item_minecraft_end_stone:
+//            return block_minecraft_end_stone;
+//        case item_minecraft_end_stone_bricks:
+//            return block_minecraft_end_stone_bricks;
+//        case item_minecraft_dragon_egg:
+//            return block_minecraft_dragon_egg;
+//        case item_minecraft_sandstone_stairs:
+//            return block_minecraft_sandstone_stairs;
+//        case item_minecraft_ender_chest:
+//            return block_minecraft_ender_chest;
+//        case item_minecraft_emerald_block:
+//            return block_minecraft_emerald_block;
+//        case item_minecraft_spruce_stairs:
+//            return block_minecraft_spruce_stairs;
+//        case item_minecraft_birch_stairs:
+//            return block_minecraft_birch_stairs;
+//        case item_minecraft_jungle_stairs:
+//            return block_minecraft_jungle_stairs;
+//        case item_minecraft_crimson_stairs:
+//            return block_minecraft_crimson_stairs;
+//        case item_minecraft_warped_stairs:
+//            return block_minecraft_warped_stairs;
+//        case item_minecraft_command_block:
+//            return block_minecraft_command_block;
+//        case item_minecraft_beacon:
+//            return block_minecraft_beacon;
+//        case item_minecraft_cobblestone_wall:
+//            return block_minecraft_cobblestone_wall;
+//        case item_minecraft_mossy_cobblestone_wall:
+//            return block_minecraft_mossy_cobblestone_wall;
+//        case item_minecraft_brick_wall:
+//            return block_minecraft_brick_wall;
+//        case item_minecraft_prismarine_wall:
+//            return block_minecraft_prismarine_wall;
+//        case item_minecraft_red_sandstone_wall:
+//            return block_minecraft_red_sandstone_wall;
+//        case item_minecraft_mossy_stone_brick_wall:
+//            return block_minecraft_mossy_stone_brick_wall;
+//        case item_minecraft_granite_wall:
+//            return block_minecraft_granite_wall;
+//        case item_minecraft_stone_brick_wall:
+//            return block_minecraft_stone_brick_wall;
+//        case item_minecraft_nether_brick_wall:
+//            return block_minecraft_nether_brick_wall;
+//        case item_minecraft_andesite_wall:
+//            return block_minecraft_andesite_wall;
+//        case item_minecraft_red_nether_brick_wall:
+//            return block_minecraft_red_nether_brick_wall;
+//        case item_minecraft_sandstone_wall:
+//            return block_minecraft_sandstone_wall;
+//        case item_minecraft_end_stone_brick_wall:
+//            return block_minecraft_end_stone_brick_wall;
+//        case item_minecraft_diorite_wall:
+//            return block_minecraft_diorite_wall;
+//        case item_minecraft_blackstone_wall:
+//            return block_minecraft_blackstone_wall;
+//        case item_minecraft_polished_blackstone_wall:
+//            return block_minecraft_polished_blackstone_wall;
+//        case item_minecraft_polished_blackstone_brick_wall:
+//            return block_minecraft_polished_blackstone_brick_wall;
+//        case item_minecraft_cobbled_deepslate_wall:
+//            return block_minecraft_cobbled_deepslate_wall;
+//        case item_minecraft_polished_deepslate_wall:
+//            return block_minecraft_polished_deepslate_wall;
+//        case item_minecraft_deepslate_brick_wall:
+//            return block_minecraft_deepslate_brick_wall;
+//        case item_minecraft_deepslate_tile_wall:
+//            return block_minecraft_deepslate_tile_wall;
+//        case item_minecraft_anvil:
+//            return block_minecraft_anvil;
+//        case item_minecraft_chipped_anvil:
+//            return block_minecraft_chipped_anvil;
+//        case item_minecraft_damaged_anvil:
+//            return block_minecraft_damaged_anvil;
+//        case item_minecraft_chiseled_quartz_block:
+//            return block_minecraft_chiseled_quartz_block;
+//        case item_minecraft_quartz_block:
+//            return block_minecraft_quartz_block;
+//        case item_minecraft_quartz_bricks:
+//            return block_minecraft_quartz_bricks;
+//        case item_minecraft_quartz_pillar:
+//            return block_minecraft_quartz_pillar;
+//        case item_minecraft_quartz_stairs:
+//            return block_minecraft_quartz_stairs;
+//        case item_minecraft_white_terracotta:
+//            return block_minecraft_white_terracotta;
+//        case item_minecraft_orange_terracotta:
+//            return block_minecraft_orange_terracotta;
+//        case item_minecraft_magenta_terracotta:
+//            return block_minecraft_magenta_terracotta;
+//        case item_minecraft_light_blue_terracotta:
+//            return block_minecraft_light_blue_terracotta;
+//        case item_minecraft_yellow_terracotta:
+//            return block_minecraft_yellow_terracotta;
+//        case item_minecraft_lime_terracotta:
+//            return block_minecraft_lime_terracotta;
+//        case item_minecraft_pink_terracotta:
+//            return block_minecraft_pink_terracotta;
+//        case item_minecraft_gray_terracotta:
+//            return block_minecraft_gray_terracotta;
+//        case item_minecraft_light_gray_terracotta:
+//            return block_minecraft_light_gray_terracotta;
+//        case item_minecraft_cyan_terracotta:
+//            return block_minecraft_cyan_terracotta;
+//        case item_minecraft_purple_terracotta:
+//            return block_minecraft_purple_terracotta;
+//        case item_minecraft_blue_terracotta:
+//            return block_minecraft_blue_terracotta;
+//        case item_minecraft_brown_terracotta:
+//            return block_minecraft_brown_terracotta;
+//        case item_minecraft_green_terracotta:
+//            return block_minecraft_green_terracotta;
+//        case item_minecraft_red_terracotta:
+//            return block_minecraft_red_terracotta;
+//        case item_minecraft_black_terracotta:
+//            return block_minecraft_black_terracotta;
+//        case item_minecraft_barrier:
+//            return block_minecraft_barrier;
+//        case item_minecraft_light:
+//            return block_minecraft_light;
+//        case item_minecraft_hay_block:
+//            return block_minecraft_hay_block;
+//        case item_minecraft_white_carpet:
+//            return block_minecraft_white_carpet;
+//        case item_minecraft_orange_carpet:
+//            return block_minecraft_orange_carpet;
+//        case item_minecraft_magenta_carpet:
+//            return block_minecraft_magenta_carpet;
+//        case item_minecraft_light_blue_carpet:
+//            return block_minecraft_light_blue_carpet;
+//        case item_minecraft_yellow_carpet:
+//            return block_minecraft_yellow_carpet;
+//        case item_minecraft_lime_carpet:
+//            return block_minecraft_lime_carpet;
+//        case item_minecraft_pink_carpet:
+//            return block_minecraft_pink_carpet;
+//        case item_minecraft_gray_carpet:
+//            return block_minecraft_gray_carpet;
+//        case item_minecraft_light_gray_carpet:
+//            return block_minecraft_light_gray_carpet;
+//        case item_minecraft_cyan_carpet:
+//            return block_minecraft_cyan_carpet;
+//        case item_minecraft_purple_carpet:
+//            return block_minecraft_purple_carpet;
+//        case item_minecraft_blue_carpet:
+//            return block_minecraft_blue_carpet;
+//        case item_minecraft_brown_carpet:
+//            return block_minecraft_brown_carpet;
+//        case item_minecraft_green_carpet:
+//            return block_minecraft_green_carpet;
+//        case item_minecraft_red_carpet:
+//            return block_minecraft_red_carpet;
+//        case item_minecraft_black_carpet:
+//            return block_minecraft_black_carpet;
+//        case item_minecraft_terracotta:
+//            return block_minecraft_terracotta;
+//        case item_minecraft_packed_ice:
+//            return block_minecraft_packed_ice;
+//        case item_minecraft_acacia_stairs:
+//            return block_minecraft_acacia_stairs;
+//        case item_minecraft_dark_oak_stairs:
+//            return block_minecraft_dark_oak_stairs;
+//        case item_minecraft_dirt_path:
+//            return block_minecraft_dirt_path;
+//        case item_minecraft_sunflower:
+//            return block_minecraft_sunflower;
+//        case item_minecraft_lilac:
+//            return block_minecraft_lilac;
+//        case item_minecraft_rose_bush:
+//            return block_minecraft_rose_bush;
+//        case item_minecraft_peony:
+//            return block_minecraft_peony;
+//        case item_minecraft_tall_grass:
+//            return block_minecraft_tall_grass;
+//        case item_minecraft_large_fern:
+//            return block_minecraft_large_fern;
+//        case item_minecraft_white_stained_glass:
+//            return block_minecraft_white_stained_glass;
+//        case item_minecraft_orange_stained_glass:
+//            return block_minecraft_orange_stained_glass;
+//        case item_minecraft_magenta_stained_glass:
+//            return block_minecraft_magenta_stained_glass;
+//        case item_minecraft_light_blue_stained_glass:
+//            return block_minecraft_light_blue_stained_glass;
+//        case item_minecraft_yellow_stained_glass:
+//            return block_minecraft_yellow_stained_glass;
+//        case item_minecraft_lime_stained_glass:
+//            return block_minecraft_lime_stained_glass;
+//        case item_minecraft_pink_stained_glass:
+//            return block_minecraft_pink_stained_glass;
+//        case item_minecraft_gray_stained_glass:
+//            return block_minecraft_gray_stained_glass;
+//        case item_minecraft_light_gray_stained_glass:
+//            return block_minecraft_light_gray_stained_glass;
+//        case item_minecraft_cyan_stained_glass:
+//            return block_minecraft_cyan_stained_glass;
+//        case item_minecraft_purple_stained_glass:
+//            return block_minecraft_purple_stained_glass;
+//        case item_minecraft_blue_stained_glass:
+//            return block_minecraft_blue_stained_glass;
+//        case item_minecraft_brown_stained_glass:
+//            return block_minecraft_brown_stained_glass;
+//        case item_minecraft_green_stained_glass:
+//            return block_minecraft_green_stained_glass;
+//        case item_minecraft_red_stained_glass:
+//            return block_minecraft_red_stained_glass;
+//        case item_minecraft_black_stained_glass:
+//            return block_minecraft_black_stained_glass;
+//        case item_minecraft_white_stained_glass_pane:
+//            return block_minecraft_white_stained_glass_pane;
+//        case item_minecraft_orange_stained_glass_pane:
+//            return block_minecraft_orange_stained_glass_pane;
+//        case item_minecraft_magenta_stained_glass_pane:
+//            return block_minecraft_magenta_stained_glass_pane;
+//        case item_minecraft_light_blue_stained_glass_pane:
+//            return block_minecraft_light_blue_stained_glass_pane;
+//        case item_minecraft_yellow_stained_glass_pane:
+//            return block_minecraft_yellow_stained_glass_pane;
+//        case item_minecraft_lime_stained_glass_pane:
+//            return block_minecraft_lime_stained_glass_pane;
+//        case item_minecraft_pink_stained_glass_pane:
+//            return block_minecraft_pink_stained_glass_pane;
+//        case item_minecraft_gray_stained_glass_pane:
+//            return block_minecraft_gray_stained_glass_pane;
+//        case item_minecraft_light_gray_stained_glass_pane:
+//            return block_minecraft_light_gray_stained_glass_pane;
+//        case item_minecraft_cyan_stained_glass_pane:
+//            return block_minecraft_cyan_stained_glass_pane;
+//        case item_minecraft_purple_stained_glass_pane:
+//            return block_minecraft_purple_stained_glass_pane;
+//        case item_minecraft_blue_stained_glass_pane:
+//            return block_minecraft_blue_stained_glass_pane;
+//        case item_minecraft_brown_stained_glass_pane:
+//            return block_minecraft_brown_stained_glass_pane;
+//        case item_minecraft_green_stained_glass_pane:
+//            return block_minecraft_green_stained_glass_pane;
+//        case item_minecraft_red_stained_glass_pane:
+//            return block_minecraft_red_stained_glass_pane;
+//        case item_minecraft_black_stained_glass_pane:
+//            return block_minecraft_black_stained_glass_pane;
+//        case item_minecraft_prismarine:
+//            return block_minecraft_prismarine;
+//        case item_minecraft_prismarine_bricks:
+//            return block_minecraft_prismarine_bricks;
+//        case item_minecraft_dark_prismarine:
+//            return block_minecraft_dark_prismarine;
+//        case item_minecraft_prismarine_stairs:
+//            return block_minecraft_prismarine_stairs;
+//        case item_minecraft_prismarine_brick_stairs:
+//            return block_minecraft_prismarine_brick_stairs;
+//        case item_minecraft_dark_prismarine_stairs:
+//            return block_minecraft_dark_prismarine_stairs;
+//        case item_minecraft_sea_lantern:
+//            return block_minecraft_sea_lantern;
+//        case item_minecraft_red_sandstone:
+//            return block_minecraft_red_sandstone;
+//        case item_minecraft_chiseled_red_sandstone:
+//            return block_minecraft_chiseled_red_sandstone;
+//        case item_minecraft_cut_red_sandstone:
+//            return block_minecraft_cut_red_sandstone;
+//        case item_minecraft_red_sandstone_stairs:
+//            return block_minecraft_red_sandstone_stairs;
+//        case item_minecraft_repeating_command_block:
+//            return block_minecraft_repeating_command_block;
+//        case item_minecraft_chain_command_block:
+//            return block_minecraft_chain_command_block;
+//        case item_minecraft_magma_block:
+//            return block_minecraft_magma_block;
+//        case item_minecraft_nether_wart_block:
+//            return block_minecraft_nether_wart_block;
+//        case item_minecraft_warped_wart_block:
+//            return block_minecraft_warped_wart_block;
+//        case item_minecraft_red_nether_bricks:
+//            return block_minecraft_red_nether_bricks;
+//        case item_minecraft_bone_block:
+//            return block_minecraft_bone_block;
+//        case item_minecraft_structure_void:
+//            return block_minecraft_structure_void;
+//        case item_minecraft_shulker_box:
+//            return block_minecraft_shulker_box;
+//        case item_minecraft_white_shulker_box:
+//            return block_minecraft_white_shulker_box;
+//        case item_minecraft_orange_shulker_box:
+//            return block_minecraft_orange_shulker_box;
+//        case item_minecraft_magenta_shulker_box:
+//            return block_minecraft_magenta_shulker_box;
+//        case item_minecraft_light_blue_shulker_box:
+//            return block_minecraft_light_blue_shulker_box;
+//        case item_minecraft_yellow_shulker_box:
+//            return block_minecraft_yellow_shulker_box;
+//        case item_minecraft_lime_shulker_box:
+//            return block_minecraft_lime_shulker_box;
+//        case item_minecraft_pink_shulker_box:
+//            return block_minecraft_pink_shulker_box;
+//        case item_minecraft_gray_shulker_box:
+//            return block_minecraft_gray_shulker_box;
+//        case item_minecraft_light_gray_shulker_box:
+//            return block_minecraft_light_gray_shulker_box;
+//        case item_minecraft_cyan_shulker_box:
+//            return block_minecraft_cyan_shulker_box;
+//        case item_minecraft_purple_shulker_box:
+//            return block_minecraft_purple_shulker_box;
+//        case item_minecraft_blue_shulker_box:
+//            return block_minecraft_blue_shulker_box;
+//        case item_minecraft_brown_shulker_box:
+//            return block_minecraft_brown_shulker_box;
+//        case item_minecraft_green_shulker_box:
+//            return block_minecraft_green_shulker_box;
+//        case item_minecraft_red_shulker_box:
+//            return block_minecraft_red_shulker_box;
+//        case item_minecraft_black_shulker_box:
+//            return block_minecraft_black_shulker_box;
+//        case item_minecraft_white_glazed_terracotta:
+//            return block_minecraft_white_glazed_terracotta;
+//        case item_minecraft_orange_glazed_terracotta:
+//            return block_minecraft_orange_glazed_terracotta;
+//        case item_minecraft_magenta_glazed_terracotta:
+//            return block_minecraft_magenta_glazed_terracotta;
+//        case item_minecraft_light_blue_glazed_terracotta:
+//            return block_minecraft_light_blue_glazed_terracotta;
+//        case item_minecraft_yellow_glazed_terracotta:
+//            return block_minecraft_yellow_glazed_terracotta;
+//        case item_minecraft_lime_glazed_terracotta:
+//            return block_minecraft_lime_glazed_terracotta;
+//        case item_minecraft_pink_glazed_terracotta:
+//            return block_minecraft_pink_glazed_terracotta;
+//        case item_minecraft_gray_glazed_terracotta:
+//            return block_minecraft_gray_glazed_terracotta;
+//        case item_minecraft_light_gray_glazed_terracotta:
+//            return block_minecraft_light_gray_glazed_terracotta;
+//        case item_minecraft_cyan_glazed_terracotta:
+//            return block_minecraft_cyan_glazed_terracotta;
+//        case item_minecraft_purple_glazed_terracotta:
+//            return block_minecraft_purple_glazed_terracotta;
+//        case item_minecraft_blue_glazed_terracotta:
+//            return block_minecraft_blue_glazed_terracotta;
+//        case item_minecraft_brown_glazed_terracotta:
+//            return block_minecraft_brown_glazed_terracotta;
+//        case item_minecraft_green_glazed_terracotta:
+//            return block_minecraft_green_glazed_terracotta;
+//        case item_minecraft_red_glazed_terracotta:
+//            return block_minecraft_red_glazed_terracotta;
+//        case item_minecraft_black_glazed_terracotta:
+//            return block_minecraft_black_glazed_terracotta;
+//        case item_minecraft_white_concrete:
+//            return block_minecraft_white_concrete;
+//        case item_minecraft_orange_concrete:
+//            return block_minecraft_orange_concrete;
+//        case item_minecraft_magenta_concrete:
+//            return block_minecraft_magenta_concrete;
+//        case item_minecraft_light_blue_concrete:
+//            return block_minecraft_light_blue_concrete;
+//        case item_minecraft_yellow_concrete:
+//            return block_minecraft_yellow_concrete;
+//        case item_minecraft_lime_concrete:
+//            return block_minecraft_lime_concrete;
+//        case item_minecraft_pink_concrete:
+//            return block_minecraft_pink_concrete;
+//        case item_minecraft_gray_concrete:
+//            return block_minecraft_gray_concrete;
+//        case item_minecraft_light_gray_concrete:
+//            return block_minecraft_light_gray_concrete;
+//        case item_minecraft_cyan_concrete:
+//            return block_minecraft_cyan_concrete;
+//        case item_minecraft_purple_concrete:
+//            return block_minecraft_purple_concrete;
+//        case item_minecraft_blue_concrete:
+//            return block_minecraft_blue_concrete;
+//        case item_minecraft_brown_concrete:
+//            return block_minecraft_brown_concrete;
+//        case item_minecraft_green_concrete:
+//            return block_minecraft_green_concrete;
+//        case item_minecraft_red_concrete:
+//            return block_minecraft_red_concrete;
+//        case item_minecraft_black_concrete:
+//            return block_minecraft_black_concrete;
+//        case item_minecraft_white_concrete_powder:
+//            return block_minecraft_white_concrete_powder;
+//        case item_minecraft_orange_concrete_powder:
+//            return block_minecraft_orange_concrete_powder;
+//        case item_minecraft_magenta_concrete_powder:
+//            return block_minecraft_magenta_concrete_powder;
+//        case item_minecraft_light_blue_concrete_powder:
+//            return block_minecraft_light_blue_concrete_powder;
+//        case item_minecraft_yellow_concrete_powder:
+//            return block_minecraft_yellow_concrete_powder;
+//        case item_minecraft_lime_concrete_powder:
+//            return block_minecraft_lime_concrete_powder;
+//        case item_minecraft_pink_concrete_powder:
+//            return block_minecraft_pink_concrete_powder;
+//        case item_minecraft_gray_concrete_powder:
+//            return block_minecraft_gray_concrete_powder;
+//        case item_minecraft_light_gray_concrete_powder:
+//            return block_minecraft_light_gray_concrete_powder;
+//        case item_minecraft_cyan_concrete_powder:
+//            return block_minecraft_cyan_concrete_powder;
+//        case item_minecraft_purple_concrete_powder:
+//            return block_minecraft_purple_concrete_powder;
+//        case item_minecraft_blue_concrete_powder:
+//            return block_minecraft_blue_concrete_powder;
+//        case item_minecraft_brown_concrete_powder:
+//            return block_minecraft_brown_concrete_powder;
+//        case item_minecraft_green_concrete_powder:
+//            return block_minecraft_green_concrete_powder;
+//        case item_minecraft_red_concrete_powder:
+//            return block_minecraft_red_concrete_powder;
+//        case item_minecraft_black_concrete_powder:
+//            return block_minecraft_black_concrete_powder;
+//        case item_minecraft_turtle_egg:
+//            return block_minecraft_turtle_egg;
+//        case item_minecraft_dead_tube_coral_block:
+//            return block_minecraft_dead_tube_coral_block;
+//        case item_minecraft_dead_brain_coral_block:
+//            return block_minecraft_dead_brain_coral_block;
+//        case item_minecraft_dead_bubble_coral_block:
+//            return block_minecraft_dead_bubble_coral_block;
+//        case item_minecraft_dead_fire_coral_block:
+//            return block_minecraft_dead_fire_coral_block;
+//        case item_minecraft_dead_horn_coral_block:
+//            return block_minecraft_dead_horn_coral_block;
+//        case item_minecraft_tube_coral_block:
+//            return block_minecraft_tube_coral_block;
+//        case item_minecraft_brain_coral_block:
+//            return block_minecraft_brain_coral_block;
+//        case item_minecraft_bubble_coral_block:
+//            return block_minecraft_bubble_coral_block;
+//        case item_minecraft_fire_coral_block:
+//            return block_minecraft_fire_coral_block;
+//        case item_minecraft_horn_coral_block:
+//            return block_minecraft_horn_coral_block;
+//        case item_minecraft_tube_coral:
+//            return block_minecraft_tube_coral;
+//        case item_minecraft_brain_coral:
+//            return block_minecraft_brain_coral;
+//        case item_minecraft_bubble_coral:
+//            return block_minecraft_bubble_coral;
+//        case item_minecraft_fire_coral:
+//            return block_minecraft_fire_coral;
+//        case item_minecraft_horn_coral:
+//            return block_minecraft_horn_coral;
+//        case item_minecraft_dead_brain_coral:
+//            return block_minecraft_dead_brain_coral;
+//        case item_minecraft_dead_bubble_coral:
+//            return block_minecraft_dead_bubble_coral;
+//        case item_minecraft_dead_fire_coral:
+//            return block_minecraft_dead_fire_coral;
+//        case item_minecraft_dead_horn_coral:
+//            return block_minecraft_dead_horn_coral;
+//        case item_minecraft_dead_tube_coral:
+//            return block_minecraft_dead_tube_coral;
+//        case item_minecraft_tube_coral_fan:
+//            return block_minecraft_tube_coral_fan;
+//        case item_minecraft_brain_coral_fan:
+//            return block_minecraft_brain_coral_fan;
+//        case item_minecraft_bubble_coral_fan:
+//            return block_minecraft_bubble_coral_fan;
+//        case item_minecraft_fire_coral_fan:
+//            return block_minecraft_fire_coral_fan;
+//        case item_minecraft_horn_coral_fan:
+//            return block_minecraft_horn_coral_fan;
+//        case item_minecraft_dead_tube_coral_fan:
+//            return block_minecraft_dead_tube_coral_fan;
+//        case item_minecraft_dead_brain_coral_fan:
+//            return block_minecraft_dead_brain_coral_fan;
+//        case item_minecraft_dead_bubble_coral_fan:
+//            return block_minecraft_dead_bubble_coral_fan;
+//        case item_minecraft_dead_fire_coral_fan:
+//            return block_minecraft_dead_fire_coral_fan;
+//        case item_minecraft_dead_horn_coral_fan:
+//            return block_minecraft_dead_horn_coral_fan;
+//        case item_minecraft_blue_ice:
+//            return block_minecraft_blue_ice;
+//        case item_minecraft_conduit:
+//            return block_minecraft_conduit;
+//        case item_minecraft_polished_granite_stairs:
+//            return block_minecraft_polished_granite_stairs;
+//        case item_minecraft_smooth_red_sandstone_stairs:
+//            return block_minecraft_smooth_red_sandstone_stairs;
+//        case item_minecraft_mossy_stone_brick_stairs:
+//            return block_minecraft_mossy_stone_brick_stairs;
+//        case item_minecraft_polished_diorite_stairs:
+//            return block_minecraft_polished_diorite_stairs;
+//        case item_minecraft_mossy_cobblestone_stairs:
+//            return block_minecraft_mossy_cobblestone_stairs;
+//        case item_minecraft_end_stone_brick_stairs:
+//            return block_minecraft_end_stone_brick_stairs;
+//        case item_minecraft_stone_stairs:
+//            return block_minecraft_stone_stairs;
+//        case item_minecraft_smooth_sandstone_stairs:
+//            return block_minecraft_smooth_sandstone_stairs;
+//        case item_minecraft_smooth_quartz_stairs:
+//            return block_minecraft_smooth_quartz_stairs;
+//        case item_minecraft_granite_stairs:
+//            return block_minecraft_granite_stairs;
+//        case item_minecraft_andesite_stairs:
+//            return block_minecraft_andesite_stairs;
+//        case item_minecraft_red_nether_brick_stairs:
+//            return block_minecraft_red_nether_brick_stairs;
+//        case item_minecraft_polished_andesite_stairs:
+//            return block_minecraft_polished_andesite_stairs;
+//        case item_minecraft_diorite_stairs:
+//            return block_minecraft_diorite_stairs;
+//        case item_minecraft_cobbled_deepslate_stairs:
+//            return block_minecraft_cobbled_deepslate_stairs;
+//        case item_minecraft_polished_deepslate_stairs:
+//            return block_minecraft_polished_deepslate_stairs;
+//        case item_minecraft_deepslate_brick_stairs:
+//            return block_minecraft_deepslate_brick_stairs;
+//        case item_minecraft_deepslate_tile_stairs:
+//            return block_minecraft_deepslate_tile_stairs;
+//        case item_minecraft_polished_granite_slab:
+//            return block_minecraft_polished_granite_slab;
+//        case item_minecraft_smooth_red_sandstone_slab:
+//            return block_minecraft_smooth_red_sandstone_slab;
+//        case item_minecraft_mossy_stone_brick_slab:
+//            return block_minecraft_mossy_stone_brick_slab;
+//        case item_minecraft_polished_diorite_slab:
+//            return block_minecraft_polished_diorite_slab;
+//        case item_minecraft_mossy_cobblestone_slab:
+//            return block_minecraft_mossy_cobblestone_slab;
+//        case item_minecraft_end_stone_brick_slab:
+//            return block_minecraft_end_stone_brick_slab;
+//        case item_minecraft_smooth_sandstone_slab:
+//            return block_minecraft_smooth_sandstone_slab;
+//        case item_minecraft_smooth_quartz_slab:
+//            return block_minecraft_smooth_quartz_slab;
+//        case item_minecraft_granite_slab:
+//            return block_minecraft_granite_slab;
+//        case item_minecraft_andesite_slab:
+//            return block_minecraft_andesite_slab;
+//        case item_minecraft_red_nether_brick_slab:
+//            return block_minecraft_red_nether_brick_slab;
+//        case item_minecraft_polished_andesite_slab:
+//            return block_minecraft_polished_andesite_slab;
+//        case item_minecraft_diorite_slab:
+//            return block_minecraft_diorite_slab;
+//        case item_minecraft_cobbled_deepslate_slab:
+//            return block_minecraft_cobbled_deepslate_slab;
+//        case item_minecraft_polished_deepslate_slab:
+//            return block_minecraft_polished_deepslate_slab;
+//        case item_minecraft_deepslate_brick_slab:
+//            return block_minecraft_deepslate_brick_slab;
+//        case item_minecraft_deepslate_tile_slab:
+//            return block_minecraft_deepslate_tile_slab;
+//        case item_minecraft_scaffolding:
+//            return block_minecraft_scaffolding;
+//        case item_minecraft_redstone:
+//            return block_minecraft_redstone;
+//        case item_minecraft_redstone_torch:
+//            return block_minecraft_redstone_torch;
+//        case item_minecraft_redstone_block:
+//            return block_minecraft_redstone_block;
+//        case item_minecraft_repeater:
+//            return block_minecraft_repeater;
+//        case item_minecraft_comparator:
+//            return block_minecraft_comparator;
+//        case item_minecraft_piston:
+//            return block_minecraft_piston;
+//        case item_minecraft_sticky_piston:
+//            return block_minecraft_sticky_piston;
+//        case item_minecraft_slime_block:
+//            return block_minecraft_slime_block;
+//        case item_minecraft_honey_block:
+//            return block_minecraft_honey_block;
+//        case item_minecraft_observer:
+//            return block_minecraft_observer;
+//        case item_minecraft_hopper:
+//            return block_minecraft_hopper;
+//        case item_minecraft_dispenser:
+//            return block_minecraft_dispenser;
+//        case item_minecraft_dropper:
+//            return block_minecraft_dropper;
+//        case item_minecraft_lectern:
+//            return block_minecraft_lectern;
+//        case item_minecraft_target:
+//            return block_minecraft_target;
+//        case item_minecraft_lever:
+//            return block_minecraft_lever;
+//        case item_minecraft_lightning_rod:
+//            return block_minecraft_lightning_rod;
+//        case item_minecraft_daylight_detector:
+//            return block_minecraft_daylight_detector;
+//        case item_minecraft_sculk_sensor:
+//            return block_minecraft_sculk_sensor;
+//        case item_minecraft_tripwire_hook:
+//            return block_minecraft_tripwire_hook;
+//        case item_minecraft_trapped_chest:
+//            return block_minecraft_trapped_chest;
+//        case item_minecraft_tnt:
+//            return block_minecraft_tnt;
+//        case item_minecraft_redstone_lamp:
+//            return block_minecraft_redstone_lamp;
+//        case item_minecraft_note_block:
+//            return block_minecraft_note_block;
+//        case item_minecraft_stone_button:
+//            return block_minecraft_stone_button;
+//        case item_minecraft_polished_blackstone_button:
+//            return block_minecraft_polished_blackstone_button;
+//        case item_minecraft_oak_button:
+//            return block_minecraft_oak_button;
+//        case item_minecraft_spruce_button:
+//            return block_minecraft_spruce_button;
+//        case item_minecraft_birch_button:
+//            return block_minecraft_birch_button;
+//        case item_minecraft_jungle_button:
+//            return block_minecraft_jungle_button;
+//        case item_minecraft_acacia_button:
+//            return block_minecraft_acacia_button;
+//        case item_minecraft_dark_oak_button:
+//            return block_minecraft_dark_oak_button;
+//        case item_minecraft_crimson_button:
+//            return block_minecraft_crimson_button;
+//        case item_minecraft_warped_button:
+//            return block_minecraft_warped_button;
+//        case item_minecraft_stone_pressure_plate:
+//            return block_minecraft_stone_pressure_plate;
+//        case item_minecraft_polished_blackstone_pressure_plate:
+//            return block_minecraft_polished_blackstone_pressure_plate;
+//        case item_minecraft_light_weighted_pressure_plate:
+//            return block_minecraft_light_weighted_pressure_plate;
+//        case item_minecraft_heavy_weighted_pressure_plate:
+//            return block_minecraft_heavy_weighted_pressure_plate;
+//        case item_minecraft_oak_pressure_plate:
+//            return block_minecraft_oak_pressure_plate;
+//        case item_minecraft_spruce_pressure_plate:
+//            return block_minecraft_spruce_pressure_plate;
+//        case item_minecraft_birch_pressure_plate:
+//            return block_minecraft_birch_pressure_plate;
+//        case item_minecraft_jungle_pressure_plate:
+//            return block_minecraft_jungle_pressure_plate;
+//        case item_minecraft_acacia_pressure_plate:
+//            return block_minecraft_acacia_pressure_plate;
+//        case item_minecraft_dark_oak_pressure_plate:
+//            return block_minecraft_dark_oak_pressure_plate;
+//        case item_minecraft_crimson_pressure_plate:
+//            return block_minecraft_crimson_pressure_plate;
+//        case item_minecraft_warped_pressure_plate:
+//            return block_minecraft_warped_pressure_plate;
+//        case item_minecraft_iron_door:
+//            return block_minecraft_iron_door;
+//        case item_minecraft_oak_door:
+//            return block_minecraft_oak_door;
+//        case item_minecraft_spruce_door:
+//            return block_minecraft_spruce_door;
+//        case item_minecraft_birch_door:
+//            return block_minecraft_birch_door;
+//        case item_minecraft_jungle_door:
+//            return block_minecraft_jungle_door;
+//        case item_minecraft_acacia_door:
+//            return block_minecraft_acacia_door;
+//        case item_minecraft_dark_oak_door:
+//            return block_minecraft_dark_oak_door;
+//        case item_minecraft_crimson_door:
+//            return block_minecraft_crimson_door;
+//        case item_minecraft_warped_door:
+//            return block_minecraft_warped_door;
+//        case item_minecraft_iron_trapdoor:
+//            return block_minecraft_iron_trapdoor;
+//        case item_minecraft_oak_trapdoor:
+//            return block_minecraft_oak_trapdoor;
+//        case item_minecraft_spruce_trapdoor:
+//            return block_minecraft_spruce_trapdoor;
+//        case item_minecraft_birch_trapdoor:
+//            return block_minecraft_birch_trapdoor;
+//        case item_minecraft_jungle_trapdoor:
+//            return block_minecraft_jungle_trapdoor;
+//        case item_minecraft_acacia_trapdoor:
+//            return block_minecraft_acacia_trapdoor;
+//        case item_minecraft_dark_oak_trapdoor:
+//            return block_minecraft_dark_oak_trapdoor;
+//        case item_minecraft_crimson_trapdoor:
+//            return block_minecraft_crimson_trapdoor;
+//        case item_minecraft_warped_trapdoor:
+//            return block_minecraft_warped_trapdoor;
+//        case item_minecraft_oak_fence_gate:
+//            return block_minecraft_oak_fence_gate;
+//        case item_minecraft_spruce_fence_gate:
+//            return block_minecraft_spruce_fence_gate;
+//        case item_minecraft_birch_fence_gate:
+//            return block_minecraft_birch_fence_gate;
+//        case item_minecraft_jungle_fence_gate:
+//            return block_minecraft_jungle_fence_gate;
+//        case item_minecraft_acacia_fence_gate:
+//            return block_minecraft_acacia_fence_gate;
+//        case item_minecraft_dark_oak_fence_gate:
+//            return block_minecraft_dark_oak_fence_gate;
+//        case item_minecraft_crimson_fence_gate:
+//            return block_minecraft_crimson_fence_gate;
+//        case item_minecraft_warped_fence_gate:
+//            return block_minecraft_warped_fence_gate;
+//        case item_minecraft_powered_rail:
+//            return block_minecraft_powered_rail;
+//        case item_minecraft_detector_rail:
+//            return block_minecraft_detector_rail;
+//        case item_minecraft_rail:
+//            return block_minecraft_rail;
+//        case item_minecraft_activator_rail:
+//            return block_minecraft_activator_rail;
+//        case item_minecraft_saddle:
+//            return block_minecraft_saddle;
+//        case item_minecraft_minecart:
+//            return block_minecraft_minecart;
+//        case item_minecraft_chest_minecart:
+//            return block_minecraft_chest_minecart;
+//        case item_minecraft_furnace_minecart:
+//            return block_minecraft_furnace_minecart;
+//        case item_minecraft_tnt_minecart:
+//            return block_minecraft_tnt_minecart;
+//        case item_minecraft_hopper_minecart:
+//            return block_minecraft_hopper_minecart;
+//        case item_minecraft_carrot_on_a_stick:
+//            return block_minecraft_carrot_on_a_stick;
+//        case item_minecraft_warped_fungus_on_a_stick:
+//            return block_minecraft_warped_fungus_on_a_stick;
+//        case item_minecraft_elytra:
+//            return block_minecraft_elytra;
+//        case item_minecraft_oak_boat:
+//            return block_minecraft_oak_boat;
+//        case item_minecraft_spruce_boat:
+//            return block_minecraft_spruce_boat;
+//        case item_minecraft_birch_boat:
+//            return block_minecraft_birch_boat;
+//        case item_minecraft_jungle_boat:
+//            return block_minecraft_jungle_boat;
+//        case item_minecraft_acacia_boat:
+//            return block_minecraft_acacia_boat;
+//        case item_minecraft_dark_oak_boat:
+//            return block_minecraft_dark_oak_boat;
+//        case item_minecraft_structure_block:
+//            return block_minecraft_structure_block;
+//        case item_minecraft_jigsaw:
+//            return block_minecraft_jigsaw;
+//        case item_minecraft_turtle_helmet:
+//            return block_minecraft_turtle_helmet;
+//        case item_minecraft_scute:
+//            return block_minecraft_scute;
+//        case item_minecraft_flint_and_steel:
+//            return block_minecraft_flint_and_steel;
+//        case item_minecraft_apple:
+//            return block_minecraft_apple;
+//        case item_minecraft_bow:
+//            return block_minecraft_bow;
+//        case item_minecraft_arrow:
+//            return block_minecraft_arrow;
+//        case item_minecraft_coal:
+//            return block_minecraft_coal;
+//        case item_minecraft_charcoal:
+//            return block_minecraft_charcoal;
+//        case item_minecraft_diamond:
+//            return block_minecraft_diamond;
+//        case item_minecraft_emerald:
+//            return block_minecraft_emerald;
+//        case item_minecraft_lapis_lazuli:
+//            return block_minecraft_lapis_lazuli;
+//        case item_minecraft_quartz:
+//            return block_minecraft_quartz;
+//        case item_minecraft_amethyst_shard:
+//            return block_minecraft_amethyst_shard;
+//        case item_minecraft_raw_iron:
+//            return block_minecraft_raw_iron;
+//        case item_minecraft_iron_ingot:
+//            return block_minecraft_iron_ingot;
+//        case item_minecraft_raw_copper:
+//            return block_minecraft_raw_copper;
+//        case item_minecraft_copper_ingot:
+//            return block_minecraft_copper_ingot;
+//        case item_minecraft_raw_gold:
+//            return block_minecraft_raw_gold;
+//        case item_minecraft_gold_ingot:
+//            return block_minecraft_gold_ingot;
+//        case item_minecraft_netherite_ingot:
+//            return block_minecraft_netherite_ingot;
+//        case item_minecraft_netherite_scrap:
+//            return block_minecraft_netherite_scrap;
+//        case item_minecraft_wooden_sword:
+//            return block_minecraft_wooden_sword;
+//        case item_minecraft_wooden_shovel:
+//            return block_minecraft_wooden_shovel;
+//        case item_minecraft_wooden_pickaxe:
+//            return block_minecraft_wooden_pickaxe;
+//        case item_minecraft_wooden_axe:
+//            return block_minecraft_wooden_axe;
+//        case item_minecraft_wooden_hoe:
+//            return block_minecraft_wooden_hoe;
+//        case item_minecraft_stone_sword:
+//            return block_minecraft_stone_sword;
+//        case item_minecraft_stone_shovel:
+//            return block_minecraft_stone_shovel;
+//        case item_minecraft_stone_pickaxe:
+//            return block_minecraft_stone_pickaxe;
+//        case item_minecraft_stone_axe:
+//            return block_minecraft_stone_axe;
+//        case item_minecraft_stone_hoe:
+//            return block_minecraft_stone_hoe;
+//        case item_minecraft_golden_sword:
+//            return block_minecraft_golden_sword;
+//        case item_minecraft_golden_shovel:
+//            return block_minecraft_golden_shovel;
+//        case item_minecraft_golden_pickaxe:
+//            return block_minecraft_golden_pickaxe;
+//        case item_minecraft_golden_axe:
+//            return block_minecraft_golden_axe;
+//        case item_minecraft_golden_hoe:
+//            return block_minecraft_golden_hoe;
+//        case item_minecraft_iron_sword:
+//            return block_minecraft_iron_sword;
+//        case item_minecraft_iron_shovel:
+//            return block_minecraft_iron_shovel;
+//        case item_minecraft_iron_pickaxe:
+//            return block_minecraft_iron_pickaxe;
+//        case item_minecraft_iron_axe:
+//            return block_minecraft_iron_axe;
+//        case item_minecraft_iron_hoe:
+//            return block_minecraft_iron_hoe;
+//        case item_minecraft_diamond_sword:
+//            return block_minecraft_diamond_sword;
+//        case item_minecraft_diamond_shovel:
+//            return block_minecraft_diamond_shovel;
+//        case item_minecraft_diamond_pickaxe:
+//            return block_minecraft_diamond_pickaxe;
+//        case item_minecraft_diamond_axe:
+//            return block_minecraft_diamond_axe;
+//        case item_minecraft_diamond_hoe:
+//            return block_minecraft_diamond_hoe;
+//        case item_minecraft_netherite_sword:
+//            return block_minecraft_netherite_sword;
+//        case item_minecraft_netherite_shovel:
+//            return block_minecraft_netherite_shovel;
+//        case item_minecraft_netherite_pickaxe:
+//            return block_minecraft_netherite_pickaxe;
+//        case item_minecraft_netherite_axe:
+//            return block_minecraft_netherite_axe;
+//        case item_minecraft_netherite_hoe:
+//            return block_minecraft_netherite_hoe;
+//        case item_minecraft_stick:
+//            return block_minecraft_stick;
+//        case item_minecraft_bowl:
+//            return block_minecraft_bowl;
+//        case item_minecraft_mushroom_stew:
+//            return block_minecraft_mushroom_stew;
+//        case item_minecraft_string:
+//            return block_minecraft_string;
+//        case item_minecraft_feather:
+//            return block_minecraft_feather;
+//        case item_minecraft_gunpowder:
+//            return block_minecraft_gunpowder;
+//        case item_minecraft_wheat_seeds:
+//            return block_minecraft_wheat_seeds;
+//        case item_minecraft_wheat:
+//            return block_minecraft_wheat;
+//        case item_minecraft_bread:
+//            return block_minecraft_bread;
+//        case item_minecraft_leather_helmet:
+//            return block_minecraft_leather_helmet;
+//        case item_minecraft_leather_chestplate:
+//            return block_minecraft_leather_chestplate;
+//        case item_minecraft_leather_leggings:
+//            return block_minecraft_leather_leggings;
+//        case item_minecraft_leather_boots:
+//            return block_minecraft_leather_boots;
+//        case item_minecraft_chainmail_helmet:
+//            return block_minecraft_chainmail_helmet;
+//        case item_minecraft_chainmail_chestplate:
+//            return block_minecraft_chainmail_chestplate;
+//        case item_minecraft_chainmail_leggings:
+//            return block_minecraft_chainmail_leggings;
+//        case item_minecraft_chainmail_boots:
+//            return block_minecraft_chainmail_boots;
+//        case item_minecraft_iron_helmet:
+//            return block_minecraft_iron_helmet;
+//        case item_minecraft_iron_chestplate:
+//            return block_minecraft_iron_chestplate;
+//        case item_minecraft_iron_leggings:
+//            return block_minecraft_iron_leggings;
+//        case item_minecraft_iron_boots:
+//            return block_minecraft_iron_boots;
+//        case item_minecraft_diamond_helmet:
+//            return block_minecraft_diamond_helmet;
+//        case item_minecraft_diamond_chestplate:
+//            return block_minecraft_diamond_chestplate;
+//        case item_minecraft_diamond_leggings:
+//            return block_minecraft_diamond_leggings;
+//        case item_minecraft_diamond_boots:
+//            return block_minecraft_diamond_boots;
+//        case item_minecraft_golden_helmet:
+//            return block_minecraft_golden_helmet;
+//        case item_minecraft_golden_chestplate:
+//            return block_minecraft_golden_chestplate;
+//        case item_minecraft_golden_leggings:
+//            return block_minecraft_golden_leggings;
+//        case item_minecraft_golden_boots:
+//            return block_minecraft_golden_boots;
+//        case item_minecraft_netherite_helmet:
+//            return block_minecraft_netherite_helmet;
+//        case item_minecraft_netherite_chestplate:
+//            return block_minecraft_netherite_chestplate;
+//        case item_minecraft_netherite_leggings:
+//            return block_minecraft_netherite_leggings;
+//        case item_minecraft_netherite_boots:
+//            return block_minecraft_netherite_boots;
+//        case item_minecraft_flint:
+//            return block_minecraft_flint;
+//        case item_minecraft_porkchop:
+//            return block_minecraft_porkchop;
+//        case item_minecraft_cooked_porkchop:
+//            return block_minecraft_cooked_porkchop;
+//        case item_minecraft_painting:
+//            return block_minecraft_painting;
+//        case item_minecraft_golden_apple:
+//            return block_minecraft_golden_apple;
+//        case item_minecraft_enchanted_golden_apple:
+//            return block_minecraft_enchanted_golden_apple;
+//        case item_minecraft_oak_sign:
+//            return block_minecraft_oak_sign;
+//        case item_minecraft_spruce_sign:
+//            return block_minecraft_spruce_sign;
+//        case item_minecraft_birch_sign:
+//            return block_minecraft_birch_sign;
+//        case item_minecraft_jungle_sign:
+//            return block_minecraft_jungle_sign;
+//        case item_minecraft_acacia_sign:
+//            return block_minecraft_acacia_sign;
+//        case item_minecraft_dark_oak_sign:
+//            return block_minecraft_dark_oak_sign;
+//        case item_minecraft_crimson_sign:
+//            return block_minecraft_crimson_sign;
+//        case item_minecraft_warped_sign:
+//            return block_minecraft_warped_sign;
+//        case item_minecraft_bucket:
+//            return block_minecraft_bucket;
+//        case item_minecraft_water_bucket:
+//            return block_minecraft_water_bucket;
+//        case item_minecraft_lava_bucket:
+//            return block_minecraft_lava_bucket;
+//        case item_minecraft_powder_snow_bucket:
+//            return block_minecraft_powder_snow_bucket;
+//        case item_minecraft_snowball:
+//            return block_minecraft_snowball;
+//        case item_minecraft_leather:
+//            return block_minecraft_leather;
+//        case item_minecraft_milk_bucket:
+//            return block_minecraft_milk_bucket;
+//        case item_minecraft_pufferfish_bucket:
+//            return block_minecraft_pufferfish_bucket;
+//        case item_minecraft_salmon_bucket:
+//            return block_minecraft_salmon_bucket;
+//        case item_minecraft_cod_bucket:
+//            return block_minecraft_cod_bucket;
+//        case item_minecraft_tropical_fish_bucket:
+//            return block_minecraft_tropical_fish_bucket;
+//        case item_minecraft_axolotl_bucket:
+//            return block_minecraft_axolotl_bucket;
+//        case item_minecraft_brick:
+//            return block_minecraft_brick;
+//        case item_minecraft_clay_ball:
+//            return block_minecraft_clay_ball;
+//        case item_minecraft_dried_kelp_block:
+//            return block_minecraft_dried_kelp_block;
+//        case item_minecraft_paper:
+//            return block_minecraft_paper;
+//        case item_minecraft_book:
+//            return block_minecraft_book;
+//        case item_minecraft_slime_ball:
+//            return block_minecraft_slime_ball;
+//        case item_minecraft_egg:
+//            return block_minecraft_egg;
+//        case item_minecraft_compass:
+//            return block_minecraft_compass;
+//        case item_minecraft_bundle:
+//            return block_minecraft_bundle;
+//        case item_minecraft_fishing_rod:
+//            return block_minecraft_fishing_rod;
+//        case item_minecraft_clock:
+//            return block_minecraft_clock;
+//        case item_minecraft_spyglass:
+//            return block_minecraft_spyglass;
+//        case item_minecraft_glowstone_dust:
+//            return block_minecraft_glowstone_dust;
+//        case item_minecraft_cod:
+//            return block_minecraft_cod;
+//        case item_minecraft_salmon:
+//            return block_minecraft_salmon;
+//        case item_minecraft_tropical_fish:
+//            return block_minecraft_tropical_fish;
+//        case item_minecraft_pufferfish:
+//            return block_minecraft_pufferfish;
+//        case item_minecraft_cooked_cod:
+//            return block_minecraft_cooked_cod;
+//        case item_minecraft_cooked_salmon:
+//            return block_minecraft_cooked_salmon;
+//        case item_minecraft_ink_sac:
+//            return block_minecraft_ink_sac;
+//        case item_minecraft_glow_ink_sac:
+//            return block_minecraft_glow_ink_sac;
+//        case item_minecraft_cocoa_beans:
+//            return block_minecraft_cocoa_beans;
+//        case item_minecraft_white_dye:
+//            return block_minecraft_white_dye;
+//        case item_minecraft_orange_dye:
+//            return block_minecraft_orange_dye;
+//        case item_minecraft_magenta_dye:
+//            return block_minecraft_magenta_dye;
+//        case item_minecraft_light_blue_dye:
+//            return block_minecraft_light_blue_dye;
+//        case item_minecraft_yellow_dye:
+//            return block_minecraft_yellow_dye;
+//        case item_minecraft_lime_dye:
+//            return block_minecraft_lime_dye;
+//        case item_minecraft_pink_dye:
+//            return block_minecraft_pink_dye;
+//        case item_minecraft_gray_dye:
+//            return block_minecraft_gray_dye;
+//        case item_minecraft_light_gray_dye:
+//            return block_minecraft_light_gray_dye;
+//        case item_minecraft_cyan_dye:
+//            return block_minecraft_cyan_dye;
+//        case item_minecraft_purple_dye:
+//            return block_minecraft_purple_dye;
+//        case item_minecraft_blue_dye:
+//            return block_minecraft_blue_dye;
+//        case item_minecraft_brown_dye:
+//            return block_minecraft_brown_dye;
+//        case item_minecraft_green_dye:
+//            return block_minecraft_green_dye;
+//        case item_minecraft_red_dye:
+//            return block_minecraft_red_dye;
+//        case item_minecraft_black_dye:
+//            return block_minecraft_black_dye;
+//        case item_minecraft_bone_meal:
+//            return block_minecraft_bone_meal;
+//        case item_minecraft_bone:
+//            return block_minecraft_bone;
+//        case item_minecraft_sugar:
+//            return block_minecraft_sugar;
+//        case item_minecraft_cake:
+//            return block_minecraft_cake;
+//        case item_minecraft_white_bed:
+//            return block_minecraft_white_bed;
+//        case item_minecraft_orange_bed:
+//            return block_minecraft_orange_bed;
+//        case item_minecraft_magenta_bed:
+//            return block_minecraft_magenta_bed;
+//        case item_minecraft_light_blue_bed:
+//            return block_minecraft_light_blue_bed;
+//        case item_minecraft_yellow_bed:
+//            return block_minecraft_yellow_bed;
+//        case item_minecraft_lime_bed:
+//            return block_minecraft_lime_bed;
+//        case item_minecraft_pink_bed:
+//            return block_minecraft_pink_bed;
+//        case item_minecraft_gray_bed:
+//            return block_minecraft_gray_bed;
+//        case item_minecraft_light_gray_bed:
+//            return block_minecraft_light_gray_bed;
+//        case item_minecraft_cyan_bed:
+//            return block_minecraft_cyan_bed;
+//        case item_minecraft_purple_bed:
+//            return block_minecraft_purple_bed;
+//        case item_minecraft_blue_bed:
+//            return block_minecraft_blue_bed;
+//        case item_minecraft_brown_bed:
+//            return block_minecraft_brown_bed;
+//        case item_minecraft_green_bed:
+//            return block_minecraft_green_bed;
+//        case item_minecraft_red_bed:
+//            return block_minecraft_red_bed;
+//        case item_minecraft_black_bed:
+//            return block_minecraft_black_bed;
+//        case item_minecraft_cookie:
+//            return block_minecraft_cookie;
+//        case item_minecraft_filled_map:
+//            return block_minecraft_filled_map;
+//        case item_minecraft_shears:
+//            return block_minecraft_shears;
+//        case item_minecraft_melon_slice:
+//            return block_minecraft_melon_slice;
+//        case item_minecraft_dried_kelp:
+//            return block_minecraft_dried_kelp;
+//        case item_minecraft_pumpkin_seeds:
+//            return block_minecraft_pumpkin_seeds;
+//        case item_minecraft_melon_seeds:
+//            return block_minecraft_melon_seeds;
+//        case item_minecraft_beef:
+//            return block_minecraft_beef;
+//        case item_minecraft_cooked_beef:
+//            return block_minecraft_cooked_beef;
+//        case item_minecraft_chicken:
+//            return block_minecraft_chicken;
+//        case item_minecraft_cooked_chicken:
+//            return block_minecraft_cooked_chicken;
+//        case item_minecraft_rotten_flesh:
+//            return block_minecraft_rotten_flesh;
+//        case item_minecraft_ender_pearl:
+//            return block_minecraft_ender_pearl;
+//        case item_minecraft_blaze_rod:
+//            return block_minecraft_blaze_rod;
+//        case item_minecraft_ghast_tear:
+//            return block_minecraft_ghast_tear;
+//        case item_minecraft_gold_nugget:
+//            return block_minecraft_gold_nugget;
+//        case item_minecraft_nether_wart:
+//            return block_minecraft_nether_wart;
+//        case item_minecraft_potion:
+//            return block_minecraft_potion;
+//        case item_minecraft_glass_bottle:
+//            return block_minecraft_glass_bottle;
+//        case item_minecraft_spider_eye:
+//            return block_minecraft_spider_eye;
+//        case item_minecraft_fermented_spider_eye:
+//            return block_minecraft_fermented_spider_eye;
+//        case item_minecraft_blaze_powder:
+//            return block_minecraft_blaze_powder;
+//        case item_minecraft_magma_cream:
+//            return block_minecraft_magma_cream;
+//        case item_minecraft_brewing_stand:
+//            return block_minecraft_brewing_stand;
+//        case item_minecraft_cauldron:
+//            return block_minecraft_cauldron;
+//        case item_minecraft_ender_eye:
+//            return block_minecraft_ender_eye;
+//        case item_minecraft_glistering_melon_slice:
+//            return block_minecraft_glistering_melon_slice;
+//        case item_minecraft_axolotl_spawn_egg:
+//            return block_minecraft_axolotl_spawn_egg;
+//        case item_minecraft_bat_spawn_egg:
+//            return block_minecraft_bat_spawn_egg;
+//        case item_minecraft_bee_spawn_egg:
+//            return block_minecraft_bee_spawn_egg;
+//        case item_minecraft_blaze_spawn_egg:
+//            return block_minecraft_blaze_spawn_egg;
+//        case item_minecraft_cat_spawn_egg:
+//            return block_minecraft_cat_spawn_egg;
+//        case item_minecraft_cave_spider_spawn_egg:
+//            return block_minecraft_cave_spider_spawn_egg;
+//        case item_minecraft_chicken_spawn_egg:
+//            return block_minecraft_chicken_spawn_egg;
+//        case item_minecraft_cod_spawn_egg:
+//            return block_minecraft_cod_spawn_egg;
+//        case item_minecraft_cow_spawn_egg:
+//            return block_minecraft_cow_spawn_egg;
+//        case item_minecraft_creeper_spawn_egg:
+//            return block_minecraft_creeper_spawn_egg;
+//        case item_minecraft_dolphin_spawn_egg:
+//            return block_minecraft_dolphin_spawn_egg;
+//        case item_minecraft_donkey_spawn_egg:
+//            return block_minecraft_donkey_spawn_egg;
+//        case item_minecraft_drowned_spawn_egg:
+//            return block_minecraft_drowned_spawn_egg;
+//        case item_minecraft_elder_guardian_spawn_egg:
+//            return block_minecraft_elder_guardian_spawn_egg;
+//        case item_minecraft_enderman_spawn_egg:
+//            return block_minecraft_enderman_spawn_egg;
+//        case item_minecraft_endermite_spawn_egg:
+//            return block_minecraft_endermite_spawn_egg;
+//        case item_minecraft_evoker_spawn_egg:
+//            return block_minecraft_evoker_spawn_egg;
+//        case item_minecraft_fox_spawn_egg:
+//            return block_minecraft_fox_spawn_egg;
+//        case item_minecraft_ghast_spawn_egg:
+//            return block_minecraft_ghast_spawn_egg;
+//        case item_minecraft_glow_squid_spawn_egg:
+//            return block_minecraft_glow_squid_spawn_egg;
+//        case item_minecraft_goat_spawn_egg:
+//            return block_minecraft_goat_spawn_egg;
+//        case item_minecraft_guardian_spawn_egg:
+//            return block_minecraft_guardian_spawn_egg;
+//        case item_minecraft_hoglin_spawn_egg:
+//            return block_minecraft_hoglin_spawn_egg;
+//        case item_minecraft_horse_spawn_egg:
+//            return block_minecraft_horse_spawn_egg;
+//        case item_minecraft_husk_spawn_egg:
+//            return block_minecraft_husk_spawn_egg;
+//        case item_minecraft_llama_spawn_egg:
+//            return block_minecraft_llama_spawn_egg;
+//        case item_minecraft_magma_cube_spawn_egg:
+//            return block_minecraft_magma_cube_spawn_egg;
+//        case item_minecraft_mooshroom_spawn_egg:
+//            return block_minecraft_mooshroom_spawn_egg;
+//        case item_minecraft_mule_spawn_egg:
+//            return block_minecraft_mule_spawn_egg;
+//        case item_minecraft_ocelot_spawn_egg:
+//            return block_minecraft_ocelot_spawn_egg;
+//        case item_minecraft_panda_spawn_egg:
+//            return block_minecraft_panda_spawn_egg;
+//        case item_minecraft_parrot_spawn_egg:
+//            return block_minecraft_parrot_spawn_egg;
+//        case item_minecraft_phantom_spawn_egg:
+//            return block_minecraft_phantom_spawn_egg;
+//        case item_minecraft_pig_spawn_egg:
+//            return block_minecraft_pig_spawn_egg;
+//        case item_minecraft_piglin_spawn_egg:
+//            return block_minecraft_piglin_spawn_egg;
+//        case item_minecraft_piglin_brute_spawn_egg:
+//            return block_minecraft_piglin_brute_spawn_egg;
+//        case item_minecraft_pillager_spawn_egg:
+//            return block_minecraft_pillager_spawn_egg;
+//        case item_minecraft_polar_bear_spawn_egg:
+//            return block_minecraft_polar_bear_spawn_egg;
+//        case item_minecraft_pufferfish_spawn_egg:
+//            return block_minecraft_pufferfish_spawn_egg;
+//        case item_minecraft_rabbit_spawn_egg:
+//            return block_minecraft_rabbit_spawn_egg;
+//        case item_minecraft_ravager_spawn_egg:
+//            return block_minecraft_ravager_spawn_egg;
+//        case item_minecraft_salmon_spawn_egg:
+//            return block_minecraft_salmon_spawn_egg;
+//        case item_minecraft_sheep_spawn_egg:
+//            return block_minecraft_sheep_spawn_egg;
+//        case item_minecraft_shulker_spawn_egg:
+//            return block_minecraft_shulker_spawn_egg;
+//        case item_minecraft_silverfish_spawn_egg:
+//            return block_minecraft_silverfish_spawn_egg;
+//        case item_minecraft_skeleton_spawn_egg:
+//            return block_minecraft_skeleton_spawn_egg;
+//        case item_minecraft_skeleton_horse_spawn_egg:
+//            return block_minecraft_skeleton_horse_spawn_egg;
+//        case item_minecraft_slime_spawn_egg:
+//            return block_minecraft_slime_spawn_egg;
+//        case item_minecraft_spider_spawn_egg:
+//            return block_minecraft_spider_spawn_egg;
+//        case item_minecraft_squid_spawn_egg:
+//            return block_minecraft_squid_spawn_egg;
+//        case item_minecraft_stray_spawn_egg:
+//            return block_minecraft_stray_spawn_egg;
+//        case item_minecraft_strider_spawn_egg:
+//            return block_minecraft_strider_spawn_egg;
+//        case item_minecraft_trader_llama_spawn_egg:
+//            return block_minecraft_trader_llama_spawn_egg;
+//        case item_minecraft_tropical_fish_spawn_egg:
+//            return block_minecraft_tropical_fish_spawn_egg;
+//        case item_minecraft_turtle_spawn_egg:
+//            return block_minecraft_turtle_spawn_egg;
+//        case item_minecraft_vex_spawn_egg:
+//            return block_minecraft_vex_spawn_egg;
+//        case item_minecraft_villager_spawn_egg:
+//            return block_minecraft_villager_spawn_egg;
+//        case item_minecraft_vindicator_spawn_egg:
+//            return block_minecraft_vindicator_spawn_egg;
+//        case item_minecraft_wandering_trader_spawn_egg:
+//            return block_minecraft_wandering_trader_spawn_egg;
+//        case item_minecraft_witch_spawn_egg:
+//            return block_minecraft_witch_spawn_egg;
+//        case item_minecraft_wither_skeleton_spawn_egg:
+//            return block_minecraft_wither_skeleton_spawn_egg;
+//        case item_minecraft_wolf_spawn_egg:
+//            return block_minecraft_wolf_spawn_egg;
+//        case item_minecraft_zoglin_spawn_egg:
+//            return block_minecraft_zoglin_spawn_egg;
+//        case item_minecraft_zombie_spawn_egg:
+//            return block_minecraft_zombie_spawn_egg;
+//        case item_minecraft_zombie_horse_spawn_egg:
+//            return block_minecraft_zombie_horse_spawn_egg;
+//        case item_minecraft_zombie_villager_spawn_egg:
+//            return block_minecraft_zombie_villager_spawn_egg;
+//        case item_minecraft_zombified_piglin_spawn_egg:
+//            return block_minecraft_zombified_piglin_spawn_egg;
+//        case item_minecraft_experience_bottle:
+//            return block_minecraft_experience_bottle;
+//        case item_minecraft_fire_charge:
+//            return block_minecraft_fire_charge;
+//        case item_minecraft_writable_book:
+//            return block_minecraft_writable_book;
+//        case item_minecraft_written_book:
+//            return block_minecraft_written_book;
+//        case item_minecraft_item_frame:
+//            return block_minecraft_item_frame;
+//        case item_minecraft_glow_item_frame:
+//            return block_minecraft_glow_item_frame;
+//        case item_minecraft_flower_pot:
+//            return block_minecraft_flower_pot;
+//        case item_minecraft_carrot:
+//            return block_minecraft_carrot;
+//        case item_minecraft_potato:
+//            return block_minecraft_potato;
+//        case item_minecraft_baked_potato:
+//            return block_minecraft_baked_potato;
+//        case item_minecraft_poisonous_potato:
+//            return block_minecraft_poisonous_potato;
+//        case item_minecraft_map:
+//            return block_minecraft_map;
+//        case item_minecraft_golden_carrot:
+//            return block_minecraft_golden_carrot;
+//        case item_minecraft_skeleton_skull:
+//            return block_minecraft_skeleton_skull;
+//        case item_minecraft_wither_skeleton_skull:
+//            return block_minecraft_wither_skeleton_skull;
+//        case item_minecraft_player_head:
+//            return block_minecraft_player_head;
+//        case item_minecraft_zombie_head:
+//            return block_minecraft_zombie_head;
+//        case item_minecraft_creeper_head:
+//            return block_minecraft_creeper_head;
+//        case item_minecraft_dragon_head:
+//            return block_minecraft_dragon_head;
+//        case item_minecraft_nether_star:
+//            return block_minecraft_nether_star;
+//        case item_minecraft_pumpkin_pie:
+//            return block_minecraft_pumpkin_pie;
+//        case item_minecraft_firework_rocket:
+//            return block_minecraft_firework_rocket;
+//        case item_minecraft_firework_star:
+//            return block_minecraft_firework_star;
+//        case item_minecraft_enchanted_book:
+//            return block_minecraft_enchanted_book;
+//        case item_minecraft_nether_brick:
+//            return block_minecraft_nether_brick;
+//        case item_minecraft_prismarine_shard:
+//            return block_minecraft_prismarine_shard;
+//        case item_minecraft_prismarine_crystals:
+//            return block_minecraft_prismarine_crystals;
+//        case item_minecraft_rabbit:
+//            return block_minecraft_rabbit;
+//        case item_minecraft_cooked_rabbit:
+//            return block_minecraft_cooked_rabbit;
+//        case item_minecraft_rabbit_stew:
+//            return block_minecraft_rabbit_stew;
+//        case item_minecraft_rabbit_foot:
+//            return block_minecraft_rabbit_foot;
+//        case item_minecraft_rabbit_hide:
+//            return block_minecraft_rabbit_hide;
+//        case item_minecraft_armor_stand:
+//            return block_minecraft_armor_stand;
+//        case item_minecraft_iron_horse_armor:
+//            return block_minecraft_iron_horse_armor;
+//        case item_minecraft_golden_horse_armor:
+//            return block_minecraft_golden_horse_armor;
+//        case item_minecraft_diamond_horse_armor:
+//            return block_minecraft_diamond_horse_armor;
+//        case item_minecraft_leather_horse_armor:
+//            return block_minecraft_leather_horse_armor;
+//        case item_minecraft_lead:
+//            return block_minecraft_lead;
+//        case item_minecraft_name_tag:
+//            return block_minecraft_name_tag;
+//        case item_minecraft_command_block_minecart:
+//            return block_minecraft_command_block_minecart;
+//        case item_minecraft_mutton:
+//            return block_minecraft_mutton;
+//        case item_minecraft_cooked_mutton:
+//            return block_minecraft_cooked_mutton;
+//        case item_minecraft_white_banner:
+//            return block_minecraft_white_banner;
+//        case item_minecraft_orange_banner:
+//            return block_minecraft_orange_banner;
+//        case item_minecraft_magenta_banner:
+//            return block_minecraft_magenta_banner;
+//        case item_minecraft_light_blue_banner:
+//            return block_minecraft_light_blue_banner;
+//        case item_minecraft_yellow_banner:
+//            return block_minecraft_yellow_banner;
+//        case item_minecraft_lime_banner:
+//            return block_minecraft_lime_banner;
+//        case item_minecraft_pink_banner:
+//            return block_minecraft_pink_banner;
+//        case item_minecraft_gray_banner:
+//            return block_minecraft_gray_banner;
+//        case item_minecraft_light_gray_banner:
+//            return block_minecraft_light_gray_banner;
+//        case item_minecraft_cyan_banner:
+//            return block_minecraft_cyan_banner;
+//        case item_minecraft_purple_banner:
+//            return block_minecraft_purple_banner;
+//        case item_minecraft_blue_banner:
+//            return block_minecraft_blue_banner;
+//        case item_minecraft_brown_banner:
+//            return block_minecraft_brown_banner;
+//        case item_minecraft_green_banner:
+//            return block_minecraft_green_banner;
+//        case item_minecraft_red_banner:
+//            return block_minecraft_red_banner;
+//        case item_minecraft_black_banner:
+//            return block_minecraft_black_banner;
+//        case item_minecraft_end_crystal:
+//            return block_minecraft_end_crystal;
+//        case item_minecraft_chorus_fruit:
+//            return block_minecraft_chorus_fruit;
+//        case item_minecraft_popped_chorus_fruit:
+//            return block_minecraft_popped_chorus_fruit;
+//        case item_minecraft_beetroot:
+//            return block_minecraft_beetroot;
+//        case item_minecraft_beetroot_seeds:
+//            return block_minecraft_beetroot_seeds;
+//        case item_minecraft_beetroot_soup:
+//            return block_minecraft_beetroot_soup;
+//        case item_minecraft_dragon_breath:
+//            return block_minecraft_dragon_breath;
+//        case item_minecraft_splash_potion:
+//            return block_minecraft_splash_potion;
+//        case item_minecraft_spectral_arrow:
+//            return block_minecraft_spectral_arrow;
+//        case item_minecraft_tipped_arrow:
+//            return block_minecraft_tipped_arrow;
+//        case item_minecraft_lingering_potion:
+//            return block_minecraft_lingering_potion;
+//        case item_minecraft_shield:
+//            return block_minecraft_shield;
+//        case item_minecraft_totem_of_undying:
+//            return block_minecraft_totem_of_undying;
+//        case item_minecraft_shulker_shell:
+//            return block_minecraft_shulker_shell;
+//        case item_minecraft_iron_nugget:
+//            return block_minecraft_iron_nugget;
+//        case item_minecraft_knowledge_book:
+//            return block_minecraft_knowledge_book;
+//        case item_minecraft_debug_stick:
+//            return block_minecraft_debug_stick;
+//        case item_minecraft_music_disc_13:
+//            return block_minecraft_music_disc_13;
+//        case item_minecraft_music_disc_cat:
+//            return block_minecraft_music_disc_cat;
+//        case item_minecraft_music_disc_blocks:
+//            return block_minecraft_music_disc_blocks;
+//        case item_minecraft_music_disc_chirp:
+//            return block_minecraft_music_disc_chirp;
+//        case item_minecraft_music_disc_far:
+//            return block_minecraft_music_disc_far;
+//        case item_minecraft_music_disc_mall:
+//            return block_minecraft_music_disc_mall;
+//        case item_minecraft_music_disc_mellohi:
+//            return block_minecraft_music_disc_mellohi;
+//        case item_minecraft_music_disc_stal:
+//            return block_minecraft_music_disc_stal;
+//        case item_minecraft_music_disc_strad:
+//            return block_minecraft_music_disc_strad;
+//        case item_minecraft_music_disc_ward:
+//            return block_minecraft_music_disc_ward;
+//        case item_minecraft_music_disc_11:
+//            return block_minecraft_music_disc_11;
+//        case item_minecraft_music_disc_wait:
+//            return block_minecraft_music_disc_wait;
+//        case item_minecraft_music_disc_otherside:
+//            return block_minecraft_music_disc_otherside;
+//        case item_minecraft_music_disc_pigstep:
+//            return block_minecraft_music_disc_pigstep;
+//        case item_minecraft_trident:
+//            return block_minecraft_trident;
+//        case item_minecraft_phantom_membrane:
+//            return block_minecraft_phantom_membrane;
+//        case item_minecraft_nautilus_shell:
+//            return block_minecraft_nautilus_shell;
+//        case item_minecraft_heart_of_the_sea:
+//            return block_minecraft_heart_of_the_sea;
+//        case item_minecraft_crossbow:
+//            return block_minecraft_crossbow;
+//        case item_minecraft_suspicious_stew:
+//            return block_minecraft_suspicious_stew;
+//        case item_minecraft_loom:
+//            return block_minecraft_loom;
+//        case item_minecraft_flower_banner_pattern:
+//            return block_minecraft_flower_banner_pattern;
+//        case item_minecraft_creeper_banner_pattern:
+//            return block_minecraft_creeper_banner_pattern;
+//        case item_minecraft_skull_banner_pattern:
+//            return block_minecraft_skull_banner_pattern;
+//        case item_minecraft_mojang_banner_pattern:
+//            return block_minecraft_mojang_banner_pattern;
+//        case item_minecraft_globe_banner_pattern:
+//            return block_minecraft_globe_banner_pattern;
+//        case item_minecraft_piglin_banner_pattern:
+//            return block_minecraft_piglin_banner_pattern;
+//        case item_minecraft_composter:
+//            return block_minecraft_composter;
+//        case item_minecraft_barrel:
+//            return block_minecraft_barrel;
+//        case item_minecraft_smoker:
+//            return block_minecraft_smoker;
+//        case item_minecraft_blast_furnace:
+//            return block_minecraft_blast_furnace;
+//        case item_minecraft_cartography_table:
+//            return block_minecraft_cartography_table;
+//        case item_minecraft_fletching_table:
+//            return block_minecraft_fletching_table;
+//        case item_minecraft_grindstone:
+//            return block_minecraft_grindstone;
+//        case item_minecraft_smithing_table:
+//            return block_minecraft_smithing_table;
+//        case item_minecraft_stonecutter:
+//            return block_minecraft_stonecutter;
+//        case item_minecraft_bell:
+//            return block_minecraft_bell;
+//        case item_minecraft_lantern:
+//            return block_minecraft_lantern;
+//        case item_minecraft_soul_lantern:
+//            return block_minecraft_soul_lantern;
+//        case item_minecraft_sweet_berries:
+//            return block_minecraft_sweet_berries;
+//        case item_minecraft_glow_berries:
+//            return block_minecraft_glow_berries;
+//        case item_minecraft_campfire:
+//            return block_minecraft_campfire;
+//        case item_minecraft_soul_campfire:
+//            return block_minecraft_soul_campfire;
+//        case item_minecraft_shroomlight:
+//            return block_minecraft_shroomlight;
+//        case item_minecraft_honeycomb:
+//            return block_minecraft_honeycomb;
+//        case item_minecraft_bee_nest:
+//            return block_minecraft_bee_nest;
+//        case item_minecraft_beehive:
+//            return block_minecraft_beehive;
+//        case item_minecraft_honey_bottle:
+//            return block_minecraft_honey_bottle;
+//        case item_minecraft_honeycomb_block:
+//            return block_minecraft_honeycomb_block;
+//        case item_minecraft_lodestone:
+//            return block_minecraft_lodestone;
+//        case item_minecraft_crying_obsidian:
+//            return block_minecraft_crying_obsidian;
+//        case item_minecraft_blackstone:
+//            return block_minecraft_blackstone;
+//        case item_minecraft_blackstone_slab:
+//            return block_minecraft_blackstone_slab;
+//        case item_minecraft_blackstone_stairs:
+//            return block_minecraft_blackstone_stairs;
+//        case item_minecraft_gilded_blackstone:
+//            return block_minecraft_gilded_blackstone;
+//        case item_minecraft_polished_blackstone:
+//            return block_minecraft_polished_blackstone;
+//        case item_minecraft_polished_blackstone_slab:
+//            return block_minecraft_polished_blackstone_slab;
+//        case item_minecraft_polished_blackstone_stairs:
+//            return block_minecraft_polished_blackstone_stairs;
+//        case item_minecraft_chiseled_polished_blackstone:
+//            return block_minecraft_chiseled_polished_blackstone;
+//        case item_minecraft_polished_blackstone_bricks:
+//            return block_minecraft_polished_blackstone_bricks;
+//        case item_minecraft_polished_blackstone_brick_slab:
+//            return block_minecraft_polished_blackstone_brick_slab;
+//        case item_minecraft_polished_blackstone_brick_stairs:
+//            return block_minecraft_polished_blackstone_brick_stairs;
+//        case item_minecraft_cracked_polished_blackstone_bricks:
+//            return block_minecraft_cracked_polished_blackstone_bricks;
+//        case item_minecraft_respawn_anchor:
+//            return block_minecraft_respawn_anchor;
+//        case item_minecraft_candle:
+//            return block_minecraft_candle;
+//        case item_minecraft_white_candle:
+//            return block_minecraft_white_candle;
+//        case item_minecraft_orange_candle:
+//            return block_minecraft_orange_candle;
+//        case item_minecraft_magenta_candle:
+//            return block_minecraft_magenta_candle;
+//        case item_minecraft_light_blue_candle:
+//            return block_minecraft_light_blue_candle;
+//        case item_minecraft_yellow_candle:
+//            return block_minecraft_yellow_candle;
+//        case item_minecraft_lime_candle:
+//            return block_minecraft_lime_candle;
+//        case item_minecraft_pink_candle:
+//            return block_minecraft_pink_candle;
+//        case item_minecraft_gray_candle:
+//            return block_minecraft_gray_candle;
+//        case item_minecraft_light_gray_candle:
+//            return block_minecraft_light_gray_candle;
+//        case item_minecraft_cyan_candle:
+//            return block_minecraft_cyan_candle;
+//        case item_minecraft_purple_candle:
+//            return block_minecraft_purple_candle;
+//        case item_minecraft_blue_candle:
+//            return block_minecraft_blue_candle;
+//        case item_minecraft_brown_candle:
+//            return block_minecraft_brown_candle;
+//        case item_minecraft_green_candle:
+//            return block_minecraft_green_candle;
+//        case item_minecraft_red_candle:
+//            return block_minecraft_red_candle;
+//        case item_minecraft_black_candle:
+//            return block_minecraft_black_candle;
+//        case item_minecraft_small_amethyst_bud:
+//            return block_minecraft_small_amethyst_bud;
+//        case item_minecraft_medium_amethyst_bud:
+//            return block_minecraft_medium_amethyst_bud;
+//        case item_minecraft_large_amethyst_bud:
+//            return block_minecraft_large_amethyst_bud;
+//        case item_minecraft_amethyst_cluster:
+//            return block_minecraft_amethyst_cluster;
+//        case item_minecraft_pointed_dripstone:
+//            return block_minecraft_pointed_dripstone;
+//    }
+//}
+
+#endif //MYCELIUM_ITEM_H

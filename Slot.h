@@ -11,16 +11,25 @@ public:
         if(present) {
             buf.writeVarInt(item_id);
             buf.writeByte(item_count);
-            ByteBuffer tmp = nbt.asByteBuffer();
+            ByteBuffer tmp = nbt->asByteBuffer();
             buf.writeByteBuffer(tmp);
         }
     }
 
+    void read(ByteBuffer& buf) {
+        present = buf.readBoolean();
+        if(present) {
+            item_id = buf.readVarInt();
+            item_count = buf.readByte();
+            nbt = read_nbt(buf);
+        }
+    }
+
 public:
-    bool present;
-    int item_id;
-    byte_t item_count;
-    TAG_Compound nbt;
+    bool present = false;
+    int item_id = 0;
+    byte_t item_count = 0;
+    std::shared_ptr<NBT_Component> nbt = std::make_shared<TAG_Compound>(NBT_Components{});
 
 };
 

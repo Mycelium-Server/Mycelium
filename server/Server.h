@@ -46,6 +46,11 @@ public:
 
 };
 
+class Inventory {
+public:
+    Slot items[45];
+};
+
 class Player;
 
 std::map<uv_stream_t*, std::shared_ptr<Player>> con_to_player;
@@ -60,6 +65,7 @@ public:
     Location location;
     int entity_id;
     std::shared_ptr<EntityMetadata> metadata;
+    Inventory inventory;
 
 public:
     [[nodiscard]] double get_feet_y() const {
