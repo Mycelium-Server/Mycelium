@@ -9,7 +9,7 @@
 #include <fstream>
 std::fstream packet_log;
 
-unsigned int handlePacket(uv_stream_t* handle, ByteBuffer buf);
+unsigned int handlePacket(uv_stream_t* handle, const ByteBuffer& buf);
 void handleDisconnect(uv_stream_t* handle);
 
 typedef struct {

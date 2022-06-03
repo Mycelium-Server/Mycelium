@@ -9,6 +9,7 @@
 #include "../Gamemode.h"
 #include "../Keepalive.h"
 #include "../Difficulty.h"
+#include "../Encryption.h"
 #include "../random.h"
 #include "PacketInHandshake.h"
 #include "PacketOutStatusResponse.h"
@@ -44,6 +45,10 @@
 #include "PacketOutDestroyEntities.h"
 #include "PlayerOutLoginDisconnect.h"
 #include "PacketInClickWindow.h"
+#include "PacketInPlayerBlockPlacement.h"
+#include "PacketOutBlockChange.h"
+#include "PacketOutEncryptionRequest.h"
+#include "PacketInEncryptionResponse.h"
 
 enum State {
     STATE_LOGIN = 0,
@@ -53,38 +58,173 @@ enum State {
 std::vector<std::shared_ptr<Player>> pending_checks;
 std::map<uv_stream_t*, State> player_states;
 std::map<uv_stream_t*, std::vector<std::shared_ptr<PacketIn>>> pending_packets;
+std::map<uv_stream_t*, int> encryption_requests;
+std::map<uv_stream_t*, PacketInLoginStart> login;
+std::map<uv_stream_t*, AES_CFB8_Data> encryption_contexts;
 
-bool check_state(uv_stream_t* s, const std::shared_ptr<PacketIn>& packet) {
-    pending_packets[s].push_back(packet);
+bool check_state(uv_stream_t* s) {
     if(player_states[s] != STATE_PLAY) {
         return true;
     }
     return false;
 }
 
-#define QUEUED_PLAY_PACKET_BEGIN(Packet_T, buf, packet_name) Packet_T queued_packet; queued_packet.read(buf); if(check_state(s, std::make_shared<Packet_T>(queued_packet))) break; int __idx = 0; std::vector<int> __idx_tr; for(auto& packet : pending_packets[s]) { if(packet->getPacketID() == queued_packet.getPacketID()) { Packet_T packet_name = *reinterpret_cast<Packet_T*>(packet.get());
+#define QUEUED_PLAY_PACKET_BEGIN(Packet_T, buf, packet_name, s)    \
+    Packet_T queued_packet;                                        \
+    queued_packet.read(buf);                                       \
+    pending_packets[s].push_back(std::make_shared<Packet_T>(queued_packet)); \
+    if(check_state(s)) break;                                      \
+    int __idx = 0;                                                 \
+    std::vector<int> __idx_tr;                                     \
+    for(auto& packet : pending_packets[s]) {                       \
+        if(packet->getPacketID() == queued_packet.getPacketID()) { \
+            Packet_T packet_name = *reinterpret_cast<Packet_T*>(packet.get());
 #define QUEUED_PLAY_PACKET_END() __idx_tr.push_back(__idx); } __idx++; } for(int idx : __idx_tr) { pending_packets[s].erase(pending_packets[s].begin() + idx); }
 
 void sendPacket(uv_stream_t* s, const std::shared_ptr<PacketOut>& packet) {
     ByteBuffer buf;
+
     ByteBuffer packet_buf;
     packet->encode(packet_buf);
+
     int packet_id = packet->getPacketID();
     buf.writeVarInt((int)sizeofVarInt(packet_id) + (int)packet_buf.bytes.size());
     buf.writeVarInt(packet->getPacketID());
     buf.writeByteBuffer(packet_buf);
-    write(s, buf);
+
+    ByteBuffer encrypted = buf;
+    if(encryption_contexts.find(s) != encryption_contexts.end()) {
+        encrypted = aes_encrypt(encryption_contexts[s], buf);
+    }
+
+    write(s, encrypted);
+
     printf("Sent packet: 0x%x\n", packet->getPacketID());
 }
 
 std::map<uv_stream_t*, int> next_state;
+
+void pre_login(uv_stream_t* s) {
+    PacketOutLoginSuccess login_success;
+    login_success.username = login[s].name;
+    login_success.uuid = UUID_t(unique_random(), unique_random());
+    sendPacket(s, std::make_shared<PacketOutLoginSuccess>(login_success));
+
+    player_states[s] = STATE_LOGIN;
+
+    PacketOutJoinGame join_game;
+    join_game.entity_id = rand();
+    join_game.is_hardcore = false;
+    join_game.gamemode = GM_CREATIVE;
+    join_game.previous_gamemode = PREV_GM_DEFAULT;
+    join_game.world_count = (int)default_dimension_names().size();
+    join_game.dimension_names = default_dimension_names();
+    join_game.dimension_codec = default_dimension_codec();
+    join_game.dimension = get_dimension_nbt(WORLD_OVERWORLD);
+    join_game.dimension_name = default_world_name(WORLD_OVERWORLD);
+    join_game.hashed_seed = 0;
+    join_game.max_players = 0;
+    join_game.view_distance = 10;
+    join_game.simulation_distance = 10;
+    join_game.reduced_debug_info = false;
+    join_game.enable_respawn_screen = true;
+    join_game.is_debug = false;
+    join_game.is_flat = false;
+    sendPacket(s, std::make_shared<PacketOutJoinGame>(join_game));
+
+    Location player_loc(0, 300, 0, 0, 0);
+
+    Player player;
+    player.uuid = login_success.uuid;
+    player.name = login_success.username;
+    player.connection = s;
+    player.gamemode = (GAMEMODE)join_game.gamemode;
+    player.location = player_loc;
+    player.entity_id = join_game.entity_id;
+    player.metadata = std::make_shared<EntityMetadata>();
+
+    PacketOutPluginMessage plugin_message_brand;
+    plugin_message_brand.channel = get_channel(INTERNAL_BRAND);
+    plugin_message_brand.data.writeString(get_brand());
+    sendPacket(s, std::make_shared<PacketOutPluginMessage>(plugin_message_brand));
+
+    PacketOutDifficulty difficulty;
+    difficulty.difficulty = DIFFICULTY_NORMAL;
+    difficulty.difficulty_locked = true;
+    sendPacket(s, std::make_shared<PacketOutDifficulty>(difficulty));
+
+    PacketOutPlayerAbilities player_abilities;
+    player_abilities.flags.allow_flying = true;
+    player_abilities.flags.creative_mode = true;
+    player_abilities.flags.flying = false;
+    player_abilities.flags.invulnerable = true;
+    player_abilities.flying_speed = PacketOutPlayerAbilities::DEFAULT_FLYING_SPEED;
+    player_abilities.field_of_view_modifier = PacketOutPlayerAbilities::DEFAULT_FIELD_OF_VIEW_MODIFIER;
+    sendPacket(s, std::make_shared<PacketOutPlayerAbilities>(player_abilities));
+
+    PacketOutHeldItemChange held_item_change;
+    held_item_change.slot = 4;
+    sendPacket(s, std::make_shared<PacketOutHeldItemChange>(held_item_change));
+
+    // Declare recipes
+    // Tags
+    // Entity Status
+    // Declare commands
+    // Unlock recipes
+
+    PacketOutPositionAndLook position_and_look;
+    position_and_look.x = player_loc.x;
+    position_and_look.y = player_loc.y;
+    position_and_look.z = player_loc.z;
+    position_and_look.flags.value = 0;
+    position_and_look.yaw = 0;
+    position_and_look.pitch = 0;
+    position_and_look.teleport_id = rand();
+    position_and_look.dismount_vehicle = false;
+    sendPacket(s, std::make_shared<PacketOutPositionAndLook>(position_and_look));
+
+    PacketOutUpdateViewPosition update_view_position;
+    update_view_position.chunk_x = floor((double)player_loc.x / 16.0);
+    update_view_position.chunk_z = floor((double)player_loc.z / 16.0);
+    sendPacket(s, std::make_shared<PacketOutUpdateViewPosition>(update_view_position));
+
+    // Update light
+
+    overworld->send(s);
+
+    PacketOutInitializeWorldBorder world_border;
+    world_border.x = 0;
+    world_border.z = 0;
+    world_border.old_diameter = 320;
+    world_border.new_diameter = 320;
+    world_border.speed = 0;
+    world_border.portal_teleport_boundary = PacketOutInitializeWorldBorder::DEFAULT_PORTAL_TELEPORT_BOUNDARY;
+    world_border.warning_blocks = 0;
+    world_border.warning_time = 0;
+    sendPacket(s, std::make_shared<PacketOutInitializeWorldBorder>(world_border));
+
+    PacketOutSpawnPosition spawn_position;
+    spawn_position.location = player_loc.c_location();
+    spawn_position.angle = 0;
+    sendPacket(s, std::make_shared<PacketOutSpawnPosition>(spawn_position));
+
+    pending_checks.push_back(std::make_shared<Player>(player));
+
+    PacketOutKeepalive keepalive;
+    uv_timeval64_t tv;
+    uv_gettimeofday(&tv);
+    long long millis = tv.tv_sec * 1000 + tv.tv_usec / 1000;
+    keepalive.keep_alive_id = (long)millis;
+    sendPacket(s, std::make_shared<PacketOutKeepalive>(keepalive));
+    login.erase(login.find(s));
+}
 
 void continue_log_in(std::shared_ptr<Player>& player) {
     con_to_player[player->connection] = player;
     players.push_back(player);
 
     PacketOutChatMessage join_message;
-    join_message.uuid = UUID_t(0);
+    join_message.uuid = UUID_t(0, 0);
     join_message.position = 0;
     join_message.json_data = "{\"text\":\""+player->name+" joined the game\",\"color\":\"aqua\"}";
 
@@ -164,8 +304,33 @@ void continue_log_in(std::shared_ptr<Player>& player) {
     player_states[player->connection] = STATE_PLAY;
 }
 
-unsigned int handlePacket(uv_stream_t* s, ByteBuffer buf) {
+void handle_encryption_response(uv_stream_t* s, PacketInEncryptionResponse& response) {
+    int verify_token = encryption_requests[s];
+    encryption_requests.erase(encryption_requests.find(s));
+    ByteBuffer d_vt = rsa_decrypt(keypair, response.verify_token);
+    if(d_vt.bytes.size() != 4) {
+        fprintf(stderr, "handle_encryption_response: verify token length did not match\n");
+        return;
+    }
+    if(verify_token != d_vt.readInt()) {
+        fprintf(stderr, "handle_encryption_response: verify token did not match\n");
+        return;
+    }
+    printf("handle_encryption_response: verify token: ok\n");
+    ByteBuffer shared_secret = rsa_decrypt(keypair, response.shared_secret);
+    printf("handle_encryption_response: shared secret: ok\n");
+    encryption_contexts[s] = initialize_aes_encryption(shared_secret);
+    printf("handle_encryption_response: initialized AES/CFB8 context\n");
+    pre_login(s);
+}
+
+unsigned int handlePacket(uv_stream_t* s, const ByteBuffer& encrypted) {
     process_keepalive(s);
+
+    ByteBuffer buf = encrypted;
+    if(encryption_contexts.find(s) != encryption_contexts.end()) {
+        buf = aes_decrypt(encryption_contexts[s], encrypted);
+    }
 
     int length = buf.readVarInt();
     int packet_id = buf.readVarInt();
@@ -198,143 +363,14 @@ unsigned int handlePacket(uv_stream_t* s, ByteBuffer buf) {
                     }
                 }
 
-                PacketOutLoginSuccess login_success;
-                login_success.username = login_start.name;
-                login_success.uuid = UUID_t(unique_random(), unique_random());
-                sendPacket(s, std::make_shared<PacketOutLoginSuccess>(login_success));
+                PacketOutEncryptionRequest encryption_request;
+                encryption_request.verify_token = rand();
+                encryption_request.public_key = keypair.key_public_der;
 
-                player_states[s] = STATE_LOGIN;
+                login[s] = login_start;
+                encryption_requests[s] = encryption_request.verify_token;
 
-                PacketOutJoinGame join_game;
-                join_game.entity_id = rand();
-                join_game.is_hardcore = false;
-                join_game.gamemode = GM_CREATIVE;
-                join_game.previous_gamemode = PREV_GM_DEFAULT;
-                join_game.world_count = (int)default_dimension_names().size();
-                join_game.dimension_names = default_dimension_names();
-                join_game.dimension_codec = default_dimension_codec();
-                join_game.dimension = get_dimension_nbt(WORLD_OVERWORLD);
-                join_game.dimension_name = default_world_name(WORLD_OVERWORLD);
-                join_game.hashed_seed = 0;
-                join_game.max_players = 0;
-                join_game.view_distance = 10;
-                join_game.simulation_distance = 10;
-                join_game.reduced_debug_info = false;
-                join_game.enable_respawn_screen = true;
-                join_game.is_debug = false;
-                join_game.is_flat = false;
-                sendPacket(s, std::make_shared<PacketOutJoinGame>(join_game));
-
-                Location player_loc(0, 300, 0, 0, 0);
-
-                Player player;
-                player.uuid = login_success.uuid;
-                player.name = login_success.username;
-                player.connection = s;
-                player.gamemode = (GAMEMODE)join_game.gamemode;
-                player.location = player_loc;
-                player.entity_id = join_game.entity_id;
-                player.metadata = std::make_shared<EntityMetadata>();
-
-                PacketOutPluginMessage plugin_message_brand;
-                plugin_message_brand.channel = get_channel(INTERNAL_BRAND);
-                plugin_message_brand.data.writeString(get_brand());
-                sendPacket(s, std::make_shared<PacketOutPluginMessage>(plugin_message_brand));
-
-                PacketOutDifficulty difficulty;
-                difficulty.difficulty = DIFFICULTY_NORMAL;
-                difficulty.difficulty_locked = true;
-                sendPacket(s, std::make_shared<PacketOutDifficulty>(difficulty));
-
-                PacketOutPlayerAbilities player_abilities;
-                player_abilities.flags.allow_flying = true;
-                player_abilities.flags.creative_mode = true;
-                player_abilities.flags.flying = false;
-                player_abilities.flags.invulnerable = true;
-                player_abilities.flying_speed = PacketOutPlayerAbilities::DEFAULT_FLYING_SPEED;
-                player_abilities.field_of_view_modifier = PacketOutPlayerAbilities::DEFAULT_FIELD_OF_VIEW_MODIFIER;
-                sendPacket(s, std::make_shared<PacketOutPlayerAbilities>(player_abilities));
-
-                PacketOutHeldItemChange held_item_change;
-                held_item_change.slot = 4;
-                sendPacket(s, std::make_shared<PacketOutHeldItemChange>(held_item_change));
-
-                // Declare recipes
-                // Tags
-                // Entity Status
-                // Declare commands
-                // Unlock recipes
-
-                PacketOutPositionAndLook position_and_look;
-                position_and_look.x = player_loc.x;
-                position_and_look.y = player_loc.y;
-                position_and_look.z = player_loc.z;
-                position_and_look.flags.value = 0;
-                position_and_look.yaw = 0;
-                position_and_look.pitch = 0;
-                position_and_look.teleport_id = rand();
-                position_and_look.dismount_vehicle = false;
-                sendPacket(s, std::make_shared<PacketOutPositionAndLook>(position_and_look));
-
-                PacketOutUpdateViewPosition update_view_position;
-                update_view_position.chunk_x = floor((double)player_loc.x / 16.0);
-                update_view_position.chunk_z = floor((double)player_loc.z / 16.0);
-                sendPacket(s, std::make_shared<PacketOutUpdateViewPosition>(update_view_position));
-
-                // Update light
-
-                Block block(true, false, true, block_minecraft_bedrock);
-                PacketOutChunk chunk_data;
-//                for(int x = 0; x < 4; ++x) {
-//                    for(int y = 0; y < 4; ++y) {
-//                        for (int z = 0; z < 4; ++z) {
-//                            for (auto& section : chunk_data.chunk.sections)
-//                                section->set_biome(x, y, z, Biome(minecraft_plains));
-//                        }
-//                    }
-//                }
-                for(int x = 0; x < 16; ++x) {
-                    for(int z = 0; z < 16; ++z) {
-                        for(int y = 0; y < 16; ++y) {
-                            for (auto& section : chunk_data.chunk.sections) {
-                                block.block_state = (BlockState) ((x+y+z)%3+1);
-                                section->set_block(x, y, z, block);
-                            }
-                        }
-                    }
-                }
-                for(int chunk_x = -3; chunk_x <= 3; chunk_x++) {
-                    for(int chunk_z = -3; chunk_z <= 3; chunk_z++) {
-                        chunk_data.chunk.chunk_x = chunk_x;
-                        chunk_data.chunk.chunk_z = chunk_z;
-                        sendPacket(s, std::make_shared<PacketOutChunk>(chunk_data));
-                    }
-                }
-
-                PacketOutInitializeWorldBorder world_border;
-                world_border.x = 0;
-                world_border.z = 0;
-                world_border.old_diameter = 320;
-                world_border.new_diameter = 320;
-                world_border.speed = 0;
-                world_border.portal_teleport_boundary = PacketOutInitializeWorldBorder::DEFAULT_PORTAL_TELEPORT_BOUNDARY;
-                world_border.warning_blocks = 0;
-                world_border.warning_time = 0;
-                sendPacket(s, std::make_shared<PacketOutInitializeWorldBorder>(world_border));
-
-                PacketOutSpawnPosition spawn_position;
-                spawn_position.location = player_loc.c_location();
-                spawn_position.angle = 0;
-                sendPacket(s, std::make_shared<PacketOutSpawnPosition>(spawn_position));
-
-                pending_checks.push_back(std::make_shared<Player>(player));
-
-                PacketOutKeepalive keepalive;
-                uv_timeval64_t tv;
-                uv_gettimeofday(&tv);
-                long long millis = tv.tv_sec * 1000 + tv.tv_usec / 1000;
-                keepalive.keep_alive_id = (long)millis;
-                sendPacket(s, std::make_shared<PacketOutKeepalive>(keepalive));
+                sendPacket(s, std::make_shared<PacketOutEncryptionRequest>(encryption_request));
             }
             else {
                 printf("Packet Type: Handshake\n");
@@ -346,6 +382,14 @@ unsigned int handlePacket(uv_stream_t* s, ByteBuffer buf) {
         }
 
         case 0x01: {
+            if(encryption_requests.find(s) != encryption_requests.end()) {
+                printf("Packet Type: Encryption Response\n");
+                PacketInEncryptionResponse response;
+                response.read(buf);
+                handle_encryption_response(s, response);
+                break;
+            }
+
             printf("Packet Type: Ping\n");
             PacketInPing ping;
             ping.read(buf);
@@ -406,7 +450,7 @@ unsigned int handlePacket(uv_stream_t* s, ByteBuffer buf) {
                 PacketOutChatMessage chat_message_out;
                 chat_message_out.json_data = "{\"text\":\"Command not found.\",\"color\":\"red\"}";
                 chat_message_out.position = 0;
-                chat_message_out.uuid = UUID_t(0);
+                chat_message_out.uuid = UUID_t(0, 0);
                 sendPacket(s, std::make_shared<PacketOutChatMessage>(chat_message_out));
                 break;
             }
@@ -415,7 +459,7 @@ unsigned int handlePacket(uv_stream_t* s, ByteBuffer buf) {
             PacketOutChatMessage chat_message_out;
             chat_message_out.json_data = "{\"text\": \"["+con_to_player[s]->name+"] "+chat_message_in.message+"\"}";
             chat_message_out.position = 0;
-            chat_message_out.uuid = UUID_t(0);
+            chat_message_out.uuid = UUID_t(0, 0);
             for(auto& p : players) {
                 sendPacket(p->connection, std::make_shared<PacketOutChatMessage>(chat_message_out));
             }
@@ -424,7 +468,7 @@ unsigned int handlePacket(uv_stream_t* s, ByteBuffer buf) {
 
         case 0x11: {
             printf("Packet Type: Player Position\n");
-            QUEUED_PLAY_PACKET_BEGIN(PacketInPlayerPosition, buf, player_position_in)
+            QUEUED_PLAY_PACKET_BEGIN(PacketInPlayerPosition, buf, player_position_in, s)
             double prev_x = con_to_player[s]->location.x;
             double prev_y = con_to_player[s]->location.y;
             double prev_z = con_to_player[s]->location.z;
@@ -454,7 +498,7 @@ unsigned int handlePacket(uv_stream_t* s, ByteBuffer buf) {
 
         case 0x12: {
             printf("Packet Type: Player Position And Rotation\n");
-            QUEUED_PLAY_PACKET_BEGIN(PacketInPlayerPositionAndRotation, buf, player_position_in)
+            QUEUED_PLAY_PACKET_BEGIN(PacketInPlayerPositionAndRotation, buf, player_position_in, s)
             double prev_x = con_to_player[s]->location.x;
             double prev_y = con_to_player[s]->location.y;
             double prev_z = con_to_player[s]->location.z;
@@ -494,7 +538,7 @@ unsigned int handlePacket(uv_stream_t* s, ByteBuffer buf) {
 
         case 0x13: {
             printf("Packet Type: Player Rotation\n");
-            QUEUED_PLAY_PACKET_BEGIN(PacketInPlayerRotation, buf, player_rotation_in)
+            QUEUED_PLAY_PACKET_BEGIN(PacketInPlayerRotation, buf, player_rotation_in, s)
             con_to_player[s]->location.yaw = player_rotation_in.yaw/360.f;
             con_to_player[s]->location.pitch = player_rotation_in.pitch/360.f;
             for(auto& p : players) {
@@ -525,7 +569,7 @@ unsigned int handlePacket(uv_stream_t* s, ByteBuffer buf) {
 
         case 0x1B: {
             printf("Packet Type: Entity Action\n");
-            QUEUED_PLAY_PACKET_BEGIN(PacketInEntityAction, buf, entity_action)
+            QUEUED_PLAY_PACKET_BEGIN(PacketInEntityAction, buf, entity_action, s)
             auto& player = Player::from_entity_id(entity_action.entity_id);
             switch(entity_action.action_id) {
                 case PacketInEntityAction::START_SNEAKING: {
@@ -579,9 +623,46 @@ unsigned int handlePacket(uv_stream_t* s, ByteBuffer buf) {
         }
 
         case 0x08: {
-            QUEUED_PLAY_PACKET_BEGIN(PacketInClickWindow, buf, click_window)
+            printf("Packet Type: Click Window\n");
+            QUEUED_PLAY_PACKET_BEGIN(PacketInClickWindow, buf, click_window, s)
             for(const PacketInClickWindow::slot_t& slot : click_window.slots) {
                 con_to_player[s]->inventory.items[slot.slot_number] = slot.slot_data;
+            }
+            QUEUED_PLAY_PACKET_END()
+            break;
+        }
+
+        case 0x2E: {
+            printf("Packet Type: Player Block Placement\n");
+            QUEUED_PLAY_PACKET_BEGIN(PacketInPlayerBlockPlacement, buf, block_placement, s)
+            uv_sleep(50);
+            PacketOutBlockChange block_change_packet;
+            block_change_packet.chunk_section_position = {
+                    (int)block_placement.block_position.x,
+                    (int)block_placement.block_position.y,
+                    (int)block_placement.block_position.z
+            };
+            block_change_packet.trust_edges = true;
+            for(int x = -1; x <= 1; x++) {
+                for(int y = -1; y <= 1; y++) {
+                    for(int z = -1; z <= 1; z++) {
+                        Location_t loc = block_placement.block_position + Location_t(x,y,z);
+                        PacketOutBlockChange::changed_block changed;
+                        changed.x = loc.x;
+                        changed.y = loc.y;
+                        changed.z = loc.z;
+                        changed.block_id = block_minecraft_bedrock;
+                        block_change_packet.blocks.push_back(changed);
+                    }
+                }
+            }
+            int idx = overworld->set_block(block_placement.block_position.x,
+                                           block_placement.block_position.y,
+                                           block_placement.block_position.z,
+                                           Block(true, false, true, block_minecraft_bedrock));
+            overworld->update_packet(idx);
+            for (auto &p: players) {
+                sendPacket(p->connection, std::make_shared<PacketOutBlockChange>(block_change_packet));
             }
             QUEUED_PLAY_PACKET_END()
             break;
@@ -595,6 +676,24 @@ unsigned int handlePacket(uv_stream_t* s, ByteBuffer buf) {
 }
 
 void handleDisconnect(uv_stream_t* handle) {
+    int pc_idx = -1;
+    for(int i = 0; i < pending_checks.size(); i++) {
+        if(pending_checks[i]->connection == handle) {
+            pc_idx = i;
+            break;
+        }
+    }
+    if(pc_idx != -1) pending_checks.erase(pending_checks.begin() + pc_idx);
+
+    if(player_states.contains(handle))
+        player_states.erase(player_states.find(handle));
+    if(encryption_requests.contains(handle))
+        encryption_requests.erase(encryption_requests.find(handle));
+    if(login.contains(handle))
+        login.erase(login.find(handle));
+    if(encryption_contexts.contains(handle))
+        encryption_contexts.erase(encryption_contexts.find(handle));
+
     int index = -1;
     for(int i = 0; i < players.size(); i++) {
         if(players[i]->connection == handle) {
@@ -616,7 +715,7 @@ void handleDisconnect(uv_stream_t* handle) {
     remove_player.player.push_back(player_action);
 
     PacketOutChatMessage left_message;
-    left_message.uuid = UUID_t(0);
+    left_message.uuid = UUID_t(0, 0);
     left_message.position = 0;
     left_message.json_data = "{\"text\":\""+players[index]->name+" left the game\",\"color\":\"light_purple\"}";
 

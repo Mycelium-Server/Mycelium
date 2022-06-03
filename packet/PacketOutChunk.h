@@ -20,10 +20,14 @@ public:
 
 public:
     void encode(ByteBuffer &buf) override {
+        buf.writeByteBuffer(cache);
+    }
+
+    void cache_data() {
         packet_log.open("packet-log.txt", std::fstream::out);
 
-        buf.writeInt(chunk.chunk_x);
-        buf.writeInt(chunk.chunk_z);
+        cache.writeInt(chunk.chunk_x);
+        cache.writeInt(chunk.chunk_z);
 
         packet_log << "!=============== Chunk Data And Light ===============!\n";
         packet_log << "Chunk X: " << chunk.chunk_x << "\n";
@@ -43,15 +47,15 @@ public:
         }
 
         ByteBuffer heightmap = TAG_Compound(NBT_Components {
-            std::make_shared<TAG_Long_Array>("MOTION_BLOCKING",
-                                             motion_blocking.get_data().size(), motion_blocking.get_data().data())
+                std::make_shared<TAG_Long_Array>("MOTION_BLOCKING",
+                                                 motion_blocking.get_data().size(), motion_blocking.get_data().data())
         }).asByteBuffer();
 
         packet_log << "Heightmap->Motion Blocking: ";
         for(long long l : motion_blocking.get_data()) packet_log << l << " ";
         packet_log << "\n";
 
-        buf.writeByteBuffer(heightmap);
+        cache.writeByteBuffer(heightmap);
 
         ByteBuffer data;
         for(auto& section : chunk.sections) {
@@ -61,26 +65,25 @@ public:
 
         packet_log << "Number Of Block Entities: 0\nTrust Edges: true\nSky Light Mask: 0\nBlock Light Mask: 0\nEmpty Sky Light Mask: 0\nSky Light Array count: 0\nBlock Light Array count: 0\n";
 
-        buf.writeVarInt(data.bytes.size());
-        buf.writeByteBuffer(data);
-        buf.writeVarInt(0);
-        buf.writeBoolean(true);
-        buf.writeByte(0);
-        buf.writeByte(0);
-        buf.writeByte(0);
-        buf.writeByte(0);
-        buf.writeVarInt(0);
-        buf.writeVarInt(0);
+        cache.writeVarInt(data.bytes.size());
+        cache.writeByteBuffer(data);
+        cache.writeVarInt(0);
+        cache.writeBoolean(true);
+        cache.writeByte(0);
+        cache.writeByte(0);
+        cache.writeByte(0);
+        cache.writeByte(0);
+        cache.writeVarInt(0);
+        cache.writeVarInt(0);
 
         packet_log << "\n!================================== RAW DATA ==================================!\n";
         int i = 0;
-        for(byte_t b : buf.bytes) {
+        for(byte_t b : cache.bytes) {
             packet_log << hexStr(b) << " ";
             i++;
             if(i%32 == 0) packet_log << "\n";
         }
         packet_log.close();
-
     }
 
     [[nodiscard]] int getPacketID() const override {
@@ -89,6 +92,7 @@ public:
 
 public:
     Chunk chunk;
+    ByteBuffer cache;
 
 };
 

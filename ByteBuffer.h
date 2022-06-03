@@ -8,6 +8,10 @@
 #include <string>
 #include <vector>
 
+#ifndef WIN32
+using std::max;
+#endif
+
 const int SEGMENT_BITS = 0x7F;
 const int CONTINUE_BIT = 0x80;
 
@@ -37,29 +41,29 @@ unsigned int sizeofVarLong(long value) {
     }
 }
 
-union UUID_t {
-    struct {
-        uint64_t a;
-        uint64_t b;
-    };
-    __uint128_t value;
+struct UUID_t {
+    uint64_t a;
+    uint64_t b;
 
-    explicit UUID_t() : value(0) {}
-    explicit UUID_t(__uint128_t value) : value(value) {}
+    UUID_t() : a(0), b(0) {}
     UUID_t(uint64_t a, uint64_t b) : a(a), b(b) {}
 };
 
 union Location_t {
     struct {
-        int64_t x : 26;
-        int64_t z : 26;
         int64_t y : 12;
+        int64_t z : 26;
+        int64_t x : 26;
     };
     int64_t l;
 
     explicit Location_t() : l(0) {}
     explicit Location_t(int64_t l) : l(l) {}
     Location_t(int32_t x, int16_t y, int32_t z) : x(x & 0x3FFFFFF), z(z & 0x3FFFFFF), y(y & 0xFFF) {}
+
+    Location_t operator+(Location_t l) const {
+        return {(int32_t)(l.x+x), (int16_t)(l.y+y), (int32_t)(l.z+z) };
+    }
 };
 
 class ByteBuffer {
@@ -68,6 +72,12 @@ public:
     ByteBuffer(byte_t* data, unsigned int length) {
         for(int i = 0; i < length; i++) {
             bytes.push_back(data[i]);
+        }
+    }
+
+    explicit ByteBuffer(const std::string& str) {
+        for(char i : str) {
+            bytes.push_back((byte_t)i);
         }
     }
 
@@ -220,7 +230,7 @@ public:
     }
 
     void writeByteBuffer(ByteBuffer& buf) {
-        bytes.resize(std::max(bytes.size(), buf.bytes.size()+position));
+        bytes.resize(max(bytes.size(), buf.bytes.size()+position));
         for(unsigned char byte : buf.bytes) {
             writeByte(byte);
         }
@@ -238,6 +248,14 @@ public:
             i |= readByte();
         }
         return i;
+    }
+
+    ByteBuffer readBytes(unsigned int bytes) {
+        ByteBuffer dst;
+        for(int i = 0; i < bytes; i++) {
+            dst.bytes.push_back(readByte());
+        }
+        return dst;
     }
 
     long long readLong() {
@@ -363,6 +381,49 @@ public:
     void writeUnsignedShort(unsigned short value) {
         writeByte((value & 0xFF00) >> 8);
         writeByte((value & 0x00FF));
+    }
+
+    ByteBuffer subBuffer(int start, int end) {
+        ByteBuffer dst;
+        for(int i = start; i < end; i++) dst.bytes.push_back(bytes[i]);
+        return dst;
+    }
+
+    ByteBuffer ensureLength(unsigned int length) {
+        while(bytes.size() < length) bytes.push_back(0);
+        return *this;
+    }
+
+    ByteBuffer trim() {
+        int start = 0;
+        int end = bytes.size() - 1;
+        for(; start < bytes.size(); start++) {
+            if(bytes[start] != 0) break;
+        }
+        for(; end >= start; end--) {
+            if(bytes[end] != 0) break;
+        }
+        return subBuffer(start, end+1);
+    }
+
+    ByteBuffer trimEnd() {
+        int end = bytes.size() - 1;
+        for(; end >= 0; end--) {
+            if(bytes[end] != 0) break;
+        }
+        return subBuffer(0, end+1);
+    }
+
+    ByteBuffer trimBegin() {
+        int start = 0;
+        for(; start < bytes.size(); start++) {
+            if(bytes[start] != 0) break;
+        }
+        return subBuffer(start, bytes.size());
+    }
+
+    byte_t operator[](int idx) {
+        return bytes[idx];
     }
 
 public:
