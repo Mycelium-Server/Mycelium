@@ -9,8 +9,9 @@
 #include <fstream>
 std::fstream packet_log;
 
-unsigned int handlePacket(uv_stream_t* handle, const ByteBuffer& buf);
-void handleDisconnect(uv_stream_t* handle);
+unsigned int handlePacket(uv_stream_t*, ByteBuffer&);
+ByteBuffer decryptPacket(uv_stream_t*, const ByteBuffer&);
+void handleDisconnect(uv_stream_t*);
 
 typedef struct {
     uv_write_t req;
@@ -63,10 +64,14 @@ void post_read(uv_stream_t* handle, ssize_t nread, const uv_buf_t* buf) {
         return;
     }
 
-    data_cntr += nread;
-    unsigned long long length = handlePacket(handle, ByteBuffer((byte_t*)buf->base, nread));
-    while(length < nread) {
-        length += handlePacket(handle, ByteBuffer((byte_t*)buf->base+length, nread-length)); // with this thing it works much better!
+    data_cntr += nread;;
+    ByteBuffer maybe_encrypted = ByteBuffer((byte_t*)buf->base, nread);
+    ByteBuffer decrypted = decryptPacket(handle, maybe_encrypted);
+
+    unsigned long long length = handlePacket(handle, decrypted);
+    while(length < decrypted.bytes.size()) {
+        ByteBuffer sub = decrypted.subBuffer((int)length, (int)(decrypted.bytes.size() - length));
+        length += handlePacket(handle, sub);
     }
 }
 

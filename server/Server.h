@@ -5,12 +5,14 @@
 #include <map>
 #include <vector>
 #include <uv.h>
-#include "../ByteBuffer.h"
+#include "../JSON.h"
 #include "../Gamemode.h"
 #include "../EntityMetadata.h"
 #include "../Chunk.h"
 #include "../Encryption.h"
+#include "../HTTP.h"
 #include "../packet/PacketOutChunk.h"
+#include "../HexDigest.h"
 
 void sendPacket(uv_stream_t*, const std::shared_ptr<PacketOut>&);
 
@@ -71,6 +73,7 @@ public:
     int entity_id;
     std::shared_ptr<EntityMetadata> metadata;
     Inventory inventory;
+    JSON profile;
 
 public:
     [[nodiscard]] double get_feet_y() const {
@@ -151,6 +154,19 @@ public:
 std::shared_ptr<World> overworld;
 RSAKeyPairDER keypair;
 
+static std::string hex_str_(int i) {
+    std::stringstream ss;
+    ss << std::hex << i;
+    return ss.str();
+}
+
+std::string server_id_hash(const ByteBuffer& shared_secret) {
+    DaftHash digest;
+    digest.update(shared_secret);
+    digest.update(keypair.key_public_der);
+    return digest.finalise();
+}
+
 void generate_rsa() {
     printf("Generating RSA keypair... ");
     keypair = generate_encryption_request_key_pair();
@@ -173,7 +189,18 @@ void prepare_spawn() {
     printf("Done.\n");
 }
 
+void initialize_curl() {
+    printf("Initializing CURL... ");
+    initialize_global_curl();
+    if(!curl) {
+        printf("ERROR\n");
+        exit(-1);
+    }
+    printf("Done.\n");
+}
+
 void initialize_server() {
+    initialize_curl();
     generate_rsa();
     prepare_spawn();
 }

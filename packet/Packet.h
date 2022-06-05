@@ -10,6 +10,7 @@
 #include "../Keepalive.h"
 #include "../Difficulty.h"
 #include "../Encryption.h"
+#include "../MojangAPI.h"
 #include "../random.h"
 #include "PacketInHandshake.h"
 #include "PacketOutStatusResponse.h"
@@ -43,7 +44,7 @@
 #include "PacketInEntityAction.h"
 #include "PacketOutEntityMetadata.h"
 #include "PacketOutDestroyEntities.h"
-#include "PlayerOutLoginDisconnect.h"
+#include "PacketOutLoginDisconnect.h"
 #include "PacketInClickWindow.h"
 #include "PacketInPlayerBlockPlacement.h"
 #include "PacketOutBlockChange.h"
@@ -55,31 +56,35 @@ enum State {
     STATE_PLAY = 1,
 };
 
-std::vector<std::shared_ptr<Player>> pending_checks;
-std::map<uv_stream_t*, State> player_states;
-std::map<uv_stream_t*, std::vector<std::shared_ptr<PacketIn>>> pending_packets;
-std::map<uv_stream_t*, int> encryption_requests;
-std::map<uv_stream_t*, PacketInLoginStart> login;
-std::map<uv_stream_t*, AES_CFB8_Data> encryption_contexts;
+static std::vector<std::shared_ptr<Player>> pending_checks;
+static std::map<uv_stream_t*, State> player_states;
+static std::map<uv_stream_t*, std::vector<std::shared_ptr<PacketIn>>> pending_packets;
+static std::map<uv_stream_t*, int> encryption_requests;
+static std::map<uv_stream_t*, PacketInLoginStart> login;
+static std::map<uv_stream_t*, AES_CFB8_Data> encryption_contexts;
+static std::map<uv_stream_t*, int> next_state;
 
-bool check_state(uv_stream_t* s) {
-    if(player_states[s] != STATE_PLAY) {
-        return true;
-    }
-    return false;
+static bool check_state(uv_stream_t* s) {
+    return player_states[s] != STATE_PLAY;
 }
 
-#define QUEUED_PLAY_PACKET_BEGIN(Packet_T, buf, packet_name, s)    \
-    Packet_T queued_packet;                                        \
-    queued_packet.read(buf);                                       \
+#define QUEUED_PLAY_PACKET_BEGIN(Packet_T, buf, packet_name, s)              \
+    Packet_T queued_packet;                                                  \
+    queued_packet.read(buf);                                                 \
     pending_packets[s].push_back(std::make_shared<Packet_T>(queued_packet)); \
-    if(check_state(s)) break;                                      \
-    int __idx = 0;                                                 \
-    std::vector<int> __idx_tr;                                     \
-    for(auto& packet : pending_packets[s]) {                       \
-        if(packet->getPacketID() == queued_packet.getPacketID()) { \
+    if(check_state(s)) break;                                                \
+    int __idx = 0;                                                           \
+    std::vector<int> __idx_tr;                                               \
+    for(auto& packet : pending_packets[s]) {                                 \
+        if(packet->getPacketID() == queued_packet.getPacketID()) {           \
             Packet_T packet_name = *reinterpret_cast<Packet_T*>(packet.get());
-#define QUEUED_PLAY_PACKET_END() __idx_tr.push_back(__idx); } __idx++; } for(int idx : __idx_tr) { pending_packets[s].erase(pending_packets[s].begin() + idx); }
+#define QUEUED_PLAY_PACKET_END()                                    \
+            __idx_tr.push_back(__idx);                              \
+        } __idx++;                                                  \
+}                                                                   \
+    for(int idx : __idx_tr) {                                       \
+        pending_packets[s].erase(pending_packets[s].begin() + idx); \
+    }
 
 void sendPacket(uv_stream_t* s, const std::shared_ptr<PacketOut>& packet) {
     ByteBuffer buf;
@@ -102,12 +107,10 @@ void sendPacket(uv_stream_t* s, const std::shared_ptr<PacketOut>& packet) {
     printf("Sent packet: 0x%x\n", packet->getPacketID());
 }
 
-std::map<uv_stream_t*, int> next_state;
-
-void pre_login(uv_stream_t* s) {
+static void pre_login(uv_stream_t* s, const JSON& profile) {
     PacketOutLoginSuccess login_success;
     login_success.username = login[s].name;
-    login_success.uuid = UUID_t(unique_random(), unique_random());
+    login_success.uuid = UUID_t(JSON_STRING(JSON_OBJECT(profile).elements["id"]).value);
     sendPacket(s, std::make_shared<PacketOutLoginSuccess>(login_success));
 
     player_states[s] = STATE_LOGIN;
@@ -132,11 +135,12 @@ void pre_login(uv_stream_t* s) {
     join_game.is_flat = false;
     sendPacket(s, std::make_shared<PacketOutJoinGame>(join_game));
 
-    Location player_loc(0, 300, 0, 0, 0);
+    Location player_loc(0, 50, 0, 0, 0);
 
     Player player;
     player.uuid = login_success.uuid;
     player.name = login_success.username;
+    player.profile = profile;
     player.connection = s;
     player.gamemode = (GAMEMODE)join_game.gamemode;
     player.location = player_loc;
@@ -219,14 +223,14 @@ void pre_login(uv_stream_t* s) {
     login.erase(login.find(s));
 }
 
-void continue_log_in(std::shared_ptr<Player>& player) {
+static void continue_log_in(std::shared_ptr<Player>& player) {
     con_to_player[player->connection] = player;
     players.push_back(player);
 
     PacketOutChatMessage join_message;
     join_message.uuid = UUID_t(0, 0);
     join_message.position = 0;
-    join_message.json_data = "{\"text\":\""+player->name+" joined the game\",\"color\":\"aqua\"}";
+    join_message.json_data = R"({"text":")"+player->name+R"( joined the game","color":"aqua"})";
 
     for(auto& p : players) {
         sendPacket(p->connection, std::make_shared<PacketOutChatMessage>(join_message));
@@ -239,6 +243,20 @@ void continue_log_in(std::shared_ptr<Player>& player) {
     add_player.gamemode = player->gamemode;
     add_player.ping = -1;
     add_player.has_display_name = false;
+    {
+        JSON tmp = JSON_OBJECT(player->profile)["properties"];
+        if (tmp) {
+            for (const JSON &raw_prop: JSON_ARRAY(tmp).elements) {
+                JSON_Object prop = JSON_OBJECT(raw_prop);
+                PacketOutPlayerInfo::AddPlayer::Property property;
+                property.name = JSON_STRING(prop["name"]).value;
+                property.value = JSON_STRING(prop["value"]).value;
+                property.is_signed = true;
+                property.signature = JSON_STRING(prop["signature"]).value;
+                add_player.propeperty.push_back(property);
+            }
+        }
+    }
     PacketOutPlayerInfo::PlayerAction player_add_player;
     player_add_player.uuid = player->uuid;
     player_add_player.action = std::make_shared<PacketOutPlayerInfo::AddPlayer>(add_player);
@@ -257,6 +275,20 @@ void continue_log_in(std::shared_ptr<Player>& player) {
         add_other_player.gamemode = p->gamemode;
         add_other_player.ping = -1;
         add_other_player.has_display_name = false;
+        {
+            JSON tmp = JSON_OBJECT(p->profile)["properties"];
+            if (tmp) {
+                for (const JSON &raw_prop: JSON_ARRAY(tmp).elements) {
+                    JSON_Object prop = JSON_OBJECT(raw_prop);
+                    PacketOutPlayerInfo::AddPlayer::Property property;
+                    property.name = JSON_STRING(prop["name"]).value;
+                    property.value = JSON_STRING(prop["value"]).value;
+                    property.is_signed = true;
+                    property.signature = JSON_STRING(prop["signature"]).value;
+                    add_other_player.propeperty.push_back(property);
+                }
+            }
+        }
         PacketOutPlayerInfo::PlayerAction player_add_other_player;
         player_add_other_player.uuid = p->uuid;
         player_add_other_player.action = std::make_shared<PacketOutPlayerInfo::AddPlayer>(add_other_player);
@@ -304,7 +336,7 @@ void continue_log_in(std::shared_ptr<Player>& player) {
     player_states[player->connection] = STATE_PLAY;
 }
 
-void handle_encryption_response(uv_stream_t* s, PacketInEncryptionResponse& response) {
+static void handle_encryption_response(uv_stream_t* s, PacketInEncryptionResponse& response) {
     int verify_token = encryption_requests[s];
     encryption_requests.erase(encryption_requests.find(s));
     ByteBuffer d_vt = rsa_decrypt(keypair, response.verify_token);
@@ -321,16 +353,26 @@ void handle_encryption_response(uv_stream_t* s, PacketInEncryptionResponse& resp
     printf("handle_encryption_response: shared secret: ok\n");
     encryption_contexts[s] = initialize_aes_encryption(shared_secret);
     printf("handle_encryption_response: initialized AES/CFB8 context\n");
-    pre_login(s);
+
+    JSON profile;
+    int http_code = mojang_request_authentication(&profile, login[s].name, server_id_hash(shared_secret));
+    if(http_code != 200) {
+        PacketOutLoginDisconnect disconnect;
+        disconnect.reason = R"({"text":"Failed to verify username ()"+std::to_string(http_code)+")\"}";
+        sendPacket(s, std::make_shared<PacketOutLoginDisconnect>(disconnect));
+        return;
+    }
+
+    pre_login(s, profile);
 }
 
-unsigned int handlePacket(uv_stream_t* s, const ByteBuffer& encrypted) {
-    process_keepalive(s);
+ByteBuffer decryptPacket(uv_stream_t* s, const ByteBuffer& buf) {
+    if(!encryption_contexts.contains(s)) return buf;
+    return aes_decrypt(encryption_contexts[s], buf);
+}
 
-    ByteBuffer buf = encrypted;
-    if(encryption_contexts.find(s) != encryption_contexts.end()) {
-        buf = aes_decrypt(encryption_contexts[s], encrypted);
-    }
+unsigned int handlePacket(uv_stream_t* s, ByteBuffer& buf) {
+    process_keepalive(s);
 
     int length = buf.readVarInt();
     int packet_id = buf.readVarInt();

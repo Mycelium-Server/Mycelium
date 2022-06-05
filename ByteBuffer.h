@@ -42,10 +42,19 @@ unsigned int sizeofVarLong(long value) {
 }
 
 struct UUID_t {
-    uint64_t a;
-    uint64_t b;
+    uint64_t a = 0;
+    uint64_t b = 0;
 
-    UUID_t() : a(0), b(0) {}
+    explicit UUID_t(const std::string& str) {
+        if(str.size() != 32) {
+            fprintf(stderr, "UUID_t: uuid string length should be 32\n");
+            return;
+        }
+        char* end;
+        a = strtoull(str.substr(00, 16).c_str(), &end, 16);
+        b = strtoull(str.substr(16, 32).c_str(), &end, 16);
+    }
+    UUID_t() = default;
     UUID_t(uint64_t a, uint64_t b) : a(a), b(b) {}
 };
 
@@ -61,24 +70,30 @@ union Location_t {
     explicit Location_t(int64_t l) : l(l) {}
     Location_t(int32_t x, int16_t y, int32_t z) : x(x & 0x3FFFFFF), z(z & 0x3FFFFFF), y(y & 0xFFF) {}
 
-    Location_t operator+(Location_t l) const {
-        return {(int32_t)(l.x+x), (int16_t)(l.y+y), (int32_t)(l.z+z) };
+    Location_t operator+(Location_t loc) const {
+        return {(int32_t)(loc.x+x), (int16_t)(loc.y+y), (int32_t)(loc.z+z) };
     }
 };
 
 class ByteBuffer {
 public:
     ByteBuffer() = default;
-    ByteBuffer(byte_t* data, unsigned int length) {
+    ByteBuffer(const byte_t* data, unsigned int length) {
+        bytes.resize(length);
+        reset();
         for(int i = 0; i < length; i++) {
-            bytes.push_back(data[i]);
+            writeByte(data[i]);
         }
+        reset();
     }
 
     explicit ByteBuffer(const std::string& str) {
+        bytes.resize(str.size());
+        reset();
         for(char i : str) {
-            bytes.push_back((byte_t)i);
+            writeByte(i);
         }
+        reset();
     }
 
     ByteBuffer(unsigned int length) {
@@ -419,11 +434,26 @@ public:
         for(; start < bytes.size(); start++) {
             if(bytes[start] != 0) break;
         }
-        return subBuffer(start, bytes.size());
+        return subBuffer(start, (int)bytes.size());
     }
 
     byte_t operator[](int idx) {
         return bytes[idx];
+    }
+
+    void discard(const std::vector<char>& symbols) {
+        while(true) {
+            char b = (char)readByte();
+            bool d = false;
+            for(char t : symbols) {
+                if(t == b) {
+                    d = true;
+                    break;
+                }
+            }
+            if(!d) break;
+        }
+        position--;
     }
 
 public:

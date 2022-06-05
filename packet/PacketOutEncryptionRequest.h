@@ -6,7 +6,7 @@
 class PacketOutEncryptionRequest : public PacketOut {
 public:
     void encode(ByteBuffer &buf) override {
-        buf.writeString("Mycelium");
+        buf.writeString("");
         buf.writeVarInt((int)public_key.bytes.size());
         buf.writeByteBuffer(public_key);
         buf.writeVarInt(4);
