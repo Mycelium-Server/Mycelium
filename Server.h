@@ -4,6 +4,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <uv.h>
+#include <thread>
 #include "ByteBuffer.h"
 
 #include <fstream>
@@ -16,15 +17,15 @@ void handleDisconnect(uv_stream_t*);
 typedef struct {
     uv_write_t req;
     uv_buf_t buf;
-} write_req_t;
+} tcp_write_req_t;
 
 static uint64_t data_cntr = 0;
 
-void on_close(uv_handle_t* handle) {
+void tcp_on_close(uv_handle_t* handle) {
     free(handle);
 }
 
-void post_write(uv_write_t* req, int status) {
+void tcp_post_write(uv_write_t* req, int status) {
 
     if (status == 0)
         return;
@@ -35,20 +36,20 @@ void post_write(uv_write_t* req, int status) {
         return;
 
     if(status != UV_EPIPE) return;
-    uv_close((uv_handle_t*)req->handle, on_close);
+    uv_close((uv_handle_t*)req->handle, tcp_on_close);
 }
 
-void post_shutdown(uv_shutdown_t* req, int status) {
+void tcp_post_shutdown(uv_shutdown_t* req, int status) {
     if(status < 0) {
         fprintf(stderr, "post_shutdown: %s\n", uv_strerror(status));
     }
     data_cntr = 0;
-    uv_close((uv_handle_t*)req->handle, on_close);
+    uv_close((uv_handle_t*)req->handle, tcp_on_close);
     handleDisconnect(req->handle);
 
 }
 
-void post_read(uv_stream_t* handle, ssize_t nread, const uv_buf_t* buf) {
+void tcp_post_read(uv_stream_t* handle, ssize_t nread, const uv_buf_t* buf) {
     uv_shutdown_t* req;
 
     if(nread == 0)
@@ -60,7 +61,7 @@ void post_read(uv_stream_t* handle, ssize_t nread, const uv_buf_t* buf) {
         req = (uv_shutdown_t*)malloc(sizeof(*req));
         if(!req) return;
 
-        uv_shutdown(req, handle, post_shutdown);
+        uv_shutdown(req, handle, tcp_post_shutdown);
         return;
     }
 
@@ -70,28 +71,28 @@ void post_read(uv_stream_t* handle, ssize_t nread, const uv_buf_t* buf) {
 
     unsigned long long length = handlePacket(handle, decrypted);
     while(length < decrypted.bytes.size()) {
-        ByteBuffer sub = decrypted.subBuffer((int)length, (int)(decrypted.bytes.size() - length));
+        ByteBuffer sub = ByteBuffer(decrypted.bytes.data() + length, decrypted.bytes.size() - length);
         length += handlePacket(handle, sub);
     }
 }
 
-void write(uv_stream_t* handle, ByteBuffer buf) {
-    write_req_t* wr;
-    wr = (write_req_t*)malloc(sizeof(*wr));
+void tcp_write(uv_stream_t* handle, const ByteBuffer& buf) {
+    tcp_write_req_t* wr;
+    wr = (tcp_write_req_t*)malloc(sizeof(*wr));
     if(!wr) return;
 
     wr->buf = uv_buf_init((char*)buf.bytes.data(), buf.bytes.size());
 
-    uv_write(&wr->req, handle, &wr->buf, 1, post_write);
+    uv_write(&wr->req, handle, &wr->buf, 1, tcp_post_write);
 }
 
-void alloc_cb(uv_handle_t*, size_t suggested_size, uv_buf_t* buf) {
+void tcp_alloc_cb(uv_handle_t*, size_t suggested_size, uv_buf_t* buf) {
     buf->base = (char*)malloc(suggested_size);
     if(!buf->base) return;
     buf->len = suggested_size;
 }
 
-void on_connection(uv_stream_t* server, int status) {
+void tcp_on_connection(uv_stream_t* server, int status) {
     uv_tcp_t* stream;
     int r;
 
@@ -108,11 +109,11 @@ void on_connection(uv_stream_t* server, int status) {
     r = uv_accept(server, (uv_stream_t*)stream);
     if(r != 0) return;
 
-    r = uv_read_start((uv_stream_t*)stream, alloc_cb, post_read);
+    r = uv_read_start((uv_stream_t*)stream, tcp_alloc_cb, tcp_post_read);
     if(r != 0) return;
 }
 
-void start() {
+void tcp_start() {
     uv_tcp_t* tcp_server;
     struct sockaddr_in addr{};
     int r;
@@ -129,11 +130,16 @@ void start() {
     r = uv_tcp_bind(tcp_server, (const struct sockaddr*)&addr, 0);
     if(r != 0) return;
 
-    r = uv_listen((uv_stream_t*)tcp_server, SOMAXCONN, on_connection);
+    r = uv_listen((uv_stream_t*)tcp_server, SOMAXCONN, tcp_on_connection);
     if(r != 0) return;
 
     r = uv_run(uv_default_loop(), UV_RUN_DEFAULT);
     if(r != 0) return;
+}
+
+void tcp_start_thread() {
+    printf("Starting TCP server...\n");
+    std::thread(tcp_start).detach();
 }
 
 #endif //MYCELIUM_SERVER_H

@@ -58,6 +58,18 @@ struct UUID_t {
     UUID_t(uint64_t a, uint64_t b) : a(a), b(b) {}
 };
 
+struct MAGIC_t {
+    uint64_t a = 0;
+    uint64_t b = 0;
+
+    static MAGIC_t get_default() {
+        MAGIC_t magic;
+        magic.a = 0x00ffff00fefefefe;
+        magic.b = 0xfdfdfdfd12345678;
+        return magic;
+    }
+};
+
 union Location_t {
     struct {
         int64_t y : 12;
@@ -79,21 +91,15 @@ class ByteBuffer {
 public:
     ByteBuffer() = default;
     ByteBuffer(const byte_t* data, unsigned int length) {
-        bytes.resize(length);
-        reset();
         for(int i = 0; i < length; i++) {
-            writeByte(data[i]);
+            bytes.push_back(data[i]);
         }
-        reset();
     }
 
-    explicit ByteBuffer(const std::string& str) {
-        bytes.resize(str.size());
-        reset();
+    ByteBuffer(const std::string& str) {
         for(char i : str) {
-            writeByte(i);
+            bytes.push_back((byte_t)i);
         }
-        reset();
     }
 
     ByteBuffer(unsigned int length) {
@@ -407,6 +413,18 @@ public:
     ByteBuffer ensureLength(unsigned int length) {
         while(bytes.size() < length) bytes.push_back(0);
         return *this;
+    }
+
+    MAGIC_t readMagic() {
+        MAGIC_t magic;
+        magic.a = readLong();
+        magic.b = readLong();
+        return magic;
+    }
+
+    void writeMagic(MAGIC_t magic) {
+        writeUnsignedLong(magic.a);
+        writeUnsignedLong(magic.b);
     }
 
     ByteBuffer trim() {

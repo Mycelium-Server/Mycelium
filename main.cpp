@@ -1,11 +1,11 @@
-#include "Server.h"
-#include "packet/Packet.h" // Required to compile
-#include "server/Server.h"
+#include "packet/Packet.h"
+#include "bedrock/packet/Packet.h"
 
 int main()
 {
-    printf("Running server...\n");
     initialize_server();
-    start();
+    tcp_start_thread();
+    udp_start_thread();
+    while(1);
     return 0;
 }

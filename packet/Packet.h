@@ -56,15 +56,15 @@ enum State {
     STATE_PLAY = 1,
 };
 
-static std::vector<std::shared_ptr<Player>> pending_checks;
-static std::map<uv_stream_t*, State> player_states;
-static std::map<uv_stream_t*, std::vector<std::shared_ptr<PacketIn>>> pending_packets;
-static std::map<uv_stream_t*, int> encryption_requests;
-static std::map<uv_stream_t*, PacketInLoginStart> login;
-static std::map<uv_stream_t*, AES_CFB8_Data> encryption_contexts;
-static std::map<uv_stream_t*, int> next_state;
+std::vector<std::shared_ptr<Player>> pending_checks;
+std::map<uv_stream_t*, State> player_states;
+std::map<uv_stream_t*, std::vector<std::shared_ptr<PacketIn>>> pending_packets;
+std::map<uv_stream_t*, int> encryption_requests;
+std::map<uv_stream_t*, PacketInLoginStart> login;
+std::map<uv_stream_t*, AES_CFB8_Data> encryption_contexts;
+std::map<uv_stream_t*, int> next_state;
 
-static bool check_state(uv_stream_t* s) {
+bool check_state(uv_stream_t* s) {
     return player_states[s] != STATE_PLAY;
 }
 
@@ -102,12 +102,12 @@ void sendPacket(uv_stream_t* s, const std::shared_ptr<PacketOut>& packet) {
         encrypted = aes_encrypt(encryption_contexts[s], buf);
     }
 
-    write(s, encrypted);
+    tcp_write(s, encrypted);
 
     printf("Sent packet: 0x%x\n", packet->getPacketID());
 }
 
-static void pre_login(uv_stream_t* s, const JSON& profile) {
+void pre_login(uv_stream_t* s, const JSON& profile) {
     PacketOutLoginSuccess login_success;
     login_success.username = login[s].name;
     login_success.uuid = UUID_t(JSON_STRING(JSON_OBJECT(profile).elements["id"]).value);
@@ -223,7 +223,7 @@ static void pre_login(uv_stream_t* s, const JSON& profile) {
     login.erase(login.find(s));
 }
 
-static void continue_log_in(std::shared_ptr<Player>& player) {
+void continue_log_in(std::shared_ptr<Player>& player) {
     con_to_player[player->connection] = player;
     players.push_back(player);
 
@@ -336,7 +336,7 @@ static void continue_log_in(std::shared_ptr<Player>& player) {
     player_states[player->connection] = STATE_PLAY;
 }
 
-static void handle_encryption_response(uv_stream_t* s, PacketInEncryptionResponse& response) {
+void handle_encryption_response(uv_stream_t* s, PacketInEncryptionResponse& response) {
     int verify_token = encryption_requests[s];
     encryption_requests.erase(encryption_requests.find(s));
     ByteBuffer d_vt = rsa_decrypt(keypair, response.verify_token);
@@ -375,6 +375,7 @@ unsigned int handlePacket(uv_stream_t* s, ByteBuffer& buf) {
     process_keepalive(s);
 
     int length = buf.readVarInt();
+    buf.bytes.resize(length+sizeofVarInt(length));
     int packet_id = buf.readVarInt();
     printf("Packet Length: %d\n", length);
     printf("Packet ID: %d [0x%x]\n", packet_id, packet_id);
