@@ -9,6 +9,4 @@ include_directories(thirdparty/libuv/include)
 file(GLOB SRC src/*.cpp)
 
 add_executable(Mycelium ${SRC})
-
-add_executable(tcOS ${SRC})
-target_link_libraries(tcOS uv)
+target_link_libraries(Mycelium uv)
