@@ -18,10 +18,16 @@ jobs:
         os: [ ubuntu-latest, windows-latest ]
 
     steps:
+      - if: matrix.os == 'ubuntu-latest'
+        name: Install g++-10
+        run: sudo apt install g++-10
       - uses: actions/checkout@v3
       - name: Configure CMake
         run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-      - name: Build
+      - if: matrix.os == 'ubuntu-latest'
+        name: Build (linux)
+        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} -D CMAKE_CXX_COMPILER=g++-10
+      - if: matrix.os == 'windows-latest'
         run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
       - name: Test
         working-directory: ${{github.workspace}}/build
