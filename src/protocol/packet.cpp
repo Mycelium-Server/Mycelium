@@ -1,6 +1,7 @@
 #include "packet.h"
 #include "serverbound_status_request.h"
 #include "serverbound_ping_request.h"
+#include "serverbound_login_start.h"
 #include <map>
 
 static std::map<int, ServerboundPacket*> registered;
@@ -16,7 +17,7 @@ ServerboundPacket* ServerboundPacket::createInstanceFromID(int id, ConnectionSta
         if (state == ConnectionState::STATUS) {
             return new ServerboundStatusRequest();
         } else if (state == ConnectionState::LOGIN) {
-            return nullptr; // TODO: Implement this packet
+            return new ServerboundLoginStart();
         }
     } else if (id == 1) {
         if (state == ConnectionState::STATUS) {

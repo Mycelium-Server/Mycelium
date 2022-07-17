@@ -1,5 +1,6 @@
 #include "handlers.h"
 #include "../protocol/packet.h"
+#include <iostream>
 
 PacketDecoder::PacketDecoder() {
 
@@ -20,9 +21,9 @@ bool PacketDecoder::onDisconnect(ConnectionContext*) {
 bool PacketDecoder::decode(ConnectionContext* ctx, void* in, std::vector<void*>& out) {
     ByteBuffer* inbuf = (ByteBuffer*) in;
     
-    int packedId = inbuf->readVarInt();
-
-    ServerboundPacket* packet = ServerboundPacket::createInstanceFromID(packedId, ctx->state);
+    int packetId = inbuf->readVarInt();
+    
+    ServerboundPacket* packet = ServerboundPacket::createInstanceFromID(packetId, ctx->state);
     packet->read(*inbuf);
     out.push_back(packet);
 

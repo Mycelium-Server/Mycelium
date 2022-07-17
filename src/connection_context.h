@@ -19,6 +19,9 @@ public:
     void write(void*, bool async = false);
     void read(ByteBuffer*);
 
+private:
+    void read(void*, int);
+
 public:
     Pipeline* pipeline;
     uv_stream_t* stream;

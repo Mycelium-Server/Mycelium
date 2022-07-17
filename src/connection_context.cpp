@@ -64,22 +64,22 @@ void ConnectionContext::write(void* object, bool async) {
 
 }
 
-void ConnectionContext::read(ByteBuffer* buf) {
-    std::vector<void*> src;
+void ConnectionContext::read(void* src, int idx) {
+    if (idx >= pipeline->handlers().size()) return;
+    AbstractHandler* handler = pipeline->get(idx);
+    if (!handler->isInboundHandler()) {
+        read(src, idx + 1);
+        return;
+    }
+
     std::vector<void*> dst;
+    InboundHandler* inbound = (InboundHandler*) handler;
+    if (!inbound->decode(this, src, dst)) return;
+    for (void*& obj : dst) {
+        read(obj, idx + 1);
+    }
+}
 
-    src.push_back(buf);
-
-    pipeline->forEach([this, &src, &dst](AbstractHandler* handler, int){
-        if(handler->isInboundHandler()) {
-            InboundHandler* outbound = ((InboundHandler*)handler);
-            for(void*& obj : src) {
-                if(!outbound->decode(this, obj, dst))
-                    return false;
-            }
-            src = std::vector<void*>(dst);
-            dst.clear();
-        }
-        return true;
-    });
+void ConnectionContext::read(ByteBuffer* buf) {
+    read(buf, 0);
 }

@@ -3,9 +3,11 @@
 #include <iostream>
 
 #include "../listeners/status_packet_listener.h"
+#include "../listeners/login_packet_listener.h"
 
 #include "../protocol/serverbound_handshake.h"
 #include "../protocol/serverbound_status_request.h"
+#include "../protocol/serverbound_login_start.h"
 
 PacketHandler::PacketHandler() {
 
@@ -28,6 +30,7 @@ void PacketHandler::handle(ConnectionContext* ctx, void* in) {
                 ctx->packetListener = new StatusPacketListener();
                 ctx->state = ConnectionState::STATUS;
             } else if (handshake->nextState == ServerboundHandshake::LOGIN) {
+                ctx->packetListener = new LoginPacketListener();
                 ctx->state = ConnectionState::LOGIN;
             }
             delete handshake;
@@ -36,7 +39,9 @@ void PacketHandler::handle(ConnectionContext* ctx, void* in) {
             ((StatusPacketListener*) ctx->packetListener)->handleStatusRequest(ctx, statusRequest);
             delete statusRequest;
         } else if (ctx->state == ConnectionState::LOGIN) {
-            // TODO: Implement this
+            ServerboundLoginStart* loginStart = (ServerboundLoginStart*) packet;
+            ((LoginPacketListener*) ctx->packetListener)->handleLoginStart(ctx, loginStart);
+            delete loginStart;
         }
         break;
     }

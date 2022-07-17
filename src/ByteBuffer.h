@@ -7,6 +7,7 @@
 class ByteBuffer {
 public:
     ByteBuffer();
+    ByteBuffer(std::vector<unsigned char>);
     ByteBuffer(const unsigned char*, size_t);
     
 public:

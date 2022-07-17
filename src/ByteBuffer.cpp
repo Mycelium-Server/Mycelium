@@ -7,6 +7,11 @@ ByteBuffer::ByteBuffer(const unsigned char* data, size_t len) {
     writerIdx = len;
 }
 
+ByteBuffer::ByteBuffer(std::vector<unsigned char> data) {
+    this->data = std::vector<unsigned char>(data);
+    writerIdx = data.size();
+}
+
 unsigned char ByteBuffer::readByte() {
     if(readerIdx >= writerIdx) return 0;
     return data[readerIdx++];
