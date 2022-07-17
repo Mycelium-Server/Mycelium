@@ -2,6 +2,11 @@
 
 ByteBuffer::ByteBuffer() {}
 
+ByteBuffer::ByteBuffer(size_t size) {
+    data.resize(size);
+    writerIdx = size;
+}
+
 ByteBuffer::ByteBuffer(const unsigned char* data, size_t len) {
     this->data = std::vector<unsigned char>(data, data+len);
     writerIdx = len;
@@ -134,6 +139,32 @@ void ByteBuffer::writeVarLong(long long value) {
         writeByte(((value & 0x7F) | 0x80) & 0xFF);
         value = ((unsigned long long)value) >> 7;
     }
+}
+
+float ByteBuffer::readFloat() {
+    uint32_t buf = readInt();
+    float x;
+    memcpy(&x, &buf, sizeof(float));
+    return x;
+}
+
+void ByteBuffer::writeFloat(float value) {
+    uint32_t x;
+    memcpy(&x, &value, sizeof(float));
+    writeInt(x);
+}
+
+double ByteBuffer::readDouble() {
+    uint64_t buf = readLong();
+    double x;
+    memcpy(&x, &buf, sizeof(double));
+    return x;
+}
+
+void ByteBuffer::writeDouble(double value) {
+    uint64_t x;
+    memcpy(&x, &value, sizeof(double));
+    writeLong(x);
 }
 
 std::vector<unsigned char> ByteBuffer::readBytes(size_t n) {

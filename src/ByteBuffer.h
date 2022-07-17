@@ -7,6 +7,7 @@
 class ByteBuffer {
 public:
     ByteBuffer();
+    ByteBuffer(size_t);
     ByteBuffer(std::vector<unsigned char>);
     ByteBuffer(const unsigned char*, size_t);
     
@@ -31,6 +32,12 @@ public:
 
     long long readVarLong();
     void writeVarLong(long long);
+
+    float readFloat();
+    void writeFloat(float);
+
+    double readDouble();
+    void writeDouble(double);
 
     std::vector<unsigned char> readBytes(size_t);
     void writeBytes(std::vector<unsigned char>);
