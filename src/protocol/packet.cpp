@@ -2,6 +2,7 @@
 #include "serverbound_status_request.h"
 #include "serverbound_ping_request.h"
 #include "serverbound_login_start.h"
+#include "serverbound_encryption_response.h"
 #include <map>
 
 static std::map<int, ServerboundPacket*> registered;
@@ -23,7 +24,7 @@ ServerboundPacket* ServerboundPacket::createInstanceFromID(int id, ConnectionSta
         if (state == ConnectionState::STATUS) {
             return new ServerboundPingRequest();
         } else if (state == ConnectionState::LOGIN) {
-            return nullptr; // TODO: Implement this packet
+            return new ServerboundEncryptionResponse();
         }
     }
     return registered[id]->createInstance();

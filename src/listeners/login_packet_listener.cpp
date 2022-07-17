@@ -1,7 +1,12 @@
 #include "login_packet_listener.h"
 #include "../protocol/clientbound_login_success.h"
 #include "../protocol/clientbound_set_compression.h"
+#include "../protocol/clientbound_encryption_request.h"
 #include "../pipeline/handlers.h"
+
+#include <openssl/rand.h>
+
+static void continueLogin(ConnectionContext*);
 
 LoginPacketListener::LoginPacketListener() {
 
@@ -12,8 +17,34 @@ LoginPacketListener::~LoginPacketListener() {
 }
 
 void LoginPacketListener::handleLoginStart(ConnectionContext* ctx, ServerboundLoginStart* packet) {
-    // TODO: Add encryption
-    
+    ctx->playerData.name = packet->name;
+
+    if (!ctx->gameServer->isOnlineMode()) {
+        auto playerUUID = uuids::uuid_name_generator{{}}("OfflinePlayer: " + packet->name);
+        ctx->playerData.uuid = playerUUID;
+        continueLogin(ctx);
+    } else {
+        ClientboundEncryptionRequest* request = new ClientboundEncryptionRequest();
+        request->serverID = "";
+        request->rsa = ctx->gameServer->getRSAKeyPair();
+        unsigned char token[4];
+        RAND_bytes(token, 4);
+        request->verifyToken = { token, 4 };
+        ctx->write(request);
+        delete request;
+    }   
+}
+
+void LoginPacketListener::handleEncryptionResponse(ConnectionContext* ctx, ServerboundEncryptionResponse* packet) {
+    // TODO: Verify token
+    ByteBuffer sharedSecret = rsa_decrypt(ctx->gameServer->getRSAKeyPair(), packet->sharedSecret);
+    CipherAES aes = aes_create_cipher(sharedSecret);
+    ctx->pipeline->addBefore("packet_splitter", "packet_decrypt", new PacketDecrypt(aes));
+    ctx->pipeline->addAfter("packet_prepender", "packet_encrypt", new PacketEncrypt(aes));
+    continueLogin(ctx);
+}
+
+void continueLogin(ConnectionContext* ctx) {
     if (ctx->gameServer->getCompressionThreshold() > 0) {
         ClientboundSetCompression* setCompression = new ClientboundSetCompression();
         setCompression->threshold = ctx->gameServer->getCompressionThreshold();
@@ -24,12 +55,9 @@ void LoginPacketListener::handleLoginStart(ConnectionContext* ctx, ServerboundLo
         ctx->pipeline->addAfter("packet_encoder", "packet_compressor", new PacketCompressor());
     }
 
-    auto playerUUID = uuids::uuid_name_generator{{}}("OfflinePlayer: " + packet->name);
-
     ClientboundLoginSuccess* loginSuccess = new ClientboundLoginSuccess();
-    loginSuccess->name = packet->name;
-    loginSuccess->uuid = playerUUID;
+    loginSuccess->name = ctx->playerData.name;
+    loginSuccess->uuid = ctx->playerData.uuid;
     ctx->write(loginSuccess);
     delete loginSuccess;
-    
 }

@@ -52,7 +52,9 @@ void PacketHandler::handle(ConnectionContext* ctx, void* in) {
             ((StatusPacketListener*) ctx->packetListener)->handlePingRequest(ctx, request);
             delete request;
         } else if (ctx->state == ConnectionState::LOGIN) {
-            // TODO: Implement this
+            ServerboundEncryptionResponse* response = (ServerboundEncryptionResponse*) packet;
+            ((LoginPacketListener*) ctx->packetListener)->handleEncryptionResponse(ctx, response);
+            delete response;
         }
         break;
     }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../handler.h"
+#include "../encryption.h"
 
 class PacketSplitter : public InboundHandler {
 public:
@@ -39,6 +40,21 @@ public:
     bool onConnect(ConnectionContext*) override;
     bool onDisconnect(ConnectionContext*) override;
     bool decode(ConnectionContext*, void*, std::vector<void*>&) override;
+
+};
+
+class PacketDecrypt : public InboundHandler {
+public:
+    PacketDecrypt(const CipherAES&);
+    ~PacketDecrypt();
+
+public:
+    bool onConnect(ConnectionContext*) override;
+    bool onDisconnect(ConnectionContext*) override;
+    bool decode(ConnectionContext*, void*, std::vector<void*>&) override;
+
+private:
+    CipherAES cipher;
 
 };
 
@@ -81,5 +97,18 @@ public:
 
 public:
     bool encode(ConnectionContext*, void*, void*&) override;
+
+};
+
+class PacketEncrypt : public OutboundHandler {
+public:
+    PacketEncrypt(const CipherAES&);
+    ~PacketEncrypt();
+
+public:
+    bool encode(ConnectionContext*, void*, void*&) override;
+
+private:
+    CipherAES cipher;
 
 };

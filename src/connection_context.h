@@ -2,6 +2,7 @@
 
 #include "pipeline.h"
 #include "server/game_server.h"
+#include "server/player_data.h"
 #include <uv.h>
 
 enum ConnectionState {
@@ -29,5 +30,6 @@ public:
     int protocolVersion = 0;
     void* packetListener = 0;
     GameServer* gameServer = 0;
+    PlayerData playerData;
 
 };

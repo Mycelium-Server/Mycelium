@@ -2,6 +2,7 @@
 
 #include "../uuid.h"
 #include "gamemode.h"
+#include "location.h"
 
 struct PlayerData {
     std::string name;
