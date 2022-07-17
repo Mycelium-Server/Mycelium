@@ -23,5 +23,5 @@ Pipeline* pipelineInitializer(ConnectionContext* ctx) {
 int main() {
     server = new GameServer();
     protocol_registerPackets();
-    tcp_start_server(pipelineInitializer, "0.0.0.0", 25565); // TODO: Add input
+    tcp_start_server(pipelineInitializer, "0.0.0.0", 25577); // TODO: Add input
 }

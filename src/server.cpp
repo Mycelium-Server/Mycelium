@@ -53,18 +53,26 @@ void tcp_server_on_connect(uv_stream_t* handle, int status) {
     uv_tcp_t* stream;
     int r;
 
-    if (status != 0) return;
+    if (status != 0) {
+        std::cout << uv_strerror(status);
+        return;
+    }
 
     stream = (uv_tcp_t*)malloc(sizeof(uv_tcp_t));
-    if (!stream) return;
 
     r = uv_tcp_init(uv_default_loop(), stream);
-    if (r != 0) return;
+    if (r != 0) {
+        std::cout << uv_strerror(r);
+        return;
+    }
 
     stream->data = handle;
 
     r = uv_accept(handle, (uv_stream_t*) stream);
-    if (r != 0) return;
+    if (r != 0) {
+        std::cout << uv_strerror(r);
+        return;
+    }
 
     ConnectionContext* ctx = new ConnectionContext(nullptr, (uv_stream_t*) stream);
     ctx->pipeline = server_initCallback(ctx);
@@ -72,7 +80,10 @@ void tcp_server_on_connect(uv_stream_t* handle, int status) {
     tcp_streams.push_back(ctx->stream);
 
     r = uv_read_start((uv_stream_t*) stream, tcp_alloc_cb, tcp_server_read);
-    if (r != 0) return;
+    if (r != 0) {
+        std::cout << uv_strerror(r);
+        return;
+    }
 }
 
 void tcp_start_server(fn_init_pipeline initCallback, const char* host, int port) {
@@ -83,20 +94,34 @@ void tcp_start_server(fn_init_pipeline initCallback, const char* host, int port)
     int r;
 
     r = uv_ip4_addr(host, port, &addr);
-    if (r != 0) return;
+    if (r != 0) {
+        std::cout << uv_strerror(r);
+        return;
+    }
 
     tcp_server = (uv_tcp_t*)malloc(sizeof(*tcp_server));
-    if (!tcp_server) return;
 
     r = uv_tcp_init(uv_default_loop(), tcp_server);
-    if (r != 0) return;
+    if (r != 0) {
+        std::cout << uv_strerror(r);
+        return;
+    }
 
     r = uv_tcp_bind(tcp_server, (const struct sockaddr*)&addr, 0);
-    if (r != 0) return;
+    if (r != 0) {
+        std::cout << uv_strerror(r);
+        return;
+    }
 
     r = uv_listen((uv_stream_t*)tcp_server, SOMAXCONN, tcp_server_on_connect);
-    if (r != 0) return;
+    if (r != 0) {
+        std::cout << uv_strerror(r);
+        return;
+    }
 
     r = uv_run(uv_default_loop(), UV_RUN_DEFAULT);
-    if (r != 0) return;
+    if (r != 0) {
+        std::cout << uv_strerror(r);
+        return;
+    }
 }
