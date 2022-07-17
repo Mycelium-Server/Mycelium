@@ -34,12 +34,19 @@ void tcp_server_read(uv_stream_t* handle, ssize_t nread, const uv_buf_t* buf) {
         uv_shutdown(req, handle, tcp_shutdown);
         return;
     }
+
+    ByteBuffer* data = new ByteBuffer((unsigned char*)buf->base, nread);
+    
+    ConnectionContext* ctx = tcp_connections.at(std::distance(tcp_streams.begin(), std::find(tcp_streams.begin(), tcp_streams.end(), handle)));
+    ctx->read(data);
+
+    if (buf->base)
+        free(buf->base);
+
 }
 
-void tcp_alloc_cb(uv_handle_t*, size_t suggested_size, uv_buf_t* buf) {
-    buf->base = (char*)malloc(suggested_size);
-    if(!buf->base) return;
-    buf->len = suggested_size;
+void tcp_alloc_cb(uv_handle_t*, size_t size, uv_buf_t* buf) {
+    *buf = uv_buf_init((char*)malloc(size), size);
 }
 
 void tcp_server_on_connect(uv_stream_t* handle, int status) {

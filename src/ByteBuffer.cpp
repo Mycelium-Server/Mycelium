@@ -72,12 +72,12 @@ void ByteBuffer::writeLong(long long value) {
 }
 
 std::string ByteBuffer::readString() {
-    int len = readInt();
+    int len = readVarInt();
     return std::string((char*)readBytes(len).data(), len);
 }
 
 void ByteBuffer::writeString(std::string str) {
-    writeInt(str.size());
+    writeVarInt(str.size());
     writeBytes((unsigned char*)str.data(), str.size());
 }
 

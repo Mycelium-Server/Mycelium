@@ -6,6 +6,10 @@
 ConnectionContext::ConnectionContext(Pipeline* pipeline, uv_stream_t* stream)
     : pipeline(pipeline), stream(stream) {}
 
+ConnectionContext::~ConnectionContext() {
+    delete pipeline;
+}
+
 void write_cb(uv_write_t* req, int status) {
     if(status) {
         std::cout << "Unable to write data: " << uv_strerror(status);
