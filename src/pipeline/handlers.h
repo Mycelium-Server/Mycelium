@@ -30,6 +30,18 @@ public:
 
 };
 
+class PacketDecompressor : public InboundHandler {
+public:
+    PacketDecompressor();
+    ~PacketDecompressor();
+
+public:
+    bool onConnect(ConnectionContext*) override;
+    bool onDisconnect(ConnectionContext*) override;
+    bool decode(ConnectionContext*, void*, std::vector<void*>&) override;
+
+};
+
 class PacketHandler : public FinalHandler {
 public:
     PacketHandler();
@@ -56,6 +68,16 @@ class PacketPrepender : public OutboundHandler {
 public:
     PacketPrepender();
     ~PacketPrepender();
+
+public:
+    bool encode(ConnectionContext*, void*, void*&) override;
+
+};
+
+class PacketCompressor : public OutboundHandler {
+public:
+    PacketCompressor();
+    ~PacketCompressor();
 
 public:
     bool encode(ConnectionContext*, void*, void*&) override;

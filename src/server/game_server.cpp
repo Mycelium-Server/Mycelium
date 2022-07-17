@@ -5,9 +5,13 @@ std::string GameServer::getMOTD() {
 }
 
 int GameServer::getOnline() {
-    return 0; // TODO: Move to properties.yml
+    return 0;
 }
 
 int GameServer::getMaxPlayers() {
     return 20; // TODO: Move to properties.yml
+}
+
+int GameServer::getCompressionThreshold() {
+    return 256; // TODO: Move to properties.yml
 }

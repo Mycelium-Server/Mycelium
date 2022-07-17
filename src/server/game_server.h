@@ -8,5 +8,6 @@ public:
     int getOnline();
     int getMaxPlayers();
     // void* getFavicon(); // TODO: Implement this
+    int getCompressionThreshold();
 
 };
