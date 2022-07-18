@@ -4,6 +4,8 @@
 #include "../protocol/clientbound_set_compression.h"
 #include "../protocol/clientbound_encryption_request.h"
 #include "../protocol/clientbound_login.h"
+#include "../protocol/clientbound_plugin_message.h"
+#include "../protocol/plugin_channels.h"
 #include "../pipeline/handlers.h"
 #include "../registry_codec.h"
 
@@ -78,4 +80,10 @@ void continueLogin(ConnectionContext* ctx) {
     login->registryCodec = { default_registry_codec()->data };
     ctx->write(login);
     delete login;
+
+    ClientboundPluginMessage* brandMessage = new ClientboundPluginMessage();
+    brandMessage->channel = BRAND_CHANNEL;
+    brandMessage->data.writeString("Mycelium");
+    ctx->write(brandMessage);
+    delete brandMessage;
 }
