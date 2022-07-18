@@ -20,7 +20,6 @@ bool PacketCompressor::encode(ConnectionContext* ctx, void* in, void*& out) {
         outbuf->writeVarInt(0);
         outbuf->writeBytes(*inbuf);
     } else {
-        ByteBuffer* outbuf = new ByteBuffer();
         const char* uncompr = (const char*)inbuf->data.data();
         long long slen = inbuf->readableBytes();
         uLong dlen = compressBound(slen);
