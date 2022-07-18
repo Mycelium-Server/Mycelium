@@ -7,6 +7,7 @@
 #include "../protocol/clientbound_plugin_message.h"
 #include "../protocol/clientbound_change_difficulty.h"
 #include "../protocol/clientbound_player_abilities.h"
+#include "../protocol/clientbound_set_held_item.h"
 #include "../protocol/plugin_channels.h"
 #include "../pipeline/handlers.h"
 #include "../registry_codec.h"
@@ -99,4 +100,9 @@ void continueLogin(ConnectionContext* ctx) {
     abilities->construct(ctx->playerData);
     ctx->write(abilities);
     delete abilities;
+
+    ClientboundSetHeldItem* heldSlot = new ClientboundSetHeldItem();
+    heldSlot->slot = 4;
+    ctx->write(heldSlot);
+    delete heldSlot;
 }
