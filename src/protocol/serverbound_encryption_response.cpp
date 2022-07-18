@@ -1,4 +1,5 @@
 #include "serverbound_encryption_response.h"
+#include "../listeners/login_packet_listener.h"
 
 ServerboundEncryptionResponse::ServerboundEncryptionResponse() {
 
@@ -25,4 +26,11 @@ ServerboundPacket* ServerboundEncryptionResponse::createInstance() {
 
 int ServerboundEncryptionResponse::getPacketID() const {
     return 0x01;
+}
+
+void ServerboundEncryptionResponse::handle(ConnectionContext* ctx) {
+    if (ctx->state == ConnectionState::LOGIN) {
+        ((LoginPacketListener*) ctx->packetListener)->handleEncryptionResponse(ctx, this);
+    }
+    delete this;
 }

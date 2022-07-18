@@ -11,6 +11,7 @@ public:
     void read(ByteBuffer&) override;
     ServerboundPacket* createInstance() override;
     int getPacketID() const override;
+    void handle(ConnectionContext* ctx) override;
 
 public:
     int protocolVersion;

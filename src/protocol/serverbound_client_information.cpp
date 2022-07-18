@@ -1,4 +1,5 @@
 #include "serverbound_client_information.h"
+#include "../listeners/play_packet_listener.h"
 
 ServerboundClientInformation::ServerboundClientInformation() {
 
@@ -25,4 +26,11 @@ ServerboundPacket* ServerboundClientInformation::createInstance() {
 
 int ServerboundClientInformation::getPacketID() const {
     return 0x07;
+}
+
+void ServerboundClientInformation::handle(ConnectionContext* ctx) {
+    if (ctx->state == ConnectionState::PLAY) {
+        ((PlayPacketListener*) ctx->packetListener)->handleClientInformation(ctx, this);
+    }
+    delete this;
 }

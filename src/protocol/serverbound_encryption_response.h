@@ -17,6 +17,7 @@ public:
     void read(ByteBuffer&) override;
     ServerboundPacket* createInstance() override;
     int getPacketID() const override;
+    void handle(ConnectionContext*) override;
 
 public:
     ByteBuffer sharedSecret;

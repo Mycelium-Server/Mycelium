@@ -1,4 +1,5 @@
 #include "serverbound_login_start.h"
+#include "../listeners/login_packet_listener.h"
 
 ServerboundLoginStart::ServerboundLoginStart() {
 
@@ -25,4 +26,11 @@ ServerboundPacket* ServerboundLoginStart::createInstance() {
 
 int ServerboundLoginStart::getPacketID() const {
     return 0x00;
+}
+
+void ServerboundLoginStart::handle(ConnectionContext* ctx) {
+    if (ctx->state == ConnectionState::LOGIN) {
+        ((LoginPacketListener*) ctx->packetListener)->handleLoginStart(ctx, this);
+    }
+    delete this;
 }

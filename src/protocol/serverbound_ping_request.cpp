@@ -1,4 +1,5 @@
 #include "serverbound_ping_request.h"
+#include "../listeners/status_packet_listener.h"
 
 ServerboundPingRequest::ServerboundPingRequest() {
 
@@ -19,3 +20,10 @@ ServerboundPacket* ServerboundPingRequest::createInstance() {
 int ServerboundPingRequest::getPacketID() const {
     return 0x01;
 }
+
+void ServerboundPingRequest::handle(ConnectionContext* ctx) {
+    if (ctx->state == ConnectionState::STATUS) {
+        ((StatusPacketListener*) ctx->packetListener)->handlePingRequest(ctx, this);
+    }
+    delete this;
+} 

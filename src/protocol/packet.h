@@ -12,6 +12,7 @@ public:
     virtual void read(ByteBuffer&) = 0;
     virtual ServerboundPacket* createInstance() = 0;
     virtual int getPacketID() const = 0;
+    virtual void handle(ConnectionContext*) = 0;
     
 public:
     void registerPacket();
