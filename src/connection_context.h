@@ -4,6 +4,7 @@
 #include "server/game_server.h"
 #include "server/player_data.h"
 #include "server/entity.h"
+#include "server/client_settings.h"
 #include <uv.h>
 
 enum ConnectionState {
@@ -33,5 +34,6 @@ public:
     GameServer* gameServer = 0;
     PlayerData playerData;
     Entity* playerEntity;
+    ClientSettings clientSettings;
 
 };

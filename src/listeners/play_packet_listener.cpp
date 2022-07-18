@@ -5,5 +5,9 @@ PlayPacketListener::PlayPacketListener() {
 }
 
 PlayPacketListener::~PlayPacketListener() {
-    
+
+}
+
+void PlayPacketListener::handleClientInformation(ConnectionContext* ctx, ServerboundClientInformation* packet) {
+    ctx->clientSettings = packet->settings;
 }

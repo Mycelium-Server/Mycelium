@@ -4,10 +4,12 @@
 
 #include "../listeners/status_packet_listener.h"
 #include "../listeners/login_packet_listener.h"
+#include "../listeners/play_packet_listener.h"
 
 #include "../protocol/serverbound_handshake.h"
 #include "../protocol/serverbound_status_request.h"
 #include "../protocol/serverbound_login_start.h"
+#include "../protocol/serverbound_client_information.h"
 
 PacketHandler::PacketHandler() {
 
@@ -55,6 +57,15 @@ void PacketHandler::handle(ConnectionContext* ctx, void* in) {
             ServerboundEncryptionResponse* response = (ServerboundEncryptionResponse*) packet;
             ((LoginPacketListener*) ctx->packetListener)->handleEncryptionResponse(ctx, response);
             delete response;
+        }
+        break;
+    }
+
+    case 0x07: {
+        if (ctx->state == ConnectionState::PLAY) {
+            ServerboundClientInformation* information = (ServerboundClientInformation*) packet;
+            ((PlayPacketListener*) ctx->packetListener)->handleClientInformation(ctx, information);
+            delete information;
         }
         break;
     }
