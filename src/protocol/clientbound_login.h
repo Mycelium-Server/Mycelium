@@ -1,7 +1,6 @@
 #pragma once
 
 #include "packet.h"
-#include "../server/entity.h"
 #include "../server/game_server.h"
 
 class ClientboundLogin : public ClientboundPacket {

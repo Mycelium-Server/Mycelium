@@ -13,7 +13,7 @@ include_directories(thirdparty/zlib)
 add_subdirectory(thirdparty/openssl)
 include_directories(thirdparty/openssl/include)
 
-file(GLOB SRC src/*.cpp src/pipeline/*.cpp src/protocol/*.cpp src/listeners/*.cpp src/server/*.cpp)
+file(GLOB SRC src/*.cpp src/pipeline/*.cpp src/protocol/*.cpp src/listeners/*.cpp src/server/*.cpp src/server/entity/*.cpp)
 
 add_executable(Mycelium ${SRC})
 target_link_libraries(Mycelium uv crypto ssl zlibstatic)

@@ -6,6 +6,7 @@
 #include "../protocol/clientbound_login.h"
 #include "../protocol/clientbound_plugin_message.h"
 #include "../protocol/clientbound_change_difficulty.h"
+#include "../protocol/clientbound_player_abilities.h"
 #include "../protocol/plugin_channels.h"
 #include "../pipeline/handlers.h"
 #include "../registry_codec.h"
@@ -93,4 +94,9 @@ void continueLogin(ConnectionContext* ctx) {
     difficulty->isLocked = true;
     ctx->write(difficulty);
     delete difficulty;
+
+    ClientboundPlayerAbilities* abilities = new ClientboundPlayerAbilities();
+    abilities->construct(ctx->playerData);
+    ctx->write(abilities);
+    delete abilities;
 }

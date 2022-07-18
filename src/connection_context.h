@@ -3,7 +3,7 @@
 #include "pipeline.h"
 #include "server/game_server.h"
 #include "server/player_data.h"
-#include "server/entity.h"
+#include "server/entity/entity.h"
 #include "server/client_settings.h"
 #include <uv.h>
 
