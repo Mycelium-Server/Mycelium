@@ -35,5 +35,6 @@ public:
     PlayerData playerData;
     Entity* playerEntity;
     ClientSettings clientSettings;
+    std::string clientBrand;
 
 };

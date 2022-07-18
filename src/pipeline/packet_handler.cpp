@@ -10,6 +10,7 @@
 #include "../protocol/serverbound_status_request.h"
 #include "../protocol/serverbound_login_start.h"
 #include "../protocol/serverbound_client_information.h"
+#include "../protocol/serverbound_plugin_message.h"
 
 PacketHandler::PacketHandler() {
 
@@ -66,6 +67,15 @@ void PacketHandler::handle(ConnectionContext* ctx, void* in) {
             ServerboundClientInformation* information = (ServerboundClientInformation*) packet;
             ((PlayPacketListener*) ctx->packetListener)->handleClientInformation(ctx, information);
             delete information;
+        }
+        break;
+    }
+
+    case 0x0C: {
+        if (ctx->state == ConnectionState::PLAY) {
+            ServerboundPluginMessage* message = (ServerboundPluginMessage*) packet;
+            ((PlayPacketListener*) ctx->packetListener)->handlePluginMessage(ctx, message);
+            delete message;
         }
         break;
     }

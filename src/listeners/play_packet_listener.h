@@ -2,6 +2,7 @@
 
 #include "../connection_context.h"
 #include "../protocol/serverbound_client_information.h"
+#include "../protocol/serverbound_plugin_message.h"
 
 class PlayPacketListener {
 public:
@@ -10,5 +11,6 @@ public:
 
 public:
     void handleClientInformation(ConnectionContext*, ServerboundClientInformation*);
+    void handlePluginMessage(ConnectionContext*, ServerboundPluginMessage*);
 
 };
