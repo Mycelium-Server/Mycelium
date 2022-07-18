@@ -27,7 +27,9 @@ ServerboundPacket* ServerboundPacket::createInstanceFromID(int id, ConnectionSta
             return new ServerboundEncryptionResponse();
         }
     }
-    return registered[id]->createInstance();
+    ServerboundPacket* packet = registered[id];
+    if (!packet) return 0;
+    return packet->createInstance();
 }
 
 ClientboundPacket::ClientboundPacket() {}

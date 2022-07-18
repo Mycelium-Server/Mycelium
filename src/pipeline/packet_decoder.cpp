@@ -26,8 +26,10 @@ bool PacketDecoder::decode(ConnectionContext* ctx, void* in, std::vector<void*>&
     std::cout << "< 0x" << std::hex << packetId << std::dec << std::endl;
     
     ServerboundPacket* packet = ServerboundPacket::createInstanceFromID(packetId, ctx->state);
-    packet->read(*inbuf);
-    out.push_back(packet);
+    if (packet) {
+        packet->read(*inbuf);
+        out.push_back(packet);
+    }
 
     delete inbuf;
 
