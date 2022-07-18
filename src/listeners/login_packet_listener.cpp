@@ -5,6 +5,7 @@
 #include "../protocol/clientbound_encryption_request.h"
 #include "../protocol/clientbound_login.h"
 #include "../protocol/clientbound_plugin_message.h"
+#include "../protocol/clientbound_change_difficulty.h"
 #include "../protocol/plugin_channels.h"
 #include "../pipeline/handlers.h"
 #include "../registry_codec.h"
@@ -86,4 +87,10 @@ void continueLogin(ConnectionContext* ctx) {
     brandMessage->data.writeString("Mycelium");
     ctx->write(brandMessage);
     delete brandMessage;
+
+    ClientboundChangeDifficulty* difficulty = new ClientboundChangeDifficulty();
+    difficulty->difficulty = ctx->gameServer->getDifficulty();
+    difficulty->isLocked = true;
+    ctx->write(difficulty);
+    delete difficulty;
 }

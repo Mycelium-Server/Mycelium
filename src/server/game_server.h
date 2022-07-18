@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../encryption.h"
+#include "difficulty.h"
 #include <string>
 
 class GameServer {
@@ -20,6 +21,7 @@ public:
     int getSimulationDistance();
     bool showReducedDebugInfo();
     bool showRespawnScreen();
+    Difficulty getDifficulty();
 
 private:
     KeyPairRSA keypair;

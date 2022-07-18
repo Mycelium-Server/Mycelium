@@ -47,3 +47,7 @@ bool GameServer::showReducedDebugInfo() {
 bool GameServer::showRespawnScreen() {
     return true; // TODO: Move to properties.yml, gamerules
 }
+
+Difficulty GameServer::getDifficulty() {
+    return Difficulty::PEACEFUL; // TODO: Move to properties.yml
+}
