@@ -3,6 +3,7 @@
 #include "pipeline.h"
 #include "server/game_server.h"
 #include "server/player_data.h"
+#include "server/entity.h"
 #include <uv.h>
 
 enum ConnectionState {
@@ -31,5 +32,6 @@ public:
     void* packetListener = 0;
     GameServer* gameServer = 0;
     PlayerData playerData;
+    Entity* playerEntity;
 
 };

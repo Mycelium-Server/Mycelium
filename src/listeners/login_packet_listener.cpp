@@ -1,8 +1,11 @@
 #include "login_packet_listener.h"
+#include "play_packet_listener.h"
 #include "../protocol/clientbound_login_success.h"
 #include "../protocol/clientbound_set_compression.h"
 #include "../protocol/clientbound_encryption_request.h"
+#include "../protocol/clientbound_login.h"
 #include "../pipeline/handlers.h"
+#include "../registry_codec.h"
 
 #include <openssl/rand.h>
 
@@ -60,4 +63,19 @@ void continueLogin(ConnectionContext* ctx) {
     loginSuccess->uuid = ctx->playerData.uuid;
     ctx->write(loginSuccess);
     delete loginSuccess;
+
+    ctx->playerEntity = new Entity();
+
+    ctx->state = ConnectionState::PLAY;
+    ctx->packetListener = new PlayPacketListener();
+
+    ClientboundLogin* login = new ClientboundLogin();
+    login->entity = ctx->playerEntity;
+    login->player = ctx->playerData;
+    login->server = ctx->gameServer;
+    login->dimensions = m_default_dimensions;
+    login->dimension = m_default_dimensions[Dimensions::OVERWORLD];
+    login->registryCodec = { default_registry_codec()->data };
+    ctx->write(login);
+    delete login;
 }

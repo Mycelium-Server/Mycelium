@@ -6,8 +6,15 @@
 struct Dimension {
     std::string name;
     std::string type;
-    std::shared_ptr<NBT_Component> nbt;
     long long seed;
     bool isFlat;
     bool isDebug;
 };
+
+enum Dimensions {
+    OVERWORLD = 0,
+    THE_NETHER = 1,
+    THE_END = 2
+};
+
+extern std::vector<Dimension> m_default_dimensions;

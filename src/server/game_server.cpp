@@ -25,5 +25,25 @@ KeyPairRSA GameServer::getRSAKeyPair() {
 }
 
 bool GameServer::isOnlineMode() {
-    return true; // TODO: Move to properties.yml
+    return false; // TODO: Move to properties.yml
+}
+
+bool GameServer::isHardcore() {
+    return false; // TODO: Move to properties.yml
+}
+
+int GameServer::getViewDistance() {
+    return 20; //TODO: Move to properties.yml
+}
+
+int GameServer::getSimulationDistance() {
+    return 20; // TODO: Move to properties.yml
+}
+
+bool GameServer::showReducedDebugInfo() {
+    return false; // TODO: Move to properties.yml
+}
+
+bool GameServer::showRespawnScreen() {
+    return true; // TODO: Move to properties.yml, gamerules
 }

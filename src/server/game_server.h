@@ -15,6 +15,11 @@ public:
     int getCompressionThreshold();
     KeyPairRSA getRSAKeyPair();
     bool isOnlineMode();
+    bool isHardcore();
+    int getViewDistance();
+    int getSimulationDistance();
+    bool showReducedDebugInfo();
+    bool showRespawnScreen();
 
 private:
     KeyPairRSA keypair;
