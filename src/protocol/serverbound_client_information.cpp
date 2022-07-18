@@ -1,13 +1,8 @@
 #include "serverbound_client_information.h"
 #include "../listeners/play_packet_listener.h"
 
-ServerboundClientInformation::ServerboundClientInformation() {
-
-}
-
-ServerboundClientInformation::~ServerboundClientInformation() {
-
-}
+ServerboundClientInformation::ServerboundClientInformation() = default;
+ServerboundClientInformation::~ServerboundClientInformation() = default;
 
 void ServerboundClientInformation::read(ByteBuffer& in) {
     settings.locale = in.readString();

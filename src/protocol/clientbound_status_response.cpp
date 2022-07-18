@@ -1,14 +1,9 @@
 #include "clientbound_status_response.h"
-#include "../server/game_server.h"
 #include <iostream>
 
-ClientboundStatusResponse::ClientboundStatusResponse() {
+ClientboundStatusResponse::ClientboundStatusResponse() = default;
 
-}
-
-ClientboundStatusResponse::~ClientboundStatusResponse() {
-
-}
+ClientboundStatusResponse::~ClientboundStatusResponse() = default;
 
 void ClientboundStatusResponse::write(ByteBuffer& out) {
     out.writeString(response);
@@ -19,7 +14,7 @@ int ClientboundStatusResponse::getPacketID() const {
 }
 
 void ClientboundStatusResponse::construct(GameServer* server) {
-    response = "{\"version\": {\"name\": \"1.19\",\"protocol\": 759 },\"players\": {\"max\": " + 
+    response = R"({"version": {"name": "1.19","protocol": 759 },"players": {"max": )" +
             std::to_string(server->getMaxPlayers()) + ",\"online\": " + std::to_string(server->getOnline()) + 
-            "}, \"description\": {\"text\": \"" + server->getMOTD() + "\" }, \"favicon\": \"\",\"previewChat\": false}";
+            R"(}, "description": {"text": ")" + server->getMOTD() + R"(" },"previewChat": false})";
 }

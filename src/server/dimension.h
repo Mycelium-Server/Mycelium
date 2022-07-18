@@ -17,4 +17,4 @@ enum Dimensions {
     THE_END = 2
 };
 
-extern std::vector<Dimension> m_default_dimensions;
+const extern std::vector<Dimension> m_default_dimensions;

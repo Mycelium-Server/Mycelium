@@ -1,12 +1,7 @@
 #include "clientbound_change_difficulty.h"
 
-ClientboundChangeDifficulty::ClientboundChangeDifficulty() {
-
-}
-
-ClientboundChangeDifficulty::~ClientboundChangeDifficulty() {
-
-}
+ClientboundChangeDifficulty::ClientboundChangeDifficulty() = default;
+ClientboundChangeDifficulty::~ClientboundChangeDifficulty() = default;
 
 void ClientboundChangeDifficulty::write(ByteBuffer& out) {
     out.writeByte((unsigned char) difficulty);

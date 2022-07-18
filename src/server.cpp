@@ -10,7 +10,7 @@ void tcp_close(uv_handle_t* handle) {
     free(handle);
 }
 
-void tcp_shutdown(uv_shutdown_t* req, int status) {
+void tcp_shutdown(uv_shutdown_t* req, int) {
     ConnectionContext* ctx = tcp_connections.at(std::distance(tcp_streams.begin(), std::find(tcp_streams.begin(), tcp_streams.end(), req->handle)));
     ctx->pipeline->forEach([=](AbstractHandler* handler, int) {
         if (handler->isInboundHandler()) {
@@ -28,14 +28,14 @@ void tcp_server_read(uv_stream_t* handle, ssize_t nread, const uv_buf_t* buf) {
     if (nread == 0) return;
 
     if (nread < 0) {
-        uv_shutdown_t* req = (uv_shutdown_t*)malloc(sizeof(*req));
+        auto* req = (uv_shutdown_t*) malloc(sizeof(uv_shutdown_t));
         if (!req) return;
 
         uv_shutdown(req, handle, tcp_shutdown);
         return;
     }
 
-    ByteBuffer* data = new ByteBuffer((unsigned char*)buf->base, nread);
+    auto* data = new ByteBuffer((unsigned char*)buf->base, nread);
     
     ConnectionContext* ctx = tcp_connections.at(std::distance(tcp_streams.begin(), std::find(tcp_streams.begin(), tcp_streams.end(), handle)));
     ctx->read(data);
@@ -74,10 +74,16 @@ void tcp_server_on_connect(uv_stream_t* handle, int status) {
         return;
     }
 
-    ConnectionContext* ctx = new ConnectionContext(nullptr, (uv_stream_t*) stream);
+    auto* ctx = new ConnectionContext(nullptr, (uv_stream_t*) stream);
     ctx->pipeline = server_initCallback(ctx);
     tcp_connections.push_back(ctx);
     tcp_streams.push_back(ctx->stream);
+
+    ctx->pipeline->forEach([=](AbstractHandler* handler, int) {
+        if (handler->isInboundHandler())
+            return ((InboundHandler*) handler)->onConnect(ctx);
+        return true;
+    });
 
     r = uv_read_start((uv_stream_t*) stream, tcp_alloc_cb, tcp_server_read);
     if (r != 0) {

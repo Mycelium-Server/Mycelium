@@ -1,13 +1,8 @@
 #include "serverbound_encryption_response.h"
 #include "../listeners/login_packet_listener.h"
 
-ServerboundEncryptionResponse::ServerboundEncryptionResponse() {
-
-}
-
-ServerboundEncryptionResponse::~ServerboundEncryptionResponse() {
-
-}
+ServerboundEncryptionResponse::ServerboundEncryptionResponse() = default;
+ServerboundEncryptionResponse::~ServerboundEncryptionResponse() = default;
 
 void ServerboundEncryptionResponse::read(ByteBuffer& buf) {
     sharedSecret = { buf.readBytes(buf.readVarInt()) };

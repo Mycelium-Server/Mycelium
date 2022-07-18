@@ -1,12 +1,7 @@
 #include "handlers.h"
 
-PacketSplitter::PacketSplitter() {
-
-}
-
-PacketSplitter::~PacketSplitter() {
-    
-}
+PacketSplitter::PacketSplitter() = default;
+PacketSplitter::~PacketSplitter() = default;
 
 bool PacketSplitter::onConnect(ConnectionContext*) {
     return true;
@@ -17,7 +12,7 @@ bool PacketSplitter::onDisconnect(ConnectionContext*) {
 }
 
 bool PacketSplitter::decode(ConnectionContext* ctx, void* in, std::vector<void*>& out) {
-    ByteBuffer* inbuf = (ByteBuffer*) in;
+    auto* inbuf = (ByteBuffer*) in;
 
     while (inbuf->readableBytes() > 0) {
         if (!buf) {

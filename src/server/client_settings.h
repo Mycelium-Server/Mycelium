@@ -30,11 +30,11 @@ union SkinParts {
 
 struct ClientSettings {
     std::string locale;
-    unsigned char viewDistance;
-    ChatMode chatMode;
-    bool chatColors;
+    unsigned char viewDistance = 0;
+    ChatMode chatMode = (ChatMode) 0;
+    bool chatColors = false;
     SkinParts displayedSkinParts;
-    MainHand mainHand;
-    bool enableTextFiltering;
-    bool allowServerListings;
+    MainHand mainHand = (MainHand) 0;
+    bool enableTextFiltering = false;
+    bool allowServerListings = false;
 };

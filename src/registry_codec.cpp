@@ -2,7 +2,7 @@
 
 #include <fstream>
 
-static ByteBuffer* registry_codec = 0;
+static ByteBuffer* registry_codec = nullptr;
 
 ByteBuffer* default_registry_codec() {
     if (!registry_codec) {

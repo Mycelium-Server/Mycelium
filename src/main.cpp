@@ -5,7 +5,7 @@
 GameServer* server;
 
 Pipeline* pipelineInitializer(ConnectionContext* ctx) {
-    Pipeline* pipeline = new Pipeline();
+    auto* pipeline = new Pipeline();
 
     ctx->gameServer = server;
 

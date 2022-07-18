@@ -1,13 +1,8 @@
 #include "serverbound_plugin_message.h"
 #include "../listeners/play_packet_listener.h"
 
-ServerboundPluginMessage::ServerboundPluginMessage() {
-
-}
-
-ServerboundPluginMessage::~ServerboundPluginMessage() {
-
-}
+ServerboundPluginMessage::ServerboundPluginMessage() = default;
+ServerboundPluginMessage::~ServerboundPluginMessage() = default;
 
 void ServerboundPluginMessage::read(ByteBuffer& buf) {
     channel = buf.readString();

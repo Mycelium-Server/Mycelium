@@ -81,8 +81,11 @@ std::shared_ptr<NBT_Component> nbt_read_raw_data(ByteBuffer& buf, int type) {
             for(int i = 0; i < length; i++) longs[i] = buf.readLong();
             return std::make_shared<TAG_Long_Array>(longs.size(), longs.data());
         }
+
+        default: {
+            return nullptr;
+        }
     }
-    return nullptr;
 }
 
 std::shared_ptr<NBT_Component> read_nbt(ByteBuffer& buf) {

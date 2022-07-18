@@ -19,7 +19,7 @@ public:
     ConnectionContext(Pipeline*, uv_stream_t*);
     ~ConnectionContext();
 
-    void write(void*, bool async = false);
+    void write(void*, bool isAsync = false);
     void read(ByteBuffer*);
 
 private:
@@ -30,10 +30,10 @@ public:
     uv_stream_t* stream;
     ConnectionState state = ConnectionState::NONE;
     int protocolVersion = 0;
-    void* packetListener = 0;
-    GameServer* gameServer = 0;
+    void* packetListener = nullptr;
+    GameServer* gameServer = nullptr;
     PlayerData playerData;
-    Entity* playerEntity;
+    Entity* playerEntity = nullptr;
     ClientSettings clientSettings;
     std::string clientBrand;
 

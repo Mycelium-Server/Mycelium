@@ -1,12 +1,7 @@
 #include "clientbound_player_abilities.h"
 
-ClientboundPlayerAbilities::ClientboundPlayerAbilities() {
-
-}
-
-ClientboundPlayerAbilities::~ClientboundPlayerAbilities() {
-
-}
+ClientboundPlayerAbilities::ClientboundPlayerAbilities() = default;
+ClientboundPlayerAbilities::~ClientboundPlayerAbilities() = default;
 
 void ClientboundPlayerAbilities::write(ByteBuffer& out) {
     out.writeByte(flags.value);

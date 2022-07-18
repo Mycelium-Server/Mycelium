@@ -1,18 +1,13 @@
 #include "clientbound_encryption_request.h"
 
-ClientboundEncryptionRequest::ClientboundEncryptionRequest() {
-
-}
-
-ClientboundEncryptionRequest::~ClientboundEncryptionRequest() {
-
-}
+ClientboundEncryptionRequest::ClientboundEncryptionRequest() = default;
+ClientboundEncryptionRequest::~ClientboundEncryptionRequest() = default;
 
 void ClientboundEncryptionRequest::write(ByteBuffer& out) {
     out.writeString(serverID);
-    out.writeVarInt(rsa.publicKey.readableBytes());
+    out.writeVarInt((int) rsa.publicKey.readableBytes());
     out.writeBytes(rsa.publicKey);
-    out.writeVarInt(verifyToken.readableBytes());
+    out.writeVarInt((int) verifyToken.readableBytes());
     out.writeBytes(verifyToken);
 }
 

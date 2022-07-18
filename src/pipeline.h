@@ -10,19 +10,19 @@ using handler_callback = std::function<bool(AbstractHandler*, int)>;
 
 class Pipeline {
 public:
-    void addLast(std::string, AbstractHandler*);
-    void addFirst(std::string, AbstractHandler*);
-    void addAfter(std::string, std::string, AbstractHandler*);
-    void addBefore(std::string, std::string, AbstractHandler*);
-    void insert(int idx, std::string, AbstractHandler*);
-    void remove(std::string);
-    int indexOf(std::string);
-    void replace(std::string, AbstractHandler*);
-    void forEach(handler_callback, int start, int end);
-    void forEach(handler_callback, int start);
-    void forEach(handler_callback);
+    void addLast(const std::string&, AbstractHandler*);
+    void addFirst(const std::string&, AbstractHandler*);
+    void addAfter(const std::string&, const std::string&, AbstractHandler*);
+    void addBefore(const std::string&, const std::string&, AbstractHandler*);
+    void insert(int idx, const std::string&, AbstractHandler*);
+    void remove(const std::string&);
+    int indexOf(const std::string&);
+    void replace(const std::string&, AbstractHandler*);
+    void forEach(const handler_callback&, int start, int end);
+    void forEach(const handler_callback&, int start);
+    void forEach(const handler_callback&);
     AbstractHandler* get(int);
-    AbstractHandler* get(std::string);
+    AbstractHandler* get(const std::string&);
     std::unordered_map<std::string, AbstractHandler*>& handlers();
 
 private:

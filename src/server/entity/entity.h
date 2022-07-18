@@ -5,11 +5,11 @@ int createEntityID();
 class Entity {
 public:
     Entity();
-    Entity(int);
+    explicit Entity(int);
     ~Entity();
 
 public:
-    int getEID();
+    int getEID() const;
 
 private:
     int eid;

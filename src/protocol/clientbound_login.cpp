@@ -1,21 +1,16 @@
 #include "clientbound_login.h"
 
-ClientboundLogin::ClientboundLogin() {
-
-}
-
-ClientboundLogin::~ClientboundLogin() {
-
-}
+ClientboundLogin::ClientboundLogin() = default;
+ClientboundLogin::~ClientboundLogin() = default;
 
 void ClientboundLogin::write(ByteBuffer& out) {
     out.writeInt(entity->getEID());
     out.writeByte(server->isHardcore());
     out.writeByte(player.gamemode);
     out.writeByte(-1);
-    out.writeVarInt(dimensions.size());
-    for(Dimension& dimension : dimensions) {
-        out.writeString(dimension.name);
+    out.writeVarInt((int) dimensions.size());
+    for(Dimension& dim : dimensions) {
+        out.writeString(dim.name);
     }
     out.writeBytes(registryCodec);
     out.writeString(dimension.type);
@@ -31,7 +26,7 @@ void ClientboundLogin::write(ByteBuffer& out) {
     out.writeByte(player.deathLocation.has_value());
     if (player.deathLocation.has_value()) {
         out.writeString(player.deathLocation.value().dimension.name);
-        out.writeLong(player.deathLocation.value().position.value);
+        out.writeLong((long long) player.deathLocation.value().position.value);
     }
 }
 

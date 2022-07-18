@@ -2,13 +2,8 @@
 
 #include <zlib.h>
 
-PacketDecompressor::PacketDecompressor() {
-
-}
-
-PacketDecompressor::~PacketDecompressor() {
-
-}
+PacketDecompressor::PacketDecompressor() = default;
+PacketDecompressor::~PacketDecompressor() = default;
 
 bool PacketDecompressor::onConnect(ConnectionContext*) {
     return true;
@@ -19,14 +14,18 @@ bool PacketDecompressor::onDisconnect(ConnectionContext*) {
 }
 
 bool PacketDecompressor::decode(ConnectionContext* ctx, void* in, std::vector<void*>& dst) {
-    ByteBuffer* inbuf = (ByteBuffer*) in;
+    auto* inbuf = (ByteBuffer*) in;
 
     uLongf dlen = inbuf->readVarInt();
     if (dlen > 0) {
-        unsigned char* uncompr = (unsigned char*)malloc(dlen);
+        auto* uncompr = (unsigned char*)malloc(dlen);
         uLong slen = inbuf->readableBytes();
-        unsigned char* compr = inbuf->readBytes(inbuf->readableBytes()).data();
-        int res = uncompress((Bytef*) uncompr, &dlen, (Bytef*) compr, slen);
+        std::vector<unsigned char> compr = inbuf->readBytes(inbuf->readableBytes());
+        int res = uncompress((Bytef*) uncompr, &dlen, (Bytef*) compr.data(), slen);
+        if (res == Z_BUF_ERROR || res == Z_MEM_ERROR) {
+            std::cout << "Could not uncompress message" << std::endl;
+            return false;
+        }
 
         dst.push_back(new ByteBuffer(uncompr, dlen));
         free(uncompr);

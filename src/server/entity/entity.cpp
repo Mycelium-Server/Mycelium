@@ -16,10 +16,8 @@ Entity::Entity(int eid)
 
 }
 
-Entity::~Entity() {
+Entity::~Entity() = default;
 
-}
-
-int Entity::getEID() {
+int Entity::getEID() const {
     return eid;
 }

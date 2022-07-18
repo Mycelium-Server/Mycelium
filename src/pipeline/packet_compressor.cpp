@@ -4,33 +4,28 @@
 #include <zlib.h>
 #include <iostream>
 
-PacketCompressor::PacketCompressor() {
-
-}
-
-PacketCompressor::~PacketCompressor() {
-
-}
+PacketCompressor::PacketCompressor() = default;
+PacketCompressor::~PacketCompressor() = default;
 
 bool PacketCompressor::encode(ConnectionContext* ctx, void* in, void*& out) {
-    ByteBuffer* inbuf = (ByteBuffer*) in;
-    ByteBuffer* outbuf = new ByteBuffer();
+    auto* inbuf = (ByteBuffer*) in;
+    auto* outbuf = new ByteBuffer();
 
     if (inbuf->readableBytes() < ctx->gameServer->getCompressionThreshold()) {
         outbuf->writeVarInt(0);
         outbuf->writeBytes(*inbuf);
     } else {
         const char* uncompr = (const char*)inbuf->data.data();
-        long long slen = inbuf->readableBytes();
+        auto slen = (uLong) inbuf->readableBytes();
         uLong dlen = compressBound(slen);
-        unsigned char* compr = (unsigned char*)malloc(dlen);
-        int res = compress((Bytef*) compr, &dlen, (Bytef*) uncompr, (uLong) slen);
+        auto* compr = (unsigned char*) malloc(dlen);
+        int res = compress((Bytef*) compr, &dlen, (Bytef*) uncompr, slen);
         if(res == Z_BUF_ERROR || res == Z_MEM_ERROR) {
             std::cerr << "Unable to compress buffer" << std::endl;
             return false;
         }
 
-        outbuf->writeVarInt(slen);
+        outbuf->writeVarInt((int) slen);
         outbuf->writeBytes((const unsigned char*) compr, dlen);
 
         free(compr);

@@ -1,13 +1,8 @@
 #include "serverbound_login_start.h"
 #include "../listeners/login_packet_listener.h"
 
-ServerboundLoginStart::ServerboundLoginStart() {
-
-}
-
-ServerboundLoginStart::~ServerboundLoginStart() {
-
-}
+ServerboundLoginStart::ServerboundLoginStart() = default;
+ServerboundLoginStart::~ServerboundLoginStart() = default;
 
 void ServerboundLoginStart::read(ByteBuffer& in) {
     name = in.readString();

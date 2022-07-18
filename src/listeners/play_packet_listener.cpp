@@ -1,13 +1,8 @@
 #include "play_packet_listener.h"
 #include "../protocol/plugin_channels.h"
 
-PlayPacketListener::PlayPacketListener() {
-
-}
-
-PlayPacketListener::~PlayPacketListener() {
-
-}
+PlayPacketListener::PlayPacketListener() = default;
+PlayPacketListener::~PlayPacketListener() = default;
 
 void PlayPacketListener::handleClientInformation(ConnectionContext* ctx, ServerboundClientInformation* packet) {
     ctx->clientSettings = packet->settings;

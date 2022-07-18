@@ -16,13 +16,8 @@
 
 static void continueLogin(ConnectionContext*);
 
-LoginPacketListener::LoginPacketListener() {
-
-}
-
-LoginPacketListener::~LoginPacketListener() {
-
-}
+LoginPacketListener::LoginPacketListener() = default;
+LoginPacketListener::~LoginPacketListener() = default;
 
 void LoginPacketListener::handleLoginStart(ConnectionContext* ctx, ServerboundLoginStart* packet) {
     ctx->playerData.name = packet->name;
@@ -32,7 +27,7 @@ void LoginPacketListener::handleLoginStart(ConnectionContext* ctx, ServerboundLo
         ctx->playerData.uuid = playerUUID;
         continueLogin(ctx);
     } else {
-        ClientboundEncryptionRequest* request = new ClientboundEncryptionRequest();
+        auto* request = new ClientboundEncryptionRequest();
         request->serverID = "";
         request->rsa = ctx->gameServer->getRSAKeyPair();
         unsigned char token[4];
@@ -54,7 +49,7 @@ void LoginPacketListener::handleEncryptionResponse(ConnectionContext* ctx, Serve
 
 void continueLogin(ConnectionContext* ctx) {
     if (ctx->gameServer->getCompressionThreshold() > 0) {
-        ClientboundSetCompression* setCompression = new ClientboundSetCompression();
+        auto* setCompression = new ClientboundSetCompression();
         setCompression->threshold = ctx->gameServer->getCompressionThreshold();
         ctx->write(setCompression);
         delete setCompression;
@@ -63,7 +58,7 @@ void continueLogin(ConnectionContext* ctx) {
         ctx->pipeline->addAfter("packet_encoder", "packet_compressor", new PacketCompressor());
     }
 
-    ClientboundLoginSuccess* loginSuccess = new ClientboundLoginSuccess();
+    auto* loginSuccess = new ClientboundLoginSuccess();
     loginSuccess->name = ctx->playerData.name;
     loginSuccess->uuid = ctx->playerData.uuid;
     ctx->write(loginSuccess);
@@ -74,7 +69,7 @@ void continueLogin(ConnectionContext* ctx) {
     ctx->state = ConnectionState::PLAY;
     ctx->packetListener = new PlayPacketListener();
 
-    ClientboundLogin* login = new ClientboundLogin();
+    auto* login = new ClientboundLogin();
     login->entity = ctx->playerEntity;
     login->player = ctx->playerData;
     login->server = ctx->gameServer;
@@ -84,24 +79,24 @@ void continueLogin(ConnectionContext* ctx) {
     ctx->write(login);
     delete login;
 
-    ClientboundPluginMessage* brandMessage = new ClientboundPluginMessage();
+    auto* brandMessage = new ClientboundPluginMessage();
     brandMessage->channel = BRAND_CHANNEL;
     brandMessage->data.writeString("Mycelium");
     ctx->write(brandMessage);
     delete brandMessage;
 
-    ClientboundChangeDifficulty* difficulty = new ClientboundChangeDifficulty();
+    auto* difficulty = new ClientboundChangeDifficulty();
     difficulty->difficulty = ctx->gameServer->getDifficulty();
     difficulty->isLocked = true;
     ctx->write(difficulty);
     delete difficulty;
 
-    ClientboundPlayerAbilities* abilities = new ClientboundPlayerAbilities();
+    auto* abilities = new ClientboundPlayerAbilities();
     abilities->construct(ctx->playerData);
     ctx->write(abilities);
     delete abilities;
 
-    ClientboundSetHeldItem* heldSlot = new ClientboundSetHeldItem();
+    auto* heldSlot = new ClientboundSetHeldItem();
     heldSlot->slot = 4;
     ctx->write(heldSlot);
     delete heldSlot;

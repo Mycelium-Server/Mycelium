@@ -1,13 +1,8 @@
 #include "serverbound_status_request.h"
 #include "../listeners/status_packet_listener.h"
 
-ServerboundStatusRequest::ServerboundStatusRequest() {
-
-}
-
-ServerboundStatusRequest::~ServerboundStatusRequest() {
-
-}
+ServerboundStatusRequest::ServerboundStatusRequest() = default;
+ServerboundStatusRequest::~ServerboundStatusRequest() = default;
 
 void ServerboundStatusRequest::read(ByteBuffer&) {
     // no fields

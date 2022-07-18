@@ -10,7 +10,7 @@ public:
 public:
     void read(ByteBuffer&) override;
     ServerboundPacket* createInstance() override;
-    int getPacketID() const override;
+    [[nodiscard]] int getPacketID() const override;
     void handle(ConnectionContext*) override;
 
 public:

@@ -1,13 +1,9 @@
 #include "handlers.h"
 
 PacketDecrypt::PacketDecrypt(const CipherAES& cipher)
-    : cipher(cipher) {
+    : cipher(cipher) {}
 
-}
-
-PacketDecrypt::~PacketDecrypt() {
-
-}
+PacketDecrypt::~PacketDecrypt() = default;
 
 bool PacketDecrypt::onConnect(ConnectionContext*) {
     return true;
@@ -18,7 +14,7 @@ bool PacketDecrypt::onDisconnect(ConnectionContext*) {
 }
 
 bool PacketDecrypt::decode(ConnectionContext* ctx, void* in, std::vector<void*>& out) {
-    ByteBuffer* inbuf = (ByteBuffer*) in;
+    auto* inbuf = (ByteBuffer*) in;
     out.push_back(new ByteBuffer(aes_decrypt(cipher, *inbuf)));
     delete inbuf;
     return true;

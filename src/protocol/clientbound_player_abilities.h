@@ -23,8 +23,8 @@ public:
         };
 
         char value;
-    } flags;
-    float flyingSpeed;
-    float fovModifier;
+    } flags = { 0 };
+    float flyingSpeed = 0;
+    float fovModifier = 0;
 
 };

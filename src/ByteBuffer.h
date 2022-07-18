@@ -8,7 +8,7 @@ class ByteBuffer {
 public:
     ByteBuffer();
     ByteBuffer(size_t);
-    ByteBuffer(std::vector<unsigned char>);
+    ByteBuffer(const std::vector<unsigned char>&);
     ByteBuffer(const unsigned char*, size_t);
     
 public:
@@ -46,8 +46,8 @@ public:
     void writeBytes(ByteBuffer&);
 
     void ensureWritableBytes(size_t);
-    size_t readableBytes();
-    size_t length();
+    size_t readableBytes() const;
+    size_t length() const;
 
 public:
     size_t readerIdx = 0;

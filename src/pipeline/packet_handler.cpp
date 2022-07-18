@@ -1,16 +1,11 @@
 #include "handlers.h"
 #include "../protocol/packet.h"
 
-PacketHandler::PacketHandler() {
-
-}
-
-PacketHandler::~PacketHandler() {
-
-}
+PacketHandler::PacketHandler() = default;
+PacketHandler::~PacketHandler() = default;
 
 void PacketHandler::handle(ConnectionContext* ctx, void* in) {
-    ServerboundPacket* packet = (ServerboundPacket*) in;
+    auto* packet = (ServerboundPacket*) in;
     packet->handle(ctx);
 }
 

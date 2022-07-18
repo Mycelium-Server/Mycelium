@@ -7,7 +7,7 @@
 
 static std::map<int, ServerboundPacket*> registered;
 
-ServerboundPacket::ServerboundPacket() {}
+ServerboundPacket::ServerboundPacket() = default;
 
 void ServerboundPacket::registerPacket() {
     registered[getPacketID()] = createInstance();
@@ -28,8 +28,8 @@ ServerboundPacket* ServerboundPacket::createInstanceFromID(int id, ConnectionSta
         }
     }
     ServerboundPacket* packet = registered[id];
-    if (!packet) return 0;
+    if (!packet) return nullptr;
     return packet->createInstance();
 }
 
-ClientboundPacket::ClientboundPacket() {}
+ClientboundPacket::ClientboundPacket() = default;

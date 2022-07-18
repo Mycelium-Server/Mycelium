@@ -14,7 +14,7 @@ public:
     bool decode(ConnectionContext*, void*, std::vector<void*>&) override;
 
 private:
-    ByteBuffer* buf;
+    ByteBuffer* buf = nullptr;
     int remaining = 0;
 
 };
@@ -45,7 +45,7 @@ public:
 
 class PacketDecrypt : public InboundHandler {
 public:
-    PacketDecrypt(const CipherAES&);
+    explicit PacketDecrypt(const CipherAES&);
     ~PacketDecrypt();
 
 public:
@@ -102,7 +102,7 @@ public:
 
 class PacketEncrypt : public OutboundHandler {
 public:
-    PacketEncrypt(const CipherAES&);
+    explicit PacketEncrypt(const CipherAES&);
     ~PacketEncrypt();
 
 public:

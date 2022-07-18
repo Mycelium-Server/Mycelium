@@ -1,16 +1,11 @@
 #include "handlers.h"
 
-PacketPrepender::PacketPrepender() {
-
-}
-
-PacketPrepender::~PacketPrepender() {
-
-}
+PacketPrepender::PacketPrepender() = default;
+PacketPrepender::~PacketPrepender() = default;
 
 bool PacketPrepender::encode(ConnectionContext* ctx, void* in, void*& out) {
-    ByteBuffer* inbuf = (ByteBuffer*) in;
-    ByteBuffer* outbuf = new ByteBuffer();
+    auto* inbuf = (ByteBuffer*) in;
+    auto* outbuf = new ByteBuffer();
 
     outbuf->writeVarInt((int) inbuf->readableBytes());
     outbuf->writeBytes(*inbuf);

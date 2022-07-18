@@ -1,6 +1,4 @@
 #include "connection_context.h"
-#include "server.h"
-#include <memory>
 #include <iostream>
 
 ConnectionContext::ConnectionContext(Pipeline* pipeline, uv_stream_t* stream)
@@ -18,11 +16,11 @@ void write_cb(uv_write_t* req, int status) {
     free(req);
 }
 
-uv_buf_t _async_tmp;
-uv_stream_t* _async_stream;
-ByteBuffer* _async_buf;
+uv_buf_t async_tmp_;
+uv_stream_t* async_stream_;
+ByteBuffer* async_buf_;
 
-void ConnectionContext::write(void* object, bool async) {
+void ConnectionContext::write(void* object, bool isAsync) {
     void* src = (void*)object;
     void* dst;
     pipeline->forEach([&](AbstractHandler* handler, int) {
@@ -35,27 +33,27 @@ void ConnectionContext::write(void* object, bool async) {
     });
 
     if(!src) return;
-    ByteBuffer* buf = (ByteBuffer*)src;
+    auto* buf = (ByteBuffer*) src;
 
     uv_buf_t buffer;
     buffer.base = (char*)buf->data.data();
     buffer.len = buf->data.size();
 
-    if(!async) {
-        uv_write_t* req = (uv_write_t*)malloc(sizeof(uv_write_t));
+    if(!isAsync) {
+        auto* req = (uv_write_t*)malloc(sizeof(uv_write_t));
         uv_write(req, stream, &buffer, 1, write_cb);
         delete buf;
     } else {
-        _async_buf = buf;
-        _async_tmp = buffer;
-        _async_stream = stream;
+        async_buf_ = buf;
+        async_tmp_ = buffer;
+        async_stream_ = stream;
 
-        uv_async_t* async = (uv_async_t*)malloc(sizeof(uv_async_t));
+        auto* async = (uv_async_t*) malloc(sizeof(uv_async_t));
 
         uv_async_init(uv_default_loop(), async, [](uv_async_t* handle) {
-            uv_write_t* req = (uv_write_t*)malloc(sizeof(uv_write_t));
-            uv_write(req, _async_stream, &_async_tmp, 1, write_cb);
-            delete _async_buf;
+            auto* req = (uv_write_t*) malloc(sizeof(uv_write_t));
+            uv_write(req, async_stream_, &async_tmp_, 1, write_cb);
+            delete async_buf_;
             free(handle);
         });
 
@@ -73,7 +71,7 @@ void ConnectionContext::read(void* src, int idx) {
     }
 
     std::vector<void*> dst;
-    InboundHandler* inbound = (InboundHandler*) handler;
+    auto* inbound = (InboundHandler*) handler;
     if (!inbound->decode(this, src, dst)) return;
     for (void*& obj : dst) {
         read(obj, idx + 1);

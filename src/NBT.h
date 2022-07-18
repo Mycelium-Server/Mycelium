@@ -291,7 +291,7 @@ public:
         buf.writeByte(name.length() & 0xFF00); // Length of Name (byte 1)
         buf.writeByte(name.length() & 0x00FF); // Length of Name (byte 2)
         for(char i : name) buf.writeByte(i); // Name
-        buf.writeShort(value.length()); // Length prefix
+        buf.writeShort((short) value.length()); // Length prefix
         for(char i : value) buf.writeByte(i); // String
         return buf;
     }
@@ -299,7 +299,7 @@ public:
     ByteBuffer payload() override {
         unsigned int size = value.length() + 2;
         ByteBuffer buf(size);
-        buf.writeShort(value.length()); // Length prefix
+        buf.writeShort((short) value.length()); // Length prefix
         for(char i : value) buf.writeByte(i); // String
         return buf;
     }

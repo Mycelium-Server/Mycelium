@@ -6,15 +6,13 @@ ServerboundHandshake::ServerboundHandshake() {
 
 }
 
-ServerboundHandshake::~ServerboundHandshake() {
-
-}
+ServerboundHandshake::~ServerboundHandshake() = default;
 
 void ServerboundHandshake::read(ByteBuffer& in) {
     protocolVersion = in.readVarInt();
     serverAddress = in.readString();
     serverPort = (unsigned short) in.readShort();
-    nextState = in.readVarInt();
+    nextState = (NextState) in.readVarInt();
 }
 
 ServerboundPacket* ServerboundHandshake::createInstance() {

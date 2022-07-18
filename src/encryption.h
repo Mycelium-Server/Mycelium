@@ -7,13 +7,13 @@
 #include "ByteBuffer.h"
 
 struct KeyPairRSA {
-    RSA* rsa = 0;
+    RSA* rsa = nullptr;
     ByteBuffer publicKey;
 };
 
 struct CipherAES {
-    EVP_CIPHER_CTX* encryptCtx = 0;
-    EVP_CIPHER_CTX* decryptCtx = 0;
+    EVP_CIPHER_CTX* encryptCtx = nullptr;
+    EVP_CIPHER_CTX* decryptCtx = nullptr;
     unsigned int blockSize = 0;
 };
 

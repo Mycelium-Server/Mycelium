@@ -19,6 +19,6 @@ struct Position3d {
 };
 
 struct Location {
-    Dimension dimension;
-    ProtocolPosition position;
+    Dimension dimension {};
+    ProtocolPosition position {};
 };

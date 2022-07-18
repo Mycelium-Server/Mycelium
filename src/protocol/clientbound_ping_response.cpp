@@ -1,12 +1,7 @@
 #include "clientbound_ping_response.h"
 
-ClientboundPingResponse::ClientboundPingResponse() {
-
-}
-
-ClientboundPingResponse::~ClientboundPingResponse() {
-
-}
+ClientboundPingResponse::ClientboundPingResponse() = default;
+ClientboundPingResponse::~ClientboundPingResponse() = default;
 
 void ClientboundPingResponse::write(ByteBuffer& out) {
     out.writeLong(payload);

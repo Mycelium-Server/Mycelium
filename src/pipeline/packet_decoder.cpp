@@ -2,13 +2,8 @@
 #include "../protocol/packet.h"
 #include <iostream>
 
-PacketDecoder::PacketDecoder() {
-
-}
-
-PacketDecoder::~PacketDecoder() {
-
-}
+PacketDecoder::PacketDecoder() = default;
+PacketDecoder::~PacketDecoder() = default;
 
 bool PacketDecoder::onConnect(ConnectionContext*) {
     return true;
@@ -19,7 +14,7 @@ bool PacketDecoder::onDisconnect(ConnectionContext*) {
 }
 
 bool PacketDecoder::decode(ConnectionContext* ctx, void* in, std::vector<void*>& out) {
-    ByteBuffer* inbuf = (ByteBuffer*) in;
+    auto* inbuf = (ByteBuffer*) in;
     
     int packetId = inbuf->readVarInt();
 

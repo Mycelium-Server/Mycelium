@@ -1,13 +1,8 @@
 #include "serverbound_ping_request.h"
 #include "../listeners/status_packet_listener.h"
 
-ServerboundPingRequest::ServerboundPingRequest() {
-
-}
-
-ServerboundPingRequest::~ServerboundPingRequest() {
-
-}
+ServerboundPingRequest::ServerboundPingRequest() = default;
+ServerboundPingRequest::~ServerboundPingRequest() = default;
 
 void ServerboundPingRequest::read(ByteBuffer& in) {
     payload = in.readLong();

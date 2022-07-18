@@ -1,16 +1,12 @@
 #include "handlers.h"
 
 PacketEncrypt::PacketEncrypt(const CipherAES& cipher)
-    : cipher(cipher) {
-    
-}
+    : cipher(cipher) {}
 
-PacketEncrypt::~PacketEncrypt() {
-
-}
+PacketEncrypt::~PacketEncrypt() = default;
 
 bool PacketEncrypt::encode(ConnectionContext* ctx, void* in, void*& out) {
-    ByteBuffer* inbuf = (ByteBuffer*) in;
+    auto* inbuf = (ByteBuffer*) in;
     out = new ByteBuffer(aes_encrypt(cipher, *inbuf).data);
     delete inbuf;
     return true;

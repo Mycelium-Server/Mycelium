@@ -9,9 +9,9 @@ public:
 
 public:
     void write(ByteBuffer&) override;
-    int getPacketID() const override;
+    [[nodiscard]] int getPacketID() const override;
 
 public:
-    long long payload;
+    long long payload = 0;
 
 };

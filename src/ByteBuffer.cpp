@@ -1,7 +1,7 @@
 #include "ByteBuffer.h"
 #include <cstring>
 
-ByteBuffer::ByteBuffer() {}
+ByteBuffer::ByteBuffer() = default;
 
 ByteBuffer::ByteBuffer(size_t size) {
     data.resize(size);
@@ -13,7 +13,7 @@ ByteBuffer::ByteBuffer(const unsigned char* data, size_t len) {
     writerIdx = len;
 }
 
-ByteBuffer::ByteBuffer(std::vector<unsigned char> data) {
+ByteBuffer::ByteBuffer(const std::vector<unsigned char>& data) {
     this->data = std::vector<unsigned char>(data);
     writerIdx = data.size();
 }
@@ -84,11 +84,11 @@ void ByteBuffer::writeLong(long long value) {
 
 std::string ByteBuffer::readString() {
     int len = readVarInt();
-    return std::string((char*)readBytes(len).data(), len);
+    return { (char*) readBytes(len).data(), (size_t) len };
 }
 
 void ByteBuffer::writeString(std::string str) {
-    writeVarInt(str.size());
+    writeVarInt((int) str.size());
     writeBytes((unsigned char*)str.data(), str.size());
 }
 
@@ -96,7 +96,7 @@ int ByteBuffer::readVarInt() {
     int value = 0;
     int position = 0;
     unsigned char current;
-    while(1) {
+    while (true) {
         current = readByte();
         value |= (current & 0x7F) << position;
         if((current & 0x80) == 0) break;
@@ -107,13 +107,13 @@ int ByteBuffer::readVarInt() {
 }
 
 void ByteBuffer::writeVarInt(int value) {
-    while(1) {
+    while (true) {
         if((value & ~((int)0x7F)) == 0) {
             writeByte(value & 0xFF);
             return;
         }
         writeByte(((value & 0x7F) | 0x80) & 0xFF);
-        value = ((unsigned int)value) >> 7;
+        value = (int) (((unsigned int)value) >> 7);
     }
 }
 
@@ -121,7 +121,7 @@ long long ByteBuffer::readVarLong() {
     long long value = 0;
     int position = 0;
     unsigned char current;
-    while(1) {
+    while (true) {
         current = readByte();
         value |= ((long long)(current & 0x7F)) << position;
         if((current & 0x80) == 0) break;
@@ -132,13 +132,13 @@ long long ByteBuffer::readVarLong() {
 }
 
 void ByteBuffer::writeVarLong(long long value) {
-    while(1) {
+    while (true) {
         if((value & ~((long long)0x7F)) == 0) {
             writeByte(value & 0xFF);
             return;
         }
         writeByte(((value & 0x7F) | 0x80) & 0xFF);
-        value = ((unsigned long long)value) >> 7;
+        value = (long long)(((unsigned long long)value) >> 7);
     }
 }
 
@@ -152,7 +152,7 @@ float ByteBuffer::readFloat() {
 void ByteBuffer::writeFloat(float value) {
     uint32_t x;
     memcpy(&x, &value, sizeof(float));
-    writeInt(x);
+    writeInt((int) x);
 }
 
 double ByteBuffer::readDouble() {
@@ -165,7 +165,7 @@ double ByteBuffer::readDouble() {
 void ByteBuffer::writeDouble(double value) {
     uint64_t x;
     memcpy(&x, &value, sizeof(double));
-    writeLong(x);
+    writeLong((long long) x);
 }
 
 std::vector<unsigned char> ByteBuffer::readBytes(size_t n) {
@@ -176,14 +176,14 @@ std::vector<unsigned char> ByteBuffer::readBytes(size_t n) {
     return dst;
 }
 
-void ByteBuffer::writeBytes(std::vector<unsigned char> data) {
-    writeBytes(data.data(), data.size());
+void ByteBuffer::writeBytes(std::vector<unsigned char> buf) {
+    writeBytes(buf.data(), buf.size());
 }
 
-void ByteBuffer::writeBytes(const unsigned char* data, size_t n) {
+void ByteBuffer::writeBytes(const unsigned char* buf, size_t n) {
     ensureWritableBytes(n);
     for(size_t i = 0; i < n; i++) {
-        this->data[writerIdx++] = data[i];
+        this->data[writerIdx++] = buf[i];
     }
 }
 
@@ -202,10 +202,10 @@ void ByteBuffer::ensureWritableBytes(size_t n) {
         data.resize(writerIdx + n);
 }
 
-size_t ByteBuffer::readableBytes() {
+size_t ByteBuffer::readableBytes() const {
     return writerIdx - readerIdx;
 }
 
-size_t ByteBuffer::length() {
+size_t ByteBuffer::length() const {
     return data.size();
 }

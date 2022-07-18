@@ -7,15 +7,15 @@ class ConnectionContext;
 
 class AbstractHandler {
 public: 
-    virtual bool isInboundHandler() const = 0;
-    virtual bool isOutboundHandler() const = 0;
+    [[nodiscard]] virtual bool isInboundHandler() const = 0;
+    [[nodiscard]] virtual bool isOutboundHandler() const = 0;
 
 };
 
 class InboundHandler : public AbstractHandler {
 public:
-    bool isInboundHandler() const override;
-    bool isOutboundHandler() const override;
+    [[nodiscard]] bool isInboundHandler() const override;
+    [[nodiscard]] bool isOutboundHandler() const override;
 
 public:
     virtual bool onConnect(ConnectionContext*) = 0;
@@ -26,8 +26,8 @@ public:
 
 class OutboundHandler : public AbstractHandler {
 public:
-    bool isInboundHandler() const override;
-    bool isOutboundHandler() const override;
+    [[nodiscard]] bool isInboundHandler() const override;
+    [[nodiscard]] bool isOutboundHandler() const override;
 
 public:
     virtual bool encode(ConnectionContext*, void*, void*&) = 0;
