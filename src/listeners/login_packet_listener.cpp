@@ -77,6 +77,7 @@ void continueLogin(ConnectionContext* ctx) {
     ctx->playerEntity->connection = ctx;
 
     ctx->state = ConnectionState::PLAY;
+    delete ((LoginPacketListener*) ctx->packetListener);
     ctx->packetListener = new PlayPacketListener();
 
     auto* login = new ClientboundLogin();
