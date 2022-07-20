@@ -11,9 +11,14 @@
 #include "../protocol/clientbound_set_held_item.h"
 #include "../protocol/clientbound_keepalive.h"
 #include "../protocol/clientbound_chunk_data.h"
+#include "../protocol/clientbound_set_center_chunk.h"
+#include "../protocol/clientbound_initialize_world_border.h"
+#include "../protocol/clientbound_set_default_spawn_position.h"
+#include "../protocol/clientbound_synchronize_player_position.h"
 #include "../protocol/plugin_channels.h"
 #include "../pipeline/handlers.h"
 #include "../registry_codec.h"
+#include "../server/world/world.h"
 
 #include <openssl/rand.h>
 
@@ -117,6 +122,11 @@ void continueLogin(ConnectionContext* ctx) {
 
     ctx->gameServer->addPlayer(&ctx->playerData);
 
+    auto* setCenterChunk = new ClientboundSetCenterChunk();
+    setCenterChunk->location = World::getChunkLocation(ctx->playerEntity->getLocation().position.toProtocolPosition());
+    ctx->write(setCenterChunk);
+    delete setCenterChunk;
+
     World* world = ctx->playerEntity->getLocation().dimension.world;
     auto* chunkPacket = new ClientboundChunkData(nullptr);
     for(const auto& i : world->chunks) {
@@ -125,6 +135,22 @@ void continueLogin(ConnectionContext* ctx) {
         ctx->write(chunkPacket);
     }
     delete chunkPacket;
+
+    auto* worldBorder = new ClientboundInitializeWorldBorder();
+    worldBorder->old = ctx->gameServer->getWorldBorder();
+    worldBorder->newBorder = ctx->gameServer->getWorldBorder();
+    ctx->write(worldBorder);
+    delete worldBorder;
+
+    auto* spawnPosition = new ClientboundSetDefaultSpawnPosition();
+    spawnPosition->position = ctx->gameServer->getSpawnPosition();
+    ctx->write(spawnPosition);
+    delete spawnPosition;
+
+    auto* syncPos = new ClientboundSynchronizePlayerPosition();
+    syncPos->location = ctx->playerEntity->getLocation();
+    ctx->write(syncPos);
+    delete syncPos;
 
     ctx->keepaliveThread = std::thread([=]() {
         while (ctx->isActive()) {
@@ -137,5 +163,4 @@ void continueLogin(ConnectionContext* ctx) {
         }
     });
     ctx->keepaliveThread.detach();
-
 }

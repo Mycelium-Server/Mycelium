@@ -14,11 +14,13 @@ int World::getChunkPosition(int block) {
     return std::floor(double(block) / 16.0);
 }
 
+ChunkLocation World::getChunkLocation(const ProtocolPosition& position) {
+    return { getChunkPosition(position.x), getChunkPosition(position.z) };
+}
+
 Chunk* World::getChunkByBlock(int x, int z) {
     return getChunk({ getChunkPosition(x), getChunkPosition(z) });
 }
-
-
 
 Chunk* World::getChunk(const ChunkLocation& location) {
     auto it = getChunkIterator(location);

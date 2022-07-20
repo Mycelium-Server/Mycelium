@@ -1,4 +1,5 @@
 #include "server.h"
+#include "server/world/world.h"
 #include "pipeline/handlers.h"
 #include "protocol/protocol.h"
 #include "time.h"

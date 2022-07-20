@@ -1,5 +1,6 @@
 #pragma once
 
+#include "world/world_border.h"
 #include "../encryption.h"
 #include "difficulty.h"
 #include "player_data.h"
@@ -23,6 +24,8 @@ public:
     bool showReducedDebugInfo();
     bool showRespawnScreen();
     Difficulty getDifficulty();
+    WorldBorder getWorldBorder();
+    RotatedProtocolPosition getSpawnPosition();
 
     void addPlayer(PlayerData*);
     void removePlayer(PlayerData*);

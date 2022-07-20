@@ -1,4 +1,5 @@
 #include "dimension.h"
+#include "world/world.h"
 
 const std::vector<Dimension> m_default_dimensions = {
     { "minecraft:overworld", "minecraft:overworld", 0, false, false, new World( /* TODO: To do */ ) },

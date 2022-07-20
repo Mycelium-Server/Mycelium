@@ -2,7 +2,8 @@
 
 #include <string>
 #include "../NBT.h"
-#include "world/world.h"
+
+class World;
 
 struct Dimension {
     std::string name;

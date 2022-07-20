@@ -92,3 +92,11 @@ void GameServer::removePlayer(PlayerData* data) {
 std::vector<PlayerData*>& GameServer::getPlayers() {
     return players;
 }
+
+WorldBorder GameServer::getWorldBorder() {
+    return { 0, 0, 29999984, 29999984, 0, 0 }; // TODO: properties.yml
+}
+
+RotatedProtocolPosition GameServer::getSpawnPosition() {
+    return { { 0, 10, 0 }, 0.f }; // TODO: properties.yml
+}
