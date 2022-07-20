@@ -23,7 +23,7 @@ public:
 
     void write(void*, bool isAsync = false);
     void read(ByteBuffer*);
-    bool isActive() const;
+    [[nodiscard]] bool isActive() const;
 
 private:
     void read(void*, int);

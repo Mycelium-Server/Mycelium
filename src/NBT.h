@@ -71,8 +71,7 @@ public:
     explicit TAG_Byte(signed char value) : TAG_Byte("", value) {}
 
     ByteBuffer asByteBuffer() override {
-        unsigned int size = 1 + 2 + name.length() + 1;
-        ByteBuffer buf(size);
+        ByteBuffer buf;
         buf.writeByte(Type_TAG_Byte); // Type
         buf.writeByte((name.length() & 0xFF00) >> 4); // Length of Name (byte 1)
         buf.writeByte( name.length() & 0xFF        ); // Length of Name (byte 2)
@@ -101,8 +100,7 @@ public:
     explicit TAG_Short(int16_t value) : TAG_Short("", value) {}
 
     ByteBuffer asByteBuffer() override {
-        unsigned int size = 1 + 2 + name.length() + 2;
-        ByteBuffer buf(size);
+        ByteBuffer buf;
         buf.writeByte(Type_TAG_Short); // Type
         buf.writeByte((name.length() & 0xFF00) >> 4); // Length of Name (byte 1)
         buf.writeByte( name.length() & 0xFF        ); // Length of Name (byte 2)
@@ -131,8 +129,7 @@ public:
     explicit TAG_Int(int32_t value) : TAG_Int("", value) {}
 
     ByteBuffer asByteBuffer() override {
-        unsigned int size = 1 + 2 + name.length() + 4;
-        ByteBuffer buf(size);
+        ByteBuffer buf;
         buf.writeByte(Type_TAG_Int); // Type
         buf.writeByte((name.length() & 0xFF00) >> 4); // Length of Name (byte 1)
         buf.writeByte( name.length() & 0xFF        ); // Length of Name (byte 2)
@@ -161,8 +158,7 @@ public:
     explicit TAG_Long(int64_t value) : TAG_Long("", value) {}
 
     ByteBuffer asByteBuffer() override {
-        unsigned int size = 1 + 2 + name.length() + 8;
-        ByteBuffer buf(size);
+        ByteBuffer buf;
         buf.writeByte(Type_TAG_Long); // Type
         buf.writeByte((name.length() & 0xFF00) >> 4); // Length of Name (byte 1)
         buf.writeByte( name.length() & 0xFF        ); // Length of Name (byte 2)
@@ -191,8 +187,7 @@ public:
     explicit TAG_Float(float value) : TAG_Float("", value) {}
 
     ByteBuffer asByteBuffer() override {
-        unsigned int size = 1 + 2 + name.length() + 4;
-        ByteBuffer buf(size);
+        ByteBuffer buf;
         buf.writeByte(Type_TAG_Float); // Type
         buf.writeByte((name.length() & 0xFF00) >> 4); // Length of Name (byte 1)
         buf.writeByte( name.length() & 0xFF        ); // Length of Name (byte 2)
@@ -221,8 +216,7 @@ public:
     explicit TAG_Double(double value) : TAG_Double("", value) {}
 
     ByteBuffer asByteBuffer() override {
-        unsigned int size = 1 + 2 + name.length() + 8;
-        ByteBuffer buf(size);
+        ByteBuffer buf;
         buf.writeByte(Type_TAG_Double); // Type
         buf.writeByte((name.length() & 0xFF00) >> 4); // Length of Name (byte 1)
         buf.writeByte( name.length() & 0xFF        ); // Length of Name (byte 2)
@@ -251,8 +245,7 @@ public:
     explicit TAG_Byte_Array(int32_t size, unsigned char* arr) : TAG_Byte_Array("", size, arr) {}
 
     ByteBuffer asByteBuffer() override {
-        unsigned int size = 1 + 2 + name.length() + 4 + array_length;
-        ByteBuffer buf(size);
+        ByteBuffer buf;
         buf.writeByte(Type_TAG_Byte_Array); // Type
         buf.writeByte((name.length() & 0xFF00) >> 4); // Length of Name (byte 1)
         buf.writeByte( name.length() & 0xFF        ); // Length of Name (byte 2)
@@ -263,8 +256,7 @@ public:
     }
 
     ByteBuffer payload() override {
-        unsigned int size = array_length + 4;
-        ByteBuffer buf(size);
+        ByteBuffer buf;
         buf.writeInt(array_length); // Length prefix
         for(int i = 0; i < array_length; i++) buf.writeByte(array[i]); // Array
         return buf;
@@ -285,8 +277,7 @@ public:
     explicit TAG_String(std::string value) : TAG_String("", std::move(value)) {}
 
     ByteBuffer asByteBuffer() override {
-        unsigned int size = 1 + 2 + name.length() + 2 + value.length();
-        ByteBuffer buf(size);
+        ByteBuffer buf;
         buf.writeByte(Type_TAG_String); // Type
         buf.writeByte((name.length() & 0xFF00) >> 4); // Length of Name (byte 1)
         buf.writeByte( name.length() & 0xFF        ); // Length of Name (byte 2)
@@ -297,8 +288,7 @@ public:
     }
 
     ByteBuffer payload() override {
-        unsigned int size = value.length() + 2;
-        ByteBuffer buf(size);
+        ByteBuffer buf;
         buf.writeShort((short) value.length()); // Length prefix
         for(char i : value) buf.writeByte(i); // String
         return buf;
@@ -319,14 +309,12 @@ public:
     explicit TAG_List(TAG_TypeID type, std::vector<std::shared_ptr<NBT_Component>> tags) : TAG_List("", type, std::move(tags)) {}
 
     ByteBuffer asByteBuffer() override {
-        unsigned int size = 1 + 2 + name.length() + 1 + 4;
         std::vector<ByteBuffer> payloads;
         for(auto & tag : tags) {
             ByteBuffer payload = tag->payload();
-            size += payload.readableBytes();
             payloads.push_back(payload);
         }
-        ByteBuffer buf(size);
+        ByteBuffer buf;
         buf.writeByte(Type_TAG_List); // Type
         buf.writeByte((name.length() & 0xFF00) >> 4); // Length of Name (byte 1)
         buf.writeByte( name.length() & 0xFF        ); // Length of Name (byte 2)
@@ -340,14 +328,12 @@ public:
     }
 
     ByteBuffer payload() override {
-        unsigned int size = 1 + 4;
         std::vector<ByteBuffer> payloads;
         for(auto& tag : tags) {
             ByteBuffer payload = tag->payload();
-            size += payload.readableBytes();
             payloads.push_back(payload);
         }
-        ByteBuffer buf(size);
+        ByteBuffer buf;
         buf.writeByte(type); // Tags Type ID
         buf.writeInt((int)tags.size()); // Length
         for(ByteBuffer payload : payloads) {
@@ -372,20 +358,17 @@ public:
     explicit TAG_Compound(std::vector<std::shared_ptr<NBT_Component>> tags) : TAG_Compound("", std::move(tags)) {}
 
     ByteBuffer asByteBuffer() override {
-        unsigned int size = 1 + 2 + name.length();
         std::vector<ByteBuffer> payloads;
         for(auto& tag : tags) {
             ByteBuffer payload = tag->asByteBuffer();
-            size += payload.readableBytes();
             payloads.push_back(payload);
         }
         {
             TAG_End end;
             ByteBuffer payload = end.asByteBuffer();
-            size += payload.readableBytes();
             payloads.push_back(payload);
         }
-        ByteBuffer buf(size);
+        ByteBuffer buf;
         buf.writeByte(Type_TAG_Compound); // Type
         buf.writeByte((name.length() & 0xFF00) >> 4); // Length of Name (byte 1)
         buf.writeByte( name.length() & 0xFF        ); // Length of Name (byte 2)
@@ -397,20 +380,17 @@ public:
     }
 
     ByteBuffer payload() override {
-        unsigned int size = 0;
         std::vector<ByteBuffer> payloads;
         for(auto& tag : tags) {
             ByteBuffer payload = tag->asByteBuffer();
-            size += payload.readableBytes();
             payloads.push_back(payload);
         }
         {
             TAG_End end;
             ByteBuffer payload = end.asByteBuffer();
-            size += payload.readableBytes();
             payloads.push_back(payload);
         }
-        ByteBuffer buf(size);
+        ByteBuffer buf;
         for(ByteBuffer payload : payloads) {
             buf.writeBytes(payload);
         }
@@ -431,8 +411,7 @@ public:
     explicit TAG_Int_Array(int32_t size, int* arr) : TAG_Int_Array("", size, arr) {}
 
     ByteBuffer asByteBuffer() override {
-        unsigned int size = 1 + 2 + name.length() + 4 + array_length*4;
-        ByteBuffer buf(size);
+        ByteBuffer buf;
         buf.writeByte(Type_TAG_Int_Array); // Type
         buf.writeByte((name.length() & 0xFF00) >> 4); // Length of Name (byte 1)
         buf.writeByte( name.length() & 0xFF        ); // Length of Name (byte 2)
@@ -443,8 +422,7 @@ public:
     }
 
     ByteBuffer payload() override {
-        unsigned int size = array_length*4 + 4;
-        ByteBuffer buf(size);
+        ByteBuffer buf;
         buf.writeInt(array_length); // Length prefix
         for(int i = 0; i < array_length; i++) buf.writeInt(array[i]); // Array
         return buf;
@@ -465,8 +443,7 @@ public:
     explicit TAG_Long_Array(int32_t size, long long* arr) : TAG_Long_Array("", size, arr) {}
 
     ByteBuffer asByteBuffer() override {
-        unsigned int size = 1 + 2 + name.length() + 4 + array_length*8;
-        ByteBuffer buf(size);
+        ByteBuffer buf;
         buf.writeByte(Type_TAG_Long_Array); // Type
         buf.writeByte((name.length() & 0xFF00) >> 4); // Length of Name (byte 1)
         buf.writeByte( name.length() & 0xFF        ); // Length of Name (byte 2)
@@ -477,8 +454,7 @@ public:
     }
 
     ByteBuffer payload() override {
-        unsigned int size = array_length*8 + 4;
-        ByteBuffer buf(size);
+        ByteBuffer buf;
         buf.writeInt(array_length); // Length prefix
         for(int i = 0; i < array_length; i++) buf.writeLong(array[i]); // Array
         return buf;

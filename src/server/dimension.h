@@ -2,6 +2,7 @@
 
 #include <string>
 #include "../NBT.h"
+#include "world/world.h"
 
 struct Dimension {
     std::string name;
@@ -9,6 +10,7 @@ struct Dimension {
     long long seed;
     bool isFlat;
     bool isDebug;
+    World* world;
 };
 
 enum Dimensions {

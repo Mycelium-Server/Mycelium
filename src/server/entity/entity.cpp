@@ -29,3 +29,11 @@ void Entity::setDisplayName(const std::string& name) {
 std::optional<std::string> Entity::getDisplayName() {
     return displayName;
 }
+
+void Entity::setLocation(const Location& l) {
+    location = l;
+}
+
+Location& Entity::getLocation() {
+    return location;
+}

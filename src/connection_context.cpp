@@ -1,6 +1,14 @@
 #include "connection_context.h"
 #include <iostream>
 
+struct AsyncData {
+    AsyncData(ByteBuffer* buffer, uv_stream_t* stream)
+            : buffer(buffer), stream(stream) {}
+
+    ByteBuffer* buffer;
+    uv_stream_t* stream;
+};
+
 ConnectionContext::ConnectionContext(Pipeline* pipeline, uv_stream_t* stream)
     : pipeline(pipeline), stream(stream) {}
 
@@ -15,10 +23,6 @@ void write_cb(uv_write_t* req, int status) {
     }
     free(req);
 }
-
-uv_buf_t async_tmp_;
-uv_stream_t* async_stream_;
-ByteBuffer* async_buf_;
 
 void ConnectionContext::write(void* object, bool isAsync) {
     void* src = (void*)object;
@@ -35,26 +39,27 @@ void ConnectionContext::write(void* object, bool isAsync) {
     if(!src) return;
     auto* buf = (ByteBuffer*) src;
 
-    uv_buf_t buffer;
-    buffer.base = (char*)buf->data.data();
-    buffer.len = buf->data.size();
-
     if(!isAsync) {
+        uv_buf_t buffer;
+        buffer.base = (char*)buf->data.data();
+        buffer.len = buf->data.size();
         auto* req = (uv_write_t*)malloc(sizeof(uv_write_t));
         uv_write(req, stream, &buffer, 1, write_cb);
         delete buf;
     } else {
-        async_buf_ = buf;
-        async_tmp_ = buffer;
-        async_stream_ = stream;
 
         auto* async = (uv_async_t*) malloc(sizeof(uv_async_t));
+        async->data = new AsyncData(buf, stream);
 
         uv_async_init(uv_default_loop(), async, [](uv_async_t* handle) {
             auto* req = (uv_write_t*) malloc(sizeof(uv_write_t));
-            uv_write(req, async_stream_, &async_tmp_, 1, write_cb);
-            delete async_buf_;
-            free(handle);
+            auto* data = (AsyncData*) handle->data;
+            uv_buf_t buffer;
+            buffer.base = (char*) data->buffer->data.data();
+            buffer.len = data->buffer->data.size();
+            uv_write(req, data->stream, &buffer, 1, write_cb);
+            delete data->buffer;
+            delete data;
         });
 
         uv_async_send(async);

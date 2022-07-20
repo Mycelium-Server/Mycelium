@@ -10,6 +10,7 @@
 #include "../protocol/clientbound_player_abilities.h"
 #include "../protocol/clientbound_set_held_item.h"
 #include "../protocol/clientbound_keepalive.h"
+#include "../protocol/clientbound_chunk_data.h"
 #include "../protocol/plugin_channels.h"
 #include "../pipeline/handlers.h"
 #include "../registry_codec.h"
@@ -74,7 +75,9 @@ void continueLogin(ConnectionContext* ctx) {
 
     ctx->playerEntity = new EntityPlayer();
     ctx->playerData.entity = ctx->playerEntity;
+    ctx->playerData.gamemode = Gamemode::CREATIVE;
     ctx->playerEntity->connection = ctx;
+    ctx->playerEntity->setLocation({ m_default_dimensions[OVERWORLD], { 0, 20, 0 } });
 
     ctx->state = ConnectionState::PLAY;
     delete ((LoginPacketListener*) ctx->packetListener);
@@ -113,6 +116,15 @@ void continueLogin(ConnectionContext* ctx) {
     delete heldSlot;
 
     ctx->gameServer->addPlayer(&ctx->playerData);
+
+    World* world = ctx->playerEntity->getLocation().dimension.world;
+    auto* chunkPacket = new ClientboundChunkData(nullptr);
+    for(const auto& i : world->chunks) {
+        Chunk* chunk = i.second;
+        chunkPacket->chunk = chunk;
+        ctx->write(chunkPacket);
+    }
+    delete chunkPacket;
 
     ctx->keepaliveThread = std::thread([=]() {
         while (ctx->isActive()) {

@@ -25,4 +25,5 @@ void ServerboundKeepAlive::handle(ConnectionContext* ctx) {
         player->entity->connection->write(updLatency);
     }
     delete updLatency;
+    delete this;
 }
