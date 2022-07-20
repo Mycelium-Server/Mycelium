@@ -1,11 +1,12 @@
 #include "game_server.h"
+#include "../protocol/clientbound_player_info.h"
 
 GameServer::GameServer() {
     keypair = rsa_create_keypair();
 }
 
 std::string GameServer::getMOTD() {
-    return "Hello, world!"; // TOOD: Move to properties.yml
+    return "Hello, world!"; // TODO: Move to properties.yml
 }
 
 int GameServer::getOnline() {
@@ -50,4 +51,40 @@ bool GameServer::showRespawnScreen() {
 
 Difficulty GameServer::getDifficulty() {
     return Difficulty::PEACEFUL; // TODO: Move to properties.yml
+}
+
+void GameServer::addPlayer(PlayerData* data) {
+    if (!players.empty()) {
+        auto *current = new ClientboundPlayerInfo();
+        current->playerActions.push_back(new ClientboundPlayerInfo::AddPlayerAction(*data, {})); // TODO: Mojang API
+
+        for (auto& player : players) {
+            player->entity->connection->write(current);
+        }
+
+        delete current;
+    }
+
+    players.push_back(data);
+
+    auto* other = new ClientboundPlayerInfo();
+    for(auto& player : players) {
+        other->playerActions.push_back(new ClientboundPlayerInfo::AddPlayerAction(*player, {})); // TODO: Mojang API
+    }
+
+    data->entity->connection->write(other);
+    delete other;
+}
+
+void GameServer::removePlayer(PlayerData* data) {
+    auto it = std::find(players.begin(), players.end(), data);
+    if (it != players.end()) {
+        auto* packet = new ClientboundPlayerInfo();
+        packet->playerActions.push_back(new ClientboundPlayerInfo::RemovePlayerAction(*data));
+        for (auto& player : players) {
+            player->entity->connection->write(packet);
+        }
+        delete packet;
+        players.erase(it);
+    }
 }

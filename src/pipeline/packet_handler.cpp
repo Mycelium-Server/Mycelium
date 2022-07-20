@@ -13,6 +13,7 @@ bool PacketHandler::onConnect(ConnectionContext*) {
     return true;
 }
 
-bool PacketHandler::onDisconnect(ConnectionContext*) {
+bool PacketHandler::onDisconnect(ConnectionContext* ctx) {
+    ctx->gameServer->removePlayer(&ctx->playerData);
     return true;
 }

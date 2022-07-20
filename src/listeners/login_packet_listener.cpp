@@ -27,6 +27,8 @@ void LoginPacketListener::handleLoginStart(ConnectionContext* ctx, ServerboundLo
         ctx->playerData.uuid = playerUUID;
         continueLogin(ctx);
     } else {
+        auto playerUUID = uuids::uuid_name_generator{{}}("OfflinePlayer: " + packet->name);
+        ctx->playerData.uuid = playerUUID; // TODO: Mojang API
         auto* request = new ClientboundEncryptionRequest();
         request->serverID = "";
         request->rsa = ctx->gameServer->getRSAKeyPair();
@@ -64,7 +66,9 @@ void continueLogin(ConnectionContext* ctx) {
     ctx->write(loginSuccess);
     delete loginSuccess;
 
-    ctx->playerEntity = new Entity();
+    ctx->playerEntity = new EntityPlayer();
+    ctx->playerData.entity = ctx->playerEntity;
+    ctx->playerEntity->connection = ctx;
 
     ctx->state = ConnectionState::PLAY;
     ctx->packetListener = new PlayPacketListener();
@@ -100,4 +104,6 @@ void continueLogin(ConnectionContext* ctx) {
     heldSlot->slot = 4;
     ctx->write(heldSlot);
     delete heldSlot;
+
+    ctx->gameServer->addPlayer(&ctx->playerData);
 }

@@ -13,7 +13,7 @@ public:
     [[nodiscard]] int getPacketID() const override;
 
 public:
-    Entity* entity = nullptr;
+    EntityPlayer* entity = nullptr;
     GameServer* server = nullptr;
     PlayerData player;
     std::vector<Dimension> dimensions;

@@ -5,6 +5,7 @@
 #include "server/player_data.h"
 #include "server/entity/entity.h"
 #include "server/client_settings.h"
+#include "server/entity/player.h"
 #include <uv.h>
 
 enum ConnectionState {
@@ -33,7 +34,7 @@ public:
     void* packetListener = nullptr;
     GameServer* gameServer = nullptr;
     PlayerData playerData;
-    Entity* playerEntity = nullptr;
+    EntityPlayer* playerEntity = nullptr;
     ClientSettings clientSettings;
     std::string clientBrand;
 

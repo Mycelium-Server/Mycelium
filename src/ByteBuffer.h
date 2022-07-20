@@ -1,5 +1,6 @@
 #pragma once
 
+#include "uuid.h"
 #include <vector>
 #include <string>
 #include <iostream>
@@ -45,9 +46,11 @@ public:
     void writeBytes(ByteBuffer&, size_t);
     void writeBytes(ByteBuffer&);
 
+    void writeUUID(const uuids::uuid&);
+
     void ensureWritableBytes(size_t);
-    size_t readableBytes() const;
-    size_t length() const;
+    [[nodiscard]] size_t readableBytes() const;
+    [[nodiscard]] size_t length() const;
 
 public:
     size_t readerIdx = 0;

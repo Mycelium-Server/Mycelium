@@ -1,16 +1,10 @@
 #pragma once
 
 #include "packet.h"
+#include "signature_data.h"
 #include <optional>
 
 class ServerboundLoginStart : public ServerboundPacket {
-public:
-    struct SigData {
-        long long timestamp;
-        ByteBuffer publicKey;
-        ByteBuffer signature;
-    };
-
 public:
     ServerboundLoginStart();
     ~ServerboundLoginStart();

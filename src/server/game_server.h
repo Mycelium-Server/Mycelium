@@ -2,6 +2,7 @@
 
 #include "../encryption.h"
 #include "difficulty.h"
+#include "player_data.h"
 #include <string>
 
 class GameServer {
@@ -23,7 +24,11 @@ public:
     bool showRespawnScreen();
     Difficulty getDifficulty();
 
+    void addPlayer(PlayerData*);
+    void removePlayer(PlayerData*);
+
 private:
     KeyPairRSA keypair;
+    std::vector<PlayerData*> players;
 
 };

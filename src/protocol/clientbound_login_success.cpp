@@ -4,9 +4,7 @@ ClientboundLoginSuccess::ClientboundLoginSuccess() = default;
 ClientboundLoginSuccess::~ClientboundLoginSuccess() = default;
 
 void ClientboundLoginSuccess::write(ByteBuffer& dst) {
-    uuids::span<std::byte const, 16> uuidBytes = uuid.as_bytes();
-    dst.writeLong((long long) ((uint64_t*)uuidBytes.data())[0]);
-    dst.writeLong((long long) ((uint64_t*)uuidBytes.data())[1]);
+    dst.writeUUID(uuid);
     dst.writeString(name);
     dst.writeVarInt((int) properties.size());
     for (Property& property : properties) {

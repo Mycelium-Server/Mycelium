@@ -21,3 +21,11 @@ Entity::~Entity() = default;
 int Entity::getEID() const {
     return eid;
 }
+
+void Entity::setDisplayName(const std::string& name) {
+    displayName = { name };
+}
+
+std::optional<std::string> Entity::getDisplayName() {
+    return displayName;
+}

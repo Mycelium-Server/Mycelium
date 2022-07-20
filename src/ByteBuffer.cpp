@@ -197,6 +197,12 @@ void ByteBuffer::writeBytes(ByteBuffer& buf) {
     writeBytes(buf, buf.readableBytes());
 }
 
+void ByteBuffer::writeUUID(const uuids::uuid& uuid) {
+    uuids::span<std::byte const, 16> uuidBytes = uuid.as_bytes();
+    writeLong((long long) ((uint64_t*)uuidBytes.data())[0]);
+    writeLong((long long) ((uint64_t*)uuidBytes.data())[1]);
+}
+
 void ByteBuffer::ensureWritableBytes(size_t n) {
     if(data.size() < n + writerIdx)
         data.resize(writerIdx + n);
