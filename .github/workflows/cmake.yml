@@ -47,3 +47,15 @@ jobs:
           name: Mycelium-${{ matrix.os }}
           path: |
             build/Mycelium*
+      - name: Create runtime
+        run: |
+          mkdir runtime
+      - name: Add `registry_codec.nbt` to runtime
+        run: |
+          cp registry_codec.nbt runtime/registry_codec.nbt
+      - name: Upload runtime
+        uses: actions/upload-artifact@v2
+        with:
+          name: Mycelium-${{ matrix.os }}
+          path: |
+            runtime
