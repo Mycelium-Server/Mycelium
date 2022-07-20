@@ -1,6 +1,9 @@
 #include "server.h"
+#include "server/world/heightmap.h"
 #include "pipeline/handlers.h"
 #include "protocol/protocol.h"
+#include <iostream>
+#include <bitset>
 
 GameServer* server;
 
