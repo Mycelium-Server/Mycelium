@@ -74,8 +74,8 @@ public:
         unsigned int size = 1 + 2 + name.length() + 1;
         ByteBuffer buf(size);
         buf.writeByte(Type_TAG_Byte); // Type
-        buf.writeByte(name.length() & 0b1111111100000000); // Length of Name (byte 1)
-        buf.writeByte(name.length() & 0b0000000011111111); // Length of Name (byte 2)
+        buf.writeByte((name.length() & 0xFF00) >> 4); // Length of Name (byte 1)
+        buf.writeByte( name.length() & 0xFF        ); // Length of Name (byte 2)
         for(char i : name) buf.writeByte(i); // Name
         buf.writeByte(value); // Payload
         return buf;
@@ -104,8 +104,8 @@ public:
         unsigned int size = 1 + 2 + name.length() + 2;
         ByteBuffer buf(size);
         buf.writeByte(Type_TAG_Short); // Type
-        buf.writeByte(name.length() & 0xFF00); // Length of Name (byte 1)
-        buf.writeByte(name.length() & 0x00FF); // Length of Name (byte 2)
+        buf.writeByte((name.length() & 0xFF00) >> 4); // Length of Name (byte 1)
+        buf.writeByte( name.length() & 0xFF        ); // Length of Name (byte 2)
         for(char i : name) buf.writeByte(i); // Name
         buf.writeShort(value); // Payload
         return buf;
@@ -134,8 +134,8 @@ public:
         unsigned int size = 1 + 2 + name.length() + 4;
         ByteBuffer buf(size);
         buf.writeByte(Type_TAG_Int); // Type
-        buf.writeByte(name.length() & 0xFF00); // Length of Name (byte 1)
-        buf.writeByte(name.length() & 0x00FF); // Length of Name (byte 2)
+        buf.writeByte((name.length() & 0xFF00) >> 4); // Length of Name (byte 1)
+        buf.writeByte( name.length() & 0xFF        ); // Length of Name (byte 2)
         for(char i : name) buf.writeByte(i); // Name
         buf.writeInt(value); // Payload
         return buf;
@@ -164,8 +164,8 @@ public:
         unsigned int size = 1 + 2 + name.length() + 8;
         ByteBuffer buf(size);
         buf.writeByte(Type_TAG_Long); // Type
-        buf.writeByte(name.length() & 0xFF00); // Length of Name (byte 1)
-        buf.writeByte(name.length() & 0x00FF); // Length of Name (byte 2)
+        buf.writeByte((name.length() & 0xFF00) >> 4); // Length of Name (byte 1)
+        buf.writeByte( name.length() & 0xFF        ); // Length of Name (byte 2)
         for(char i : name) buf.writeByte(i); // Name
         buf.writeLong(value); // Payload
         return buf;
@@ -194,8 +194,8 @@ public:
         unsigned int size = 1 + 2 + name.length() + 4;
         ByteBuffer buf(size);
         buf.writeByte(Type_TAG_Float); // Type
-        buf.writeByte(name.length() & 0xFF00); // Length of Name (byte 1)
-        buf.writeByte(name.length() & 0x00FF); // Length of Name (byte 2)
+        buf.writeByte((name.length() & 0xFF00) >> 4); // Length of Name (byte 1)
+        buf.writeByte( name.length() & 0xFF        ); // Length of Name (byte 2)
         for(char i : name) buf.writeByte(i); // Name
         buf.writeFloat(value); // Payload
         return buf;
@@ -224,8 +224,8 @@ public:
         unsigned int size = 1 + 2 + name.length() + 8;
         ByteBuffer buf(size);
         buf.writeByte(Type_TAG_Double); // Type
-        buf.writeByte(name.length() & 0xFF00); // Length of Name (byte 1)
-        buf.writeByte(name.length() & 0x00FF); // Length of Name (byte 2)
+        buf.writeByte((name.length() & 0xFF00) >> 4); // Length of Name (byte 1)
+        buf.writeByte( name.length() & 0xFF        ); // Length of Name (byte 2)
         for(char i : name) buf.writeByte(i); // Name
         buf.writeDouble(value); // Payload
         return buf;
@@ -254,8 +254,8 @@ public:
         unsigned int size = 1 + 2 + name.length() + 4 + array_length;
         ByteBuffer buf(size);
         buf.writeByte(Type_TAG_Byte_Array); // Type
-        buf.writeByte(name.length() & 0xFF00); // Length of Name (byte 1)
-        buf.writeByte(name.length() & 0x00FF); // Length of Name (byte 2)
+        buf.writeByte((name.length() & 0xFF00) >> 4); // Length of Name (byte 1)
+        buf.writeByte( name.length() & 0xFF        ); // Length of Name (byte 2)
         for(char i : name) buf.writeByte(i); // Name
         buf.writeInt(array_length); // Length prefix
         for(int i = 0; i < array_length; i++) buf.writeByte(array[i]); // Array
@@ -288,8 +288,8 @@ public:
         unsigned int size = 1 + 2 + name.length() + 2 + value.length();
         ByteBuffer buf(size);
         buf.writeByte(Type_TAG_String); // Type
-        buf.writeByte(name.length() & 0xFF00); // Length of Name (byte 1)
-        buf.writeByte(name.length() & 0x00FF); // Length of Name (byte 2)
+        buf.writeByte((name.length() & 0xFF00) >> 4); // Length of Name (byte 1)
+        buf.writeByte( name.length() & 0xFF        ); // Length of Name (byte 2)
         for(char i : name) buf.writeByte(i); // Name
         buf.writeShort((short) value.length()); // Length prefix
         for(char i : value) buf.writeByte(i); // String
@@ -328,8 +328,8 @@ public:
         }
         ByteBuffer buf(size);
         buf.writeByte(Type_TAG_List); // Type
-        buf.writeByte(name.length() & 0xFF00); // Length of Name (byte 1)
-        buf.writeByte(name.length() & 0x00FF); // Length of Name (byte 2)
+        buf.writeByte((name.length() & 0xFF00) >> 4); // Length of Name (byte 1)
+        buf.writeByte( name.length() & 0xFF        ); // Length of Name (byte 2)
         for(char i : name) buf.writeByte(i); // Name
         buf.writeByte(type); // Tags Type ID
         buf.writeInt((int)tags.size()); // Length
@@ -387,8 +387,8 @@ public:
         }
         ByteBuffer buf(size);
         buf.writeByte(Type_TAG_Compound); // Type
-        buf.writeByte(name.length() & 0xFF00); // Length of Name (byte 1)
-        buf.writeByte(name.length() & 0x00FF); // Length of Name (byte 2)
+        buf.writeByte((name.length() & 0xFF00) >> 4); // Length of Name (byte 1)
+        buf.writeByte( name.length() & 0xFF        ); // Length of Name (byte 2)
         for(char i : name) buf.writeByte(i); // Name
         for(ByteBuffer payload : payloads) {
             buf.writeBytes(payload);
@@ -434,8 +434,8 @@ public:
         unsigned int size = 1 + 2 + name.length() + 4 + array_length*4;
         ByteBuffer buf(size);
         buf.writeByte(Type_TAG_Int_Array); // Type
-        buf.writeByte(name.length() & 0xFF00); // Length of Name (byte 1)
-        buf.writeByte(name.length() & 0x00FF); // Length of Name (byte 2)
+        buf.writeByte((name.length() & 0xFF00) >> 4); // Length of Name (byte 1)
+        buf.writeByte( name.length() & 0xFF        ); // Length of Name (byte 2)
         for(char i : name) buf.writeByte(i); // Name
         buf.writeInt(array_length); // Length prefix
         for(int i = 0; i < array_length; i++) buf.writeInt(array[i]); // Array
@@ -468,8 +468,8 @@ public:
         unsigned int size = 1 + 2 + name.length() + 4 + array_length*8;
         ByteBuffer buf(size);
         buf.writeByte(Type_TAG_Long_Array); // Type
-        buf.writeByte(name.length() & 0xFF00); // Length of Name (byte 1)
-        buf.writeByte(name.length() & 0x00FF); // Length of Name (byte 2)
+        buf.writeByte((name.length() & 0xFF00) >> 4); // Length of Name (byte 1)
+        buf.writeByte( name.length() & 0xFF        ); // Length of Name (byte 2)
         for(char i : name) buf.writeByte(i); // Name
         buf.writeInt(array_length); // Length prefix
         for(int i = 0; i < array_length; i++) buf.writeLong(array[i]); // Array
