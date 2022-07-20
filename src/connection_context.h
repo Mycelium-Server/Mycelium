@@ -7,6 +7,7 @@
 #include "server/client_settings.h"
 #include "server/entity/player.h"
 #include <uv.h>
+#include <thread>
 
 enum ConnectionState {
     NONE = 0,
@@ -22,6 +23,7 @@ public:
 
     void write(void*, bool isAsync = false);
     void read(ByteBuffer*);
+    bool isActive() const;
 
 private:
     void read(void*, int);
@@ -37,5 +39,10 @@ public:
     EntityPlayer* playerEntity = nullptr;
     ClientSettings clientSettings;
     std::string clientBrand;
+    std::thread keepaliveThread;
+    long long lastKeepalive = 0;
+
+public:
+    bool active = false;
 
 };

@@ -88,3 +88,7 @@ void GameServer::removePlayer(PlayerData* data) {
         players.erase(it);
     }
 }
+
+std::vector<PlayerData*>& GameServer::getPlayers() {
+    return players;
+}

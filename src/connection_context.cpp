@@ -81,3 +81,7 @@ void ConnectionContext::read(void* src, int idx) {
 void ConnectionContext::read(ByteBuffer* buf) {
     read(buf, 0);
 }
+
+bool ConnectionContext::isActive() const {
+    return active;
+}

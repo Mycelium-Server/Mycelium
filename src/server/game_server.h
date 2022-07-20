@@ -26,6 +26,7 @@ public:
 
     void addPlayer(PlayerData*);
     void removePlayer(PlayerData*);
+    std::vector<PlayerData*>& getPlayers();
 
 private:
     KeyPairRSA keypair;

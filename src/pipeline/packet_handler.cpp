@@ -9,11 +9,13 @@ void PacketHandler::handle(ConnectionContext* ctx, void* in) {
     packet->handle(ctx);
 }
 
-bool PacketHandler::onConnect(ConnectionContext*) {
+bool PacketHandler::onConnect(ConnectionContext* ctx) {
+    ctx->active = true;
     return true;
 }
 
 bool PacketHandler::onDisconnect(ConnectionContext* ctx) {
+    ctx->active = false;
     ctx->gameServer->removePlayer(&ctx->playerData);
     return true;
 }

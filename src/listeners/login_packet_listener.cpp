@@ -1,5 +1,6 @@
 #include "login_packet_listener.h"
 #include "play_packet_listener.h"
+#include "../time.h"
 #include "../protocol/clientbound_login_success.h"
 #include "../protocol/clientbound_set_compression.h"
 #include "../protocol/clientbound_encryption_request.h"
@@ -8,11 +9,16 @@
 #include "../protocol/clientbound_change_difficulty.h"
 #include "../protocol/clientbound_player_abilities.h"
 #include "../protocol/clientbound_set_held_item.h"
+#include "../protocol/clientbound_keepalive.h"
 #include "../protocol/plugin_channels.h"
 #include "../pipeline/handlers.h"
 #include "../registry_codec.h"
 
 #include <openssl/rand.h>
+
+using namespace std::chrono_literals;
+
+#define KEEPALIVE_INTERVAL 15s
 
 static void continueLogin(ConnectionContext*);
 
@@ -106,4 +112,17 @@ void continueLogin(ConnectionContext* ctx) {
     delete heldSlot;
 
     ctx->gameServer->addPlayer(&ctx->playerData);
+
+    ctx->keepaliveThread = std::thread([=]() {
+        while (ctx->isActive()) {
+            ctx->lastKeepalive = currentTimeMillis();
+            auto *keepalive = new ClientboundKeepAlive();
+            keepalive->id = ctx->lastKeepalive;
+            ctx->write(keepalive, true);
+            delete keepalive;
+            std::this_thread::sleep_for(KEEPALIVE_INTERVAL);
+        }
+    });
+    ctx->keepaliveThread.detach();
+
 }
