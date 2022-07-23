@@ -2,3 +2,4 @@ build
 build-wsl
 .vscode
 .idea
+cmake-build-debug

@@ -26,7 +26,7 @@ KeyPairRSA GameServer::getRSAKeyPair() {
 }
 
 bool GameServer::isOnlineMode() {
-    return false; // TODO: Move to properties.yml
+    return true; // TODO: Move to properties.yml
 }
 
 bool GameServer::isHardcore() {

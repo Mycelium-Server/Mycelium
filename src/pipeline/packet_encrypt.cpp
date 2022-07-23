@@ -7,7 +7,7 @@ PacketEncrypt::~PacketEncrypt() = default;
 
 bool PacketEncrypt::encode(ConnectionContext* ctx, void* in, void*& out) {
     auto* inbuf = (ByteBuffer*) in;
-    out = new ByteBuffer(aes_encrypt(cipher, *inbuf).data);
+    out = aes_encrypt(cipher, inbuf);
     delete inbuf;
     return true;
 }

@@ -15,7 +15,7 @@ bool PacketDecrypt::onDisconnect(ConnectionContext*) {
 
 bool PacketDecrypt::decode(ConnectionContext* ctx, void* in, std::vector<void*>& out) {
     auto* inbuf = (ByteBuffer*) in;
-    out.push_back(new ByteBuffer(aes_decrypt(cipher, *inbuf)));
+    out.push_back(aes_decrypt(cipher, inbuf));
     delete inbuf;
     return true;
 }

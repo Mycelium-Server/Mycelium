@@ -45,33 +45,33 @@ CipherAES aes_create_cipher(const ByteBuffer& key) {
     EVP_EncryptInit_ex(cipher.encryptCtx, EVP_aes_128_cfb8(), nullptr, key.data.data(), key.data.data());
     cipher.decryptCtx = EVP_CIPHER_CTX_new();
     EVP_CIPHER_CTX_init(cipher.decryptCtx);
-    EVP_DecryptInit_ex(cipher.decryptCtx, EVP_aes_128_cfb128(), nullptr, key.data.data(), key.data.data());
-    cipher.blockSize = EVP_CIPHER_block_size(EVP_aes_128_cfb128());
+    EVP_DecryptInit_ex(cipher.decryptCtx, EVP_aes_128_cfb8(), nullptr, key.data.data(), key.data.data());
+    cipher.blockSize = EVP_CIPHER_block_size(EVP_aes_128_cfb8());
     return cipher;
 }
 
-ByteBuffer aes_encrypt(const CipherAES& cipher, const ByteBuffer& buf) {
-    auto* out = (unsigned char*) malloc(buf.data.size() + cipher.blockSize - 1);
+ByteBuffer* aes_encrypt(const CipherAES& cipher, ByteBuffer* buf) {
+    auto* out = (unsigned char*) malloc(buf->data.size() + cipher.blockSize - 1);
     int len;
-    EVP_EncryptUpdate(cipher.encryptCtx, out, &len, buf.data.data(), (int) buf.data.size());
+    EVP_EncryptUpdate(cipher.encryptCtx, out, &len, buf->data.data(), (int) buf->data.size());
     if(len < 0) {
         std::cerr << "Could not encrypt message" << std::endl;
         return {};
     }
-    ByteBuffer dst(out, len);
+    auto* dst = new ByteBuffer(out, len);
     free(out);
     return dst;
 }
 
-ByteBuffer aes_decrypt(const CipherAES& cipher, const ByteBuffer& buf) {
-    auto* out = (unsigned char*) malloc(buf.data.size() + cipher.blockSize);
+ByteBuffer* aes_decrypt(const CipherAES& cipher, ByteBuffer* buf) {
+    auto* out = (unsigned char*) malloc(buf->data.size() + cipher.blockSize);
     int len;
-    EVP_DecryptUpdate(cipher.decryptCtx, out, &len, buf.data.data(), (int) buf.data.size());
+    EVP_DecryptUpdate(cipher.decryptCtx, out, &len, buf->data.data(), (int) buf->data.size());
     if(len < 0) {
         std::cerr << "Could not decrypt message" << std::endl;
         return {};
     }
-    ByteBuffer dst(out, len);
+    auto* dst = new ByteBuffer(out, len);
     free(out);
     return dst;
 }

@@ -20,5 +20,5 @@ struct CipherAES {
 KeyPairRSA rsa_create_keypair();
 ByteBuffer rsa_decrypt(const KeyPairRSA&, const ByteBuffer&);
 CipherAES aes_create_cipher(const ByteBuffer&);
-ByteBuffer aes_encrypt(const CipherAES&, const ByteBuffer&);
-ByteBuffer aes_decrypt(const CipherAES&, const ByteBuffer&);
+ByteBuffer* aes_encrypt(const CipherAES&, ByteBuffer*);
+ByteBuffer* aes_decrypt(const CipherAES&, ByteBuffer*);
