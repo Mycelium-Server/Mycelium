@@ -1,5 +1,6 @@
 #include "http.h"
 #include <iomanip>
+#include <sstream>
 #include <curl/curl.h>
 #include <iostream>
 
