@@ -2,4 +2,5 @@ build
 build-wsl
 .vscode
 .idea
-cmake-build-debug
+zconf.h
+curl_config.h

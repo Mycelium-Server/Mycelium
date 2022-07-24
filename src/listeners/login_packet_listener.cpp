@@ -19,6 +19,9 @@
 #include "../pipeline/handlers.h"
 #include "../registry_codec.h"
 #include "../server/world/world.h"
+#include "../daft_hash.h"
+
+#include "../mojangapi/auth_request.h"
 
 #include <openssl/rand.h>
 
@@ -49,16 +52,29 @@ void LoginPacketListener::handleLoginStart(ConnectionContext* ctx, ServerboundLo
         request->verifyToken = { token, 4 };
         ctx->write(request);
         delete request;
-    }   
+    }
 }
 
 void LoginPacketListener::handleEncryptionResponse(ConnectionContext* ctx, ServerboundEncryptionResponse* packet) {
     // TODO: Verify token
-    ByteBuffer sharedSecret = rsa_decrypt(ctx->gameServer->getRSAKeyPair(), packet->sharedSecret);
+    publicKey = ctx->gameServer->getRSAKeyPair().publicKey;
+    sharedSecret = rsa_decrypt(ctx->gameServer->getRSAKeyPair(), packet->sharedSecret);
     CipherAES aes = aes_create_cipher(sharedSecret);
     ctx->pipeline->addBefore("packet_splitter", "packet_decrypt", new PacketDecrypt(aes));
     ctx->pipeline->addAfter("packet_prepender", "packet_encrypt", new PacketEncrypt(aes));
+
+    // TODO: this
+//    MojangAPI::AuthResponse auth = MojangAPI::requestAuth(ctx);
+//    std::cout << auth.success << std::endl;
+
     continueLogin(ctx);
+}
+
+std::string LoginPacketListener::createHash() {
+    daft_hash_impl hash;
+    hash.update(sharedSecret);
+    hash.update(publicKey);
+    return hash.finalise();
 }
 
 void continueLogin(ConnectionContext* ctx) {

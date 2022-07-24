@@ -49,7 +49,9 @@ void tcp_server_read(uv_stream_t* handle, ssize_t nread, const uv_buf_t* buf) {
 }
 
 void tcp_alloc_cb(uv_handle_t*, size_t size, uv_buf_t* buf) {
-    *buf = uv_buf_init((char*) malloc(size), size);
+    buf->base = (char*)malloc(size);
+    if(!buf->base) return;
+    buf->len = size;
 }
 
 void tcp_server_on_connect(uv_stream_t* handle, int status) {

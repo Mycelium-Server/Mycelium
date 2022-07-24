@@ -2,9 +2,10 @@
 #include "server/world/world.h"
 #include "pipeline/handlers.h"
 #include "protocol/protocol.h"
+#include "mojangapi/http.h"
 #include "time.h"
 
-GameServer* server;
+static GameServer* server;
 
 Pipeline* pipelineInitializer(ConnectionContext* ctx) {
     auto* pipeline = new Pipeline();
@@ -23,6 +24,8 @@ Pipeline* pipelineInitializer(ConnectionContext* ctx) {
 }
 
 int main() {
+    http_init();
+
     auto startTime = currentTimeMillis();
     World* world = m_default_dimensions[OVERWORLD].world;
     world->createSpawnChunks();

@@ -12,5 +12,10 @@ public:
 public:
     void handleLoginStart(ConnectionContext*, ServerboundLoginStart*);
     void handleEncryptionResponse(ConnectionContext*, ServerboundEncryptionResponse*);
+    std::string createHash();
+
+private:
+    ByteBuffer sharedSecret;
+    ByteBuffer publicKey;
 
 };

@@ -13,7 +13,11 @@ include_directories(thirdparty/zlib)
 add_subdirectory(thirdparty/openssl)
 include_directories(thirdparty/openssl/include)
 
-file(GLOB SRC src/*.cpp src/pipeline/*.cpp src/protocol/*.cpp src/listeners/*.cpp src/server/*.cpp src/server/entity/*.cpp src/server/world/*.cpp)
+set(BUILD_SHARED_LIBS OFF)
+add_subdirectory(thirdparty/curl)
+include_directories(thirdparty/curl/include)
+
+file(GLOB SRC src/*.cpp src/pipeline/*.cpp src/protocol/*.cpp src/listeners/*.cpp src/server/*.cpp src/server/entity/*.cpp src/server/world/*.cpp src/mojangapi/*.cpp)
 
 add_executable(Mycelium ${SRC})
-target_link_libraries(Mycelium uv crypto ssl zlibstatic)
+target_link_libraries(Mycelium uv libcurl ssl crypto zlibstatic)
