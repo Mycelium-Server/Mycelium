@@ -3,6 +3,7 @@
 #include "serverbound_ping_request.h"
 #include "serverbound_login_start.h"
 #include "serverbound_encryption_response.h"
+#include "serverbound_confirm_teleportation.h"
 #include <map>
 
 static std::map<int, ServerboundPacket*> registered;
@@ -19,6 +20,8 @@ ServerboundPacket* ServerboundPacket::createInstanceFromID(int id, ConnectionSta
             return new ServerboundStatusRequest();
         } else if (state == ConnectionState::LOGIN) {
             return new ServerboundLoginStart();
+        } else if (state == ConnectionState::PLAY) {
+            return new ServerboundConfirmTeleportation();
         }
     } else if (id == 1) {
         if (state == ConnectionState::STATUS) {

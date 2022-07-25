@@ -164,6 +164,8 @@ void continueLogin(ConnectionContext* ctx) {
     delete spawnPosition;
 
     auto* syncPos = new ClientboundSynchronizePlayerPosition();
+    syncPos->teleportId = 0x7FFF;
+    ((PlayPacketListener*) ctx->packetListener)->setTeleportID(syncPos->teleportId);
     syncPos->location = ctx->playerEntity->getLocation();
     ctx->write(syncPos);
     delete syncPos;
