@@ -96,3 +96,5 @@ std::shared_ptr<NBT_Component> read_nbt(ByteBuffer& buf) {
     component->name = name;
     return component;
 }
+
+// TODO: json -> nbt impl

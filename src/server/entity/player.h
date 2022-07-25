@@ -3,7 +3,7 @@
 #include "entity.h"
 #include "../../connection_context.h"
 
-// TODO: More entites (Metadata)
+// TODO: More entities (Metadata)
 
 class EntityPlayer : public Entity {
 public:

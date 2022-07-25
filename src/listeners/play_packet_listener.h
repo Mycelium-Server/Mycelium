@@ -12,5 +12,6 @@ public:
 public:
     void handleClientInformation(ConnectionContext*, ServerboundClientInformation*);
     void handlePluginMessage(ConnectionContext*, ServerboundPluginMessage*);
+    // TODO: 0x13, 0x14, 0x15, 0x16 packets
 
 };

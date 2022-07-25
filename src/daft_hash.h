@@ -13,6 +13,8 @@
 //namespace minecraft::protocol
 //{
 
+// TODO: Refactor
+
 struct daft_hash_impl
 {
     daft_hash_impl()

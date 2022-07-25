@@ -7,6 +7,8 @@
 #include <memory>
 #include "ByteBuffer.h"
 
+// TODO: Rewrite this
+
 enum TAG_TypeID {
     Type_TAG_End = 0,
     Type_TAG_Byte = 1,
@@ -475,3 +477,5 @@ typedef std::vector<std::shared_ptr<NBT_Component>> NBT_Components;
 std::string nbt_read_name(ByteBuffer& buf);
 std::shared_ptr<NBT_Component> nbt_read_raw_data(ByteBuffer& buf, int type);
 std::shared_ptr<NBT_Component> read_nbt(ByteBuffer&);
+
+// TODO: json -> nbt

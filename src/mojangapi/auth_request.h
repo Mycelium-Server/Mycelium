@@ -13,6 +13,8 @@ namespace MojangAPI {
         bool success = false;
 
         nlohmann::json json;
+
+        // TODO: Fields
     };
 
     AuthResponse requestAuth(ConnectionContext*);

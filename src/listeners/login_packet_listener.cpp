@@ -98,7 +98,7 @@ void continueLogin(ConnectionContext* ctx) {
     ctx->playerData.entity = ctx->playerEntity;
     ctx->playerData.gamemode = Gamemode::CREATIVE;
     ctx->playerEntity->connection = ctx;
-    ctx->playerEntity->setLocation({ m_default_dimensions[OVERWORLD], { 0, 20, 0 } });
+    ctx->playerEntity->setLocation({ m_default_dimensions[OVERWORLD], { 0, 20, 0 } }); // TODO: Save/load location, default spawn location
 
     ctx->state = ConnectionState::PLAY;
     delete ((LoginPacketListener*) ctx->packetListener);
@@ -116,7 +116,7 @@ void continueLogin(ConnectionContext* ctx) {
 
     auto* brandMessage = new ClientboundPluginMessage();
     brandMessage->channel = BRAND_CHANNEL;
-    brandMessage->data.writeString("Mycelium");
+    brandMessage->data.writeString("Mycelium"); // TODO: ctx->gameServer->getBrand();
     ctx->write(brandMessage);
     delete brandMessage;
 
@@ -138,7 +138,7 @@ void continueLogin(ConnectionContext* ctx) {
 
     ctx->gameServer->addPlayer(&ctx->playerData);
 
-    auto* setCenterChunk = new ClientboundSetCenterChunk();
+    auto* setCenterChunk = new ClientboundSetCenterChunk(); // TODO: ???????
     setCenterChunk->location = World::getChunkLocation(ctx->playerEntity->getLocation().position.toProtocolPosition());
     ctx->write(setCenterChunk);
     delete setCenterChunk;

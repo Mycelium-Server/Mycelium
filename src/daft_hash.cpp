@@ -10,6 +10,8 @@
 #include <string_view>
 #include <openssl/bn.h>
 
+// TODO: Refactor
+
 std::string daft_hash_impl::finalise()
 {
     auto result = std::string();

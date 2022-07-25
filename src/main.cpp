@@ -28,7 +28,7 @@ int main() {
 
     auto startTime = currentTimeMillis();
     World* world = m_default_dimensions[OVERWORLD].world;
-    world->createSpawnChunks();
+    world->createSpawnChunks(); // TODO: Generate more chunks
     for (int x = -3 * 16; x <= 3 * 16; x++) {
         for (int z = -3 * 16; z <= 3 * 16; z++) {
             world->setBlock(x, 4, z, 9);
@@ -37,7 +37,7 @@ int main() {
             world->setBlock(x, 1, z, 1);
             world->setBlock(x, 0, z, 74);
         }
-    }
+    } // TODO: World generation
     std::cout << "Created 49 chunks in " << (currentTimeMillis() - startTime) << "ms" << std::endl;
 
     server = new GameServer();

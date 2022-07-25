@@ -12,6 +12,7 @@ MojangAPI::AuthResponse MojangAPI::requestAuth(ConnectionContext* ctx) {
     if (raw.response_code == 200) {
         dst.success = true;
         dst.json = nlohmann::json::parse(raw.response);
+        // TODO: MojangAPI::AuthResponse fields
     } else {
         dst.success = false;
     }
