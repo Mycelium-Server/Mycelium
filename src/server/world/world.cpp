@@ -10,12 +10,20 @@ World::~World() {
     }
 }
 
-int World::getChunkPosition(int block) {
-    return std::floor(double(block) / 16.0);
+int World::getChunkPositioni(int block) {
+    return getChunkPosition(double(block));
+}
+
+int World::getChunkPosition(double block) {
+    return (int) std::floor(block / 16.0);
+}
+
+ChunkLocation World::getChunkLocation(const Position3d& position) {
+    return { getChunkPosition(position.x), getChunkPosition(position.z) };
 }
 
 ChunkLocation World::getChunkLocation(const ProtocolPosition& position) {
-    return { getChunkPosition(position.x), getChunkPosition(position.z) };
+    return { getChunkPositioni(position.x), getChunkPositioni(position.z) };
 }
 
 Chunk* World::getChunkByBlock(int x, int z) {

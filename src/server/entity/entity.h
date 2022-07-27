@@ -19,9 +19,11 @@ public:
     void setLocation(const Location&);
     Location& getLocation();
 
+public:
+    Location location;
+
 private:
     int eid;
     std::optional<std::string> displayName;
-    Location location;
 
 };

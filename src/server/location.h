@@ -23,7 +23,11 @@ struct Position3d {
     double z;
 
     [[nodiscard]] ProtocolPosition toProtocolPosition() const {
-        return { (unsigned long long) x, (unsigned long long) z, (unsigned long long) y };
+        ProtocolPosition dst {};
+        dst.x = ((unsigned) x) & 0b11111111111111111111111111;
+        dst.z = ((unsigned) z) & 0b11111111111111111111111111;
+        dst.y = ((unsigned) y) & 0b111111111111;
+        return dst;
     }
 };
 

@@ -2,6 +2,8 @@
 #include "../protocol/plugin_channels.h"
 #include <iostream>
 
+#include "../protocol/clientbound_set_center_chunk.h"
+
 PlayPacketListener::PlayPacketListener() = default;
 PlayPacketListener::~PlayPacketListener() = default;
 
@@ -25,4 +27,27 @@ void PlayPacketListener::handleConfirmTeleport(ConnectionContext*, ServerboundCo
         // TODO: Disconnect
     }
     teleportID = 0;
+}
+
+void PlayPacketListener::handleSetPlayerPosition(ConnectionContext* ctx, ServerboundSetPlayerPosition* packet) {
+    handlePlayerPosition(ctx, packet->location);
+}
+
+void PlayPacketListener::handleSetPlayerPositionRotation(ConnectionContext* ctx, ServerboundSetPlayerPositionRotation* packet) {
+    handlePlayerPosition(ctx, packet->location.position);
+    // TODO: Handle rotation
+}
+
+void PlayPacketListener::handlePlayerPosition(ConnectionContext* ctx, const Position3d& position) {
+    ChunkLocation current = World::getChunkLocation(position);
+    if (current.x != chunkLocation.x
+        || current.z != chunkLocation.z
+        || std::floor(position.y) != std::floor(ctx->playerEntity->getLocation().position.position.y)) {
+        auto* setCenter = new ClientboundSetCenterChunk();
+        setCenter->location = current;
+        ctx->write(setCenter);
+        delete setCenter;
+        chunkLocation = current;
+        ctx->playerEntity->location.position.position = position;
+    }
 }

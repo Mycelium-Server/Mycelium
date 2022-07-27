@@ -10,8 +10,10 @@ public:
     ~World();
 
 public:
-    static int getChunkPosition(int);
+    static int getChunkPosition(double);
+    static int getChunkPositioni(int);
     static ChunkLocation getChunkLocation(const ProtocolPosition& position);
+    static ChunkLocation getChunkLocation(const Position3d& position);
 
 public:
     std::map<unsigned long long, Chunk*>::iterator getChunkIterator(const ChunkLocation&);
