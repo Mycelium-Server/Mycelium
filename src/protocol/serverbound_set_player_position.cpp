@@ -16,7 +16,7 @@ ServerboundPacket* ServerboundSetPlayerPosition::createInstance() {
 }
 
 int ServerboundSetPlayerPosition::getPacketID() const {
-    return 0x13;
+    return 0x14;
 }
 
 void ServerboundSetPlayerPosition::handle(ConnectionContext* ctx) {

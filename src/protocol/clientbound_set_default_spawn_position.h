@@ -12,6 +12,6 @@ public:
     [[nodiscard]] int getPacketID() const override;
 
 public:
-    RotatedProtocolPosition position;
+    RotatedProtocolPosition position {};
 
 };

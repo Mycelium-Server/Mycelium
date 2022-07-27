@@ -10,7 +10,7 @@ void ClientboundPlayerAbilities::write(ByteBuffer& out) {
 }
 
 int ClientboundPlayerAbilities::getPacketID() const {
-    return 0x2F;
+    return 0x31;
 }
 
 void ClientboundPlayerAbilities::construct(PlayerData data) {

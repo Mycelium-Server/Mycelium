@@ -9,5 +9,5 @@ void ClientboundSetDefaultSpawnPosition::write(ByteBuffer& out) {
 }
 
 int ClientboundSetDefaultSpawnPosition::getPacketID() const {
-    return 0x4A;
+    return 0x4D;
 }

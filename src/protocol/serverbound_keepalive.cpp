@@ -13,7 +13,7 @@ ServerboundPacket *ServerboundKeepAlive::createInstance() {
 }
 
 int ServerboundKeepAlive::getPacketID() const {
-    return 0x11;
+    return 0x12;
 }
 
 

@@ -8,5 +8,5 @@ void ClientboundSetHeldItem::write(ByteBuffer& out) {
 }
 
 int ClientboundSetHeldItem::getPacketID() const {
-    return 0x47;
+    return 0x4A;
 }

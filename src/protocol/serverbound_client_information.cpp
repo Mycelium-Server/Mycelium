@@ -20,7 +20,7 @@ ServerboundPacket* ServerboundClientInformation::createInstance() {
 }
 
 int ServerboundClientInformation::getPacketID() const {
-    return 0x07;
+    return 0x08;
 }
 
 void ServerboundClientInformation::handle(ConnectionContext* ctx) {

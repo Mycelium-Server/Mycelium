@@ -9,5 +9,5 @@ void ClientboundPluginMessage::write(ByteBuffer& out) {
 }
 
 int ClientboundPluginMessage::getPacketID() const {
-    return 0x15;
+    return 0x16;
 }

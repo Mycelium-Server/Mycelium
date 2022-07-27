@@ -31,5 +31,5 @@ void ClientboundLogin::write(ByteBuffer& out) {
 }
 
 int ClientboundLogin::getPacketID() const {
-    return 0x23;
+    return 0x25;
 }

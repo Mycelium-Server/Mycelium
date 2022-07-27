@@ -8,5 +8,5 @@ void ClientboundKeepAlive::write(ByteBuffer& out) {
 }
 
 int ClientboundKeepAlive::getPacketID() const {
-    return 0x1E;
+    return 0x20;
 }

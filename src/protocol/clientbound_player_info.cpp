@@ -26,7 +26,7 @@ void ClientboundPlayerInfo::write(ByteBuffer& out) {
 }
 
 int ClientboundPlayerInfo::getPacketID() const {
-    return 0x34;
+    return 0x37;
 }
 
 ClientboundPlayerInfo::PlayerAction::PlayerAction(const uuids::uuid& uuid)

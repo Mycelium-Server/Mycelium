@@ -15,5 +15,5 @@ void ClientboundSynchronizePlayerPosition::write(ByteBuffer& out) {
 }
 
 int ClientboundSynchronizePlayerPosition::getPacketID() const {
-    return 0x36;
+    return 0x39;
 }

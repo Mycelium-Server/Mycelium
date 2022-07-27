@@ -9,5 +9,5 @@ void ClientboundChunkData::write(ByteBuffer& out) {
 }
 
 int ClientboundChunkData::getPacketID() const {
-    return 0x1F;
+    return 0x21;
 }

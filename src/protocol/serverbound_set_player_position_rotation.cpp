@@ -18,7 +18,7 @@ ServerboundPacket* ServerboundSetPlayerPositionRotation::createInstance() {
 }
 
 int ServerboundSetPlayerPositionRotation::getPacketID() const {
-    return 0x14;
+    return 0x15;
 }
 
 void ServerboundSetPlayerPositionRotation::handle(ConnectionContext* ctx) {

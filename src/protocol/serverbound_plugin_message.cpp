@@ -14,7 +14,7 @@ ServerboundPacket* ServerboundPluginMessage::createInstance() {
 }
 
 int ServerboundPluginMessage::getPacketID() const {
-    return 0x0C;
+    return 0x0D;
 }
 
 void ServerboundPluginMessage::handle(ConnectionContext* ctx) {

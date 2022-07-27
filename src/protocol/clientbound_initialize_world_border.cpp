@@ -15,5 +15,5 @@ void ClientboundInitializeWorldBorder::write(ByteBuffer& out) {
 }
 
 int ClientboundInitializeWorldBorder::getPacketID() const {
-    return 0x1D;
+    return 0x1F;
 }

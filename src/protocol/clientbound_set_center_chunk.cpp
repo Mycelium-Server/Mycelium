@@ -9,5 +9,5 @@ void ClientboundSetCenterChunk::write(ByteBuffer& out) {
 }
 
 int ClientboundSetCenterChunk::getPacketID() const {
-    return 0x48;
+    return 0x4B;
 }
