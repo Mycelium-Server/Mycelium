@@ -38,11 +38,11 @@ void LoginPacketListener::handleLoginStart(ConnectionContext* ctx, ServerboundLo
     ctx->playerData.name = packet->name;
 
     if (!ctx->gameServer->isOnlineMode()) {
-        auto playerUUID = uuids::uuid_name_generator{{}}("OfflinePlayer: " + packet->name);
+        auto playerUUID = uuids::uuid_name_generator{{}}("OfflinePlayer:" + packet->name);
         ctx->playerData.uuid = playerUUID;
         continueLogin(ctx);
     } else {
-        auto playerUUID = uuids::uuid_name_generator{{}}("OfflinePlayer: " + packet->name);
+        auto playerUUID = uuids::uuid_name_generator{{}}("OfflinePlayer:" + packet->name);
         ctx->playerData.uuid = playerUUID; // TODO: Mojang API
         auto* request = new ClientboundEncryptionRequest();
         request->serverID = "";
@@ -139,7 +139,7 @@ void continueLogin(ConnectionContext* ctx) {
     ctx->gameServer->addPlayer(&ctx->playerData);
 
     auto* setCenterChunk = new ClientboundSetCenterChunk(); // TODO: ???????
-    setCenterChunk->location = World::getChunkLocation(ctx->playerEntity->getLocation().position.toProtocolPosition());
+    setCenterChunk->location = World::getChunkLocation(ctx->playerEntity->getLocation().position.position);
     ctx->write(setCenterChunk);
     delete setCenterChunk;
 
