@@ -2,20 +2,25 @@
 
 #include "../../ByteBuffer.h"
 
-#define DEF_DEFAULT_PARTICLE(className, particleID) \
-class className : public AbstractParticle {         \
-public:                                             \
-    className() = default;                          \
-    ~className() override = default;                \
-                                                    \
-public:                                             \
-    void writeData(ByteBuffer&) override {}         \
-    [[nodiscard]] int getParticleID()               \
-                        const override {            \
-        return particleID;                          \
-    }                                               \
-                                                    \
+#define DECL_DEFAULT_PARTICLE(className)     \
+class className : public AbstractParticle {  \
+public:                                      \
+    className();                             \
+    ~className() override;                   \
+                                             \
+public:                                      \
+    void writeData(ByteBuffer&) override;    \
+    [[nodiscard]] int getParticleID() const; \
+                                             \
 };
+
+#define DEF_DEFAULT_PARTICLE(className, particleID) \
+className::className() = default;                   \
+className::~className() = default;                  \
+                                                    \
+int className::getParticleID() const {              \
+    return particleID;                              \
+}
 
 class AbstractParticle {
 public:
