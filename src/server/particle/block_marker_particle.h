@@ -12,6 +12,6 @@ public:
     [[nodiscard]] int getParticleID() const override;
 
 public:
-    int blockState; // TODO: BlockState/Block class/enum/struct
+    int blockState = 0; // TODO: BlockState/Block class/enum/struct
 
 };
