@@ -110,7 +110,7 @@ void continueLogin(ConnectionContext* ctx) {
     login->server = ctx->gameServer;
     login->dimensions = m_default_dimensions;
     login->dimension = m_default_dimensions[Dimensions::OVERWORLD];
-    login->registryCodec = { default_registry_codec()->data };
+    login->registryCodec = ByteBuffer(default_registry_codec()->data);
     ctx->write(login);
     delete login;
 

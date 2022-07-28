@@ -54,7 +54,7 @@ public:
 class TAG_End : public NBT_Component {
 public:
     ByteBuffer asByteBuffer() override {
-        return {1};
+        return ByteBuffer(1);
     }
 
     ByteBuffer payload() override {

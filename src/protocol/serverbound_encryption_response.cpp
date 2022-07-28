@@ -5,13 +5,13 @@ ServerboundEncryptionResponse::ServerboundEncryptionResponse() = default;
 ServerboundEncryptionResponse::~ServerboundEncryptionResponse() = default;
 
 void ServerboundEncryptionResponse::read(ByteBuffer& buf) {
-    sharedSecret = { buf.readBytes(buf.readVarInt()) };
+    sharedSecret = ByteBuffer(buf.readBytes(buf.readVarInt()));
     if (buf.readByte()) {
-        verifyToken = { buf.readBytes(buf.readVarInt()) };
+        verifyToken = ByteBuffer(buf.readBytes(buf.readVarInt()));
     } else {
         Cryptography c;
         c.salt = buf.readLong();
-        c.messageSignature = { buf.readBytes(buf.readVarInt()) };
+        c.messageSignature = ByteBuffer(buf.readBytes(buf.readVarInt()));
     }
 }
 

@@ -6,7 +6,7 @@ ServerboundPluginMessage::~ServerboundPluginMessage() = default;
 
 void ServerboundPluginMessage::read(ByteBuffer& buf) {
     channel = buf.readString();
-    data = { buf.readBytes(buf.readableBytes()) };
+    data = ByteBuffer(buf.readBytes(buf.readableBytes()));
 }
 
 ServerboundPacket* ServerboundPluginMessage::createInstance() {
