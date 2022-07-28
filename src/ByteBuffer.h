@@ -10,8 +10,8 @@ struct ItemStack;
 class ByteBuffer {
 public:
     ByteBuffer();
-    ByteBuffer(size_t);
-    ByteBuffer(const std::vector<unsigned char>&);
+    explicit ByteBuffer(size_t);
+    explicit ByteBuffer(const std::vector<unsigned char>&);
     ByteBuffer(const unsigned char*, size_t);
     
 public:
