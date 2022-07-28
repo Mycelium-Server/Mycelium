@@ -37,3 +37,11 @@ void Entity::setLocation(const Location& l) {
 Location& Entity::getLocation() {
     return location;
 }
+
+void Entity::setOnGround(bool value) {
+    onGround = value;
+}
+
+bool Entity::isOnGround() const {
+    return onGround;
+}

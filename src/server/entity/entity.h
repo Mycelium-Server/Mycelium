@@ -18,11 +18,14 @@ public:
     std::optional<std::string> getDisplayName();
     void setLocation(const Location&);
     Location& getLocation();
+    bool isOnGround() const;
+    void setOnGround(bool);
 
 public:
     Location location;
 
 private:
+    bool onGround;
     int eid;
     std::optional<std::string> displayName;
 

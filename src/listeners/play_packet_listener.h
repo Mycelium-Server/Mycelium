@@ -7,6 +7,7 @@
 #include "../protocol/serverbound_set_player_position.h"
 #include "../protocol/serverbound_set_player_position_rotation.h"
 #include "../server/world/world.h"
+#include "../protocol/serverbound_set_player_rotation.h"
 
 class PlayPacketListener {
 public:
@@ -22,10 +23,12 @@ public:
     void handleConfirmTeleport(ConnectionContext*, ServerboundConfirmTeleportation*);
     void handleSetPlayerPosition(ConnectionContext*, ServerboundSetPlayerPosition*);
     void handleSetPlayerPositionRotation(ConnectionContext*, ServerboundSetPlayerPositionRotation*);
-    // TODO: 0x15, 0x16 packets
+    void handleSetPlayerRotation(ConnectionContext*, ServerboundSetPlayerRotation*);
+    // TODO: 0x17 packet
 
 private:
     void handlePlayerPosition(ConnectionContext*, const Position3d&);
+    void handlePlayerRotation(ConnectionContext*, float, float);
 
 private:
     int teleportID = 0;

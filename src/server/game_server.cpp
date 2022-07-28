@@ -1,5 +1,7 @@
 #include "game_server.h"
 #include "../protocol/clientbound_player_info.h"
+#include "../protocol/clientbound_spawn_player.h"
+#include "../protocol/clientbound_remove_entities.h"
 
 GameServer::GameServer() {
     keypair = rsa_create_keypair();
@@ -55,37 +57,59 @@ Difficulty GameServer::getDifficulty() {
 
 void GameServer::addPlayer(PlayerData* data) {
     if (!players.empty()) {
-        auto *current = new ClientboundPlayerInfo();
+        auto* current = new ClientboundPlayerInfo();
         current->playerActions.push_back(new ClientboundPlayerInfo::AddPlayerAction(*data, {})); // TODO: Mojang API
+
+        auto* spawnPlayer = new ClientboundSpawnPlayer();
+        spawnPlayer->data = *data;
 
         for (auto& player : players) {
             player->entity->connection->write(current);
+            player->entity->connection->write(spawnPlayer);
         }
 
         delete current;
+        delete spawnPlayer;
     }
 
-    players.push_back(data);
 
     auto* other = new ClientboundPlayerInfo();
     for(auto& player : players) {
         other->playerActions.push_back(new ClientboundPlayerInfo::AddPlayerAction(*player, {})); // TODO: Mojang API
     }
+    other->playerActions.push_back(new ClientboundPlayerInfo::AddPlayerAction(*data, {})); // TODO: Mojang API
 
     data->entity->connection->write(other);
     delete other;
+
+    auto* spawnOther = new ClientboundSpawnPlayer();
+    for (auto& player : players) { // TODO: `This packet is sent by the server when a player comes into visible range, not when a player joins.`
+        spawnOther->data = *player;
+        data->entity->connection->write(spawnOther);
+    }
+    delete spawnOther;
+
+    players.push_back(data);
 }
 
 void GameServer::removePlayer(PlayerData* data) {
     auto it = std::find(players.begin(), players.end(), data);
     if (it != players.end()) {
+        players.erase(it);
+
+        auto* destroyEntity = new ClientboundRemoveEntities();
+        destroyEntity->entities.push_back(data->entity);
+
         auto* packet = new ClientboundPlayerInfo();
         packet->playerActions.push_back(new ClientboundPlayerInfo::RemovePlayerAction(*data));
+
         for (auto& player : players) {
+            player->entity->connection->write(destroyEntity);
             player->entity->connection->write(packet);
         }
+
         delete packet;
-        players.erase(it);
+        delete destroyEntity;
     }
 }
 
