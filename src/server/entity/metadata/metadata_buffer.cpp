@@ -104,6 +104,11 @@ void MetadataBuffer::writeNBT(unsigned char idx, const std::shared_ptr<NBT_Compo
     buf.writeBytes(data);
 }
 
+void MetadataBuffer::writeParticle(unsigned char idx, AbstractParticle* particle) {
+    WRITE_ENTRY_HEADER(15)
+    particle->write(buf);
+}
+
 void MetadataBuffer::writeVillagerData(unsigned char idx, const VillagerData& value) {
     WRITE_ENTRY_HEADER(16)
     buf.writeVarInt((int) value.type);

@@ -6,6 +6,7 @@
 #include "villager_data.h"
 #include "pose.h"
 #include "../../itemstack.h"
+#include "../../particle/particle.h"
 
 class MetadataBuffer {
 public:
@@ -28,7 +29,7 @@ public:
     void writeOptUUID(unsigned char, const std::optional<uuids::uuid>&);
     void writeOptBlockID(unsigned char, int);
     void writeNBT(unsigned char, const std::shared_ptr<NBT_Component>&);
-    // TODO: void writeParticle(unsigned char, Particle*);
+    void writeParticle(unsigned char, AbstractParticle*);
     void writeVillagerData(unsigned char, const VillagerData&);
     void writeOptVarInt(unsigned char, const std::optional<int>&);
     void writePose(unsigned char, const Pose&);
