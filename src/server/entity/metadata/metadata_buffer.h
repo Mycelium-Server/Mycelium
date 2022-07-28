@@ -5,6 +5,7 @@
 #include "../../direction.h"
 #include "villager_data.h"
 #include "pose.h"
+#include "../../itemstack.h"
 
 class MetadataBuffer {
 public:
@@ -18,7 +19,7 @@ public:
     void writeString(unsigned char, const std::string&);
     void writeChat(unsigned char, const std::string&);
     void writeOptChat(unsigned char, const std::optional<std::string>&);
-    // TODO: void writeItem(unsigned char, ItemStack*);
+    void writeItem(unsigned char, const ItemStack&);
     void writeBool(unsigned char, bool);
     void writeRotation(unsigned char, float, float, float);
     void writePosition(unsigned char, const ProtocolPosition&);

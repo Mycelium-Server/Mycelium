@@ -6,7 +6,7 @@
 class EntityMetadata : public AbstractEntityMetadata {
 public:
     EntityMetadata();
-    virtual ~EntityMetadata() override;
+    ~EntityMetadata() override;
 
 public:
     void wrapperWrite(MetadataBuffer&) override;
