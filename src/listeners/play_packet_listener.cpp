@@ -7,6 +7,7 @@
 #include "../protocol/clientbound_update_entity_position_rotation.h"
 #include "../protocol/clientbound_set_head_rotation.h"
 #include "../protocol/clientbound_update_entity_rotation.h"
+#include "../protocol/clientbound_chunk_data.h"
 
 PlayPacketListener::PlayPacketListener() = default;
 PlayPacketListener::~PlayPacketListener() = default;
@@ -114,6 +115,21 @@ void PlayPacketListener::handlePlayerPosition(ConnectionContext* ctx, const Posi
         chunkLocation = current;
     }
     ctx->playerEntity->location.position.position = position;
+
+    int r = ctx->gameServer->getViewDistance();
+    for (int x = -r; x <= r; x++) {
+        for (int z = -r; z <= r; z++) { // Ensure that chunks are always loaded
+            ChunkLocation loc = { x + current.x, z + current.z };
+            unsigned long long id = (unsigned long long) loc.x << 32 | loc.z;
+            if (std::find(loadedChunks.begin(), loadedChunks.end(), id) == loadedChunks.end()) {
+                Chunk* chunk = ctx->playerEntity->location.dimension.world->requireChunk(loc);
+                auto* packet = new ClientboundChunkData(chunk);
+                ctx->write(packet);
+                delete packet;
+                loadedChunks.push_back(id);
+            }
+        }
+    }
 }
 
 void PlayPacketListener::handlePlayerRotation(ConnectionContext* ctx, float yaw, float pitch) {

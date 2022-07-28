@@ -47,7 +47,7 @@ void LoginPacketListener::handleLoginStart(ConnectionContext* ctx, ServerboundLo
     for (auto& player : ctx->gameServer->getPlayers()) {
         if (player->name == packet->name) {
             auto* disconnect = new ClientboundLoginDisconnect();
-            disconnect->reason = "Player with that name already playing on this server";
+            disconnect->reason = "Player with that name is already playing on this server";
             ctx->write(disconnect);
             delete disconnect;
             return;
@@ -117,7 +117,7 @@ void continueLogin(ConnectionContext* ctx) {
     ctx->playerData.entity = ctx->playerEntity;
     ctx->playerData.gamemode = Gamemode::CREATIVE;
     ctx->playerEntity->connection = ctx;
-    ctx->playerEntity->setLocation({ m_default_dimensions[OVERWORLD], { 0, 20, 0 } }); // TODO: Save/load location, default spawn location
+    ctx->playerEntity->setLocation({ m_default_dimensions[OVERWORLD], { 256, 20, 256 } }); // TODO: Save/load location, default spawn location
 
     ctx->state = ConnectionState::PLAY;
     delete ((LoginPacketListener*) ctx->packetListener);
@@ -157,17 +157,22 @@ void continueLogin(ConnectionContext* ctx) {
 
     ctx->gameServer->addPlayer(&ctx->playerData);
 
+    auto currentChunk = World::getChunkLocation(ctx->playerEntity->getLocation().position.position);
     auto* setCenterChunk = new ClientboundSetCenterChunk(); // TODO: ???????
-    setCenterChunk->location = World::getChunkLocation(ctx->playerEntity->getLocation().position.position);
+    setCenterChunk->location = currentChunk;
     ctx->write(setCenterChunk);
     delete setCenterChunk;
 
     World* world = ctx->playerEntity->getLocation().dimension.world;
     auto* chunkPacket = new ClientboundChunkData(nullptr);
-    for(const auto& i : world->chunks) {
-        Chunk* chunk = i.second;
-        chunkPacket->chunk = chunk;
-        ctx->write(chunkPacket);
+    for (int x = -7; x <= 7; x++) {
+        for (int z = -7; z <= 7; z++) {
+            ChunkLocation loc = { x + currentChunk.x, z + currentChunk.z };
+            chunkPacket->chunk = world->requireChunk(loc);
+            ctx->write(chunkPacket);
+            unsigned long long id = (unsigned long long) loc.x << 32 | loc.z;
+            ((PlayPacketListener*) ctx->packetListener)->loadedChunks.push_back(id);
+        }
     }
     delete chunkPacket;
 

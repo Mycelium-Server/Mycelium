@@ -4,6 +4,7 @@
 #include "protocol/protocol.h"
 #include "mojangapi/http.h"
 #include "time.h"
+#include "server/world/generation/flat_world_generator.h"
 
 static GameServer* server;
 
@@ -28,17 +29,9 @@ int main() {
 
     auto startTime = currentTimeMillis();
     World* world = m_default_dimensions[OVERWORLD].world;
-    world->createSpawnChunks(); // TODO: Generate more chunks
-    for (int x = -3 * 16; x <= 3 * 16; x++) {
-        for (int z = -3 * 16; z <= 3 * 16; z++) {
-            world->setBlock(x, 4, z, 9);
-            world->setBlock(x, 3, z, 1);
-            world->setBlock(x, 2, z, 1);
-            world->setBlock(x, 1, z, 1);
-            world->setBlock(x, 0, z, 74);
-        }
-    } // TODO: World generation
-    std::cout << "Created 49 chunks in " << (currentTimeMillis() - startTime) << "ms" << std::endl;
+    world->setWorldGenerator(new FlatWorldGenerator);
+    world->createSpawnChunks();
+    std::cout << "Generated " << world->chunks.size() << " chunks in " << (currentTimeMillis() - startTime) << "ms" << std::endl;
 
     server = new GameServer();
     if (server->isOnlineMode()) {

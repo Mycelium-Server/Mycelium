@@ -30,6 +30,9 @@ private:
     void handlePlayerPosition(ConnectionContext*, const Position3d&);
     void handlePlayerRotation(ConnectionContext*, float, float);
 
+public:
+    std::vector<unsigned long long> loadedChunks;
+
 private:
     int teleportID = 0;
     ChunkLocation chunkLocation {};
