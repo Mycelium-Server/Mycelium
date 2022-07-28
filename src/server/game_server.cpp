@@ -3,7 +3,9 @@
 #include "../protocol/clientbound_spawn_player.h"
 #include "../protocol/clientbound_remove_entities.h"
 
-GameServer::GameServer() {
+GameServer::GameServer() = default;
+
+void GameServer::generateKeypair() {
     keypair = rsa_create_keypair();
 }
 

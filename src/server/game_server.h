@@ -11,6 +11,7 @@ public:
     GameServer();
 
 public:
+    void generateKeypair();
     std::string getMOTD();
     int getOnline();
     int getMaxPlayers();
@@ -32,7 +33,7 @@ public:
     std::vector<PlayerData*>& getPlayers();
 
 private:
-    KeyPairRSA keypair;
+    KeyPairRSA keypair {};
     std::vector<PlayerData*> players;
 
 };

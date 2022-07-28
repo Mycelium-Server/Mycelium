@@ -41,6 +41,10 @@ int main() {
     std::cout << "Created 49 chunks in " << (currentTimeMillis() - startTime) << "ms" << std::endl;
 
     server = new GameServer();
+    if (server->isOnlineMode()) {
+        server->generateKeypair();
+    }
+
     protocol_registerPackets();
     tcp_start_server(pipelineInitializer, "0.0.0.0", 25577); // TODO: Add input
 }
