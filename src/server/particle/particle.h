@@ -19,6 +19,8 @@ public:                                     \
 className::className() = default;                   \
 className::~className() = default;                  \
                                                     \
+void className::writeData(ByteBuffer&) {}           \
+                                                    \
 int className::getParticleID() const {              \
     return particleID;                              \
 }
