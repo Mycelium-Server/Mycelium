@@ -5,6 +5,8 @@
 #include <string>
 #include <iostream>
 
+struct ItemStack;
+
 class ByteBuffer {
 public:
     ByteBuffer();
@@ -39,6 +41,8 @@ public:
 
     double readDouble();
     void writeDouble(double);
+
+    void writeItemStack(const ItemStack&);
 
     std::vector<unsigned char> readBytes(size_t);
     void writeBytes(std::vector<unsigned char>);

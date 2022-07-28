@@ -1,4 +1,5 @@
 #include "ByteBuffer.h"
+#include "server/itemstack.h"
 #include <cstring>
 
 ByteBuffer::ByteBuffer() = default;
@@ -201,6 +202,20 @@ void ByteBuffer::writeUUID(const uuids::uuid& uuid) {
     uuids::span<std::byte const, 16> uuidBytes = uuid.as_bytes();
     writeLong((long long) ((uint64_t*)uuidBytes.data())[0]);
     writeLong((long long) ((uint64_t*)uuidBytes.data())[1]);
+}
+
+void ByteBuffer::writeItemStack(const ItemStack& value) {
+    writeByte(value.present);
+    if (value.present) {
+        writeVarInt(value.itemID);
+        writeByte(value.itemCount);
+        if (value.nbt.has_value()) {
+            ByteBuffer nbt = value.nbt.value()->asByteBuffer();
+            writeBytes(nbt);
+        } else {
+            writeByte(0);
+        }
+    }
 }
 
 void ByteBuffer::ensureWritableBytes(size_t n) {

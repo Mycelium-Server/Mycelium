@@ -42,17 +42,7 @@ void MetadataBuffer::writeOptChat(unsigned char idx, const std::optional<std::st
 
 void MetadataBuffer::writeItem(unsigned char idx, const ItemStack& value) {
     WRITE_ENTRY_HEADER(6)
-    buf.writeByte(value.present);
-    if (value.present) {
-        buf.writeVarInt(value.itemID);
-        buf.writeByte(value.itemCount);
-        if (value.nbt.has_value()) {
-            ByteBuffer nbt = value.nbt.value()->asByteBuffer();
-            buf.writeBytes(nbt);
-        } else {
-            buf.writeByte(0);
-        }
-    }
+    buf.writeItemStack(value);
 }
 
 void MetadataBuffer::writeBool(unsigned char idx, bool value) {
