@@ -15,6 +15,7 @@
 #include "../protocol/clientbound_initialize_world_border.h"
 #include "../protocol/clientbound_set_default_spawn_position.h"
 #include "../protocol/clientbound_synchronize_player_position.h"
+#include "../protocol/clientbound_login_disconnect.h"
 #include "../protocol/plugin_channels.h"
 #include "../pipeline/handlers.h"
 #include "../registry_codec.h"
@@ -35,6 +36,24 @@ LoginPacketListener::LoginPacketListener() = default;
 LoginPacketListener::~LoginPacketListener() = default;
 
 void LoginPacketListener::handleLoginStart(ConnectionContext* ctx, ServerboundLoginStart* packet) {
+    if (ctx->protocolVersion != 760) {
+        auto* disconnect = new ClientboundLoginDisconnect();
+        disconnect->reason = "Outdated client!";
+        ctx->write(disconnect);
+        delete disconnect;
+        return;
+    }
+
+    for (auto& player : ctx->gameServer->getPlayers()) {
+        if (player->name == packet->name) {
+            auto* disconnect = new ClientboundLoginDisconnect();
+            disconnect->reason = "Player with that name already playing on this server";
+            ctx->write(disconnect);
+            delete disconnect;
+            return;
+        }
+    }
+
     ctx->playerData.name = packet->name;
 
     if (!ctx->gameServer->isOnlineMode()) {
