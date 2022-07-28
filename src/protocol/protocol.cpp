@@ -7,6 +7,7 @@
 #include "serverbound_set_player_position.h"
 #include "serverbound_set_player_position_rotation.h"
 #include "serverbound_set_player_rotation.h"
+#include "serverbound_chat_message.h"
 
 void protocol_registerPackets() {
     ServerboundHandshake().registerPacket();
@@ -16,4 +17,5 @@ void protocol_registerPackets() {
     ServerboundSetPlayerPosition().registerPacket();
     ServerboundSetPlayerPositionRotation().registerPacket();
     ServerboundSetPlayerRotation().registerPacket();
+    ServerboundChatMessage().registerPacket();
 }

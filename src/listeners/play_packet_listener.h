@@ -8,6 +8,7 @@
 #include "../protocol/serverbound_set_player_position_rotation.h"
 #include "../server/world/world.h"
 #include "../protocol/serverbound_set_player_rotation.h"
+#include "../protocol/serverbound_chat_message.h"
 
 class PlayPacketListener {
 public:
@@ -24,6 +25,7 @@ public:
     void handleSetPlayerPosition(ConnectionContext*, ServerboundSetPlayerPosition*);
     void handleSetPlayerPositionRotation(ConnectionContext*, ServerboundSetPlayerPositionRotation*);
     void handleSetPlayerRotation(ConnectionContext*, ServerboundSetPlayerRotation*);
+    void handleChatMessage(ConnectionContext*, ServerboundChatMessage*);
     // TODO: 0x17 packet
 
 private:

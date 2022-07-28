@@ -8,6 +8,8 @@
 #include "../protocol/clientbound_set_head_rotation.h"
 #include "../protocol/clientbound_update_entity_rotation.h"
 #include "../protocol/clientbound_chunk_data.h"
+#include "../json.hpp"
+#include "../protocol/clientbound_system_message.h"
 
 PlayPacketListener::PlayPacketListener() = default;
 PlayPacketListener::~PlayPacketListener() = default;
@@ -135,4 +137,20 @@ void PlayPacketListener::handlePlayerPosition(ConnectionContext* ctx, const Posi
 void PlayPacketListener::handlePlayerRotation(ConnectionContext* ctx, float yaw, float pitch) {
     ctx->playerEntity->location.position.yaw = yaw;
     ctx->playerEntity->location.position.pitch = pitch;
+}
+
+void PlayPacketListener::handleChatMessage(ConnectionContext* ctx, ServerboundChatMessage* packet) {
+    // TODO: Check message length
+    nlohmann::json jsonMsg;
+    jsonMsg["text"] = "[" + ctx->playerData.name + "] " + packet->message;
+
+    auto* msg = new ClientboundSystemMessage(); // Always send system message (no chat reports)
+    msg->message = nlohmann::to_string(jsonMsg);
+
+    for (auto& player : ctx->gameServer->getPlayers()) {
+        player->entity->connection->write(msg);
+    }
+
+    delete msg;
+
 }
