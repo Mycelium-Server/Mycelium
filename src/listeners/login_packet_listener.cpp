@@ -38,7 +38,7 @@ LoginPacketListener::~LoginPacketListener() = default;
 void LoginPacketListener::handleLoginStart(ConnectionContext* ctx, ServerboundLoginStart* packet) {
     if (ctx->protocolVersion != 760) {
         auto* disconnect = new ClientboundLoginDisconnect();
-        disconnect->reason = "Outdated client!";
+        disconnect->reason = R"({"text":"Outdated client!","color":"red"})";
         ctx->write(disconnect);
         delete disconnect;
         return;
@@ -47,7 +47,7 @@ void LoginPacketListener::handleLoginStart(ConnectionContext* ctx, ServerboundLo
     for (auto& player : ctx->gameServer->getPlayers()) {
         if (player->name == packet->name) {
             auto* disconnect = new ClientboundLoginDisconnect();
-            disconnect->reason = "Player with that name is already playing on this server";
+            disconnect->reason = R"({"text":"Player with that name is already playing on this server","color":"red"})";
             ctx->write(disconnect);
             delete disconnect;
             return;
