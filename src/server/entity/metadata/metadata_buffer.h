@@ -7,6 +7,7 @@
 #include "pose.h"
 #include "../../itemstack.h"
 #include "../../particle/particle.h"
+#include "painting_variant.h"
 
 class MetadataBuffer {
 public:
@@ -35,7 +36,7 @@ public:
     void writePose(unsigned char, const Pose&);
     // TODO: void writeCatVariant(unsigned char, const CatVariant&);
     // TODO: void writeFrogVariant(unsigned char, const FrogVariant&);
-    // TODO: void writePaintingVariant(unsigned char, const PaintingVariant&);
+    void writePaintingVariant(unsigned char, const PaintingVariant&);
 
     ByteBuffer& finalize();
 
