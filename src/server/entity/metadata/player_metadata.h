@@ -1,9 +1,9 @@
 #pragma once
 
-#include "entity_metadata.h"
+#include "living_entity_metadata.h"
 #include "../../client_settings.h"
 
-class PlayerMetadata : public EntityMetadata {
+class PlayerMetadata : public LivingEntityMetadata {
 public:
     PlayerMetadata();
     ~PlayerMetadata() override;
