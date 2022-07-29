@@ -26,7 +26,7 @@ void ClientboundLogin::write(ByteBuffer& out) {
     out.writeByte(player.deathLocation.has_value());
     if (player.deathLocation.has_value()) {
         out.writeString(player.deathLocation.value().dimension.name);
-        out.writeLong((long long) player.deathLocation.value().position.toProtocolPosition().value);
+        out.writeLong((long long) player.deathLocation.value().position.toProtocolPosition().toProtocol());
     }
 }
 

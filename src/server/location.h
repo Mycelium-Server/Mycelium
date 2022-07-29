@@ -2,19 +2,36 @@
 
 #include "dimension.h"
 
-union ProtocolPosition {
-    struct {
-        unsigned long long x : 26;
-        unsigned long long z : 26;
-        unsigned long long y : 12;
-    };
+struct ProtocolPosition {
+    ProtocolPosition() = default;
+    explicit ProtocolPosition(unsigned long long val) {
+        x = (int) (val >> 38);
+        y = (int) (val & 0xFFF);
+        z = (int) ((val >> 12) & 0x3FFFFFF);
+    }
 
-    unsigned long long value;
+    ProtocolPosition(int x, int y, int z)
+        : x(x), y(y), z(z) {}
+
+    int x = 0;
+    int y = 0;
+    int z = 0;
+
+    [[nodiscard]] unsigned long long toProtocol() const {
+        return (((unsigned long long) x & 0x3FFFFFF) << 38) | ((z & 0x3FFFFFF) << 12) | (y & 0xFFF);
+    }
+
 };
 
 struct RotatedProtocolPosition {
     ProtocolPosition position;
-    float angle;
+    float angle = 0;
+};
+
+struct Vector3i {
+    int x = 0;
+    int y = 0;
+    int z = 0;
 };
 
 struct Rotation3f {

@@ -4,7 +4,7 @@ ClientboundSetDefaultSpawnPosition::ClientboundSetDefaultSpawnPosition() = defau
 ClientboundSetDefaultSpawnPosition::~ClientboundSetDefaultSpawnPosition() = default;
 
 void ClientboundSetDefaultSpawnPosition::write(ByteBuffer& out) {
-    out.writeLong((long long) position.position.value);
+    out.writeLong((long long) position.position.toProtocol());
     out.writeFloat(position.angle);
 }
 
