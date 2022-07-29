@@ -17,6 +17,12 @@ struct RotatedProtocolPosition {
     float angle;
 };
 
+struct Rotation3f {
+    float x = 0;
+    float y = 0;
+    float z = 0;
+};
+
 struct Position3d {
     double x;
     double y;
