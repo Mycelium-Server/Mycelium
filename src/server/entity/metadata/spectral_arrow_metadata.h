@@ -7,4 +7,7 @@ public:
     SpectralArrowMetadata();
     ~SpectralArrowMetadata() override;
 
+public:
+    void wrapperWrite(MetadataBuffer&) override;
+
 };

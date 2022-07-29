@@ -7,4 +7,7 @@ public:
     DragonFireballMetadata();
     ~DragonFireballMetadata() override;
 
+public:
+    void wrapperWrite(MetadataBuffer&) override;
+
 };

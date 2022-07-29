@@ -2,3 +2,7 @@
 
 DragonFireballMetadata::DragonFireballMetadata() = default;
 DragonFireballMetadata::~DragonFireballMetadata() = default;
+
+void DragonFireballMetadata::wrapperWrite(MetadataBuffer& wrapper) {
+    EntityMetadata::wrapperWrite(wrapper);
+}

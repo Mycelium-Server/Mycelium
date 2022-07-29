@@ -7,4 +7,7 @@ public:
     GlowingItemFrameMetadata();
     ~GlowingItemFrameMetadata() override;
 
+public:
+    void wrapperWrite(MetadataBuffer&) override;
+
 };

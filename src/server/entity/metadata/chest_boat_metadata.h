@@ -7,4 +7,7 @@ public:
     ChestBoatMetadata();
     ~ChestBoatMetadata() override;
 
+public:
+    void wrapperWrite(MetadataBuffer&) override;
+
 };

@@ -2,3 +2,7 @@
 
 SpectralArrowMetadata::SpectralArrowMetadata() = default;
 SpectralArrowMetadata::~SpectralArrowMetadata() = default;
+
+void SpectralArrowMetadata::wrapperWrite(MetadataBuffer& wrapper) {
+    AbstractArrowMetadata::wrapperWrite(wrapper);
+}

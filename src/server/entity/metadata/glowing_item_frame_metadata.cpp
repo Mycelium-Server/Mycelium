@@ -2,3 +2,7 @@
 
 GlowingItemFrameMetadata::GlowingItemFrameMetadata() = default;
 GlowingItemFrameMetadata::~GlowingItemFrameMetadata() = default;
+
+void GlowingItemFrameMetadata::wrapperWrite(MetadataBuffer& wrapper) {
+    ItemFrameMetadata::wrapperWrite(wrapper);
+}
