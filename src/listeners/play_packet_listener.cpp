@@ -10,6 +10,8 @@
 #include "../protocol/clientbound_chunk_data.h"
 #include "../json.hpp"
 #include "../protocol/clientbound_system_message.h"
+#include "../protocol/clientbound_block_update.h"
+#include "../protocol/clientbound_ack_block_change.h"
 
 PlayPacketListener::PlayPacketListener() = default;
 PlayPacketListener::~PlayPacketListener() = default;
@@ -153,4 +155,46 @@ void PlayPacketListener::handleChatMessage(ConnectionContext* ctx, ServerboundCh
 
     delete msg;
 
+}
+
+void PlayPacketListener::handleUseItemOn(ConnectionContext* ctx, ServerboundUseItemOn* packet) {
+    int targetBlockID = 1; // TODO: Item -> Block
+    Vector3i offset = BlockFaceOffsets[packet->face];
+    int targetX = offset.x + packet->position.x;
+    int targetZ = offset.z + packet->position.z;
+    int targetY = offset.y + packet->position.y;
+    // TODO: check Y
+    ctx->playerEntity->location.dimension.world->setBlock(targetX, targetY, targetZ, targetBlockID);
+
+    int d = ctx->gameServer->getViewDistance() * 32;
+#define DIFF_CHECK(x, target) (std::abs(targetX - x) <= d)
+
+    auto* block = new ClientboundBlockUpdate();
+    block->location.x = targetX;
+    block->location.y = targetY;
+    block->location.z = targetZ;
+    block->blockID = targetBlockID;
+
+    auto* clicked = new ClientboundBlockUpdate();
+    clicked->location = packet->position;
+    clicked->blockID = ctx->playerEntity->location.dimension.
+            world->getBlock(packet->position.x, packet->position.y, packet->position.z);
+
+    auto* ack = new ClientboundAckBlockChange();
+    ack->sequence = packet->sequence;
+
+    for (auto& player: ctx->gameServer->getPlayers()) {
+        int pX = (int) player->entity->location.position.position.x;
+        int pY = (int) player->entity->location.position.position.y;
+        int pZ = (int) player->entity->location.position.position.z;
+        if (DIFF_CHECK(pX, targetX) && DIFF_CHECK(pY, targetY) && DIFF_CHECK(pZ, targetZ)) {
+            player->entity->connection->write(block);
+            player->entity->connection->write(ack);
+        }
+    }
+
+    delete block;
+    delete ack;
+
+#undef DIFF_CHECK
 }
