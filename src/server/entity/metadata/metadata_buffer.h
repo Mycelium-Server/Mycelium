@@ -9,6 +9,7 @@
 #include "../../particle/particle.h"
 #include "painting_variant.h"
 #include "frog_variant.h"
+#include "cat_variant.h"
 
 class MetadataBuffer {
 public:
@@ -35,7 +36,7 @@ public:
     void writeVillagerData(unsigned char, const VillagerData&);
     void writeOptVarInt(unsigned char, const std::optional<int>&);
     void writePose(unsigned char, const Pose&);
-    // TODO: void writeCatVariant(unsigned char, const CatVariant&);
+    void writeCatVariant(unsigned char, const CatVariant&);
     void writeFrogVariant(unsigned char, const FrogVariant&);
     void writePaintingVariant(unsigned char, const PaintingVariant&);
 
