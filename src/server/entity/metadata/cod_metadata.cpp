@@ -4,5 +4,5 @@ CodMetadata::CodMetadata() = default;
 CodMetadata::~CodMetadata() = default;
 
 void CodMetadata::wrapperWrite(MetadataBuffer& wrapper) {
-    AbstractFishMetadata::wrapperWrite(wrapper);
+  AbstractFishMetadata::wrapperWrite(wrapper);
 }

@@ -3,16 +3,15 @@
 #include "animal_metadata.h"
 
 class TameableAnimalMetadata : public AnimalMetadata {
-public:
-    TameableAnimalMetadata();
-    ~TameableAnimalMetadata() override;
+ public:
+  TameableAnimalMetadata();
+  ~TameableAnimalMetadata() override;
 
-public:
-    void wrapperWrite(MetadataBuffer&) override;
+ public:
+  void wrapperWrite(MetadataBuffer&) override;
 
-public:
-    bool isSitting = false;
-    bool isTamed = false;
-    std::optional<uuids::uuid> owner;
-
+ public:
+  bool isSitting = false;
+  bool isTamed = false;
+  std::optional<uuids::uuid> owner;
 };

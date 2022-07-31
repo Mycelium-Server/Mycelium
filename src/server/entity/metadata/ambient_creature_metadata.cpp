@@ -4,5 +4,5 @@ AmbientCreatureMetadata::~AmbientCreatureMetadata() = default;
 AmbientCreatureMetadata::AmbientCreatureMetadata() = default;
 
 void AmbientCreatureMetadata::wrapperWrite(MetadataBuffer& wrapper) {
-    MobMetadata::wrapperWrite(wrapper);
+  MobMetadata::wrapperWrite(wrapper);
 }

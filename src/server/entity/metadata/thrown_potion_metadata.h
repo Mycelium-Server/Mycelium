@@ -3,14 +3,13 @@
 #include "entity_metadata.h"
 
 class ThrownPotionMetadata : public EntityMetadata {
-public:
-    ThrownPotionMetadata();
-    ~ThrownPotionMetadata() override;
+ public:
+  ThrownPotionMetadata();
+  ~ThrownPotionMetadata() override;
 
-public:
-    void wrapperWrite(MetadataBuffer&) override;
+ public:
+  void wrapperWrite(MetadataBuffer&) override;
 
-public:
-    ItemStack potion;
-
+ public:
+  ItemStack potion;
 };

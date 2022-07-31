@@ -32,14 +32,14 @@
 
 #define GSL_USE_STD_BYTE 1
 
-#else // defined(_HAS_STD_BYTE) && _HAS_STD_BYTE
+#else// defined(_HAS_STD_BYTE) && _HAS_STD_BYTE
 
 #define GSL_USE_STD_BYTE 0
 
-#endif // defined(_HAS_STD_BYTE) && _HAS_STD_BYTE
-#endif // GSL_USE_STD_BYTE
+#endif// defined(_HAS_STD_BYTE) && _HAS_STD_BYTE
+#endif// GSL_USE_STD_BYTE
 
-#else // _MSC_VER
+#else// _MSC_VER
 
 #ifndef GSL_USE_STD_BYTE
 // this tests if we are under GCC or Clang with enough -std:c++1z power to get us std::byte
@@ -48,134 +48,118 @@
 #define GSL_USE_STD_BYTE 1
 #include <cstddef>
 
-#else // defined(__cplusplus) && (__cplusplus >= 201703L)
+#else// defined(__cplusplus) && (__cplusplus >= 201703L)
 
 #define GSL_USE_STD_BYTE 0
 
-#endif //defined(__cplusplus) && (__cplusplus >= 201703L)
-#endif // GSL_USE_STD_BYTE
+#endif//defined(__cplusplus) && (__cplusplus >= 201703L)
+#endif// GSL_USE_STD_BYTE
 
-#endif           // _MSC_VER
+#endif// _MSC_VER
 
 // Use __may_alias__ attribute on gcc and clang
 #if defined __clang__ || (__GNUC__ > 5)
 #define byte_may_alias __attribute__((__may_alias__))
-#else // defined __clang__ || defined __GNUC__
+#else// defined __clang__ || defined __GNUC__
 #define byte_may_alias
-#endif // defined __clang__ || defined __GNUC__
+#endif// defined __clang__ || defined __GNUC__
 
-namespace gsl
-{
+namespace gsl {
 #if GSL_USE_STD_BYTE
 
 
-using std::byte;
-using std::to_integer;
+  using std::byte;
+  using std::to_integer;
 
-#else // GSL_USE_STD_BYTE
+#else// GSL_USE_STD_BYTE
 
-// This is a simple definition for now that allows
-// use of byte within span<> to be standards-compliant
-enum class byte_may_alias byte : unsigned char
-{
-};
+  // This is a simple definition for now that allows
+  // use of byte within span<> to be standards-compliant
+  enum class byte_may_alias byte : unsigned char {
+  };
 
-template <class IntegerType, class = std::enable_if_t<std::is_integral<IntegerType>::value>>
-constexpr byte& operator<<=(byte& b, IntegerType shift) noexcept
-{
+  template<class IntegerType, class = std::enable_if_t<std::is_integral<IntegerType>::value> >
+  constexpr byte& operator<<=(byte& b, IntegerType shift) noexcept {
     return b = byte(static_cast<unsigned char>(b) << shift);
-}
+  }
 
-template <class IntegerType, class = std::enable_if_t<std::is_integral<IntegerType>::value>>
-constexpr byte operator<<(byte b, IntegerType shift) noexcept
-{
+  template<class IntegerType, class = std::enable_if_t<std::is_integral<IntegerType>::value> >
+  constexpr byte operator<<(byte b, IntegerType shift) noexcept {
     return byte(static_cast<unsigned char>(b) << shift);
-}
+  }
 
-template <class IntegerType, class = std::enable_if_t<std::is_integral<IntegerType>::value>>
-constexpr byte& operator>>=(byte& b, IntegerType shift) noexcept
-{
+  template<class IntegerType, class = std::enable_if_t<std::is_integral<IntegerType>::value> >
+  constexpr byte& operator>>=(byte& b, IntegerType shift) noexcept {
     return b = byte(static_cast<unsigned char>(b) >> shift);
-}
+  }
 
-template <class IntegerType, class = std::enable_if_t<std::is_integral<IntegerType>::value>>
-constexpr byte operator>>(byte b, IntegerType shift) noexcept
-{
+  template<class IntegerType, class = std::enable_if_t<std::is_integral<IntegerType>::value> >
+  constexpr byte operator>>(byte b, IntegerType shift) noexcept {
     return byte(static_cast<unsigned char>(b) >> shift);
-}
+  }
 
-constexpr byte& operator|=(byte& l, byte r) noexcept
-{
+  constexpr byte& operator|=(byte& l, byte r) noexcept {
     return l = byte(static_cast<unsigned char>(l) | static_cast<unsigned char>(r));
-}
+  }
 
-constexpr byte operator|(byte l, byte r) noexcept
-{
+  constexpr byte operator|(byte l, byte r) noexcept {
     return byte(static_cast<unsigned char>(l) | static_cast<unsigned char>(r));
-}
+  }
 
-constexpr byte& operator&=(byte& l, byte r) noexcept
-{
+  constexpr byte& operator&=(byte& l, byte r) noexcept {
     return l = byte(static_cast<unsigned char>(l) & static_cast<unsigned char>(r));
-}
+  }
 
-constexpr byte operator&(byte l, byte r) noexcept
-{
+  constexpr byte operator&(byte l, byte r) noexcept {
     return byte(static_cast<unsigned char>(l) & static_cast<unsigned char>(r));
-}
+  }
 
-constexpr byte& operator^=(byte& l, byte r) noexcept
-{
+  constexpr byte& operator^=(byte& l, byte r) noexcept {
     return l = byte(static_cast<unsigned char>(l) ^ static_cast<unsigned char>(r));
-}
+  }
 
-constexpr byte operator^(byte l, byte r) noexcept
-{
+  constexpr byte operator^(byte l, byte r) noexcept {
     return byte(static_cast<unsigned char>(l) ^ static_cast<unsigned char>(r));
-}
+  }
 
-constexpr byte operator~(byte b) noexcept { return byte(~static_cast<unsigned char>(b)); }
+  constexpr byte operator~(byte b) noexcept { return byte(~static_cast<unsigned char>(b)); }
 
-template <class IntegerType, class = std::enable_if_t<std::is_integral<IntegerType>::value>>
-constexpr IntegerType to_integer(byte b) noexcept
-{
+  template<class IntegerType, class = std::enable_if_t<std::is_integral<IntegerType>::value> >
+  constexpr IntegerType to_integer(byte b) noexcept {
     return static_cast<IntegerType>(b);
-}
+  }
 
-#endif // GSL_USE_STD_BYTE
+#endif// GSL_USE_STD_BYTE
 
-template <bool E, typename T>
-constexpr byte to_byte_impl(T t) noexcept
-{
+  template<bool E, typename T>
+  constexpr byte to_byte_impl(T t) noexcept {
     static_assert(
-        E, "gsl::to_byte(t) must be provided an unsigned char, otherwise data loss may occur. "
-           "If you are calling to_byte with an integer contant use: gsl::to_byte<t>() version.");
+        E,
+        "gsl::to_byte(t) must be provided an unsigned char, otherwise data loss may occur. "
+        "If you are calling to_byte with an integer contant use: gsl::to_byte<t>() version.");
     return static_cast<byte>(t);
-}
-template <>
-constexpr byte to_byte_impl<true, unsigned char>(unsigned char t) noexcept
-{
+  }
+  template<>
+  constexpr byte to_byte_impl<true, unsigned char>(unsigned char t) noexcept {
     return byte(t);
-}
+  }
 
-template <typename T>
-constexpr byte to_byte(T t) noexcept
-{
+  template<typename T>
+  constexpr byte to_byte(T t) noexcept {
     return to_byte_impl<std::is_same<T, unsigned char>::value, T>(t);
-}
+  }
 
-template <int I>
-constexpr byte to_byte() noexcept
-{
+  template<int I>
+  constexpr byte to_byte() noexcept {
     static_assert(I >= 0 && I <= 255,
                   "gsl::byte only has 8 bits of storage, values must be in range 0-255");
     return static_cast<byte>(I);
-}
+  }
 
-} // namespace gsl
+}// namespace gsl
 
 #ifdef _MSC_VER
 #pragma warning(pop)
-#endif // _MSC_VER
+#endif// _MSC_VER
 
-#endif // GSL_BYTE_H
+#endif// GSL_BYTE_H

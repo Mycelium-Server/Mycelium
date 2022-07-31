@@ -6,15 +6,15 @@ ClientboundSetHeadRotation::ClientboundSetHeadRotation() = default;
 ClientboundSetHeadRotation::~ClientboundSetHeadRotation() = default;
 
 void ClientboundSetHeadRotation::write(ByteBuffer& buf) {
-    buf.writeVarInt(entity->getEID());
-    buf.writeByte(TO_PROTOCOL_ANGLE(yaw));
+  buf.writeVarInt(entity->getEID());
+  buf.writeByte(TO_PROTOCOL_ANGLE(yaw));
 }
 
 int ClientboundSetHeadRotation::getPacketID() const {
-    return 0x3F;
+  return 0x3F;
 }
 
 void ClientboundSetHeadRotation::construct(Entity* target) {
-    entity = target;
-    yaw = target->getLocation().position.yaw;
+  entity = target;
+  yaw = target->getLocation().position.yaw;
 }

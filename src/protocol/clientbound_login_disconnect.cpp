@@ -4,9 +4,9 @@ ClientboundLoginDisconnect::ClientboundLoginDisconnect() = default;
 ClientboundLoginDisconnect::~ClientboundLoginDisconnect() = default;
 
 void ClientboundLoginDisconnect::write(ByteBuffer& buf) {
-    buf.writeString(reason);
+  buf.writeString(reason);
 }
 
 int ClientboundLoginDisconnect::getPacketID() const {
-    return 0x00;
+  return 0x00;
 }

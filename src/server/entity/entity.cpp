@@ -3,45 +3,43 @@
 static int eidCounter;
 
 int createEntityID() {
-    return eidCounter++;
+  return eidCounter++;
 }
 
-Entity::Entity() 
+Entity::Entity()
     : Entity(createEntityID()) {
-    
 }
 
-Entity::Entity(int eid) 
+Entity::Entity(int eid)
     : eid(eid) {
-
 }
 
 Entity::~Entity() = default;
 
 int Entity::getEID() const {
-    return eid;
+  return eid;
 }
 
 void Entity::setDisplayName(const std::string& name) {
-    displayName = { name };
+  displayName = {name};
 }
 
 std::optional<std::string> Entity::getDisplayName() {
-    return displayName;
+  return displayName;
 }
 
 void Entity::setLocation(const Location& l) {
-    location = l;
+  location = l;
 }
 
 Location& Entity::getLocation() {
-    return location;
+  return location;
 }
 
 void Entity::setOnGround(bool value) {
-    onGround = value;
+  onGround = value;
 }
 
 bool Entity::isOnGround() const {
-    return onGround;
+  return onGround;
 }

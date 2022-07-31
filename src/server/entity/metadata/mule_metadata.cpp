@@ -4,5 +4,5 @@ MuleMetadata::MuleMetadata() = default;
 MuleMetadata::~MuleMetadata() = default;
 
 void MuleMetadata::wrapperWrite(MetadataBuffer& wrapper) {
-    ChestedHorseMetadata::wrapperWrite(wrapper);
+  ChestedHorseMetadata::wrapperWrite(wrapper);
 }

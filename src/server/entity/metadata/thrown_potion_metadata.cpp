@@ -4,6 +4,6 @@ ThrownPotionMetadata::ThrownPotionMetadata() = default;
 ThrownPotionMetadata::~ThrownPotionMetadata() = default;
 
 void ThrownPotionMetadata::wrapperWrite(MetadataBuffer& wrapper) {
-    EntityMetadata::wrapperWrite(wrapper);
-    wrapper.writeItem(8, potion);
+  EntityMetadata::wrapperWrite(wrapper);
+  wrapper.writeItem(8, potion);
 }

@@ -4,6 +4,6 @@ AbstractVillagerMetadata::AbstractVillagerMetadata() = default;
 AbstractVillagerMetadata::~AbstractVillagerMetadata() = default;
 
 void AbstractVillagerMetadata::wrapperWrite(MetadataBuffer& wrapper) {
-    AgeableMobMetadata::wrapperWrite(wrapper);
-    wrapper.writeVarInt(17, headShakeTimer);
+  AgeableMobMetadata::wrapperWrite(wrapper);
+  wrapper.writeVarInt(17, headShakeTimer);
 }

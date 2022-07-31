@@ -4,9 +4,9 @@ ClientboundSetCompression::ClientboundSetCompression() = default;
 ClientboundSetCompression::~ClientboundSetCompression() = default;
 
 void ClientboundSetCompression::write(ByteBuffer& out) {
-    out.writeVarInt(threshold);
+  out.writeVarInt(threshold);
 }
 
 int ClientboundSetCompression::getPacketID() const {
-    return 0x03;
+  return 0x03;
 }

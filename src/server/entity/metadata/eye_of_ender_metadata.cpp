@@ -4,6 +4,6 @@ EyeOfEnderMetadata::EyeOfEnderMetadata() = default;
 EyeOfEnderMetadata::~EyeOfEnderMetadata() = default;
 
 void EyeOfEnderMetadata::wrapperWrite(MetadataBuffer& wrapper) {
-    EntityMetadata::wrapperWrite(wrapper);
-    wrapper.writeItem(8, item);
+  EntityMetadata::wrapperWrite(wrapper);
+  wrapper.writeItem(8, item);
 }

@@ -3,14 +3,13 @@
 #include "cow_metadata.h"
 
 class MooshroomMetadata : public CowMetadata {
-public:
-    MooshroomMetadata();
-    ~MooshroomMetadata() override;
+ public:
+  MooshroomMetadata();
+  ~MooshroomMetadata() override;
 
-public:
-    void wrapperWrite(MetadataBuffer&) override;
+ public:
+  void wrapperWrite(MetadataBuffer&) override;
 
-public:
-    std::string variant = "red"; // STRING????
-
+ public:
+  std::string variant = "red";// STRING????
 };

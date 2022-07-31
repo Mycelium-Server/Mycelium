@@ -1,64 +1,65 @@
 #pragma once
 
-#include "uuid.h"
-#include <vector>
-#include <string>
 #include <iostream>
+#include <string>
+#include <vector>
+
+#include "uuid.h"
 
 struct ItemStack;
 
 class ByteBuffer {
-public:
-    ByteBuffer();
-    explicit ByteBuffer(size_t);
-    explicit ByteBuffer(const std::vector<unsigned char>&);
-    ByteBuffer(const unsigned char*, size_t);
-    
-public:
-    unsigned char readByte();
-    void writeByte(unsigned char);
-    
-    short readShort();
-    void writeShort(short);
+ public:
+  ByteBuffer();
+  explicit ByteBuffer(size_t);
+  explicit ByteBuffer(const std::vector<unsigned char>&);
+  ByteBuffer(const unsigned char*, size_t);
 
-    int readInt();
-    void writeInt(int);
+ public:
+  unsigned char readByte();
+  void writeByte(unsigned char);
 
-    long long readLong();
-    void writeLong(long long);
+  short readShort();
+  void writeShort(short);
 
-    std::string readString();
-    void writeString(std::string);
+  int readInt();
+  void writeInt(int);
 
-    int readVarInt();
-    void writeVarInt(int);
+  long long readLong();
+  void writeLong(long long);
 
-    long long readVarLong();
-    void writeVarLong(long long);
+  std::string readString();
+  void writeString(std::string);
 
-    float readFloat();
-    void writeFloat(float);
+  int readVarInt();
+  void writeVarInt(int);
 
-    double readDouble();
-    void writeDouble(double);
+  long long readVarLong();
+  void writeVarLong(long long);
 
-    void writeItemStack(const ItemStack&);
+  float readFloat();
+  void writeFloat(float);
 
-    std::vector<unsigned char> readBytes(size_t);
-    void writeBytes(std::vector<unsigned char>);
-    void writeBytes(const unsigned char*, size_t);
-    void writeBytes(ByteBuffer&, size_t);
-    void writeBytes(ByteBuffer&);
+  double readDouble();
+  void writeDouble(double);
 
-    void writeUUID(const uuids::uuid&);
+  void writeItemStack(const ItemStack&);
 
-    void ensureWritableBytes(size_t);
-    [[nodiscard]] size_t readableBytes() const;
-    [[nodiscard]] size_t length() const;
+  std::vector<unsigned char> readBytes(size_t);
+  void writeBytes(std::vector<unsigned char>);
+  void writeBytes(const unsigned char*, size_t);
+  void writeBytes(ByteBuffer&, size_t);
+  void writeBytes(ByteBuffer&);
 
-public:
-    size_t readerIdx = 0;
-    size_t writerIdx = 0;
+  void writeUUID(const uuids::uuid&);
 
-    std::vector<unsigned char> data;
+  void ensureWritableBytes(size_t);
+  [[nodiscard]] size_t readableBytes() const;
+  [[nodiscard]] size_t length() const;
+
+ public:
+  size_t readerIdx = 0;
+  size_t writerIdx = 0;
+
+  std::vector<unsigned char> data;
 };

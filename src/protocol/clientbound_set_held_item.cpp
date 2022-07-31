@@ -4,9 +4,9 @@ ClientboundSetHeldItem::ClientboundSetHeldItem() = default;
 ClientboundSetHeldItem::~ClientboundSetHeldItem() = default;
 
 void ClientboundSetHeldItem::write(ByteBuffer& out) {
-    out.writeByte(slot % 9);
+  out.writeByte(slot % 9);
 }
 
 int ClientboundSetHeldItem::getPacketID() const {
-    return 0x4A;
+  return 0x4A;
 }

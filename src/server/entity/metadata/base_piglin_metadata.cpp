@@ -4,6 +4,6 @@ BasePiglinMetadata::BasePiglinMetadata() = default;
 BasePiglinMetadata::~BasePiglinMetadata() = default;
 
 void BasePiglinMetadata::wrapperWrite(MetadataBuffer& wrapper) {
-    MonsterMetadata::wrapperWrite(wrapper);
-    wrapper.writeBool(16, isImmuneToZombification);
+  MonsterMetadata::wrapperWrite(wrapper);
+  wrapper.writeBool(16, isImmuneToZombification);
 }

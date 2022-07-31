@@ -3,8 +3,8 @@
 #include <string>
 
 struct ResponseHTTP {
-    int response_code = 0;
-    std::string response{};
+  int response_code = 0;
+  std::string response {};
 };
 
 void http_init();

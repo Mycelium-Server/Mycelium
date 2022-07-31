@@ -4,5 +4,5 @@ WaterAnimalMetadata::WaterAnimalMetadata() = default;
 WaterAnimalMetadata::~WaterAnimalMetadata() = default;
 
 void WaterAnimalMetadata::wrapperWrite(MetadataBuffer& wrapper) {
-    PathfinderMobMetadata::wrapperWrite(wrapper);
+  PathfinderMobMetadata::wrapperWrite(wrapper);
 }

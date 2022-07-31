@@ -4,5 +4,5 @@ ChickenMetadata::ChickenMetadata() = default;
 ChickenMetadata::~ChickenMetadata() = default;
 
 void ChickenMetadata::wrapperWrite(MetadataBuffer& wrapper) {
-    AnimalMetadata::wrapperWrite(wrapper);
+  AnimalMetadata::wrapperWrite(wrapper);
 }

@@ -4,5 +4,5 @@ SquidMetadata::SquidMetadata() = default;
 SquidMetadata::~SquidMetadata() = default;
 
 void SquidMetadata::wrapperWrite(MetadataBuffer& wrapper) {
-    WaterAnimalMetadata::wrapperWrite(wrapper);
+  WaterAnimalMetadata::wrapperWrite(wrapper);
 }

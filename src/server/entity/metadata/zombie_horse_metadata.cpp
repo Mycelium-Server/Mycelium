@@ -4,5 +4,5 @@ ZombieHorseMetadata::ZombieHorseMetadata() = default;
 ZombieHorseMetadata::~ZombieHorseMetadata() = default;
 
 void ZombieHorseMetadata::wrapperWrite(MetadataBuffer& wrapper) {
-    AbstractHorseMetadata::wrapperWrite(wrapper);
+  AbstractHorseMetadata::wrapperWrite(wrapper);
 }

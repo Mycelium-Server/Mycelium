@@ -4,9 +4,9 @@ ClientboundAckBlockChange::ClientboundAckBlockChange() = default;
 ClientboundAckBlockChange::~ClientboundAckBlockChange() = default;
 
 void ClientboundAckBlockChange::write(ByteBuffer& buf) {
-    buf.writeVarInt(sequence);
+  buf.writeVarInt(sequence);
 }
 
 int ClientboundAckBlockChange::getPacketID() const {
-    return 0x05;
+  return 0x05;
 }

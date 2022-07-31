@@ -4,5 +4,5 @@ PiglinBruteMetadata::PiglinBruteMetadata() = default;
 PiglinBruteMetadata::~PiglinBruteMetadata() = default;
 
 void PiglinBruteMetadata::wrapperWrite(MetadataBuffer& wrapper) {
-    BasePiglinMetadata::wrapperWrite(wrapper);
+  BasePiglinMetadata::wrapperWrite(wrapper);
 }

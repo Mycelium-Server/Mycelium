@@ -4,6 +4,6 @@ ChestedHorseMetadata::ChestedHorseMetadata() = default;
 ChestedHorseMetadata::~ChestedHorseMetadata() = default;
 
 void ChestedHorseMetadata::wrapperWrite(MetadataBuffer& wrapper) {
-    AbstractHorseMetadata::wrapperWrite(wrapper);
-    wrapper.writeBool(19, hasChest);
+  AbstractHorseMetadata::wrapperWrite(wrapper);
+  wrapper.writeBool(19, hasChest);
 }

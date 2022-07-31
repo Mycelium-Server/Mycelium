@@ -3,15 +3,14 @@
 #include "packet.h"
 
 class ClientboundKeepAlive : public ClientboundPacket {
-public:
-    ClientboundKeepAlive();
-    ~ClientboundKeepAlive();
+ public:
+  ClientboundKeepAlive();
+  ~ClientboundKeepAlive();
 
-public:
-    void write(ByteBuffer&) override;
-    [[nodiscard]] int getPacketID() const override;
+ public:
+  void write(ByteBuffer&) override;
+  [[nodiscard]] int getPacketID() const override;
 
-public:
-    long long id = 0;
-
+ public:
+  long long id = 0;
 };

@@ -3,14 +3,13 @@
 #include "animal_metadata.h"
 
 class HoglinMetadata : public AnimalMetadata {
-public:
-    HoglinMetadata();
-    ~HoglinMetadata() override;
+ public:
+  HoglinMetadata();
+  ~HoglinMetadata() override;
 
-public:
-    void wrapperWrite(MetadataBuffer&) override;
+ public:
+  void wrapperWrite(MetadataBuffer&) override;
 
-public:
-    bool isImmuneToZombification = false;
-
+ public:
+  bool isImmuneToZombification = false;
 };

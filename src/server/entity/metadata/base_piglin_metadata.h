@@ -3,14 +3,13 @@
 #include "monster_metadata.h"
 
 class BasePiglinMetadata : public MonsterMetadata {
-public:
-    BasePiglinMetadata();
-    ~BasePiglinMetadata() override;
+ public:
+  BasePiglinMetadata();
+  ~BasePiglinMetadata() override;
 
-public:
-    void wrapperWrite(MetadataBuffer&) override;
+ public:
+  void wrapperWrite(MetadataBuffer&) override;
 
-public:
-    bool isImmuneToZombification = false;
-
+ public:
+  bool isImmuneToZombification = false;
 };

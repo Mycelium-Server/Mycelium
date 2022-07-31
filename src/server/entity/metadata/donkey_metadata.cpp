@@ -4,5 +4,5 @@ DonkeyMetadata::DonkeyMetadata() = default;
 DonkeyMetadata::~DonkeyMetadata() = default;
 
 void DonkeyMetadata::wrapperWrite(MetadataBuffer& wrapper) {
-    ChestedHorseMetadata::wrapperWrite(wrapper);
+  ChestedHorseMetadata::wrapperWrite(wrapper);
 }

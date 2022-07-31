@@ -4,6 +4,6 @@ ThrownExpBottleMetadata::ThrownExpBottleMetadata() = default;
 ThrownExpBottleMetadata::~ThrownExpBottleMetadata() = default;
 
 void ThrownExpBottleMetadata::wrapperWrite(MetadataBuffer& wrapper) {
-    EntityMetadata::wrapperWrite(wrapper);
-    wrapper.writeItem(8, item);
+  EntityMetadata::wrapperWrite(wrapper);
+  wrapper.writeItem(8, item);
 }

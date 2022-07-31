@@ -3,11 +3,10 @@
 #include "world_generator.h"
 
 class FlatWorldGenerator : public WorldGenerator {
-public:
-    FlatWorldGenerator();
-    ~FlatWorldGenerator() override;
+ public:
+  FlatWorldGenerator();
+  ~FlatWorldGenerator() override;
 
-public:
-    void generateChunk(Chunk*) override;
-
+ public:
+  void generateChunk(Chunk*) override;
 };

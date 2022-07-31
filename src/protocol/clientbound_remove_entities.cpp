@@ -4,12 +4,12 @@ ClientboundRemoveEntities::ClientboundRemoveEntities() = default;
 ClientboundRemoveEntities::~ClientboundRemoveEntities() = default;
 
 void ClientboundRemoveEntities::write(ByteBuffer& buf) {
-    buf.writeVarInt((int) entities.size());
-    for (auto& entity : entities) {
-        buf.writeVarInt(entity->getEID());
-    }
+  buf.writeVarInt((int) entities.size());
+  for (auto& entity: entities) {
+    buf.writeVarInt(entity->getEID());
+  }
 }
 
 int ClientboundRemoveEntities::getPacketID() const {
-    return 0x3B;
+  return 0x3B;
 }

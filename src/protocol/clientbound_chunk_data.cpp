@@ -5,9 +5,9 @@ ClientboundChunkData::ClientboundChunkData(Chunk* chunk)
 ClientboundChunkData::~ClientboundChunkData() = default;
 
 void ClientboundChunkData::write(ByteBuffer& out) {
-    chunk->write(out);
+  chunk->write(out);
 }
 
 int ClientboundChunkData::getPacketID() const {
-    return 0x21;
+  return 0x21;
 }

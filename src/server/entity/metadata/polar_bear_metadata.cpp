@@ -4,6 +4,6 @@ PolarBearMetadata::PolarBearMetadata() = default;
 PolarBearMetadata::~PolarBearMetadata() = default;
 
 void PolarBearMetadata::wrapperWrite(MetadataBuffer& wrapper) {
-    AnimalMetadata::wrapperWrite(wrapper);
-    wrapper.writeBool(17, isStandingUp);
+  AnimalMetadata::wrapperWrite(wrapper);
+  wrapper.writeBool(17, isStandingUp);
 }

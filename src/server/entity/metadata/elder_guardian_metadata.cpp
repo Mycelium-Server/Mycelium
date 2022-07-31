@@ -4,5 +4,5 @@ ElderGuardianMetadata::ElderGuardianMetadata() = default;
 ElderGuardianMetadata::~ElderGuardianMetadata() = default;
 
 void ElderGuardianMetadata::wrapperWrite(MetadataBuffer& wrapper) {
-    GuardianMetadata::wrapperWrite(wrapper);
+  GuardianMetadata::wrapperWrite(wrapper);
 }

@@ -4,5 +4,5 @@ PathfinderMobMetadata::PathfinderMobMetadata() = default;
 PathfinderMobMetadata::~PathfinderMobMetadata() = default;
 
 void PathfinderMobMetadata::wrapperWrite(MetadataBuffer& wrapper) {
-    MobMetadata::wrapperWrite(wrapper);
+  MobMetadata::wrapperWrite(wrapper);
 }

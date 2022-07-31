@@ -1,22 +1,22 @@
 #pragma once
 
-#include "http.h"
-#include "../json.hpp"
 #include "../connection_context.h"
+#include "../json.hpp"
+#include "http.h"
 
 class EntityPlayer;
 
 namespace MojangAPI {
 
-    struct AuthResponse {
-        std::string raw;
-        bool success = false;
+  struct AuthResponse {
+    std::string raw;
+    bool success = false;
 
-        nlohmann::json json;
+    nlohmann::json json;
 
-        // TODO: Fields
-    };
+    // TODO: Fields
+  };
 
-    AuthResponse requestAuth(ConnectionContext*);
+  AuthResponse requestAuth(ConnectionContext*);
 
-}
+}// namespace MojangAPI

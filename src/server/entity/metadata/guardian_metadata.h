@@ -3,15 +3,14 @@
 #include "monster_metadata.h"
 
 class GuardianMetadata : public MonsterMetadata {
-public:
-    GuardianMetadata();
-    ~GuardianMetadata() override;
+ public:
+  GuardianMetadata();
+  ~GuardianMetadata() override;
 
-public:
-    void wrapperWrite(MetadataBuffer&) override;
+ public:
+  void wrapperWrite(MetadataBuffer&) override;
 
-public:
-    bool isRetractingSpikes = false;
-    int targetEID = 0;
-
+ public:
+  bool isRetractingSpikes = false;
+  int targetEID = 0;
 };

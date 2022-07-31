@@ -4,10 +4,9 @@ ClientboundPingResponse::ClientboundPingResponse() = default;
 ClientboundPingResponse::~ClientboundPingResponse() = default;
 
 void ClientboundPingResponse::write(ByteBuffer& out) {
-    out.writeLong(payload);
+  out.writeLong(payload);
 }
 
 int ClientboundPingResponse::getPacketID() const {
-    return 0x01;
+  return 0x01;
 }
-

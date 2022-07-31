@@ -4,6 +4,6 @@ AbstractFishMetadata::AbstractFishMetadata() = default;
 AbstractFishMetadata::~AbstractFishMetadata() = default;
 
 void AbstractFishMetadata::wrapperWrite(MetadataBuffer& wrapper) {
-    WaterAnimalMetadata::wrapperWrite(wrapper);
-    wrapper.writeBool(16, fromBucket);
+  WaterAnimalMetadata::wrapperWrite(wrapper);
+  wrapper.writeBool(16, fromBucket);
 }

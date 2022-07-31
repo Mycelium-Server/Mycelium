@@ -4,10 +4,10 @@ ClientboundSystemMessage::ClientboundSystemMessage() = default;
 ClientboundSystemMessage::~ClientboundSystemMessage() = default;
 
 void ClientboundSystemMessage::write(ByteBuffer& buf) {
-    buf.writeString(message);
-    buf.writeVarInt((int) type);
+  buf.writeString(message);
+  buf.writeVarInt((int) type);
 }
 
 int ClientboundSystemMessage::getPacketID() const {
-    return 0x62;
+  return 0x62;
 }

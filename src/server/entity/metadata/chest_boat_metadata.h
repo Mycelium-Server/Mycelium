@@ -3,11 +3,10 @@
 #include "boat_metadata.h"
 
 class ChestBoatMetadata : public BoatMetadata {
-public:
-    ChestBoatMetadata();
-    ~ChestBoatMetadata() override;
+ public:
+  ChestBoatMetadata();
+  ~ChestBoatMetadata() override;
 
-public:
-    void wrapperWrite(MetadataBuffer&) override;
-
+ public:
+  void wrapperWrite(MetadataBuffer&) override;
 };

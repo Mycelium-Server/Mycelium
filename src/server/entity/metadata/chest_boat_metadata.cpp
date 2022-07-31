@@ -4,5 +4,5 @@ ChestBoatMetadata::ChestBoatMetadata() = default;
 ChestBoatMetadata::~ChestBoatMetadata() = default;
 
 void ChestBoatMetadata::wrapperWrite(MetadataBuffer& wrapper) {
-    BoatMetadata::wrapperWrite(wrapper);
+  BoatMetadata::wrapperWrite(wrapper);
 }

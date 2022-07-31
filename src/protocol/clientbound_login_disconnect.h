@@ -3,15 +3,14 @@
 #include "packet.h"
 
 class ClientboundLoginDisconnect : public ClientboundPacket {
-public:
-    ClientboundLoginDisconnect();
-    ~ClientboundLoginDisconnect();
+ public:
+  ClientboundLoginDisconnect();
+  ~ClientboundLoginDisconnect();
 
-public:
-    void write(ByteBuffer&) override;
-    [[nodiscard]] int getPacketID() const override;
+ public:
+  void write(ByteBuffer&) override;
+  [[nodiscard]] int getPacketID() const override;
 
-public:
-    std::string reason;
-
+ public:
+  std::string reason;
 };

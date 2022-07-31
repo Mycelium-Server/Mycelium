@@ -1,16 +1,15 @@
 #pragma once
 
-#include "entity.h"
 #include "../../connection_context.h"
+#include "entity.h"
 
 // TODO: More entities (Metadata)
 
 class EntityPlayer : public Entity {
-public:
-    EntityPlayer();
-    ~EntityPlayer();
+ public:
+  EntityPlayer();
+  ~EntityPlayer();
 
-public:
-    ConnectionContext* connection = nullptr;
-
+ public:
+  ConnectionContext* connection = nullptr;
 };

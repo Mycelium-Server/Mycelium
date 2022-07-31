@@ -4,6 +4,6 @@ PaintingMetadata::PaintingMetadata() = default;
 PaintingMetadata::~PaintingMetadata() = default;
 
 void PaintingMetadata::wrapperWrite(MetadataBuffer& wrapper) {
-    EntityMetadata::wrapperWrite(wrapper);
-    wrapper.writePaintingVariant(8, paintingType);
+  EntityMetadata::wrapperWrite(wrapper);
+  wrapper.writePaintingVariant(8, paintingType);
 }

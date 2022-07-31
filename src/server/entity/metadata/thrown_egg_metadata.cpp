@@ -4,6 +4,6 @@ ThrownEggMetadata::ThrownEggMetadata() = default;
 ThrownEggMetadata::~ThrownEggMetadata() = default;
 
 void ThrownEggMetadata::wrapperWrite(MetadataBuffer& wrapper) {
-    EntityMetadata::wrapperWrite(wrapper);
-    wrapper.writeItem(8, item);
+  EntityMetadata::wrapperWrite(wrapper);
+  wrapper.writeItem(8, item);
 }

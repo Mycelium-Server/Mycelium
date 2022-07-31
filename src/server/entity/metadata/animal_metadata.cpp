@@ -4,5 +4,5 @@ AnimalMetadata::AnimalMetadata() = default;
 AnimalMetadata::~AnimalMetadata() = default;
 
 void AnimalMetadata::wrapperWrite(MetadataBuffer& wrapper) {
-    AgeableMobMetadata::wrapperWrite(wrapper);
+  AgeableMobMetadata::wrapperWrite(wrapper);
 }

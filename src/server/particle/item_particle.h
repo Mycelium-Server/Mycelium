@@ -1,18 +1,17 @@
 #pragma once
 
-#include "particle.h"
 #include "../itemstack.h"
+#include "particle.h"
 
 class ItemParticle : public AbstractParticle {
-public:
-    ItemParticle();
-    ~ItemParticle() override;
+ public:
+  ItemParticle();
+  ~ItemParticle() override;
 
-public:
-    void writeData(ByteBuffer&) override;
-    [[nodiscard]] int getParticleID() const override;
+ public:
+  void writeData(ByteBuffer&) override;
+  [[nodiscard]] int getParticleID() const override;
 
-public:
-    ItemStack item {};
-
+ public:
+  ItemStack item {};
 };

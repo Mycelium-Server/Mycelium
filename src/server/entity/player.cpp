@@ -2,4 +2,3 @@
 
 EntityPlayer::EntityPlayer() = default;
 EntityPlayer::~EntityPlayer() = default;
-

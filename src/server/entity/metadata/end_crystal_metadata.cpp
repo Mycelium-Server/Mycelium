@@ -4,7 +4,7 @@ EndCrystalMetadata::EndCrystalMetadata() = default;
 EndCrystalMetadata::~EndCrystalMetadata() = default;
 
 void EndCrystalMetadata::wrapperWrite(MetadataBuffer& wrapper) {
-    EntityMetadata::wrapperWrite(wrapper);
-    wrapper.writeOptPosition(8, beamTarget);
-    wrapper.writeByte(9, showBottom);
+  EntityMetadata::wrapperWrite(wrapper);
+  wrapper.writeOptPosition(8, beamTarget);
+  wrapper.writeByte(9, showBottom);
 }

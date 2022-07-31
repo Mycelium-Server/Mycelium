@@ -4,5 +4,5 @@ WanderingTraderMetadata::WanderingTraderMetadata() = default;
 WanderingTraderMetadata::~WanderingTraderMetadata() = default;
 
 void WanderingTraderMetadata::wrapperWrite(MetadataBuffer& wrapper) {
-    AbstractVillagerMetadata::wrapperWrite(wrapper);
+  AbstractVillagerMetadata::wrapperWrite(wrapper);
 }

@@ -1,23 +1,21 @@
 #pragma once
 
-#include "packet.h"
 #include "message_signature.h"
+#include "packet.h"
 
 class ServerboundChatMessage : public ServerboundPacket {
-public:
-    ServerboundChatMessage();
-    ~ServerboundChatMessage();
+ public:
+  ServerboundChatMessage();
+  ~ServerboundChatMessage();
 
-public:
-    void read(ByteBuffer&) override;
-    ServerboundPacket* createInstance() override;
-    [[nodiscard]] int getPacketID() const override;
-    void handle(ConnectionContext*) override;
+ public:
+  void read(ByteBuffer&) override;
+  ServerboundPacket* createInstance() override;
+  [[nodiscard]] int getPacketID() const override;
+  void handle(ConnectionContext*) override;
 
-public:
-    std::string message;
-    MessageSignature cryptography;
-    bool signedPreview = false;
-
-
+ public:
+  std::string message;
+  MessageSignature cryptography;
+  bool signedPreview = false;
 };

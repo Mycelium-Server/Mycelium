@@ -1,32 +1,33 @@
-#include "handlers.h"
-#include "../protocol/packet.h"
 #include <iostream>
+
+#include "../protocol/packet.h"
+#include "handlers.h"
 
 PacketDecoder::PacketDecoder() = default;
 PacketDecoder::~PacketDecoder() = default;
 
 bool PacketDecoder::onConnect(ConnectionContext*) {
-    return true;
+  return true;
 }
 
 bool PacketDecoder::onDisconnect(ConnectionContext*) {
-    return true;
+  return true;
 }
 
 bool PacketDecoder::decode(ConnectionContext* ctx, void* in, std::vector<void*>& out) {
-    auto* inbuf = (ByteBuffer*) in;
-    
-    int packetId = inbuf->readVarInt();
+  auto* inbuf = (ByteBuffer*) in;
 
-    std::cout << "< 0x" << std::hex << packetId << std::dec << std::endl;
-    
-    ServerboundPacket* packet = ServerboundPacket::createInstanceFromID(packetId, ctx->state);
-    if (packet) {
-        packet->read(*inbuf);
-        out.push_back(packet);
-    }
+  int packetId = inbuf->readVarInt();
 
-    delete inbuf;
+  std::cout << "< 0x" << std::hex << packetId << std::dec << std::endl;
 
-    return true;
+  ServerboundPacket* packet = ServerboundPacket::createInstanceFromID(packetId, ctx->state);
+  if (packet) {
+    packet->read(*inbuf);
+    out.push_back(packet);
+  }
+
+  delete inbuf;
+
+  return true;
 }

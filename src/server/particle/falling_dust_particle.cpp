@@ -4,9 +4,9 @@ FallingDustParticle::FallingDustParticle() = default;
 FallingDustParticle::~FallingDustParticle() = default;
 
 void FallingDustParticle::writeData(ByteBuffer& buf) {
-    buf.writeVarInt(blockState);
+  buf.writeVarInt(blockState);
 }
 
 int FallingDustParticle::getParticleID() const {
-    return 24;
+  return 24;
 }

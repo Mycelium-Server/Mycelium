@@ -4,10 +4,10 @@ ClientboundBlockUpdate::ClientboundBlockUpdate() = default;
 ClientboundBlockUpdate::~ClientboundBlockUpdate() = default;
 
 void ClientboundBlockUpdate::write(ByteBuffer& buf) {
-    buf.writeLong(location.toProtocol());
-    buf.writeVarInt(blockID);
+  buf.writeLong(location.toProtocol());
+  buf.writeVarInt(blockID);
 }
 
 int ClientboundBlockUpdate::getPacketID() const {
-    return 0x09;
+  return 0x09;
 }
