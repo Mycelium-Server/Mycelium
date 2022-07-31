@@ -120,6 +120,11 @@ void MetadataBuffer::writePose(unsigned char idx, const Pose& value) {
     buf.writeVarInt((int) value);
 }
 
+void MetadataBuffer::writeFrogVariant(unsigned char idx, const FrogVariant& value) {
+    WRITE_ENTRY_HEADER(20)
+    buf.writeVarInt((int) value);
+}
+
 void MetadataBuffer::writePaintingVariant(unsigned char idx, const PaintingVariant& value) {
     WRITE_ENTRY_HEADER(21)
     buf.writeVarInt((int) value);
