@@ -90,10 +90,11 @@ jobs:
 
           run: |
             git clone https://github.com/JNNGL/Mycelium
-            mkdir -pv build
-            cmake Mycelium -B build -DCMAKE_BUILD_TYPE=Release
-            cmake --build build --config Release
-            cp -rf build/* /build
+            mkdir -pv Mycelium/build
+            cd Mycelium/build
+            cmake .. -DCMAKE_BUILD_TYPE=Release
+            cmake --build . --config Release
+            cp -rf * /build
 
       - name: Upload executable
         uses: actions/upload-artifact@v2
