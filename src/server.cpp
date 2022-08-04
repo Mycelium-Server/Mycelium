@@ -43,7 +43,7 @@ void tcp_server_read(uv_stream_t* handle, ssize_t nread, const uv_buf_t* buf) {
   auto* data = new ByteBuffer((unsigned char*) buf->base, nread);
 
   ConnectionContext* ctx = tcp_connections.at(std::distance(tcp_streams.begin(), std::find(tcp_streams.begin(), tcp_streams.end(), handle)));
-  ctx->read(data);
+  ctx->eventLoop->addToQueue([=]() { ctx->read(data); });
 
   if (buf->base)
     free(buf->base);
@@ -83,6 +83,7 @@ void tcp_server_on_connect(uv_stream_t* handle, int status) {
 
   auto* ctx = new ConnectionContext(nullptr, (uv_stream_t*) stream);
   ctx->pipeline = server_initCallback(ctx);
+  ctx->createAsync();
   tcp_connections.push_back(ctx);
   tcp_streams.push_back(ctx->stream);
 

@@ -2,8 +2,10 @@
 
 #include <uv.h>
 
+#include <mutex>
 #include <thread>
 
+#include "event_loop.h"
 #include "pipeline.h"
 #include "server/client_settings.h"
 #include "server/entity/entity.h"
@@ -23,6 +25,7 @@ class ConnectionContext {
   ConnectionContext(Pipeline*, uv_stream_t*);
   ~ConnectionContext();
 
+  void createAsync();
   void write(void*, bool isAsync = false);
   void read(ByteBuffer*);
   [[nodiscard]] bool isActive() const;
@@ -33,6 +36,7 @@ class ConnectionContext {
  public:
   Pipeline* pipeline;
   uv_stream_t* stream;
+  EventLoop* eventLoop;
   ConnectionState state = ConnectionState::NONE;
   int protocolVersion = 0;
   void* packetListener = nullptr;
@@ -46,4 +50,8 @@ class ConnectionContext {
 
  public:
   bool active = false;
+
+ private:
+  uv_async_t* async = nullptr;
+  std::mutex async_mutex;
 };

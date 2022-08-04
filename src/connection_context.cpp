@@ -3,20 +3,21 @@
 #include <iostream>
 
 struct AsyncData {
-  AsyncData(ByteBuffer* buffer, uv_stream_t* stream)
-      : buffer(buffer),
-        stream(stream) {}
-
   ByteBuffer* buffer;
   uv_stream_t* stream;
+  std::mutex* async_mutex;
 };
 
 ConnectionContext::ConnectionContext(Pipeline* pipeline, uv_stream_t* stream)
     : pipeline(pipeline),
-      stream(stream) {}
+      stream(stream) {
+  eventLoop = new EventLoop; // TODO: Event loop factory
+}
 
 ConnectionContext::~ConnectionContext() {
   delete pipeline;
+  free(async);
+  delete eventLoop;
 }
 
 void write_cb(uv_write_t* req, int status) {
@@ -43,31 +44,16 @@ void ConnectionContext::write(void* object, bool isAsync) {
     return;
   auto* buf = (ByteBuffer*) src;
 
-  if (!isAsync) {
-    uv_buf_t buffer;
-    buffer.base = (char*) buf->data.data();
-    buffer.len = buf->data.size();
-    auto* req = (uv_write_t*) malloc(sizeof(uv_write_t));
-    uv_write(req, stream, &buffer, 1, write_cb);
-    delete buf;
-  } else {
+  async_mutex.lock();
 
-    auto* async = (uv_async_t*) malloc(sizeof(uv_async_t));
-    async->data = new AsyncData(buf, stream);
+  auto* data = new AsyncData();
+  data->async_mutex = &async_mutex;
+  data->buffer = buf;
+  data->stream = stream;
+  async->data = data;
 
-    uv_async_init(uv_default_loop(), async, [](uv_async_t* handle) {
-      auto* req = (uv_write_t*) malloc(sizeof(uv_write_t));
-      auto* data = (AsyncData*) handle->data;
-      uv_buf_t buffer;
-      buffer.base = (char*) data->buffer->data.data();
-      buffer.len = data->buffer->data.size();
-      uv_write(req, data->stream, &buffer, 1, write_cb);
-      delete data->buffer;
-      delete data;
-    });
-
-    uv_async_send(async);
-  }
+  uv_async_send(async);
+  async_mutex.unlock();
 }
 
 void ConnectionContext::read(void* src, int idx) {
@@ -94,4 +80,26 @@ void ConnectionContext::read(ByteBuffer* buf) {
 
 bool ConnectionContext::isActive() const {
   return active;
+}
+
+void ConnectionContext::createAsync() {
+  async_mutex.lock();
+  async = (uv_async_t*) malloc(sizeof(uv_async_t));
+  uv_async_init(uv_default_loop(), async, [](uv_async_t* handle) {
+    if (handle->data) {
+      const auto* data = (AsyncData*) handle->data;
+      data->async_mutex->lock();
+
+      auto* req = (uv_write_t*) malloc(sizeof(uv_write_t));
+      uv_buf_t buffer;
+      buffer.base = (char*) data->buffer->data.data();
+      buffer.len = data->buffer->data.size();
+      uv_write(req, data->stream, &buffer, 1, write_cb);
+
+      data->async_mutex->unlock();
+      delete data;
+      handle->data = nullptr;
+    }
+  });
+  async_mutex.unlock();
 }
