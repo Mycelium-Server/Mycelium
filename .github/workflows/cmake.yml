@@ -62,7 +62,7 @@ jobs:
 
   arm:
     runs-on: ubuntu-latest
-    name: build (ubuntu-18.04 aarch64)
+    name: build (ubuntu-latest aarch64)
     steps:
       - uses: actions/checkout@v2.1.0
       - uses: uraimo/run-on-arch-action@v2
@@ -85,6 +85,7 @@ jobs:
             apt-get install -y git
             apt-get install -y build-essential
             apt-get install -y g++
+            apt-get install -y libssl-dev
             apt-get install -y cmake
 
           run: |
