@@ -4,3 +4,5 @@ build-wsl
 .idea
 zconf.h
 curl_config.h
+tools/block-generator/res
+tools/block-generator/generated
