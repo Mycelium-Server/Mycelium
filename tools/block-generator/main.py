@@ -2,6 +2,10 @@ import json
 from pathlib import Path
 
 
+def to_member_name(string):
+    return 'isShort' if string == 'short' else string
+
+
 def to_class_name(string):
     return ''.join(s.capitalize() for s in string.split('_'))
 
@@ -10,11 +14,11 @@ def write_header(dst, data, block_id):
     cls = to_class_name(dst)
     f = open('generated/' + dst + '.h', 'w+')
 
-    defState = {}
+    def_state = {}
     if 'properties' in data[block_id]:
         for state in data[block_id]['states']:
             if state.get('default', False):
-                defState = state['properties']
+                def_state = state['properties']
                 break
 
     f.write('#pragma once\n')
@@ -35,11 +39,11 @@ def write_header(dst, data, block_id):
             f.write('  enum {\n')
             counter = 0
             for value in data[block_id]['properties'][prop]:
-                f.write('    ' + value.upper() + ' = ' + str(counter) + ',\n')
+                f.write('    ' + (prop + '_' + value).upper() + ' = ' + str(counter) + ',\n')
                 counter += 1
-            f.write('  } ' + prop + ' = ' + defState[prop].upper() + ';\n')
+            f.write('  } ' + to_member_name(prop) + ' = ' + (prop + '_' + def_state[prop]).upper() + ';\n')
             f.write('\n')
-    f.write('}\n')
+    f.write('};\n')
 
     f.close()
 
@@ -48,10 +52,10 @@ def write_source(dst, data, block_id):
     cls = to_class_name(dst)
     f = open('generated/' + dst + '.cpp', 'w+')
 
-    defId = 0
+    def_id = 0
     for state in data[block_id]['states']:
         if state.get('default', False):
-            defState = state['id']
+            def_id = state['id']
             break
 
     f.write('#include "' + dst + '.h"\n')
@@ -65,10 +69,10 @@ def write_source(dst, data, block_id):
             f.write('  if (')
             checks = []
             for prop in stateData['properties']:
-                checks.append(prop + ' == ' + stateData['properties'][prop].upper())
+                checks.append(to_member_name(prop) + ' == ' + (prop + '_' + stateData['properties'][prop]).upper())
             f.write(' && '.join(checks))
             f.write(') return ' + str(stateData['id']) + ';\n')
-    f.write('  return ' + str(defId) + ';\n')
+    f.write('  return ' + str(def_id) + ';\n')
     f.write('}\n')
 
     f.close()
