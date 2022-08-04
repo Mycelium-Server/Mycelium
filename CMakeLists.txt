@@ -17,7 +17,7 @@ set(BUILD_SHARED_LIBS OFF)
 add_subdirectory(thirdparty/curl)
 include_directories(thirdparty/curl/include)
 
-file(GLOB SRC src/*.cpp src/pipeline/*.cpp src/protocol/*.cpp src/listeners/*.cpp src/server/*.cpp src/server/entity/*.cpp src/server/world/*.cpp src/mojangapi/*.cpp src/server/entity/metadata/*.cpp src/server/particle/*.cpp src/server/world/generation/*.cpp)
+file(GLOB SRC src/*.cpp src/pipeline/*.cpp src/protocol/*.cpp src/listeners/*.cpp src/server/*.cpp src/server/entity/*.cpp src/server/world/*.cpp src/mojangapi/*.cpp src/server/entity/metadata/*.cpp src/server/particle/*.cpp src/server/world/generation/*.cpp src/server/blocks/*.cpp)
 
 add_executable(Mycelium ${SRC})
 target_link_libraries(Mycelium uv libcurl ssl crypto zlibstatic)
