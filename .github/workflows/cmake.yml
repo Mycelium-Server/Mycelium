@@ -81,8 +81,11 @@ jobs:
           shell: /bin/sh
 
           install: |
-            apt-get update -q -y
-            apt-get install -q -y git
+            apt-get update -y
+            apt-get install -y git
+            apt-get install -y build-essential
+            apt-get install -y g++
+            apt-get install -y cmake
 
           run: |
             git clone https://github.com/JNNGL/Mycelium
@@ -93,7 +96,7 @@ jobs:
       - name: Upload executable
         uses: actions/upload-artifact@v2
         with:
-          name: Mycelium-${{ matrix.os }}
+          name: Mycelium-ubuntu-aarch64
           path: |
             build/Mycelium*
       - name: Create runtime
@@ -105,6 +108,6 @@ jobs:
       - name: Upload runtime
         uses: actions/upload-artifact@v2
         with:
-          name: Mycelium-${{ matrix.os }}
+          name: Mycelium-ubuntu-aarch64
           path: |
             runtime
