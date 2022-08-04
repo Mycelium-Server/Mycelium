@@ -7,7 +7,7 @@ def to_class_name(string):
 
 
 def write_header(dst, data, block_id):
-    cls = to_class_name(block_id[10:])
+    cls = to_class_name(dst)
     f = open('generated/' + dst + '.h', 'w+')
 
     defState = {}
@@ -45,7 +45,7 @@ def write_header(dst, data, block_id):
 
 
 def write_source(dst, data, block_id):
-    cls = to_class_name(block_id[10:])
+    cls = to_class_name(dst)
     f = open('generated/' + dst + '.cpp', 'w+')
 
     defId = 0
@@ -68,7 +68,7 @@ def write_source(dst, data, block_id):
                 checks.append(prop + ' == ' + stateData['properties'][prop].upper())
             f.write(' && '.join(checks))
             f.write(') return ' + str(stateData['id']) + ';\n')
-    f.write('  return ' + str(defState) + ';\n')
+    f.write('  return ' + str(defId) + ';\n')
     f.write('}\n')
 
     f.close()
