@@ -61,7 +61,7 @@ jobs:
             runtime
 
   arm:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     name: build (ubuntu-18.04 aarch64)
     steps:
       - uses: actions/checkout@v2.1.0
@@ -70,7 +70,7 @@ jobs:
         id: build
         with:
           arch: aarch64
-          distro: ubuntu18.04
+          distro: ubuntu_latest
 
           setup: |
             mkdir -p build
@@ -89,6 +89,7 @@ jobs:
 
           run: |
             git clone https://github.com/JNNGL/Mycelium
+            mkdir -pv build
             cmake Mycelium -B build -DCMAKE_BUILD_TYPE=Release
             cmake --build build --config Release
             cp -rf build/* /build
