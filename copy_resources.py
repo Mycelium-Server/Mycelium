@@ -14,11 +14,11 @@ shutil.copy(src + "/properties.yml", "./properties.yml")
 shutil.copy(src + "/registry_codec.nbt", "./registry_codec.nbt")
 shutil.copy(src + "/cert.pem", "./cert.pem")
 if os.name == "nt":
-    src1 = "thirdparty/libuv/" + sys.argv[1] + "/libuv.dll"
-    src2 = "thirdparty/libuv/libuv.dll"
-    if os.path.exists(src1):
-        shutil.copy(src1, "./libuv.dll")
-    elif os.path.exists(src2):
-        shutil.copy(src2, "./libuv.dll")
-    else:
-        raise Exception("Couldn't find libuv.dll")
+    lookup = [ "thirdparty/libuv/" + sys.argv[1] + "/libuv.dll", "thirdparty/libuv/" + sys.argv[1] + "/uv.dll",
+               "thirdparty/libuv/libuv.dll", "thirdparty/libuv/uv.dll" ]
+    for uv in lookup:
+        if os.path.exists(uv):
+            shutil.copy(uv, ".")
+            exit(0)
+
+    raise Exception("Couldn't find libuv.dll")
