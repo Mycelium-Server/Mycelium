@@ -54,7 +54,7 @@ target_link_libraries(Mycelium uv ssl crypto zlibstatic ryml::ryml)
 find_package(Python COMPONENTS Interpreter)
 
 add_custom_command(TARGET Mycelium POST_BUILD
-        COMMAND ${Python_EXECUTABLE} ${CMAKE_SOURCE_DIR}/copy_resources.py ${CMAKE_BUILD_TYPE}
+        COMMAND ${Python_EXECUTABLE} ${CMAKE_SOURCE_DIR}/copy_resources.py ${CMAKE_BUILD_TYPE} ${CMAKE_SOURCE_DIR}
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
         COMMENT "Copying resources..."
 )
