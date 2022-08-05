@@ -62,7 +62,16 @@ jobs:
 
   arm:
     runs-on: ubuntu-latest
-    name: build (ubuntu-latest aarch64)
+    name: build (ubuntu-latest/arm)
+
+    strategy:
+      matrix:
+        include:
+          - arch: aarch64
+            distro: ubuntu_latest
+          - arch: armv7
+            distro: ubuntu_latest
+
     steps:
       - uses: actions/checkout@v2.1.0
       - uses: uraimo/run-on-arch-action@v2
@@ -97,7 +106,7 @@ jobs:
       - name: Upload executable
         uses: actions/upload-artifact@v2
         with:
-          name: Mycelium-ubuntu-aarch64
+          name: Mycelium-${{ matrix.distro }}-${{ matrix.arch }}
           path: |
             build/Mycelium*
       - name: Create runtime
@@ -109,6 +118,6 @@ jobs:
       - name: Upload runtime
         uses: actions/upload-artifact@v2
         with:
-          name: Mycelium-ubuntu-aarch64
+          name: Mycelium-${{ matrix.distro }}-${{ matrix.arch }}
           path: |
             runtime
