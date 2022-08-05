@@ -78,8 +78,8 @@ jobs:
         name: Build artifact
         id: build
         with:
-          arch: aarch64
-          distro: ubuntu_latest
+          arch: ${{ matrix.arch }}
+          distro: ${{ matrix.distro }}
 
           setup: |
             mkdir -p build
@@ -94,15 +94,15 @@ jobs:
             apt-get install -y git
             apt-get install -y build-essential
             apt-get install -y g++
+            apt-get install -y libcurl4
             apt-get install -y cmake
 
           run: |
             git clone https://github.com/JNNGL/Mycelium
             mkdir -p build
-            cd build && \
-            cmake ../Mycelium
-            cmake --build .
-            cp -rf * /build
+            cmake Mycelium -B build -DCMAKE_BUILD_TYPE=Release
+            cmake --build build --config Release
+            cp -rf build/* /build
 
       - name: Upload executable
         uses: actions/upload-artifact@v2
