@@ -81,7 +81,7 @@ jobs:
           shell: /bin/sh
 
           install: |
-            echo "deb http://security.ubuntu.com/ubuntu impish-security main" | sudo tee /etc/apt/sources.list.d/impish-security.list
+            echo "deb http://security.ubuntu.com/ubuntu impish-security main" | tee /etc/apt/sources.list.d/impish-security.list
             apt-get update -y
             apt-get install -y git
             apt-get install -y build-essential
