@@ -3,8 +3,8 @@ Old version: [https://github.com/JNNGL/Mycelium/tree/old](https://github.com/JNN
 ### Building
 
 1. Compile Mycelium <pre><code>$ git clone https://github.com/JNNGL/Mycelium
-$ mkdir build
-$ cd build
+$ mkdir Mycelium/build
+$ cd Mycelium/build
 $ cmake ..
 $ cmake --build .
 </code></pre>
