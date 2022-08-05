@@ -1,61 +1,75 @@
 #include "game_server.h"
 
+#include <fstream>
+#include <ryml.hpp>
+#include <ryml_std.hpp>
+
 #include "../protocol/clientbound_player_info.h"
 #include "../protocol/clientbound_remove_entities.h"
 #include "../protocol/clientbound_spawn_player.h"
 
-GameServer::GameServer() = default;
+GameServer::GameServer() {
+  reloadConfig();
+}
 
 void GameServer::generateKeypair() {
   keypair = rsa_create_keypair();
 }
 
-std::string GameServer::getMOTD() {
-  return "Hello, world!";// TODO: Move to properties.yml
+std::string GameServer::getServerIP() const {
+  return cfg_serverIP;
 }
 
-int GameServer::getOnline() {
-  return 0;
+int GameServer::getServerPort() const {
+  return cfg_serverPort;
 }
 
-int GameServer::getMaxPlayers() {
-  return 20;// TODO: Move to properties.yml
+std::string GameServer::getMOTD() const {
+  return cfg_motd;
 }
 
-int GameServer::getCompressionThreshold() {
-  return 256;// TODO: Move to properties.yml
+int GameServer::getOnline() const {
+  return (int) players.size();
+}
+
+int GameServer::getMaxPlayers() const {
+  return cfg_maxPlayers;
+}
+
+int GameServer::getCompressionThreshold() const {
+  return cfg_compressionThreshold;
 }
 
 KeyPairRSA GameServer::getRSAKeyPair() {
   return keypair;
 }
 
-bool GameServer::isOnlineMode() {
-  return false;// TODO: Move to properties.yml
+bool GameServer::isOnlineMode() const {
+  return cfg_onlineMode;
 }
 
-bool GameServer::isHardcore() {
-  return false;// TODO: Move to properties.yml
+bool GameServer::isHardcore() const {
+  return cfg_hardcore;
 }
 
-int GameServer::getViewDistance() {
-  return 20;//TODO: Move to properties.yml
+int GameServer::getViewDistance() const {
+  return cfg_viewDistance;
 }
 
-int GameServer::getSimulationDistance() {
-  return 20;// TODO: Move to properties.yml
+int GameServer::getSimulationDistance() const {
+  return cfg_simulationDistance;
 }
 
-bool GameServer::showReducedDebugInfo() {
-  return false;// TODO: Move to properties.yml
+bool GameServer::showReducedDebugInfo() const {
+  return cfg_reducedDebugInfo;
 }
 
-bool GameServer::showRespawnScreen() {
-  return true;// TODO: Move to properties.yml, gamerules
+bool GameServer::showRespawnScreen() const {
+  return cfg_showRespawnScreen;// TODO: Gamerules
 }
 
-Difficulty GameServer::getDifficulty() {
-  return Difficulty::PEACEFUL;// TODO: Move to properties.yml
+Difficulty GameServer::getDifficulty() const {
+  return (Difficulty) cfg_difficulty;
 }
 
 void GameServer::addPlayer(PlayerData* data) {
@@ -120,10 +134,52 @@ std::vector<PlayerData*>& GameServer::getPlayers() {
   return players;
 }
 
-WorldBorder GameServer::getWorldBorder() {
-  return {0, 0, 29999984, 29999984, 0, 0};// TODO: properties.yml
+WorldBorder GameServer::getWorldBorder() const {
+  return cfg_worldBorder;
 }
 
 RotatedProtocolPosition GameServer::getSpawnPosition() {
   return {{0, 10, 0}, 0.f};// TODO: properties.yml
+}
+
+#define SET_IF_EXIST(dst, path) \
+  if (tree path.has_val()) {    \
+    root path >> dst;           \
+  } else {                      \
+    root path << dst;           \
+  }
+
+void GameServer::reloadConfig() {
+  std::ifstream configIn("properties.yml");
+  std::stringstream ss;
+  ss << configIn.rdbuf();
+  configIn.close();
+  std::string config = ss.str();
+  char* configStr = (char*) config.c_str();
+
+  ryml::Tree tree = ryml::parse_in_place(ryml::to_substr(configStr));
+  ryml::NodeRef root = tree.rootref();
+
+  SET_IF_EXIST(cfg_serverIP, ["server-ip"])
+  SET_IF_EXIST(cfg_serverPort, ["server-port"])
+  SET_IF_EXIST(cfg_motd, ["motd"])
+  SET_IF_EXIST(cfg_maxPlayers, ["maxPlayers"])
+  SET_IF_EXIST(cfg_compressionThreshold, ["compressionThreshold"])
+  SET_IF_EXIST(cfg_onlineMode, ["onlineMode"])
+  SET_IF_EXIST(cfg_hardcore, ["hardcore"])
+  SET_IF_EXIST(cfg_viewDistance, ["viewDistance"])
+  SET_IF_EXIST(cfg_simulationDistance, ["simulationDistance"])
+  SET_IF_EXIST(cfg_reducedDebugInfo, ["reducedDebugInfo"])
+  SET_IF_EXIST(cfg_showRespawnScreen, ["showRespawnScreen"])
+  SET_IF_EXIST(cfg_difficulty, ["difficulty"])
+  SET_IF_EXIST(cfg_worldBorder.x, ["worldBorder"]["x"])
+  SET_IF_EXIST(cfg_worldBorder.y, ["worldBorder"]["y"])
+  SET_IF_EXIST(cfg_worldBorder.diameter, ["worldBorder"]["diameter"])
+  SET_IF_EXIST(cfg_worldBorder.portalTeleportBoundary, ["worldBorder"]["portalTeleportBoundary"])
+  SET_IF_EXIST(cfg_worldBorder.warningBlocks, ["worldBorder"]["warningBlocks"])
+  SET_IF_EXIST(cfg_worldBorder.warningTime, ["worldBorder"]["warningTime"])
+
+  std::ofstream configOut("properties.yml", std::ios::out | std::ios::binary | std::ios::trunc);
+  configOut << tree;
+  configOut.close();
 }

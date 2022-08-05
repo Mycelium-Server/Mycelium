@@ -8,18 +8,12 @@ $ cd Mycelium/build
 $ cmake ..
 $ cmake --build .
 </code></pre>
-2. Copy resources
-   `(TODO: Do it automatically)`
-   1. Windows:
-      1. Copy `build/thirdparty/libuv/[BUILD_TYPE]/uv.dll` to `build/[BUILD_TYPE]/`
-      2. Copy `registry_codec.nbt` to `build/[BUILD_TYPE]/`
-   2. Linux:
-      1. Copy `registry_codec.nbt` to `build/`
   
   <b>Requirements:</b>
 - CMake (>= 3.20)
 - C compiler
 - C++17 compiler
+- Python 3
 - Linux (32-bit):
   1. libcurl
 
@@ -32,3 +26,4 @@ $ cmake --build .
  - [stduuid](https://github.com/mariusbancila/stduuid)
  - [gsl](https://github.com/microsoft/GSL)
  - [nlohmann/json](https://github.com/nlohmann/json)
+ - [rapidyaml](https://github.com/biojppm/rapidyaml)

@@ -12,21 +12,26 @@ class GameServer {
   GameServer();
 
  public:
+  void reloadConfig();
+
+ public:
   void generateKeypair();
-  std::string getMOTD();
-  int getOnline();
-  int getMaxPlayers();
+  [[nodiscard]] std::string getMOTD() const;
+  [[nodiscard]] int getOnline() const;
+  [[nodiscard]] int getMaxPlayers() const;
+  [[nodiscard]] std::string getServerIP() const;
+  [[nodiscard]] int getServerPort() const;
   // void* getFavicon(); // TODO: Implement this
-  int getCompressionThreshold();
+  [[nodiscard]] int getCompressionThreshold() const;
   KeyPairRSA getRSAKeyPair();
-  bool isOnlineMode();
-  bool isHardcore();
-  int getViewDistance();
-  int getSimulationDistance();
-  bool showReducedDebugInfo();
-  bool showRespawnScreen();
-  Difficulty getDifficulty();
-  WorldBorder getWorldBorder();
+  [[nodiscard]] bool isOnlineMode() const;
+  [[nodiscard]] bool isHardcore() const;
+  [[nodiscard]] int getViewDistance() const;
+  [[nodiscard]] int getSimulationDistance() const;
+  [[nodiscard]] bool showReducedDebugInfo() const;
+  [[nodiscard]] bool showRespawnScreen() const;
+  [[nodiscard]] Difficulty getDifficulty() const;
+  [[nodiscard]] WorldBorder getWorldBorder() const;
   RotatedProtocolPosition getSpawnPosition();
 
   void addPlayer(PlayerData*);
@@ -36,4 +41,19 @@ class GameServer {
  private:
   KeyPairRSA keypair {};
   std::vector<PlayerData*> players;
+
+ private:
+  std::string cfg_serverIP = "0.0.0.0";
+  int cfg_serverPort = 25565;
+  std::string cfg_motd = "Hello, world!";
+  int cfg_maxPlayers = 20;
+  int cfg_compressionThreshold = 256;
+  bool cfg_onlineMode = false;
+  bool cfg_hardcore = false;
+  int cfg_viewDistance = 20;
+  int cfg_simulationDistance = 20;
+  bool cfg_reducedDebugInfo = false;
+  bool cfg_showRespawnScreen = true;
+  int cfg_difficulty = (int) Difficulty::NORMAL;
+  WorldBorder cfg_worldBorder = {0, 0, 29999984, 29999984, 0, 0};
 };

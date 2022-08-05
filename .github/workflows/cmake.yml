@@ -53,6 +53,9 @@ jobs:
       - name: Add `registry_codec.nbt` to runtime
         run: |
           cp registry_codec.nbt runtime/registry_codec.nbt
+      - name: Add `cert.pem` to runtime
+        run: |
+          cp cert.pem runtime/cert.pem
       - name: Upload runtime
         uses: actions/upload-artifact@v2
         with:
@@ -95,6 +98,7 @@ jobs:
             apt-get install -y build-essential
             apt-get install -y g++
             apt-get install -y curl libcurl4-openssl-dev
+            apt-get install python3
             apt-get install -y cmake
 
           run: |
@@ -116,6 +120,9 @@ jobs:
       - name: Add `registry_codec.nbt` to runtime
         run: |
           cp registry_codec.nbt runtime/registry_codec.nbt
+      - name: Add `cert.pem` to runtime
+        run: |
+          cp cert.pem runtime/cert.pem
       - name: Upload runtime
         uses: actions/upload-artifact@v2
         with:

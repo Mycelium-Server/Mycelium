@@ -1,0 +1,14 @@
+munch
+pyyaml
+py-cpuinfo
+psutil
+gitpython
+flask
+markupsafe
+Frozen-Flask
+requests
+mmh3
+bokeh
+selenium
+matplotlib
+prettytable

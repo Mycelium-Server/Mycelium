@@ -39,5 +39,5 @@ int main() {
   }
 
   protocol_registerPackets();
-  tcp_start_server(pipelineInitializer, "0.0.0.0", 25577);// TODO: Add input
+  tcp_start_server(pipelineInitializer, server->getServerIP().c_str(), server->getServerPort());
 }
