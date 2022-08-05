@@ -62,7 +62,7 @@ jobs:
 
   arm:
     runs-on: ubuntu-latest
-    name: build (ubuntu-latest/arm)
+    name: build
 
     strategy:
       matrix:
@@ -99,9 +99,10 @@ jobs:
           run: |
             git clone https://github.com/JNNGL/Mycelium
             mkdir -p build
-            cmake Mycelium -B build -DCMAKE_BUILD_TYPE=Release
-            cmake --build build --config Release
-            cp -rf build/* /build
+            cd build && \
+            cmake ../Mycelium
+            cmake --build .
+            cp -rf * /build
 
       - name: Upload executable
         uses: actions/upload-artifact@v2
