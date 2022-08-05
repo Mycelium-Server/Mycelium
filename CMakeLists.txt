@@ -13,6 +13,8 @@ include_directories(thirdparty/zlib)
 add_subdirectory(thirdparty/openssl)
 include_directories(thirdparty/openssl/include)
 
+set(CURL_ENABLE_EXPORT_TARGET OFF)
+set(CURL_USE_OPENSSL ON)
 set(BUILD_SHARED_LIBS OFF)
 add_subdirectory(thirdparty/curl)
 include_directories(thirdparty/curl/include)

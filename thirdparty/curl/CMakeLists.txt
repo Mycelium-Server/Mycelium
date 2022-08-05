@@ -435,21 +435,13 @@ if(use_core_foundation)
 endif()
 
 if(CURL_USE_OPENSSL)
-  find_package(OpenSSL REQUIRED)
   set(SSL_ENABLED ON)
   set(USE_OPENSSL ON)
 
-  # Depend on OpenSSL via imported targets if supported by the running
-  # version of CMake.  This allows our dependents to get our dependencies
-  # transitively.
-  if(NOT CMAKE_VERSION VERSION_LESS 3.4)
-    list(APPEND CURL_LIBS OpenSSL::SSL OpenSSL::Crypto)
-  else()
-    list(APPEND CURL_LIBS ${OPENSSL_LIBRARIES})
-    include_directories(${OPENSSL_INCLUDE_DIR})
-  endif()
+  list(APPEND CURL_LIBS ssl crypto)
+  include_directories(${CMAKE_SOURCE_DIR}/thirdparty/openssl/include)
 
-  set(CMAKE_REQUIRED_INCLUDES ${OPENSSL_INCLUDE_DIR})
+  set(CMAKE_REQUIRED_INCLUDES ${CMAKE_SOURCE_DIR}/thirdparty/openssl/include)
   check_include_file("openssl/crypto.h" HAVE_OPENSSL_CRYPTO_H)
   check_include_file("openssl/err.h"    HAVE_OPENSSL_ERR_H)
   check_include_file("openssl/pem.h"    HAVE_OPENSSL_PEM_H)
@@ -511,8 +503,8 @@ endif()
 function(CheckQuicSupportInOpenSSL)
   # Be sure that the OpenSSL library actually supports QUIC.
   cmake_push_check_state()
-  set(CMAKE_REQUIRED_INCLUDES   "${OPENSSL_INCLUDE_DIR}")
-  set(CMAKE_REQUIRED_LIBRARIES  "${OPENSSL_LIBRARIES}")
+  set(CMAKE_REQUIRED_INCLUDES   "${CMAKE_SOURCE_DIR}/thirdparty/openssl/include")
+  set(CMAKE_REQUIRED_LIBRARIES  "ssl crypto")
   check_symbol_exists(SSL_CTX_set_quic_method "openssl/ssl.h" HAVE_SSL_CTX_SET_QUIC_METHOD)
   if(NOT HAVE_SSL_CTX_SET_QUIC_METHOD)
     message(FATAL_ERROR "QUIC support is missing in OpenSSL/boringssl. Try setting -DOPENSSL_ROOT_DIR")
@@ -594,7 +586,7 @@ if(NOT CURL_DISABLE_LDAP)
     check_include_file_concat("winber.h"  HAVE_WINBER_H)
   else()
     # Check for LDAP
-    set(CMAKE_REQUIRED_LIBRARIES ${OPENSSL_LIBRARIES})
+    set(CMAKE_REQUIRED_LIBRARIES ssl crypto)
     check_library_exists_concat(${CMAKE_LDAP_LIB} ldap_init HAVE_LIBLDAP)
     check_library_exists_concat(${CMAKE_LBER_LIB} ber_init HAVE_LIBLBER)
 
