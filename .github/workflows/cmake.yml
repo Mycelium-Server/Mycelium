@@ -70,7 +70,7 @@ jobs:
         id: build
         with:
           arch: aarch64
-          distro: ubuntu_latest
+          distro: ubuntu20.04
 
           setup: |
             mkdir -p build
@@ -81,7 +81,6 @@ jobs:
           shell: /bin/sh
 
           install: |
-            echo "deb http://security.ubuntu.com/ubuntu impish-security main" | tee /etc/apt/sources.list.d/impish-security.list
             apt-get update -y
             apt-get install -y git
             apt-get install -y build-essential
