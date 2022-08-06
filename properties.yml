@@ -17,3 +17,4 @@ worldBorder:
   portalTeleportBoundary: 29999984
   warningBlocks: 0
   warningTime: 0
+debugPackets: false

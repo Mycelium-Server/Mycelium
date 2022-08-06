@@ -19,7 +19,9 @@ bool PacketDecoder::decode(ConnectionContext* ctx, void* in, std::vector<void*>&
 
   int packetId = inbuf->readVarInt();
 
-  std::cout << "[Thread " << std::this_thread::get_id() << "] < 0x" << std::hex << packetId << std::dec << std::endl;
+  if (ctx->gameServer->debugPackets()) {
+    std::cout << "[Thread " << std::this_thread::get_id() << "] < 0x" << std::hex << packetId << std::dec << std::endl;
+  }
 
   ServerboundPacket* packet = ServerboundPacket::createInstanceFromID(packetId, ctx->state);
   if (packet) {
