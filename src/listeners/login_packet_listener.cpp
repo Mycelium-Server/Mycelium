@@ -20,6 +20,7 @@
 #include "../protocol/clientbound_set_default_spawn_position.h"
 #include "../protocol/clientbound_set_held_item.h"
 #include "../protocol/clientbound_synchronize_player_position.h"
+#include "../protocol/clientbound_system_message.h"
 #include "../protocol/plugin_channels.h"
 #include "../registry_codec.h"
 #include "../server/world/world.h"
@@ -205,4 +206,15 @@ void continueLogin(ConnectionContext* ctx) {
     }
   });
   ctx->keepaliveThread.detach();
+
+  {
+    std::string message = ctx->playerData.name + " joined the game";
+    std::cout << message << std::endl;
+    auto* chatPacket = new ClientboundSystemMessage;
+    chatPacket->message = R"({"text":")" + message + R"(","color":"aqua"})";
+    for (auto& player: ctx->gameServer->getPlayers()) {
+      player->entity->connection->write(chatPacket);
+    }
+    delete chatPacket;
+  }
 }

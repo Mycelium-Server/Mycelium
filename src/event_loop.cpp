@@ -26,7 +26,11 @@ EventLoop::~EventLoop() {
   addToQueue([this]() {
     running = false;
   });
-  thread.join();
+  if (thread.get_id() != std::this_thread::get_id()) {
+    thread.join();
+  } else {
+    thread.detach();
+  }
 }
 
 void EventLoop::addToQueue(std::function<void()>&& callable) {

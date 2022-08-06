@@ -143,7 +143,9 @@ void PlayPacketListener::handlePlayerRotation(ConnectionContext* ctx, float yaw,
 void PlayPacketListener::handleChatMessage(ConnectionContext* ctx, ServerboundChatMessage* packet) {
   // TODO: Check message length
   nlohmann::json jsonMsg;
-  jsonMsg["text"] = "[" + ctx->playerData.name + "] " + packet->message;
+  std::string message = "[" + ctx->playerData.name + "] " + packet->message;
+  jsonMsg["text"] = message;
+  std::cout << message << std::endl;
 
   auto* msg = new ClientboundSystemMessage();// Always send system message (no chat reports)
   msg->message = nlohmann::to_string(jsonMsg);
