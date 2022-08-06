@@ -2,17 +2,17 @@
 
 #include <utility>
 
-PalettedContainer::PalettedContainer(Palette* palette, std::vector<int> data)
+PalettedContainer::PalettedContainer(Palette* palette, std::vector<short> data)
     : palette(palette),
       data(std::move(data)) {}
 
 PalettedContainer::~PalettedContainer() = default;
 
-std::vector<int> PalettedContainer::getData() const {
+std::vector<short> PalettedContainer::getData() const {
   return data;
 }
 
-void PalettedContainer::setData(std::vector<int> v) {
+void PalettedContainer::setData(std::vector<short> v) {
   data = std::move(v);
   dirty = true;
 }
