@@ -20,7 +20,7 @@ $ cmake --build .
 ### Third-Party libraries
 
  - [cURL](https://github.com/curl/curl)
- - [libuv](https://github.com/libuv/libuv)
+ - [asio](https://github.com/chriskohlhoff/asio)
  - [OpenSSL](https://github.com/openssl/openssl)
  - [zlib](https://github.com/madler/zlib)
  - [stduuid](https://github.com/mariusbancila/stduuid)
