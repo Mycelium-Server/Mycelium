@@ -9,10 +9,13 @@
 class EventLoop {
  public:
   EventLoop();
-  ~EventLoop();
 
  public:
   void addToQueue(std::function<void()>&& callable);
+  void destroy();
+
+ private:
+  ~EventLoop();
 
  private:
   std::vector<std::function<void()>> queue;
