@@ -67,9 +67,9 @@ Palette* ChunkSection::createBlockPalette() const {
 Palette* ChunkSection::createBiomePalette() const {
   int bits = getBiomeBitsPerEntry();
   if (bits == 0) {
-    return new SingleValuedPalette(blockPalette);
+    return new SingleValuedPalette(biomePalette);
   } else if (bits < 4) {
-    return new IndirectPalette(bits, blockPalette);
+    return new IndirectPalette(bits, biomePalette);
   } else {
     return new DirectPalette();
   }

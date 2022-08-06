@@ -7,12 +7,12 @@
 
 class PalettedContainer {
  public:
-  PalettedContainer(Palette*, std::vector<int>);
+  PalettedContainer(Palette*, std::vector<short>);
   ~PalettedContainer();
 
  public:
-  [[nodiscard]] std::vector<int> getData() const;
-  void setData(std::vector<int>);
+  [[nodiscard]] std::vector<short> getData() const;
+  void setData(std::vector<short>);
   Palette* getPalette();
   void setPalette(Palette*);
   std::vector<unsigned long long> remap();
@@ -20,7 +20,7 @@ class PalettedContainer {
 
  private:
   Palette* palette;
-  std::vector<int> data;
+  std::vector<short> data;
   bool dirty = true;
   std::vector<unsigned long long> cache;
 };
