@@ -41,14 +41,14 @@ Chunk* World::getChunk(const ChunkLocation& location) {
 
 std::map<unsigned long long, Chunk*>::iterator
 World::getChunkIterator(const ChunkLocation& location) {
-  return chunks.find((unsigned long long) location.x << 32 | location.z);
+  return chunks.find((unsigned long long) location.x << 32 | (unsigned) location.z);
 }
 
 bool World::setBlock(int x, int y, int z, int id) {
   if (y < -64 || y >= 360) {
     return false;
   }
-  Chunk* chunk = getChunkByBlock(x, z);
+  Chunk* chunk = requireChunk({getChunkPositioni(x), getChunkPositioni(z)});
   if (!chunk) {
     return false;
   }
@@ -78,7 +78,7 @@ int World::getBlock(int x, int y, int z) {
 
 Chunk* World::createChunk(const ChunkLocation& location) {
   auto* chunk = new Chunk(location);
-  chunks[(unsigned long long) location.x << 32 | location.z] = chunk;
+  chunks[(unsigned long long) location.x << 32 | (unsigned) location.z] = chunk;
   if (worldGenerator) {
     worldGenerator->generateChunk(chunk);
   }
@@ -92,8 +92,8 @@ void World::destroyChunk(const ChunkLocation& location) {
 }
 
 void World::createSpawnChunks() {
-  for (int x = -50; x < 50; x++) {
-    for (int z = -50; z < 50; z++) {
+  for (int x = -12; x <= 12; x++) {
+    for (int z = -12; z <= 12; z++) {
       createChunk({x, z});
     }
   }
@@ -108,7 +108,7 @@ void World::setWorldGenerator(WorldGenerator* worldgen) {
 }
 
 Chunk* World::requireChunk(const ChunkLocation& location) {
-  auto it = chunks.find((unsigned long long) location.x << 32 | location.z);
+  auto it = chunks.find((unsigned long long) location.x << 32 | (unsigned) location.z);
   if (it != chunks.end()) {
     return it->second;
   } else {
