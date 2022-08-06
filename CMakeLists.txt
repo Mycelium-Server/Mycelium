@@ -7,8 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_subdirectory(thirdparty/rapidyaml)
 include_directories(thirdparty/rapidyaml/src)
 
-add_subdirectory(thirdparty/libuv)
-include_directories(thirdparty/libuv/include)
+include_directories(thirdparty/asio/include)
 
 add_subdirectory(thirdparty/zlib)
 include_directories(thirdparty/zlib)
@@ -49,7 +48,11 @@ endif ()
 file(GLOB SRC src/*.cpp src/pipeline/*.cpp src/protocol/*.cpp src/listeners/*.cpp src/server/*.cpp src/server/entity/*.cpp src/server/world/*.cpp src/mojangapi/*.cpp src/server/entity/metadata/*.cpp src/server/particle/*.cpp src/server/world/generation/*.cpp src/server/blocks/*.cpp)
 
 add_executable(Mycelium ${SRC})
-target_link_libraries(Mycelium uv ssl crypto zlibstatic ryml::ryml)
+target_link_libraries(Mycelium ssl crypto zlibstatic ryml::ryml)
+
+if (WIN32)
+    target_link_libraries(Mycelium wsock32)
+endif ()
 
 find_package(Python COMPONENTS Interpreter)
 

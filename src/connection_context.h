@@ -1,7 +1,5 @@
 #pragma once
 
-#include <uv.h>
-
 #include <mutex>
 #include <thread>
 
@@ -20,13 +18,14 @@ enum ConnectionState {
   PLAY = 3
 };
 
+class ConnectionTCP;
+
 class ConnectionContext {
  public:
-  ConnectionContext(Pipeline*, uv_stream_t*);
+  ConnectionContext(Pipeline*, ConnectionTCP*);
   ~ConnectionContext();
 
-  void createAsync();
-  void write(void*, bool isAsync = false);
+  void write(void*);
   void read(ByteBuffer*);
   [[nodiscard]] bool isActive() const;
 
@@ -35,7 +34,7 @@ class ConnectionContext {
 
  public:
   Pipeline* pipeline;
-  uv_stream_t* stream;
+  ConnectionTCP* connection;
   EventLoop* eventLoop;
   ConnectionState state = ConnectionState::NONE;
   int protocolVersion = 0;
@@ -50,8 +49,4 @@ class ConnectionContext {
 
  public:
   bool active = false;
-
- private:
-  uv_async_t* async = nullptr;
-  std::mutex async_mutex;
 };
