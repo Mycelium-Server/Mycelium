@@ -1,4 +1,4 @@
-[Old version](https://github.com/JNNGL/Mycelium/tree/old) | [Dev branch](https://github.com/JNNGL/Mycelium/tree/dev)
+[Old version](https://github.com/JNNGL/Mycelium/tree/old) | [Stable branch](https://github.com/JNNGL/Mycelium/tree/stable)
 
 ### Building
 
