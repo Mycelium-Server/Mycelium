@@ -119,7 +119,7 @@ void PlayPacketListener::handlePlayerPosition(ConnectionContext* ctx, const Posi
   }
   ctx->playerEntity->location.position.position = position;
 
-  int r = ctx->gameServer->getViewDistance();
+  int r = ctx->playerEntity->getRenderDistance() - 1;
   for (int x = -r; x <= r; x++) {
     for (int z = -r; z <= r; z++) {// Ensure that chunks are always loaded
       ChunkLocation loc = {x + current.x, z + current.z};
