@@ -79,7 +79,7 @@ void ConnectionTCP::write(ByteBuffer* buf) {
 
 ServerTCP::ServerTCP(asio::io_context& io_context, const std::string& ip, short port)
     : acceptor(io_context,
-               asio::ip::tcp::endpoint(asio::ip::tcp::v4(), port)),
+               asio::ip::tcp::endpoint(asio::ip::address_v4::from_string(ip), port)),
       socket(io_context) {
   accept();
 }
