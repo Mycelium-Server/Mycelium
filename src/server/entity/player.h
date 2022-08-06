@@ -11,5 +11,8 @@ class EntityPlayer : public Entity {
   ~EntityPlayer();
 
  public:
+  [[nodiscard]] int getRenderDistance() const;
+
+ public:
   ConnectionContext* connection = nullptr;
 };

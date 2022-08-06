@@ -158,15 +158,15 @@ void continueLogin(ConnectionContext* ctx) {
   ctx->gameServer->addPlayer(&ctx->playerData);
 
   auto currentChunk = World::getChunkLocation(ctx->playerEntity->getLocation().position.position);
-  auto* setCenterChunk = new ClientboundSetCenterChunk();// TODO: ???????
+  auto* setCenterChunk = new ClientboundSetCenterChunk();
   setCenterChunk->location = currentChunk;
   ctx->write(setCenterChunk);
   delete setCenterChunk;
 
   World* world = ctx->playerEntity->getLocation().dimension.world;
   auto* chunkPacket = new ClientboundChunkData(nullptr);
-  for (int x = -7; x <= 7; x++) {
-    for (int z = -7; z <= 7; z++) {
+  for (int x = -1; x <= 1; x++) {
+    for (int z = -1; z <= 1; z++) {
       ChunkLocation loc = {x + currentChunk.x, z + currentChunk.z};
       chunkPacket->chunk = world->requireChunk(loc);
       ctx->write(chunkPacket);
