@@ -15,8 +15,8 @@ class Chunk {
 
  public:
   void setBlock(int, int, int, int) const;
-  [[nodiscard]] int getBlock(int, int, int) const;
-  [[nodiscard]] ChunkSection* getSectionByY(int) const;
+  int getBlock(int, int, int) const;
+  ChunkSection* getSectionByY(int) const;
   [[nodiscard]] int getAbsoluteX(int) const;
   [[nodiscard]] int getAbsoluteZ(int) const;
   [[nodiscard]] Heightmap* createHeightmap() const;

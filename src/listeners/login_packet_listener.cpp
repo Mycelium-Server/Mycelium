@@ -170,7 +170,7 @@ void continueLogin(ConnectionContext* ctx) {
       ChunkLocation loc = {x + currentChunk.x, z + currentChunk.z};
       chunkPacket->chunk = world->requireChunk(loc);
       ctx->write(chunkPacket);
-      unsigned long long id = (unsigned long long) loc.x << 32 | (unsigned) loc.z;
+      unsigned long long id = (unsigned long long) loc.x << 32 | loc.z;
       ((PlayPacketListener*) ctx->packetListener)->loadedChunks.push_back(id);
     }
   }

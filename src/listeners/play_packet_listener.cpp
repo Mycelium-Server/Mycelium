@@ -123,7 +123,7 @@ void PlayPacketListener::handlePlayerPosition(ConnectionContext* ctx, const Posi
   for (int x = -r; x <= r; x++) {
     for (int z = -r; z <= r; z++) {// Ensure that chunks are always loaded
       ChunkLocation loc = {x + current.x, z + current.z};
-      unsigned long long id = (unsigned long long) loc.x << 32 | (unsigned) loc.z;
+      unsigned long long id = (unsigned long long) loc.x << 32 | loc.z;
       if (std::find(loadedChunks.begin(), loadedChunks.end(), id) == loadedChunks.end()) {
         Chunk* chunk = ctx->playerEntity->location.dimension.world->requireChunk(loc);
         auto* packet = new ClientboundChunkData(chunk);
