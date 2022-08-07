@@ -28,6 +28,7 @@ class ChunkSection {
   ~ChunkSection();
 
  public:
+  [[nodiscard]] short getTotalBlock() const;
   void setBlock(unsigned char, unsigned char, unsigned char, int);
   int getBlock(unsigned char, unsigned char, unsigned char);
   [[nodiscard]] int getBlockBitsPerEntry() const;
@@ -45,3 +46,5 @@ class ChunkSection {
   std::set<unsigned short> blockPalette {0};
   std::set<unsigned short> biomePalette {0};
 };
+
+extern const ChunkSection* EMPTY_CHUNK_SECTION;

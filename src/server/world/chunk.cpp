@@ -23,30 +23,35 @@ Chunk::Chunk(int x, int z)
 
 Chunk::Chunk(const ChunkLocation& location)
     : location(location) {
-  sections = new ChunkSection*[24];
-  for (int i = 0; i < 24; i++) {
-    sections[i] = new ChunkSection();
+  for (auto& section: sections) {
+    section = (ChunkSection*) EMPTY_CHUNK_SECTION;
   }
 }
 
 Chunk::~Chunk() {
-  for (int i = 0; i < 24; i++) {
-    delete sections[i];
+  for (auto& section: sections) {
+    if (section != EMPTY_CHUNK_SECTION) {
+      delete section;
+    }
   }
-  delete sections;
 }
 
-void Chunk::setBlock(int lx, int y, int lz, int id) const {
-  getSectionByY(y)->setBlock(lx, (y + 64) % 16, lz, id);
+void Chunk::setBlock(int lx, int y, int lz, int id) {
+  ChunkSection* section = getSectionByY(y);
+  section->setBlock(lx, (y + 64) % 16, lz, id);
 }
 
-int Chunk::getBlock(int lx, int y, int lz) const {
+int Chunk::getBlock(int lx, int y, int lz) {
   return getSectionByY(y)->getBlock(lx, (y + 64) % 16, lz);
 }
 
-ChunkSection* Chunk::getSectionByY(int y) const {
+ChunkSection* Chunk::getSectionByY(int y) {
   double corrected = y + 64;
-  return sections[(int) std::floor(corrected / 16.0)];
+  int id = (int) std::floor(corrected / 16.0);
+  if (sections[id] == EMPTY_CHUNK_SECTION) {
+    sections[id] = new ChunkSection();
+  }
+  return sections[id];
 }
 
 int Chunk::getAbsoluteX(int local) const {
@@ -87,8 +92,8 @@ void Chunk::write(ByteBuffer& out) const {
   delete heightmap;
 
   ByteBuffer data;// TODO: Cache
-  for (int i = 0; i < 24; i++) {
-    sections[i]->write(data);
+  for (auto section: sections) {
+    section->write(data);
   }
   out.writeVarInt((int) data.readableBytes());
   out.writeBytes(data);

@@ -112,3 +112,9 @@ void ChunkSection::write(ByteBuffer& out) const {
   biomeContainer->write(out);
   delete biomeContainer;
 }
+
+short ChunkSection::getTotalBlock() const {
+  return totalBlocks;
+}
+
+const ChunkSection* EMPTY_CHUNK_SECTION = new ChunkSection;
