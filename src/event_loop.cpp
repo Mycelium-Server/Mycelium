@@ -23,13 +23,11 @@ EventLoop::EventLoop() {
 }
 
 EventLoop::~EventLoop() {
+  addToQueue([this]() {
+    running = false;
+  });
   thread.detach();
-}
-
-void EventLoop::destroy() {
-  addToQueue([&]() { running = false; });
   while (running);
-  delete this;
 }
 
 void EventLoop::addToQueue(std::function<void()>&& callable) {
