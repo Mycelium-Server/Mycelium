@@ -142,10 +142,6 @@ RotatedProtocolPosition GameServer::getSpawnPosition() {
   return {{0, 10, 0}, 0.f};// TODO: properties.yml
 }
 
-bool GameServer::debugPackets() const {
-  return cfg_debugPackets;
-}
-
 #define SET_IF_EXIST(dst, path) \
   if (tree path.has_val()) {    \
     root path >> dst;           \
@@ -182,7 +178,6 @@ void GameServer::reloadConfig() {
   SET_IF_EXIST(cfg_worldBorder.portalTeleportBoundary, ["worldBorder"]["portalTeleportBoundary"])
   SET_IF_EXIST(cfg_worldBorder.warningBlocks, ["worldBorder"]["warningBlocks"])
   SET_IF_EXIST(cfg_worldBorder.warningTime, ["worldBorder"]["warningTime"])
-  SET_IF_EXIST(cfg_debugPackets, ["debugPackets"])
 
   std::ofstream configOut("properties.yml", std::ios::out | std::ios::binary | std::ios::trunc);
   configOut << tree;
