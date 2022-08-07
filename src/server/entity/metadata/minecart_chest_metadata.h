@@ -20,8 +20,8 @@
 
 #include "abstract_minecart_container_metadata.h"
 
-MinecraftChestMetadata::MinecraftHopperMetadata() = default;
-MinecraftChestMetadata::~MinecraftHopperMetadata() = default;
+MinecraftChestMetadata::MinecraftChestMetadata() = default;
+MinecraftChestMetadata::~MinecraftChestMetadata() = default;
 
 void MinecraftChestMetadata::wrapperWrite(MetadataBuffer& wrapper) {
   AbstractMinecartContainerMetadata::wrapperWrite(wrapper);
