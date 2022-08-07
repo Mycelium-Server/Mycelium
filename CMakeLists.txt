@@ -45,7 +45,7 @@ else ()
     link_libraries(${CURL_LIBRARY})
 endif ()
 
-file(GLOB SRC src/*.cpp src/pipeline/*.cpp src/protocol/*.cpp src/listeners/*.cpp src/server/*.cpp src/server/entity/*.cpp src/server/world/*.cpp src/mojangapi/*.cpp src/server/entity/metadata/*.cpp src/server/particle/*.cpp src/server/world/generation/*.cpp src/server/blocks/*.cpp)
+file(GLOB_RECURSE SRC src/*.cpp)
 
 add_executable(Mycelium ${SRC})
 target_link_libraries(Mycelium ssl crypto zlibstatic ryml::ryml)
@@ -56,8 +56,16 @@ endif ()
 
 find_package(Python COMPONENTS Interpreter)
 
+add_custom_target(
+        check_license
+        COMMAND ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/check_license.py
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        COMMENT "Checking license..."
+)
+add_dependencies(Mycelium check_license)
+
 add_custom_command(TARGET Mycelium POST_BUILD
-        COMMAND ${Python_EXECUTABLE} ${CMAKE_SOURCE_DIR}/copy_resources.py ${CMAKE_BUILD_TYPE} ${CMAKE_SOURCE_DIR}
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+        COMMAND ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/copy_resources.py ${CMAKE_BUILD_TYPE} ${CMAKE_CURRENT_SOURCE_DIR}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
         COMMENT "Copying resources..."
 )
