@@ -1,10 +1,10 @@
-name: CMake Stable
+name: CMake
 
 on:
   push:
-    branches: [ stable ]
+    branches: [ main ]
   pull_request:
-    branches: [ stable ]
+    branches: [ main ]
 
 env:
   BUILD_TYPE: Release
@@ -56,9 +56,6 @@ jobs:
       - name: Add `cert.pem` to runtime
         run: |
           cp cert.pem runtime/cert.pem
-      - name: Add `properties.yml` to runtime
-        run: |
-          cp properties.yml runtime/properties.yml
       - name: Upload runtime
         uses: actions/upload-artifact@v2
         with:
@@ -126,9 +123,6 @@ jobs:
       - name: Add `cert.pem` to runtime
         run: |
           cp cert.pem runtime/cert.pem
-      - name: Add `properties.yml` to runtime
-        run: |
-          cp properties.yml runtime/properties.yml
       - name: Upload runtime
         uses: actions/upload-artifact@v2
         with:
