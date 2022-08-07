@@ -10,6 +10,18 @@ def to_class_name(string):
     return ''.join(s.capitalize() for s in string.split('_'))
 
 
+def reformat_license_header(raw):
+    new = ["/*"]
+    new.extend(" * " + line.rstrip() if line.strip() else " *" for line in raw)
+    new.extend([" */", ""])
+    return new
+
+
+header_f = open('res/license_header.txt')
+license_header = reformat_license_header(header_f.readlines())
+header_f.close()
+
+
 def write_header(dst, data, block_id):
     cls = to_class_name(dst)
     f = open('generated/' + dst + '.h', 'w+')
@@ -21,6 +33,10 @@ def write_header(dst, data, block_id):
                 def_state = state['properties']
                 break
 
+    for line in license_header:
+        f.write(line)
+        f.write('\n')
+    f.write('\n')
     f.write('#pragma once\n')
     f.write('\n')
     f.write('#include "block.h"\n')
@@ -58,6 +74,10 @@ def write_source(dst, data, block_id):
             def_id = state['id']
             break
 
+    for line in license_header:
+        f.write(line)
+        f.write('\n')
+    f.write('\n')
     f.write('#include "' + dst + '.h"\n')
     f.write('\n')
     f.write(cls + '::' + cls + '() = default;\n')
