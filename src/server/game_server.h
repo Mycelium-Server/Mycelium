@@ -19,6 +19,7 @@
 #pragma once
 
 #include <string>
+#include <thread>
 
 #include "../encryption.h"
 #include "difficulty.h"
@@ -51,6 +52,7 @@ class GameServer {
   [[nodiscard]] Difficulty getDifficulty() const;
   [[nodiscard]] WorldBorder getWorldBorder() const;
   [[nodiscard]] bool debugPackets() const;
+  [[nodiscard]] int maxConnectionThreads() const;
   RotatedProtocolPosition getSpawnPosition();
 
   void addPlayer(PlayerData*);
@@ -75,5 +77,6 @@ class GameServer {
   bool cfg_showRespawnScreen = true;
   int cfg_difficulty = (int) Difficulty::NORMAL;
   bool cfg_debugPackets = false;
+  unsigned int cfg_maxConnectionThreads = std::min(1u, std::thread::hardware_concurrency());
   WorldBorder cfg_worldBorder = {0, 0, 29999984, 29999984, 0, 0};
 };

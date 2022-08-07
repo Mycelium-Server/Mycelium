@@ -18,3 +18,4 @@ worldBorder:
   warningBlocks: 0
   warningTime: 0
 debugPackets: false
+maxConnectionThreads: 512

@@ -22,6 +22,7 @@
 #include <ryml.hpp>
 #include <ryml_std.hpp>
 
+#include "../event_loop_factory.h"
 #include "../protocol/clientbound_player_info.h"
 #include "../protocol/clientbound_remove_entities.h"
 #include "../protocol/clientbound_spawn_player.h"
@@ -164,12 +165,20 @@ bool GameServer::debugPackets() const {
   return cfg_debugPackets;
 }
 
+int GameServer::maxConnectionThreads() const {
+  return cfg_maxConnectionThreads;
+}
+
 #define SET_IF_EXIST(dst, path) \
   if (tree path.has_val()) {    \
     root path >> dst;           \
   } else {                      \
     root path << dst;           \
   }
+
+#define CHECK_RANGE(value, min, max) \
+  assert((value) >= (min));          \
+  assert((value) <= (max));
 
 void GameServer::reloadConfig() {
   std::ifstream configIn("properties.yml");
@@ -190,7 +199,9 @@ void GameServer::reloadConfig() {
   SET_IF_EXIST(cfg_onlineMode, ["onlineMode"])
   SET_IF_EXIST(cfg_hardcore, ["hardcore"])
   SET_IF_EXIST(cfg_viewDistance, ["viewDistance"])
+  CHECK_RANGE(cfg_viewDistance, 2, 32)
   SET_IF_EXIST(cfg_simulationDistance, ["simulationDistance"])
+  CHECK_RANGE(cfg_simulationDistance, 2, 32)
   SET_IF_EXIST(cfg_reducedDebugInfo, ["reducedDebugInfo"])
   SET_IF_EXIST(cfg_showRespawnScreen, ["showRespawnScreen"])
   SET_IF_EXIST(cfg_difficulty, ["difficulty"])
@@ -201,6 +212,11 @@ void GameServer::reloadConfig() {
   SET_IF_EXIST(cfg_worldBorder.warningBlocks, ["worldBorder"]["warningBlocks"])
   SET_IF_EXIST(cfg_worldBorder.warningTime, ["worldBorder"]["warningTime"])
   SET_IF_EXIST(cfg_debugPackets, ["debugPackets"])
+  SET_IF_EXIST(cfg_maxConnectionThreads, ["maxConnectionThreads"])
+  CHECK_RANGE(cfg_maxConnectionThreads, 1, UINT32_MAX)
+  if (cfg_maxConnectionThreads != EventLoopFactory::getMaxThreadCount()) {
+    EventLoopFactory::init(cfg_maxConnectionThreads);
+  }
 
   std::ofstream configOut("properties.yml", std::ios::out | std::ios::binary | std::ios::trunc);
   configOut << tree;

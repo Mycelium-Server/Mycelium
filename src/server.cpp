@@ -80,8 +80,8 @@ void ConnectionTCP::read() {
               self->ctx->read(buf);
             }
           });
+          self->read();
         }
-        self->read();
       });
 }
 

@@ -20,17 +20,17 @@
 
 #include <iostream>
 
+#include "event_loop_factory.h"
 #include "server.h"
 
 ConnectionContext::ConnectionContext(Pipeline* pipeline, ConnectionTCP* con)
     : pipeline(pipeline),
       connection(con) {
-  eventLoop = new EventLoop;// TODO: Event loop factory
+  eventLoop = EventLoopFactory::next();
 }
 
 ConnectionContext::~ConnectionContext() {
   delete pipeline;
-  eventLoop->destroy();
 }
 
 void ConnectionContext::write(void* object) {
