@@ -27,6 +27,13 @@ jobs:
         working-directory: ${{github.workspace}}/build
         run: ctest -C ${{env.BUILD_TYPE}}
       - if: matrix.os == 'windows-latest'
+        name: Upload libuv (Windows)
+        uses: actions/upload-artifact@v2
+        with:
+          name: Mycelium-${{ matrix.os }}
+          path: |
+            build/thirdparty/libuv/${{env.BUILD_TYPE}}/*.dll
+      - if: matrix.os == 'windows-latest'
         name: Upload executable (Windows)
         uses: actions/upload-artifact@v2
         with:
