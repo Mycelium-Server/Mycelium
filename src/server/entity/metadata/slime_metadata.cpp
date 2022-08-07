@@ -5,5 +5,5 @@ SlimeMetadata::~SlimeMetadata() = default;
 
 void SlimeMetadata::wrapperWrite(MetadataBuffer& wrapper) {
   MobMetadata::wrapperWrite(wrapper);
-  wrapper.VarInt(16, size);
+  wrapper.writeVarInt(16, size);
 }

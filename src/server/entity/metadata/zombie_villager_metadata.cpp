@@ -5,6 +5,6 @@ ZombieVillagerMetadata::~ZombieVillagerMetadata() = default;
 
 void ZombieVillagerMetadata::wrapperWrite(MetadataBuffer& wrapper) {
   ZombieMetadata::wrapperWrite(wrapper);
-  wrapper.writeBool(19, IsConverting);
+  wrapper.writeBool(19, isConverting);
   wrapper.writeVillagerData(20, villagerData);
 }

@@ -11,5 +11,5 @@ class GhastMetadata : public FlyingMetadata {
   void wrapperWrite(MetadataBuffer &) override;
 
  public:
-  bool IsAttacking = false;
+  bool isAttacking = false;
 };

@@ -5,5 +5,5 @@ GhastMetadata::~GhastMetadata() = default;
 
 void GhastMetadata::wrapperWrite(MetadataBuffer& wrapper) {
   FlyingMetadata::wrapperWrite(wrapper);
-  wrapper.writeBool(16, IsAttacking);
+  wrapper.writeBool(16, isAttacking);
 }
