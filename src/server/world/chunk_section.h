@@ -22,8 +22,8 @@ class ChunkSection {
 
  private:
   short totalBlocks = 0;
-  unsigned short blocks[4096] = {};
-  unsigned short biomes[64] = {};
-  std::set<unsigned short> blockPalette {0};
-  std::set<unsigned short> biomePalette {0};
+  int blocks[4096] = {};
+  int biomes[64] = {};
+  std::set<short> blockPalette {};
+  std::set<short> biomePalette {};
 };

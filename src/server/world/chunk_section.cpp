@@ -9,13 +9,13 @@ void ChunkSection::setBlock(unsigned char x, unsigned char y, unsigned char z, i
   if (x < 16 && y < 16 && z < 16) {
     int index = y * 256 + z * 16 + x;
     int current = blocks[index];
-    blockPalette.insert((unsigned short) id);
+    blockPalette.insert(id);
     if (current == 0 && id != 0) {
       totalBlocks++;
     } else if (current != 0 && id == 0) {
       totalBlocks--;
     }
-    blocks[index] = (unsigned short) id;
+    blocks[index] = id;
   }
 }
 
