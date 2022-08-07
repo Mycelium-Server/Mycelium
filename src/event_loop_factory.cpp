@@ -16,31 +16,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <iostream>
+
 #include "event_loop_factory.h"
 
 EventLoopFactory::EventLoopFactory() = default;
 EventLoopFactory::~EventLoopFactory() = default;
 
 void EventLoopFactory::init(unsigned int threadCount) {
+  mutex.lock();
   for (auto& eventLoop: eventLoops) {
     eventLoop->destroy();
   }
   eventLoops.resize(threadCount);
-  for (auto& eventLoop: eventLoops) {
-    eventLoop = nullptr;
+  owners.resize(threadCount);
+  for (unsigned i = 0; i < threadCount; i++) {
+    eventLoops[i] = nullptr;
+    owners[i] = 0;
   }
+  mutex.unlock();
 }
 
 EventLoop* EventLoopFactory::next() {
   if (eventLoops.empty()) {
     return nullptr;
   }
+  mutex.lock();
   if (current >= eventLoops.size()) {
     current = 0;
   }
   if (!eventLoops[current]) {
     eventLoops[current] = new EventLoop;
   }
+  owners[current]++;
+  mutex.unlock();
   return eventLoops[current++];
 }
 
@@ -48,5 +57,24 @@ unsigned int EventLoopFactory::getMaxThreadCount() {
   return eventLoops.size();
 }
 
+void EventLoopFactory::removeOwner(EventLoop* eventLoop) {
+  if (!eventLoop) {
+    return;
+  }
+  mutex.lock();
+  auto it = std::find(eventLoops.begin(), eventLoops.end(), eventLoop);
+  if (it != eventLoops.end()) {
+    size_t id = std::distance(eventLoops.begin(), it);
+    owners[id]--;
+    if (owners[id] == 0) {
+      eventLoops[id]->destroy();
+      eventLoops[id] = nullptr;
+    }
+  }
+  mutex.unlock();
+}
+
 std::vector<EventLoop*> EventLoopFactory::eventLoops;
+std::vector<unsigned int> EventLoopFactory::owners;
 unsigned int EventLoopFactory::current = 0;
+std::mutex EventLoopFactory::mutex;

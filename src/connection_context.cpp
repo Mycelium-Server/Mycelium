@@ -31,6 +31,7 @@ ConnectionContext::ConnectionContext(Pipeline* pipeline, ConnectionTCP* con)
 
 ConnectionContext::~ConnectionContext() {
   delete pipeline;
+  EventLoopFactory::removeOwner(eventLoop);
 }
 
 void ConnectionContext::write(void* object) {

@@ -28,10 +28,13 @@ class EventLoopFactory {
  public:
   static void init(unsigned int);
   static EventLoop* next();
+  static void removeOwner(EventLoop*);
   static unsigned int getMaxThreadCount();
 
  private:
   static std::vector<EventLoop*> eventLoops;
+  static std::vector<unsigned int> owners;
+  static std::mutex mutex;
   static unsigned int current;
 
 };
