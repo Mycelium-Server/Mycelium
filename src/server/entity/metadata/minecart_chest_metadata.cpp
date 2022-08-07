@@ -17,3 +17,10 @@
  */
 
 #include "minecart_chest_metadata.h"
+
+MinecraftChestMetadata::MinecraftChestMetadata() = default;
+MinecraftChestMetadata::~MinecraftChestMetadata() = default;
+
+void MinecraftChestMetadata::wrapperWrite(MetadataBuffer& wrapper) {
+  AbstractMinecartContainerMetadata::wrapperWrite(wrapper);
+}

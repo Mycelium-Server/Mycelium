@@ -17,3 +17,22 @@
  */
 
 #pragma once
+
+#include "entity_metadata.h"
+
+class AbstractMinecraftContainerMetadata : public EntityMetadata {
+ public:
+  AbstractMinecraftContainerMetadata();
+  ~AbstractMinecraftContainerMetadata() override;
+
+ public:
+  void wrapperWrite(MetadataBuffer&) override;
+
+ public:
+  int shakingPower = 0;
+  int shakingDirection = 0;
+  float shakingMultiplier = 0.0;
+  int customBlockIDAndDamage = 0;
+  int customBlockYPosition = 6;
+  bool showCustomBlock = false;
+};

@@ -17,3 +17,17 @@
  */
 
 #pragma once
+
+#include "abstract_minecart_container_metadata.h"
+
+class MinecraftFurnaceMetadata : public AbstractMinecartContainerMetadata {
+ public:
+  MinecraftFurnaceMetadata();
+  ~MinecraftFurnaceMetadata() override;
+
+ public:
+  void wrapperWrite(MetadataBuffer&) override;
+
+ public:
+  bool hasFuel = false;
+};

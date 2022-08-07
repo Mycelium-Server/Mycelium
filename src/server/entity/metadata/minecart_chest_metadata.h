@@ -17,3 +17,12 @@
  */
 
 #pragma once
+
+#include "abstract_minecart_container_metadata.h"
+
+MinecraftChestMetadata::MinecraftHopperMetadata() = default;
+MinecraftChestMetadata::~MinecraftHopperMetadata() = default;
+
+void MinecraftChestMetadata::wrapperWrite(MetadataBuffer& wrapper) {
+  AbstractMinecartContainerMetadata::wrapperWrite(wrapper);
+}

@@ -17,3 +17,10 @@
  */
 
 #include "abstract_minecart_container_metadata.h"
+
+AbstractMinecraftContainerMetadata::AbstractMinecraftContainerMetadata() = default;
+AbstractMinecraftContainerMetadata::~AbstractMinecraftContainerMetadata() = default;
+
+void AbstractMinecraftContainerMetadata::wrapperWrite(MetadataBuffer& wrapper) {
+  AbstractMinecartMetadata::wrapperWrite(wrapper);
+}
