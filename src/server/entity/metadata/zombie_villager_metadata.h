@@ -11,5 +11,6 @@ class ZombieVillagerMetadata : public ZombieMetadata {
   void wrapperWrite(MetadataBuffer&) override;
 
  public:
+  bool IsConverting = false;
   VillagerData villagerData {MINECRAFT_PLAINS, MINECRAFT_NONE, 1};
 };

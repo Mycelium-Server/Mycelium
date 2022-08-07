@@ -9,5 +9,7 @@ class EnderDragonMetadata : public MobMetadata {
 
  public:
   void wrapperWrite(MetadataBuffer&) override;
+  
+ public:
   int DragonPhase = 10;
 };

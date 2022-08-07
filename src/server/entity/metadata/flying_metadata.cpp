@@ -1,8 +1,8 @@
 #include "flying_metadata.h"
 
-FliyingMetadata::FliyingMetadata() = default;
-FliyingMetadata::~FliyingMetadata() = default;
+FlyingMetadata::FlyingMetadata() = default;
+FlyingMetadata::~FlyingMetadata() = default;
 
-void FliyingMetadata::wrapperWrite(MetadataBuffer& wrapper) {
+void FlyingMetadata::wrapperWrite(MetadataBuffer& wrapper) {
   MobMetadata::wrapperWrite(wrapper);
 }

@@ -11,5 +11,5 @@ class ZoglinMetadata : public MonsterMetadata {
   void wrapperWrite(MetadataBuffer&) override;
 
  public:
-  bool IsBaby = false;
+  bool isBaby = false;
 };

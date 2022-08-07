@@ -9,8 +9,9 @@ class EndermanMetadata : public MonsterMetadata {
 
  public:
   void wrapperWrite(MetadataBuffer&) override;
-  // TODO: Finish
-  // wrapper.writeOptBlockID(16, CarriedBlock)
+  
+ public:
+  int CarriedBlock = 0;
   bool IsScreaming = false;
   bool IsStaring = false;
 };

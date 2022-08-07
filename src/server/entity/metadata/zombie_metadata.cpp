@@ -5,7 +5,6 @@ ZombieMetadata::~ZombieMetadata() = default;
 
 void ZombieMetadata::wrapperWrite(MetadataBuffer& wrapper) {
   MonsterMetadata::wrapperWrite(wrapper);
-  wrapper.writeBool(16, IsBaby);
-  wrapper.writeVarInt(17, Unused);
-  wrapper.writeBool(18, IsBecomingDrowned);
+  wrapper.writeBool(16, isBaby);
+  wrapper.writeBool(18, isBecomingDrowned);
 }

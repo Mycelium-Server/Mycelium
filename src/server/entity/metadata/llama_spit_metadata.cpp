@@ -10,5 +10,5 @@ void LlamaSpitMetadata::wrapperWrite(MetadataBuffer& wrapper) {
   wrapper.writeFloat(10, shakingMultiplier);
   wrapper.writeVarInt(11, customBlockIDAndDamage);
   wrapper.writeVarInt(12, customBlockYposition);
-  wrapper.writeBol(13, showCustomBlock);
+  wrapper.writeBool(13, showCustomBlock);
 }

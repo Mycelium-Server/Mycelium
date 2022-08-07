@@ -11,7 +11,6 @@ class ZombieMetadata : public MonsterMetadata {
   void wrapperWrite(MetadataBuffer&) override;
 
  public:
-  bool IsBaby = false;
-  int Unused = 0;
-  bool IsBecomingDrowned = false;
+  bool isBaby = false;
+  bool isBecomingDrowned = false;
 };
