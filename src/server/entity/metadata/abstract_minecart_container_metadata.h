@@ -18,12 +18,12 @@
 
 #pragma once
 
-#include "raider_metadata.h"
+#include "abstract_minecart_metadata.h"
 
-class AbstractMinecraftContainerMetadata : public AbstractMinecartMetadata {
+class AbstractMinecartContainerMetadata : public AbstractMinecartMetadata {
  public:
-  AbstractMinecraftContainerMetadata();
-  ~AbstractMinecraftContainerMetadata() override;
+  AbstractMinecartContainerMetadata();
+  ~AbstractMinecartContainerMetadata() override;
 
  public:
   void wrapperWrite(MetadataBuffer&) override;

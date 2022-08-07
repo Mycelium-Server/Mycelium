@@ -18,9 +18,9 @@
 
 #include "abstract_minecart_container_metadata.h"
 
-AbstractMinecraftContainerMetadata::AbstractMinecraftContainerMetadata() = default;
-AbstractMinecraftContainerMetadata::~AbstractMinecraftContainerMetadata() = default;
+AbstractMinecartContainerMetadata::AbstractMinecartContainerMetadata() = default;
+AbstractMinecartContainerMetadata::~AbstractMinecartContainerMetadata() = default;
 
-void AbstractMinecraftContainerMetadata::wrapperWrite(MetadataBuffer& wrapper) {
+void AbstractMinecartContainerMetadata::wrapperWrite(MetadataBuffer& wrapper) {
   AbstractMinecartMetadata::wrapperWrite(wrapper);
 }

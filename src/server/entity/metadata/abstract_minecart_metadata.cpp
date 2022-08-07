@@ -18,10 +18,10 @@
 
 #include "abstract_minecart_metadata.h"
 
-AbstractMinecraftMetadata::AbstractMinecraftMetadata() = default;
-AbstractMinecraftMetadata::~AbstractMinecraftMetadata() = default;
+AbstractMinecartMetadata::AbstractMinecartMetadata() = default;
+AbstractMinecartMetadata::~AbstractMinecartMetadata() = default;
 
-void AbstractMinecraftMetadata::wrapperWrite(MetadataBuffer& wrapper) {
+void AbstractMinecartMetadata::wrapperWrite(MetadataBuffer& wrapper) {
   EntityMetadata::wrapperWrite(wrapper);
   wrapper.writeVarInt(8, shakingPower);
   wrapper.writeVarInt(9, shakingDirection);

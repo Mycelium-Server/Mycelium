@@ -20,10 +20,10 @@
 
 #include "entity_metadata.h"
 
-class AbstractMinecraftContainerMetadata : public EntityMetadata {
+class AbstractMinecartContainerMetadata : public EntityMetadata {
  public:
-  AbstractMinecraftContainerMetadata();
-  ~AbstractMinecraftContainerMetadata() override;
+  AbstractMinecartContainerMetadata();
+  ~AbstractMinecartContainerMetadata() override;
 
  public:
   void wrapperWrite(MetadataBuffer&) override;

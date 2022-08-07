@@ -20,7 +20,7 @@
 
 #include "entity_metadata.h"
 
-class PufferFishMetadata : public EntityMetadata {
+class PrimedTNTMetadata : public EntityMetadata {
  public:
   PrimedTNTMetadata();
   ~PrimedTNTMetadata() override;
