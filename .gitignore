@@ -6,4 +6,3 @@ zconf.h
 curl_config.h
 tools/block-generator/res
 tools/block-generator/generated
-fix_licenses.py
