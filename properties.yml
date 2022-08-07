@@ -1,5 +1,5 @@
-serverIP: "0.0.0.0"
-serverPort: 25565
+server-ip: "0.0.0.0"
+server-port: 25565
 motd: "Hello, world!"
 maxPlayers: 20
 compressionThreshold: 256

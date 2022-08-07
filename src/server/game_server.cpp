@@ -160,8 +160,8 @@ void GameServer::reloadConfig() {
   ryml::Tree tree = ryml::parse_in_place(ryml::to_substr(configStr));
   ryml::NodeRef root = tree.rootref();
 
-  SET_IF_EXIST(cfg_serverIP, ["serverIP"])
-  SET_IF_EXIST(cfg_serverPort, ["serverPort"])
+  SET_IF_EXIST(cfg_serverIP, ["server-ip"])
+  SET_IF_EXIST(cfg_serverPort, ["server-port"])
   SET_IF_EXIST(cfg_motd, ["motd"])
   SET_IF_EXIST(cfg_maxPlayers, ["maxPlayers"])
   SET_IF_EXIST(cfg_compressionThreshold, ["compressionThreshold"])
