@@ -1,21 +1,22 @@
 #include "palette.h"
 
 #include <algorithm>
+#include <bitset>
 #include <iostream>
 #include <utility>
 
-Palette::Palette(int bpe, std::set<short> palette)
+Palette::Palette(int bpe, std::set<int> palette)
     : bitsPerEntry(bpe),
       palette(std::move(palette)) {}
 
 Palette::~Palette() = default;
 
-SingleValuedPalette::SingleValuedPalette(std::set<short> palette)
+SingleValuedPalette::SingleValuedPalette(std::set<int> palette)
     : Palette(0, std::move(palette)) {}
 
 SingleValuedPalette::~SingleValuedPalette() = default;
 
-std::vector<unsigned long long> SingleValuedPalette::apply(std::vector<short>) {
+std::vector<unsigned long long> SingleValuedPalette::apply(std::vector<int>) {
   return {};
 }
 
@@ -23,12 +24,12 @@ void SingleValuedPalette::write(ByteBuffer& out) {
   out.writeVarInt(*palette.begin());
 }
 
-IndirectPalette::IndirectPalette(int bpe, std::set<short> palette)
+IndirectPalette::IndirectPalette(int bpe, std::set<int> palette)
     : Palette(bpe, std::move(palette)) {}
 
 IndirectPalette::~IndirectPalette() = default;
 
-std::vector<unsigned long long> IndirectPalette::apply(std::vector<short> data) {
+std::vector<unsigned long long> IndirectPalette::apply(std::vector<int> data) {
   std::vector<unsigned long long> dst;
   unsigned long long current = 0;
   int currentBit = 0;
@@ -58,7 +59,7 @@ std::vector<unsigned long long> IndirectPalette::apply(std::vector<short> data) 
 
 void IndirectPalette::write(ByteBuffer& out) {
   out.writeVarInt((int) palette.size());
-  for (short element: palette) {
+  for (int element: palette) {
     out.writeVarInt(element);
   }
 }
@@ -68,12 +69,12 @@ DirectPalette::DirectPalette()
 
 DirectPalette::~DirectPalette() = default;
 
-std::vector<unsigned long long> DirectPalette::apply(std::vector<short> data) {
+std::vector<unsigned long long> DirectPalette::apply(std::vector<int> data) {
   std::vector<unsigned long long> dst;
   unsigned long long current = 0;
   int currentBit = 0;
 
-  for (short element: data) {
+  for (int element: data) {
     current |= ((unsigned long long) element << currentBit);
     currentBit += bitsPerEntry;
     if (currentBit >= 64) {
