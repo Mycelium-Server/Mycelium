@@ -23,6 +23,6 @@ MinecraftCommandBlockMetadata::~MinecraftCommandBlockMetadata() = default;
 
 void MinecraftCommandBlockMetadata::wrapperWrite(MetadataBuffer& wrapper) {
   AbstractMinecartMetadata::wrapperWrite(wrapper);
-  wrapper.writeString(14, command)
-  wrapper.writeChat(15, lastOutput)
+  wrapper.writeString(14, command);
+  wrapper.writeChat(15, lastOutput);
 }
