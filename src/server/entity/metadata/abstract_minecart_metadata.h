@@ -20,10 +20,10 @@
 
 #include "entity_metadata.h"
 
-class AbstractMinecartContainerMetadata : public EntityMetadata {
+class AbstractMinecartMetadata : public EntityMetadata {
  public:
-  AbstractMinecartContainerMetadata();
-  ~AbstractMinecartContainerMetadata() override;
+  AbstractMinecartMetadata();
+  ~AbstractMinecartMetadata() override;
 
  public:
   void wrapperWrite(MetadataBuffer&) override;
