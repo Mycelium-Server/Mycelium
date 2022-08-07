@@ -30,7 +30,7 @@ class AbstractMinecartContainerMetadata : public EntityMetadata {
 
  public:
   int shakingPower = 0;
-  int shakingDirection = 0;
+  int shakingDirection = 1;
   float shakingMultiplier = 0.0;
   int customBlockIDAndDamage = 0;
   int customBlockYPosition = 6;
