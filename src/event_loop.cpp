@@ -28,6 +28,7 @@ EventLoop::~EventLoop() {
 
 void EventLoop::destroy() {
   addToQueue([&]() { running = false; });
+  while (running);
   delete this;
 }
 
