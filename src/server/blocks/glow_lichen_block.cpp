@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "glow_lichen_block.h"
 
 GlowLichenBlock::GlowLichenBlock() = default;
@@ -151,4 +152,16 @@ short GlowLichenBlock::getId() const {
   if (down == DOWN_FALSE && east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && up == UP_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_TRUE) return 5325;
   if (down == DOWN_FALSE && east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && up == UP_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_FALSE) return 5326;
   return 5326;
+}
+
+std::shared_ptr<Block> GlowLichenBlock::clone() const {
+  std::shared_ptr<GlowLichenBlock> copy = std::make_shared<GlowLichenBlock>();
+  copy->down = down;
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->up = up;
+  copy->waterlogged = waterlogged;
+  copy->west = west;
+  return copy;
 }

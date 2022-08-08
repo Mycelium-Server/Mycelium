@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "deepslate_block.h"
 
 DeepslateBlock::DeepslateBlock() = default;
@@ -26,4 +27,10 @@ short DeepslateBlock::getId() const {
   if (axis == AXIS_Y) return 19779;
   if (axis == AXIS_Z) return 19780;
   return 19779;
+}
+
+std::shared_ptr<Block> DeepslateBlock::clone() const {
+  std::shared_ptr<DeepslateBlock> copy = std::make_shared<DeepslateBlock>();
+  copy->axis = axis;
+  return copy;
 }

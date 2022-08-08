@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "cobblestone_slab_block.h"
 
 CobblestoneSlabBlock::CobblestoneSlabBlock() = default;
@@ -29,4 +30,11 @@ short CobblestoneSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 9117;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 9118;
   return 9116;
+}
+
+std::shared_ptr<Block> CobblestoneSlabBlock::clone() const {
+  std::shared_ptr<CobblestoneSlabBlock> copy = std::make_shared<CobblestoneSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

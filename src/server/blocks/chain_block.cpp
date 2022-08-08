@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "chain_block.h"
 
 ChainBlock::ChainBlock() = default;
@@ -29,4 +30,11 @@ short ChainBlock::getId() const {
   if (axis == AXIS_Z && waterlogged == WATERLOGGED_TRUE) return 5108;
   if (axis == AXIS_Z && waterlogged == WATERLOGGED_FALSE) return 5109;
   return 5107;
+}
+
+std::shared_ptr<Block> ChainBlock::clone() const {
+  std::shared_ptr<ChainBlock> copy = std::make_shared<ChainBlock>();
+  copy->axis = axis;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

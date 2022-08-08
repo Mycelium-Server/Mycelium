@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "red_mushroom_block_block.h"
 
 RedMushroomBlockBlock::RedMushroomBlockBlock() = default;
@@ -87,4 +88,15 @@ short RedMushroomBlockBlock::getId() const {
   if (down == DOWN_FALSE && east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && up == UP_FALSE && west == WEST_TRUE) return 5006;
   if (down == DOWN_FALSE && east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && up == UP_FALSE && west == WEST_FALSE) return 5007;
   return 4944;
+}
+
+std::shared_ptr<Block> RedMushroomBlockBlock::clone() const {
+  std::shared_ptr<RedMushroomBlockBlock> copy = std::make_shared<RedMushroomBlockBlock>();
+  copy->down = down;
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->up = up;
+  copy->west = west;
+  return copy;
 }

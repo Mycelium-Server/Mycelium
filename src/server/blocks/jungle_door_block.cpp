@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "jungle_door_block.h"
 
 JungleDoorBlock::JungleDoorBlock() = default;
@@ -87,4 +88,14 @@ short JungleDoorBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_LOWER && hinge == HINGE_RIGHT && open == OPEN_FALSE && powered == POWERED_TRUE) return 9745;
   if (facing == FACING_EAST && half == HALF_LOWER && hinge == HINGE_RIGHT && open == OPEN_FALSE && powered == POWERED_FALSE) return 9746;
   return 9694;
+}
+
+std::shared_ptr<Block> JungleDoorBlock::clone() const {
+  std::shared_ptr<JungleDoorBlock> copy = std::make_shared<JungleDoorBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->hinge = hinge;
+  copy->open = open;
+  copy->powered = powered;
+  return copy;
 }

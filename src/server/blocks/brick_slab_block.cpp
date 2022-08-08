@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "brick_slab_block.h"
 
 BrickSlabBlock::BrickSlabBlock() = default;
@@ -29,4 +30,11 @@ short BrickSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 9123;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 9124;
   return 9122;
+}
+
+std::shared_ptr<Block> BrickSlabBlock::clone() const {
+  std::shared_ptr<BrickSlabBlock> copy = std::make_shared<BrickSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "shulker_box_block.h"
 
 ShulkerBoxBlock::ShulkerBoxBlock() = default;
@@ -29,4 +30,10 @@ short ShulkerBoxBlock::getId() const {
   if (facing == FACING_UP) return 10157;
   if (facing == FACING_DOWN) return 10158;
   return 10157;
+}
+
+std::shared_ptr<Block> ShulkerBoxBlock::clone() const {
+  std::shared_ptr<ShulkerBoxBlock> copy = std::make_shared<ShulkerBoxBlock>();
+  copy->facing = facing;
+  return copy;
 }

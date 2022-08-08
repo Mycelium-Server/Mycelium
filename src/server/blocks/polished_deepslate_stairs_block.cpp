@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "polished_deepslate_stairs_block.h"
 
 PolishedDeepslateStairsBlock::PolishedDeepslateStairsBlock() = default;
@@ -103,4 +104,13 @@ short PolishedDeepslateStairsBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_TRUE) return 20271;
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_FALSE) return 20272;
   return 20204;
+}
+
+std::shared_ptr<Block> PolishedDeepslateStairsBlock::clone() const {
+  std::shared_ptr<PolishedDeepslateStairsBlock> copy = std::make_shared<PolishedDeepslateStairsBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->shape = shape;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

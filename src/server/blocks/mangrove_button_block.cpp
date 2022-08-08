@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "mangrove_button_block.h"
 
 MangroveButtonBlock::MangroveButtonBlock() = default;
@@ -47,4 +48,12 @@ short MangroveButtonBlock::getId() const {
   if (face == FACE_CEILING && facing == FACING_EAST && powered == POWERED_TRUE) return 7105;
   if (face == FACE_CEILING && facing == FACING_EAST && powered == POWERED_FALSE) return 7106;
   return 7092;
+}
+
+std::shared_ptr<Block> MangroveButtonBlock::clone() const {
+  std::shared_ptr<MangroveButtonBlock> copy = std::make_shared<MangroveButtonBlock>();
+  copy->face = face;
+  copy->facing = facing;
+  copy->powered = powered;
+  return copy;
 }

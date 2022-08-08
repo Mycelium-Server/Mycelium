@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "stone_stairs_block.h"
 
 StoneStairsBlock::StoneStairsBlock() = default;
@@ -103,4 +104,13 @@ short StoneStairsBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_TRUE) return 11108;
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_FALSE) return 11109;
   return 11041;
+}
+
+std::shared_ptr<Block> StoneStairsBlock::clone() const {
+  std::shared_ptr<StoneStairsBlock> copy = std::make_shared<StoneStairsBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->shape = shape;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

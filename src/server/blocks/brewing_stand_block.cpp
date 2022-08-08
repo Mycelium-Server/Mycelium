@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "brewing_stand_block.h"
 
 BrewingStandBlock::BrewingStandBlock() = default;
@@ -31,4 +32,12 @@ short BrewingStandBlock::getId() const {
   if (has_bottle_0 == HAS_BOTTLE_0_FALSE && has_bottle_1 == HAS_BOTTLE_1_FALSE && has_bottle_2 == HAS_BOTTLE_2_TRUE) return 5726;
   if (has_bottle_0 == HAS_BOTTLE_0_FALSE && has_bottle_1 == HAS_BOTTLE_1_FALSE && has_bottle_2 == HAS_BOTTLE_2_FALSE) return 5727;
   return 5727;
+}
+
+std::shared_ptr<Block> BrewingStandBlock::clone() const {
+  std::shared_ptr<BrewingStandBlock> copy = std::make_shared<BrewingStandBlock>();
+  copy->has_bottle_0 = has_bottle_0;
+  copy->has_bottle_1 = has_bottle_1;
+  copy->has_bottle_2 = has_bottle_2;
+  return copy;
 }

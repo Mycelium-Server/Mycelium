@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "polished_andesite_slab_block.h"
 
 PolishedAndesiteSlabBlock::PolishedAndesiteSlabBlock() = default;
@@ -29,4 +30,11 @@ short PolishedAndesiteSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 11740;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 11741;
   return 11739;
+}
+
+std::shared_ptr<Block> PolishedAndesiteSlabBlock::clone() const {
+  std::shared_ptr<PolishedAndesiteSlabBlock> copy = std::make_shared<PolishedAndesiteSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

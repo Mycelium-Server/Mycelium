@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "stripped_acacia_log_block.h"
 
 StrippedAcaciaLogBlock::StrippedAcaciaLogBlock() = default;
@@ -26,4 +27,10 @@ short StrippedAcaciaLogBlock::getId() const {
   if (axis == AXIS_Y) return 153;
   if (axis == AXIS_Z) return 154;
   return 153;
+}
+
+std::shared_ptr<Block> StrippedAcaciaLogBlock::clone() const {
+  std::shared_ptr<StrippedAcaciaLogBlock> copy = std::make_shared<StrippedAcaciaLogBlock>();
+  copy->axis = axis;
+  return copy;
 }

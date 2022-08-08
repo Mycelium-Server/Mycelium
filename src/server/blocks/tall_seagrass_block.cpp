@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "tall_seagrass_block.h"
 
 TallSeagrassBlock::TallSeagrassBlock() = default;
@@ -25,4 +26,10 @@ short TallSeagrassBlock::getId() const {
   if (half == HALF_UPPER) return 1600;
   if (half == HALF_LOWER) return 1601;
   return 1601;
+}
+
+std::shared_ptr<Block> TallSeagrassBlock::clone() const {
+  std::shared_ptr<TallSeagrassBlock> copy = std::make_shared<TallSeagrassBlock>();
+  copy->half = half;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "crimson_stem_block.h"
 
 CrimsonStemBlock::CrimsonStemBlock() = default;
@@ -26,4 +27,10 @@ short CrimsonStemBlock::getId() const {
   if (axis == AXIS_Y) return 16185;
   if (axis == AXIS_Z) return 16186;
   return 16185;
+}
+
+std::shared_ptr<Block> CrimsonStemBlock::clone() const {
+  std::shared_ptr<CrimsonStemBlock> copy = std::make_shared<CrimsonStemBlock>();
+  copy->axis = axis;
+  return copy;
 }

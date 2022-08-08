@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "acacia_log_block.h"
 
 AcaciaLogBlock::AcaciaLogBlock() = default;
@@ -26,4 +27,10 @@ short AcaciaLogBlock::getId() const {
   if (axis == AXIS_Y) return 130;
   if (axis == AXIS_Z) return 131;
   return 130;
+}
+
+std::shared_ptr<Block> AcaciaLogBlock::clone() const {
+  std::shared_ptr<AcaciaLogBlock> copy = std::make_shared<AcaciaLogBlock>();
+  copy->axis = axis;
+  return copy;
 }

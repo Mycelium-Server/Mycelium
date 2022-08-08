@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "chain_command_block_block.h"
 
 ChainCommandBlockBlock::ChainCommandBlockBlock() = default;
@@ -35,4 +36,11 @@ short ChainCommandBlockBlock::getId() const {
   if (conditional == CONDITIONAL_FALSE && facing == FACING_UP) return 10128;
   if (conditional == CONDITIONAL_FALSE && facing == FACING_DOWN) return 10129;
   return 10124;
+}
+
+std::shared_ptr<Block> ChainCommandBlockBlock::clone() const {
+  std::shared_ptr<ChainCommandBlockBlock> copy = std::make_shared<ChainCommandBlockBlock>();
+  copy->conditional = conditional;
+  copy->facing = facing;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "jungle_leaves_block.h"
 
 JungleLeavesBlock::JungleLeavesBlock() = default;
@@ -51,4 +52,12 @@ short JungleLeavesBlock::getId() const {
   if (distance == DISTANCE_7 && persistent == PERSISTENT_FALSE && waterlogged == WATERLOGGED_TRUE) return 316;
   if (distance == DISTANCE_7 && persistent == PERSISTENT_FALSE && waterlogged == WATERLOGGED_FALSE) return 317;
   return 317;
+}
+
+std::shared_ptr<Block> JungleLeavesBlock::clone() const {
+  std::shared_ptr<JungleLeavesBlock> copy = std::make_shared<JungleLeavesBlock>();
+  copy->distance = distance;
+  copy->persistent = persistent;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

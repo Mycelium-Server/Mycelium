@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "orange_stained_glass_block.h"
 
 OrangeStainedGlassBlock::OrangeStainedGlassBlock() = default;
@@ -23,4 +24,9 @@ OrangeStainedGlassBlock::~OrangeStainedGlassBlock() = default;
 
 short OrangeStainedGlassBlock::getId() const {
   return 4405;
+}
+
+std::shared_ptr<Block> OrangeStainedGlassBlock::clone() const {
+  std::shared_ptr<OrangeStainedGlassBlock> copy = std::make_shared<OrangeStainedGlassBlock>();
+  return copy;
 }

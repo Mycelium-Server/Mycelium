@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "waxed_cut_copper_stairs_block.h"
 
 WaxedCutCopperStairsBlock::WaxedCutCopperStairsBlock() = default;
@@ -103,4 +104,13 @@ short WaxedCutCopperStairsBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_TRUE) return 19588;
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_FALSE) return 19589;
   return 19521;
+}
+
+std::shared_ptr<Block> WaxedCutCopperStairsBlock::clone() const {
+  std::shared_ptr<WaxedCutCopperStairsBlock> copy = std::make_shared<WaxedCutCopperStairsBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->shape = shape;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

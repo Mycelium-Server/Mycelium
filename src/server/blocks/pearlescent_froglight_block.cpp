@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "pearlescent_froglight_block.h"
 
 PearlescentFroglightBlock::PearlescentFroglightBlock() = default;
@@ -26,4 +27,10 @@ short PearlescentFroglightBlock::getId() const {
   if (axis == AXIS_Y) return 21444;
   if (axis == AXIS_Z) return 21445;
   return 21444;
+}
+
+std::shared_ptr<Block> PearlescentFroglightBlock::clone() const {
+  std::shared_ptr<PearlescentFroglightBlock> copy = std::make_shared<PearlescentFroglightBlock>();
+  copy->axis = axis;
+  return copy;
 }

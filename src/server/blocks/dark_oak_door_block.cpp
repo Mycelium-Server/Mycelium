@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "dark_oak_door_block.h"
 
 DarkOakDoorBlock::DarkOakDoorBlock() = default;
@@ -87,4 +88,14 @@ short DarkOakDoorBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_LOWER && hinge == HINGE_RIGHT && open == OPEN_FALSE && powered == POWERED_TRUE) return 9873;
   if (facing == FACING_EAST && half == HALF_LOWER && hinge == HINGE_RIGHT && open == OPEN_FALSE && powered == POWERED_FALSE) return 9874;
   return 9822;
+}
+
+std::shared_ptr<Block> DarkOakDoorBlock::clone() const {
+  std::shared_ptr<DarkOakDoorBlock> copy = std::make_shared<DarkOakDoorBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->hinge = hinge;
+  copy->open = open;
+  copy->powered = powered;
+  return copy;
 }

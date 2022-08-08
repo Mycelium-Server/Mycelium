@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "muddy_mangrove_roots_block.h"
 
 MuddyMangroveRootsBlock::MuddyMangroveRootsBlock() = default;
@@ -26,4 +27,10 @@ short MuddyMangroveRootsBlock::getId() const {
   if (axis == AXIS_Y) return 141;
   if (axis == AXIS_Z) return 142;
   return 141;
+}
+
+std::shared_ptr<Block> MuddyMangroveRootsBlock::clone() const {
+  std::shared_ptr<MuddyMangroveRootsBlock> copy = std::make_shared<MuddyMangroveRootsBlock>();
+  copy->axis = axis;
+  return copy;
 }

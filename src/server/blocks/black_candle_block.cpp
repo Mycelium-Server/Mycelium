@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "black_candle_block.h"
 
 BlackCandleBlock::BlackCandleBlock() = default;
@@ -39,4 +40,12 @@ short BlackCandleBlock::getId() const {
   if (candles == CANDLES_4 && lit == LIT_FALSE && waterlogged == WATERLOGGED_TRUE) return 18583;
   if (candles == CANDLES_4 && lit == LIT_FALSE && waterlogged == WATERLOGGED_FALSE) return 18584;
   return 18572;
+}
+
+std::shared_ptr<Block> BlackCandleBlock::clone() const {
+  std::shared_ptr<BlackCandleBlock> copy = std::make_shared<BlackCandleBlock>();
+  copy->candles = candles;
+  copy->lit = lit;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

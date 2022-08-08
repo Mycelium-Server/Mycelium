@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "purpur_pillar_block.h"
 
 PurpurPillarBlock::PurpurPillarBlock() = default;
@@ -26,4 +27,10 @@ short PurpurPillarBlock::getId() const {
   if (axis == AXIS_Y) return 10017;
   if (axis == AXIS_Z) return 10018;
   return 10017;
+}
+
+std::shared_ptr<Block> PurpurPillarBlock::clone() const {
+  std::shared_ptr<PurpurPillarBlock> copy = std::make_shared<PurpurPillarBlock>();
+  copy->axis = axis;
+  return copy;
 }

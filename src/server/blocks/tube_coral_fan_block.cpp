@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "tube_coral_fan_block.h"
 
 TubeCoralFanBlock::TubeCoralFanBlock() = default;
@@ -25,4 +26,10 @@ short TubeCoralFanBlock::getId() const {
   if (waterlogged == WATERLOGGED_TRUE) return 10431;
   if (waterlogged == WATERLOGGED_FALSE) return 10432;
   return 10431;
+}
+
+std::shared_ptr<Block> TubeCoralFanBlock::clone() const {
+  std::shared_ptr<TubeCoralFanBlock> copy = std::make_shared<TubeCoralFanBlock>();
+  copy->waterlogged = waterlogged;
+  return copy;
 }

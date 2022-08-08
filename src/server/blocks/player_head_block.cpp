@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "player_head_block.h"
 
 PlayerHeadBlock::PlayerHeadBlock() = default;
@@ -39,4 +40,10 @@ short PlayerHeadBlock::getId() const {
   if (rotation == ROTATION_14) return 7181;
   if (rotation == ROTATION_15) return 7182;
   return 7167;
+}
+
+std::shared_ptr<Block> PlayerHeadBlock::clone() const {
+  std::shared_ptr<PlayerHeadBlock> copy = std::make_shared<PlayerHeadBlock>();
+  copy->rotation = rotation;
+  return copy;
 }

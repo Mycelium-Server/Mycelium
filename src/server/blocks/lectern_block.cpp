@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "lectern_block.h"
 
 LecternBlock::LecternBlock() = default;
@@ -39,4 +40,12 @@ short LecternBlock::getId() const {
   if (facing == FACING_EAST && has_book == HAS_BOOK_FALSE && powered == POWERED_TRUE) return 16052;
   if (facing == FACING_EAST && has_book == HAS_BOOK_FALSE && powered == POWERED_FALSE) return 16053;
   return 16041;
+}
+
+std::shared_ptr<Block> LecternBlock::clone() const {
+  std::shared_ptr<LecternBlock> copy = std::make_shared<LecternBlock>();
+  copy->facing = facing;
+  copy->has_book = has_book;
+  copy->powered = powered;
+  return copy;
 }

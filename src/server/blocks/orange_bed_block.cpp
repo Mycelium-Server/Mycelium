@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "orange_bed_block.h"
 
 OrangeBedBlock::OrangeBedBlock() = default;
@@ -39,4 +40,12 @@ short OrangeBedBlock::getId() const {
   if (facing == FACING_EAST && occupied == OCCUPIED_FALSE && part == PART_HEAD) return 1309;
   if (facing == FACING_EAST && occupied == OCCUPIED_FALSE && part == PART_FOOT) return 1310;
   return 1298;
+}
+
+std::shared_ptr<Block> OrangeBedBlock::clone() const {
+  std::shared_ptr<OrangeBedBlock> copy = std::make_shared<OrangeBedBlock>();
+  copy->facing = facing;
+  copy->occupied = occupied;
+  copy->part = part;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "stonecutter_block.h"
 
 StonecutterBlock::StonecutterBlock() = default;
@@ -27,4 +28,10 @@ short StonecutterBlock::getId() const {
   if (facing == FACING_WEST) return 16057;
   if (facing == FACING_EAST) return 16058;
   return 16055;
+}
+
+std::shared_ptr<Block> StonecutterBlock::clone() const {
+  std::shared_ptr<StonecutterBlock> copy = std::make_shared<StonecutterBlock>();
+  copy->facing = facing;
+  return copy;
 }

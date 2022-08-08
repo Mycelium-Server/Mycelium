@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "acacia_pressure_plate_block.h"
 
 AcaciaPressurePlateBlock::AcaciaPressurePlateBlock() = default;
@@ -25,4 +26,10 @@ short AcaciaPressurePlateBlock::getId() const {
   if (powered == POWERED_TRUE) return 4186;
   if (powered == POWERED_FALSE) return 4187;
   return 4187;
+}
+
+std::shared_ptr<Block> AcaciaPressurePlateBlock::clone() const {
+  std::shared_ptr<AcaciaPressurePlateBlock> copy = std::make_shared<AcaciaPressurePlateBlock>();
+  copy->powered = powered;
+  return copy;
 }

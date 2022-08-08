@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "birch_button_block.h"
 
 BirchButtonBlock::BirchButtonBlock() = default;
@@ -47,4 +48,12 @@ short BirchButtonBlock::getId() const {
   if (face == FACE_CEILING && facing == FACING_EAST && powered == POWERED_TRUE) return 7009;
   if (face == FACE_CEILING && facing == FACING_EAST && powered == POWERED_FALSE) return 7010;
   return 6996;
+}
+
+std::shared_ptr<Block> BirchButtonBlock::clone() const {
+  std::shared_ptr<BirchButtonBlock> copy = std::make_shared<BirchButtonBlock>();
+  copy->face = face;
+  copy->facing = facing;
+  copy->powered = powered;
+  return copy;
 }

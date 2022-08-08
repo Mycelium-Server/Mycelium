@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "jungle_fence_gate_block.h"
 
 JungleFenceGateBlock::JungleFenceGateBlock() = default;
@@ -55,4 +56,13 @@ short JungleFenceGateBlock::getId() const {
   if (facing == FACING_EAST && in_wall == IN_WALL_FALSE && open == OPEN_FALSE && powered == POWERED_TRUE) return 9265;
   if (facing == FACING_EAST && in_wall == IN_WALL_FALSE && open == OPEN_FALSE && powered == POWERED_FALSE) return 9266;
   return 9242;
+}
+
+std::shared_ptr<Block> JungleFenceGateBlock::clone() const {
+  std::shared_ptr<JungleFenceGateBlock> copy = std::make_shared<JungleFenceGateBlock>();
+  copy->facing = facing;
+  copy->in_wall = in_wall;
+  copy->open = open;
+  copy->powered = powered;
+  return copy;
 }

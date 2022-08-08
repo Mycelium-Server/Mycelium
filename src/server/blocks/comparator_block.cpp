@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "comparator_block.h"
 
 ComparatorBlock::ComparatorBlock() = default;
@@ -39,4 +40,12 @@ short ComparatorBlock::getId() const {
   if (facing == FACING_EAST && mode == MODE_SUBTRACT && powered == POWERED_TRUE) return 7309;
   if (facing == FACING_EAST && mode == MODE_SUBTRACT && powered == POWERED_FALSE) return 7310;
   return 7296;
+}
+
+std::shared_ptr<Block> ComparatorBlock::clone() const {
+  std::shared_ptr<ComparatorBlock> copy = std::make_shared<ComparatorBlock>();
+  copy->facing = facing;
+  copy->mode = mode;
+  copy->powered = powered;
+  return copy;
 }

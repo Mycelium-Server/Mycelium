@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "red_nether_brick_stairs_block.h"
 
 RedNetherBrickStairsBlock::RedNetherBrickStairsBlock() = default;
@@ -103,4 +104,13 @@ short RedNetherBrickStairsBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_TRUE) return 11508;
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_FALSE) return 11509;
   return 11441;
+}
+
+std::shared_ptr<Block> RedNetherBrickStairsBlock::clone() const {
+  std::shared_ptr<RedNetherBrickStairsBlock> copy = std::make_shared<RedNetherBrickStairsBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->shape = shape;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

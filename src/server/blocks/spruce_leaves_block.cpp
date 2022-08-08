@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "spruce_leaves_block.h"
 
 SpruceLeavesBlock::SpruceLeavesBlock() = default;
@@ -51,4 +52,12 @@ short SpruceLeavesBlock::getId() const {
   if (distance == DISTANCE_7 && persistent == PERSISTENT_FALSE && waterlogged == WATERLOGGED_TRUE) return 260;
   if (distance == DISTANCE_7 && persistent == PERSISTENT_FALSE && waterlogged == WATERLOGGED_FALSE) return 261;
   return 261;
+}
+
+std::shared_ptr<Block> SpruceLeavesBlock::clone() const {
+  std::shared_ptr<SpruceLeavesBlock> copy = std::make_shared<SpruceLeavesBlock>();
+  copy->distance = distance;
+  copy->persistent = persistent;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

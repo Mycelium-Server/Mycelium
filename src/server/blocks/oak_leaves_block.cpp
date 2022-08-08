@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "oak_leaves_block.h"
 
 OakLeavesBlock::OakLeavesBlock() = default;
@@ -51,4 +52,12 @@ short OakLeavesBlock::getId() const {
   if (distance == DISTANCE_7 && persistent == PERSISTENT_FALSE && waterlogged == WATERLOGGED_TRUE) return 232;
   if (distance == DISTANCE_7 && persistent == PERSISTENT_FALSE && waterlogged == WATERLOGGED_FALSE) return 233;
   return 233;
+}
+
+std::shared_ptr<Block> OakLeavesBlock::clone() const {
+  std::shared_ptr<OakLeavesBlock> copy = std::make_shared<OakLeavesBlock>();
+  copy->distance = distance;
+  copy->persistent = persistent;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "acacia_sign_block.h"
 
 AcaciaSignBlock::AcaciaSignBlock() = default;
@@ -55,4 +56,11 @@ short AcaciaSignBlock::getId() const {
   if (rotation == ROTATION_15 && waterlogged == WATERLOGGED_TRUE) return 3762;
   if (rotation == ROTATION_15 && waterlogged == WATERLOGGED_FALSE) return 3763;
   return 3733;
+}
+
+std::shared_ptr<Block> AcaciaSignBlock::clone() const {
+  std::shared_ptr<AcaciaSignBlock> copy = std::make_shared<AcaciaSignBlock>();
+  copy->rotation = rotation;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

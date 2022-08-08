@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "white_banner_block.h"
 
 WhiteBannerBlock::WhiteBannerBlock() = default;
@@ -39,4 +40,10 @@ short WhiteBannerBlock::getId() const {
   if (rotation == ROTATION_14) return 8652;
   if (rotation == ROTATION_15) return 8653;
   return 8638;
+}
+
+std::shared_ptr<Block> WhiteBannerBlock::clone() const {
+  std::shared_ptr<WhiteBannerBlock> copy = std::make_shared<WhiteBannerBlock>();
+  copy->rotation = rotation;
+  return copy;
 }

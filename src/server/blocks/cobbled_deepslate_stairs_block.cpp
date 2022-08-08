@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "cobbled_deepslate_stairs_block.h"
 
 CobbledDeepslateStairsBlock::CobbledDeepslateStairsBlock() = default;
@@ -103,4 +104,13 @@ short CobbledDeepslateStairsBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_TRUE) return 19860;
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_FALSE) return 19861;
   return 19793;
+}
+
+std::shared_ptr<Block> CobbledDeepslateStairsBlock::clone() const {
+  std::shared_ptr<CobbledDeepslateStairsBlock> copy = std::make_shared<CobbledDeepslateStairsBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->shape = shape;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

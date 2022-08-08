@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "cobblestone_wall_block.h"
 
 CobblestoneWallBlock::CobblestoneWallBlock() = default;
@@ -347,4 +348,15 @@ short CobblestoneWallBlock::getId() const {
   if (east == EAST_TALL && north == NORTH_TALL && south == SOUTH_TALL && up == UP_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_LOW) return 6571;
   if (east == EAST_TALL && north == NORTH_TALL && south == SOUTH_TALL && up == UP_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_TALL) return 6572;
   return 6252;
+}
+
+std::shared_ptr<Block> CobblestoneWallBlock::clone() const {
+  std::shared_ptr<CobblestoneWallBlock> copy = std::make_shared<CobblestoneWallBlock>();
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->up = up;
+  copy->waterlogged = waterlogged;
+  copy->west = west;
+  return copy;
 }

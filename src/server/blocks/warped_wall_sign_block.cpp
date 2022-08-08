@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "warped_wall_sign_block.h"
 
 WarpedWallSignBlock::WarpedWallSignBlock() = default;
@@ -31,4 +32,11 @@ short WarpedWallSignBlock::getId() const {
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_TRUE) return 16942;
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_FALSE) return 16943;
   return 16937;
+}
+
+std::shared_ptr<Block> WarpedWallSignBlock::clone() const {
+  std::shared_ptr<WarpedWallSignBlock> copy = std::make_shared<WarpedWallSignBlock>();
+  copy->facing = facing;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

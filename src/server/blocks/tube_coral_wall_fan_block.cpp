@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "tube_coral_wall_fan_block.h"
 
 TubeCoralWallFanBlock::TubeCoralWallFanBlock() = default;
@@ -31,4 +32,11 @@ short TubeCoralWallFanBlock::getId() const {
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_TRUE) return 10487;
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_FALSE) return 10488;
   return 10481;
+}
+
+std::shared_ptr<Block> TubeCoralWallFanBlock::clone() const {
+  std::shared_ptr<TubeCoralWallFanBlock> copy = std::make_shared<TubeCoralWallFanBlock>();
+  copy->facing = facing;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

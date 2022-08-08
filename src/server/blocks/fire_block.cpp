@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "fire_block.h"
 
 FireBlock::FireBlock() = default;
@@ -535,4 +536,15 @@ short FireBlock::getId() const {
   if (age == AGE_15 && east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && up == UP_FALSE && west == WEST_TRUE) return 2204;
   if (age == AGE_15 && east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && up == UP_FALSE && west == WEST_FALSE) return 2205;
   return 1725;
+}
+
+std::shared_ptr<Block> FireBlock::clone() const {
+  std::shared_ptr<FireBlock> copy = std::make_shared<FireBlock>();
+  copy->age = age;
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->up = up;
+  copy->west = west;
+  return copy;
 }

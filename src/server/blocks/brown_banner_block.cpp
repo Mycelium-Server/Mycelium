@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "brown_banner_block.h"
 
 BrownBannerBlock::BrownBannerBlock() = default;
@@ -39,4 +40,10 @@ short BrownBannerBlock::getId() const {
   if (rotation == ROTATION_14) return 8844;
   if (rotation == ROTATION_15) return 8845;
   return 8830;
+}
+
+std::shared_ptr<Block> BrownBannerBlock::clone() const {
+  std::shared_ptr<BrownBannerBlock> copy = std::make_shared<BrownBannerBlock>();
+  copy->rotation = rotation;
+  return copy;
 }

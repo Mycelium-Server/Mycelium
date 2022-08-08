@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "smoker_block.h"
 
 SmokerBlock::SmokerBlock() = default;
@@ -31,4 +32,11 @@ short SmokerBlock::getId() const {
   if (facing == FACING_EAST && lit == LIT_TRUE) return 16014;
   if (facing == FACING_EAST && lit == LIT_FALSE) return 16015;
   return 16009;
+}
+
+std::shared_ptr<Block> SmokerBlock::clone() const {
+  std::shared_ptr<SmokerBlock> copy = std::make_shared<SmokerBlock>();
+  copy->facing = facing;
+  copy->lit = lit;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "lime_bed_block.h"
 
 LimeBedBlock::LimeBedBlock() = default;
@@ -39,4 +40,12 @@ short LimeBedBlock::getId() const {
   if (facing == FACING_EAST && occupied == OCCUPIED_FALSE && part == PART_HEAD) return 1373;
   if (facing == FACING_EAST && occupied == OCCUPIED_FALSE && part == PART_FOOT) return 1374;
   return 1362;
+}
+
+std::shared_ptr<Block> LimeBedBlock::clone() const {
+  std::shared_ptr<LimeBedBlock> copy = std::make_shared<LimeBedBlock>();
+  copy->facing = facing;
+  copy->occupied = occupied;
+  copy->part = part;
+  return copy;
 }

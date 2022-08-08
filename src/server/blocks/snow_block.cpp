@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "snow_block.h"
 
 SnowBlock::SnowBlock() = default;
@@ -31,4 +32,10 @@ short SnowBlock::getId() const {
   if (layers == LAYERS_7) return 4236;
   if (layers == LAYERS_8) return 4237;
   return 4230;
+}
+
+std::shared_ptr<Block> SnowBlock::clone() const {
+  std::shared_ptr<SnowBlock> copy = std::make_shared<SnowBlock>();
+  copy->layers = layers;
+  return copy;
 }

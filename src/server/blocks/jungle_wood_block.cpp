@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "jungle_wood_block.h"
 
 JungleWoodBlock::JungleWoodBlock() = default;
@@ -26,4 +27,10 @@ short JungleWoodBlock::getId() const {
   if (axis == AXIS_Y) return 174;
   if (axis == AXIS_Z) return 175;
   return 174;
+}
+
+std::shared_ptr<Block> JungleWoodBlock::clone() const {
+  std::shared_ptr<JungleWoodBlock> copy = std::make_shared<JungleWoodBlock>();
+  copy->axis = axis;
+  return copy;
 }

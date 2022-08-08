@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "medium_amethyst_bud_block.h"
 
 MediumAmethystBudBlock::MediumAmethystBudBlock() = default;
@@ -35,4 +36,11 @@ short MediumAmethystBudBlock::getId() const {
   if (facing == FACING_DOWN && waterlogged == WATERLOGGED_TRUE) return 18655;
   if (facing == FACING_DOWN && waterlogged == WATERLOGGED_FALSE) return 18656;
   return 18654;
+}
+
+std::shared_ptr<Block> MediumAmethystBudBlock::clone() const {
+  std::shared_ptr<MediumAmethystBudBlock> copy = std::make_shared<MediumAmethystBudBlock>();
+  copy->facing = facing;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

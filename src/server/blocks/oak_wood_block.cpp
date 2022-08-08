@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "oak_wood_block.h"
 
 OakWoodBlock::OakWoodBlock() = default;
@@ -26,4 +27,10 @@ short OakWoodBlock::getId() const {
   if (axis == AXIS_Y) return 165;
   if (axis == AXIS_Z) return 166;
   return 165;
+}
+
+std::shared_ptr<Block> OakWoodBlock::clone() const {
+  std::shared_ptr<OakWoodBlock> copy = std::make_shared<OakWoodBlock>();
+  copy->axis = axis;
+  return copy;
 }

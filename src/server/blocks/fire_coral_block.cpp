@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "fire_coral_block.h"
 
 FireCoralBlock::FireCoralBlock() = default;
@@ -25,4 +26,10 @@ short FireCoralBlock::getId() const {
   if (waterlogged == WATERLOGGED_TRUE) return 10417;
   if (waterlogged == WATERLOGGED_FALSE) return 10418;
   return 10417;
+}
+
+std::shared_ptr<Block> FireCoralBlock::clone() const {
+  std::shared_ptr<FireCoralBlock> copy = std::make_shared<FireCoralBlock>();
+  copy->waterlogged = waterlogged;
+  return copy;
 }

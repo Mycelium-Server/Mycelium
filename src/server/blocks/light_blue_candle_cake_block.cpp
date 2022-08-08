@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "light_blue_candle_cake_block.h"
 
 LightBlueCandleCakeBlock::LightBlueCandleCakeBlock() = default;
@@ -25,4 +26,10 @@ short LightBlueCandleCakeBlock::getId() const {
   if (lit == LIT_TRUE) return 18593;
   if (lit == LIT_FALSE) return 18594;
   return 18594;
+}
+
+std::shared_ptr<Block> LightBlueCandleCakeBlock::clone() const {
+  std::shared_ptr<LightBlueCandleCakeBlock> copy = std::make_shared<LightBlueCandleCakeBlock>();
+  copy->lit = lit;
+  return copy;
 }

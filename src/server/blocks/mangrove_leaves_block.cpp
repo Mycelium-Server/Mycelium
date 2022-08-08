@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "mangrove_leaves_block.h"
 
 MangroveLeavesBlock::MangroveLeavesBlock() = default;
@@ -51,4 +52,12 @@ short MangroveLeavesBlock::getId() const {
   if (distance == DISTANCE_7 && persistent == PERSISTENT_FALSE && waterlogged == WATERLOGGED_TRUE) return 400;
   if (distance == DISTANCE_7 && persistent == PERSISTENT_FALSE && waterlogged == WATERLOGGED_FALSE) return 401;
   return 401;
+}
+
+std::shared_ptr<Block> MangroveLeavesBlock::clone() const {
+  std::shared_ptr<MangroveLeavesBlock> copy = std::make_shared<MangroveLeavesBlock>();
+  copy->distance = distance;
+  copy->persistent = persistent;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

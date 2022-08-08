@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "red_banner_block.h"
 
 RedBannerBlock::RedBannerBlock() = default;
@@ -39,4 +40,10 @@ short RedBannerBlock::getId() const {
   if (rotation == ROTATION_14) return 8876;
   if (rotation == ROTATION_15) return 8877;
   return 8862;
+}
+
+std::shared_ptr<Block> RedBannerBlock::clone() const {
+  std::shared_ptr<RedBannerBlock> copy = std::make_shared<RedBannerBlock>();
+  copy->rotation = rotation;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "nether_portal_block.h"
 
 NetherPortalBlock::NetherPortalBlock() = default;
@@ -25,4 +26,10 @@ short NetherPortalBlock::getId() const {
   if (axis == AXIS_X) return 4323;
   if (axis == AXIS_Z) return 4324;
   return 4323;
+}
+
+std::shared_ptr<Block> NetherPortalBlock::clone() const {
+  std::shared_ptr<NetherPortalBlock> copy = std::make_shared<NetherPortalBlock>();
+  copy->axis = axis;
+  return copy;
 }

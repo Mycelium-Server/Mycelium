@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "attached_melon_stem_block.h"
 
 AttachedMelonStemBlock::AttachedMelonStemBlock() = default;
@@ -27,4 +28,10 @@ short AttachedMelonStemBlock::getId() const {
   if (facing == FACING_WEST) return 5149;
   if (facing == FACING_EAST) return 5150;
   return 5147;
+}
+
+std::shared_ptr<Block> AttachedMelonStemBlock::clone() const {
+  std::shared_ptr<AttachedMelonStemBlock> copy = std::make_shared<AttachedMelonStemBlock>();
+  copy->facing = facing;
+  return copy;
 }

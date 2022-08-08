@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "stripped_spruce_wood_block.h"
 
 StrippedSpruceWoodBlock::StrippedSpruceWoodBlock() = default;
@@ -26,4 +27,10 @@ short StrippedSpruceWoodBlock::getId() const {
   if (axis == AXIS_Y) return 189;
   if (axis == AXIS_Z) return 190;
   return 189;
+}
+
+std::shared_ptr<Block> StrippedSpruceWoodBlock::clone() const {
+  std::shared_ptr<StrippedSpruceWoodBlock> copy = std::make_shared<StrippedSpruceWoodBlock>();
+  copy->axis = axis;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "mossy_cobblestone_slab_block.h"
 
 MossyCobblestoneSlabBlock::MossyCobblestoneSlabBlock() = default;
@@ -29,4 +30,11 @@ short MossyCobblestoneSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 11698;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 11699;
   return 11697;
+}
+
+std::shared_ptr<Block> MossyCobblestoneSlabBlock::clone() const {
+  std::shared_ptr<MossyCobblestoneSlabBlock> copy = std::make_shared<MossyCobblestoneSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

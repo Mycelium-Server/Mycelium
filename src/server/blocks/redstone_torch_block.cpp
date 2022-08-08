@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "redstone_torch_block.h"
 
 RedstoneTorchBlock::RedstoneTorchBlock() = default;
@@ -25,4 +26,10 @@ short RedstoneTorchBlock::getId() const {
   if (lit == LIT_TRUE) return 4196;
   if (lit == LIT_FALSE) return 4197;
   return 4196;
+}
+
+std::shared_ptr<Block> RedstoneTorchBlock::clone() const {
+  std::shared_ptr<RedstoneTorchBlock> copy = std::make_shared<RedstoneTorchBlock>();
+  copy->lit = lit;
+  return copy;
 }

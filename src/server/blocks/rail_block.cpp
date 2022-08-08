@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "rail_block.h"
 
 RailBlock::RailBlock() = default;
@@ -43,4 +44,11 @@ short RailBlock::getId() const {
   if (shape == SHAPE_NORTH_EAST && waterlogged == WATERLOGGED_TRUE) return 3950;
   if (shape == SHAPE_NORTH_EAST && waterlogged == WATERLOGGED_FALSE) return 3951;
   return 3933;
+}
+
+std::shared_ptr<Block> RailBlock::clone() const {
+  std::shared_ptr<RailBlock> copy = std::make_shared<RailBlock>();
+  copy->shape = shape;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

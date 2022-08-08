@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "mangrove_pressure_plate_block.h"
 
 MangrovePressurePlateBlock::MangrovePressurePlateBlock() = default;
@@ -25,4 +26,10 @@ short MangrovePressurePlateBlock::getId() const {
   if (powered == POWERED_TRUE) return 4190;
   if (powered == POWERED_FALSE) return 4191;
   return 4191;
+}
+
+std::shared_ptr<Block> MangrovePressurePlateBlock::clone() const {
+  std::shared_ptr<MangrovePressurePlateBlock> copy = std::make_shared<MangrovePressurePlateBlock>();
+  copy->powered = powered;
+  return copy;
 }

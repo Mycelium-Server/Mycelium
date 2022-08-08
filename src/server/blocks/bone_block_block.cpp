@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "bone_block_block.h"
 
 BoneBlockBlock::BoneBlockBlock() = default;
@@ -26,4 +27,10 @@ short BoneBlockBlock::getId() const {
   if (axis == AXIS_Y) return 10138;
   if (axis == AXIS_Z) return 10139;
   return 10138;
+}
+
+std::shared_ptr<Block> BoneBlockBlock::clone() const {
+  std::shared_ptr<BoneBlockBlock> copy = std::make_shared<BoneBlockBlock>();
+  copy->axis = axis;
+  return copy;
 }

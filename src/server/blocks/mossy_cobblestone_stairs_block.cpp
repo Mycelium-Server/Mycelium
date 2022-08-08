@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "mossy_cobblestone_stairs_block.h"
 
 MossyCobblestoneStairsBlock::MossyCobblestoneStairsBlock() = default;
@@ -103,4 +104,13 @@ short MossyCobblestoneStairsBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_TRUE) return 10948;
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_FALSE) return 10949;
   return 10881;
+}
+
+std::shared_ptr<Block> MossyCobblestoneStairsBlock::clone() const {
+  std::shared_ptr<MossyCobblestoneStairsBlock> copy = std::make_shared<MossyCobblestoneStairsBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->shape = shape;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

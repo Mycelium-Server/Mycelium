@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "lime_banner_block.h"
 
 LimeBannerBlock::LimeBannerBlock() = default;
@@ -39,4 +40,10 @@ short LimeBannerBlock::getId() const {
   if (rotation == ROTATION_14) return 8732;
   if (rotation == ROTATION_15) return 8733;
   return 8718;
+}
+
+std::shared_ptr<Block> LimeBannerBlock::clone() const {
+  std::shared_ptr<LimeBannerBlock> copy = std::make_shared<LimeBannerBlock>();
+  copy->rotation = rotation;
+  return copy;
 }

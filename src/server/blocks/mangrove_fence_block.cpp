@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "mangrove_fence_block.h"
 
 MangroveFenceBlock::MangroveFenceBlock() = default;
@@ -55,4 +56,14 @@ short MangroveFenceBlock::getId() const {
   if (east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_TRUE) return 9553;
   if (east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_FALSE) return 9554;
   return 9554;
+}
+
+std::shared_ptr<Block> MangroveFenceBlock::clone() const {
+  std::shared_ptr<MangroveFenceBlock> copy = std::make_shared<MangroveFenceBlock>();
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->waterlogged = waterlogged;
+  copy->west = west;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "barrel_block.h"
 
 BarrelBlock::BarrelBlock() = default;
@@ -35,4 +36,11 @@ short BarrelBlock::getId() const {
   if (facing == FACING_DOWN && open == OPEN_TRUE) return 16006;
   if (facing == FACING_DOWN && open == OPEN_FALSE) return 16007;
   return 15997;
+}
+
+std::shared_ptr<Block> BarrelBlock::clone() const {
+  std::shared_ptr<BarrelBlock> copy = std::make_shared<BarrelBlock>();
+  copy->facing = facing;
+  copy->open = open;
+  return copy;
 }

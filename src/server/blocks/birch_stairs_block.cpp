@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "birch_stairs_block.h"
 
 BirchStairsBlock::BirchStairsBlock() = default;
@@ -103,4 +104,13 @@ short BirchStairsBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_TRUE) return 6154;
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_FALSE) return 6155;
   return 6087;
+}
+
+std::shared_ptr<Block> BirchStairsBlock::clone() const {
+  std::shared_ptr<BirchStairsBlock> copy = std::make_shared<BirchStairsBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->shape = shape;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

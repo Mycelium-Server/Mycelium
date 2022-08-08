@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "hopper_block.h"
 
 HopperBlock::HopperBlock() = default;
@@ -33,4 +34,11 @@ short HopperBlock::getId() const {
   if (enabled == ENABLED_FALSE && facing == FACING_WEST) return 7353;
   if (enabled == ENABLED_FALSE && facing == FACING_EAST) return 7354;
   return 7345;
+}
+
+std::shared_ptr<Block> HopperBlock::clone() const {
+  std::shared_ptr<HopperBlock> copy = std::make_shared<HopperBlock>();
+  copy->enabled = enabled;
+  copy->facing = facing;
+  return copy;
 }

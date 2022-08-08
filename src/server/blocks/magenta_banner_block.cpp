@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "magenta_banner_block.h"
 
 MagentaBannerBlock::MagentaBannerBlock() = default;
@@ -39,4 +40,10 @@ short MagentaBannerBlock::getId() const {
   if (rotation == ROTATION_14) return 8684;
   if (rotation == ROTATION_15) return 8685;
   return 8670;
+}
+
+std::shared_ptr<Block> MagentaBannerBlock::clone() const {
+  std::shared_ptr<MagentaBannerBlock> copy = std::make_shared<MagentaBannerBlock>();
+  copy->rotation = rotation;
+  return copy;
 }

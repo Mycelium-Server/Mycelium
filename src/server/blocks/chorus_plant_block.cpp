@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "chorus_plant_block.h"
 
 ChorusPlantBlock::ChorusPlantBlock() = default;
@@ -87,4 +88,15 @@ short ChorusPlantBlock::getId() const {
   if (down == DOWN_FALSE && east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && up == UP_FALSE && west == WEST_TRUE) return 10007;
   if (down == DOWN_FALSE && east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && up == UP_FALSE && west == WEST_FALSE) return 10008;
   return 10008;
+}
+
+std::shared_ptr<Block> ChorusPlantBlock::clone() const {
+  std::shared_ptr<ChorusPlantBlock> copy = std::make_shared<ChorusPlantBlock>();
+  copy->down = down;
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->up = up;
+  copy->west = west;
+  return copy;
 }

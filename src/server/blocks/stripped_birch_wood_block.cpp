@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "stripped_birch_wood_block.h"
 
 StrippedBirchWoodBlock::StrippedBirchWoodBlock() = default;
@@ -26,4 +27,10 @@ short StrippedBirchWoodBlock::getId() const {
   if (axis == AXIS_Y) return 192;
   if (axis == AXIS_Z) return 193;
   return 192;
+}
+
+std::shared_ptr<Block> StrippedBirchWoodBlock::clone() const {
+  std::shared_ptr<StrippedBirchWoodBlock> copy = std::make_shared<StrippedBirchWoodBlock>();
+  copy->axis = axis;
+  return copy;
 }

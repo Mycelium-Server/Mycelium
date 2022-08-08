@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "prismarine_brick_slab_block.h"
 
 PrismarineBrickSlabBlock::PrismarineBrickSlabBlock() = default;
@@ -29,4 +30,11 @@ short PrismarineBrickSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 8595;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 8596;
   return 8594;
+}
+
+std::shared_ptr<Block> PrismarineBrickSlabBlock::clone() const {
+  std::shared_ptr<PrismarineBrickSlabBlock> copy = std::make_shared<PrismarineBrickSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

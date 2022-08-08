@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "polished_blackstone_stairs_block.h"
 
 PolishedBlackstoneStairsBlock::PolishedBlackstoneStairsBlock() = default;
@@ -103,4 +104,13 @@ short PolishedBlackstoneStairsBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_TRUE) return 17952;
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_FALSE) return 17953;
   return 17885;
+}
+
+std::shared_ptr<Block> PolishedBlackstoneStairsBlock::clone() const {
+  std::shared_ptr<PolishedBlackstoneStairsBlock> copy = std::make_shared<PolishedBlackstoneStairsBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->shape = shape;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

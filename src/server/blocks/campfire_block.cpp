@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "campfire_block.h"
 
 CampfireBlock::CampfireBlock() = default;
@@ -55,4 +56,13 @@ short CampfireBlock::getId() const {
   if (facing == FACING_EAST && lit == LIT_FALSE && signal_fire == SIGNAL_FIRE_FALSE && waterlogged == WATERLOGGED_TRUE) return 16129;
   if (facing == FACING_EAST && lit == LIT_FALSE && signal_fire == SIGNAL_FIRE_FALSE && waterlogged == WATERLOGGED_FALSE) return 16130;
   return 16102;
+}
+
+std::shared_ptr<Block> CampfireBlock::clone() const {
+  std::shared_ptr<CampfireBlock> copy = std::make_shared<CampfireBlock>();
+  copy->facing = facing;
+  copy->lit = lit;
+  copy->signal_fire = signal_fire;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

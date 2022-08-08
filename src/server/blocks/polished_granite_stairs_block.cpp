@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "polished_granite_stairs_block.h"
 
 PolishedGraniteStairsBlock::PolishedGraniteStairsBlock() = default;
@@ -103,4 +104,13 @@ short PolishedGraniteStairsBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_TRUE) return 10628;
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_FALSE) return 10629;
   return 10561;
+}
+
+std::shared_ptr<Block> PolishedGraniteStairsBlock::clone() const {
+  std::shared_ptr<PolishedGraniteStairsBlock> copy = std::make_shared<PolishedGraniteStairsBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->shape = shape;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

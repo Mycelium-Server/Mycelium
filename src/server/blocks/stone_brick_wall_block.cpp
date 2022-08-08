@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "stone_brick_wall_block.h"
 
 StoneBrickWallBlock::StoneBrickWallBlock() = default;
@@ -347,4 +348,15 @@ short StoneBrickWallBlock::getId() const {
   if (east == EAST_TALL && north == NORTH_TALL && south == SOUTH_TALL && up == UP_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_LOW) return 13690;
   if (east == EAST_TALL && north == NORTH_TALL && south == SOUTH_TALL && up == UP_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_TALL) return 13691;
   return 13371;
+}
+
+std::shared_ptr<Block> StoneBrickWallBlock::clone() const {
+  std::shared_ptr<StoneBrickWallBlock> copy = std::make_shared<StoneBrickWallBlock>();
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->up = up;
+  copy->waterlogged = waterlogged;
+  copy->west = west;
+  return copy;
 }

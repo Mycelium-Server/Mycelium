@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "birch_log_block.h"
 
 BirchLogBlock::BirchLogBlock() = default;
@@ -26,4 +27,10 @@ short BirchLogBlock::getId() const {
   if (axis == AXIS_Y) return 124;
   if (axis == AXIS_Z) return 125;
   return 124;
+}
+
+std::shared_ptr<Block> BirchLogBlock::clone() const {
+  std::shared_ptr<BirchLogBlock> copy = std::make_shared<BirchLogBlock>();
+  copy->axis = axis;
+  return copy;
 }

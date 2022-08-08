@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "black_candle_cake_block.h"
 
 BlackCandleCakeBlock::BlackCandleCakeBlock() = default;
@@ -25,4 +26,10 @@ short BlackCandleCakeBlock::getId() const {
   if (lit == LIT_TRUE) return 18617;
   if (lit == LIT_FALSE) return 18618;
   return 18618;
+}
+
+std::shared_ptr<Block> BlackCandleCakeBlock::clone() const {
+  std::shared_ptr<BlackCandleCakeBlock> copy = std::make_shared<BlackCandleCakeBlock>();
+  copy->lit = lit;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "oak_wall_sign_block.h"
 
 OakWallSignBlock::OakWallSignBlock() = default;
@@ -31,4 +32,11 @@ short OakWallSignBlock::getId() const {
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_TRUE) return 4038;
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_FALSE) return 4039;
   return 4033;
+}
+
+std::shared_ptr<Block> OakWallSignBlock::clone() const {
+  std::shared_ptr<OakWallSignBlock> copy = std::make_shared<OakWallSignBlock>();
+  copy->facing = facing;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

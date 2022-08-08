@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "stripped_crimson_hyphae_block.h"
 
 StrippedCrimsonHyphaeBlock::StrippedCrimsonHyphaeBlock() = default;
@@ -26,4 +27,10 @@ short StrippedCrimsonHyphaeBlock::getId() const {
   if (axis == AXIS_Y) return 16194;
   if (axis == AXIS_Z) return 16195;
   return 16194;
+}
+
+std::shared_ptr<Block> StrippedCrimsonHyphaeBlock::clone() const {
+  std::shared_ptr<StrippedCrimsonHyphaeBlock> copy = std::make_shared<StrippedCrimsonHyphaeBlock>();
+  copy->axis = axis;
+  return copy;
 }

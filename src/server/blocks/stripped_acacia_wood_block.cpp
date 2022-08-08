@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "stripped_acacia_wood_block.h"
 
 StrippedAcaciaWoodBlock::StrippedAcaciaWoodBlock() = default;
@@ -26,4 +27,10 @@ short StrippedAcaciaWoodBlock::getId() const {
   if (axis == AXIS_Y) return 198;
   if (axis == AXIS_Z) return 199;
   return 198;
+}
+
+std::shared_ptr<Block> StrippedAcaciaWoodBlock::clone() const {
+  std::shared_ptr<StrippedAcaciaWoodBlock> copy = std::make_shared<StrippedAcaciaWoodBlock>();
+  copy->axis = axis;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "white_shulker_box_block.h"
 
 WhiteShulkerBoxBlock::WhiteShulkerBoxBlock() = default;
@@ -29,4 +30,10 @@ short WhiteShulkerBoxBlock::getId() const {
   if (facing == FACING_UP) return 10163;
   if (facing == FACING_DOWN) return 10164;
   return 10163;
+}
+
+std::shared_ptr<Block> WhiteShulkerBoxBlock::clone() const {
+  std::shared_ptr<WhiteShulkerBoxBlock> copy = std::make_shared<WhiteShulkerBoxBlock>();
+  copy->facing = facing;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "red_nether_brick_wall_block.h"
 
 RedNetherBrickWallBlock::RedNetherBrickWallBlock() = default;
@@ -347,4 +348,15 @@ short RedNetherBrickWallBlock::getId() const {
   if (east == EAST_TALL && north == NORTH_TALL && south == SOUTH_TALL && up == UP_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_LOW) return 14986;
   if (east == EAST_TALL && north == NORTH_TALL && south == SOUTH_TALL && up == UP_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_TALL) return 14987;
   return 14667;
+}
+
+std::shared_ptr<Block> RedNetherBrickWallBlock::clone() const {
+  std::shared_ptr<RedNetherBrickWallBlock> copy = std::make_shared<RedNetherBrickWallBlock>();
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->up = up;
+  copy->waterlogged = waterlogged;
+  copy->west = west;
+  return copy;
 }

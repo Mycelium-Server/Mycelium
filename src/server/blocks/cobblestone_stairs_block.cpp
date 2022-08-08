@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "cobblestone_stairs_block.h"
 
 CobblestoneStairsBlock::CobblestoneStairsBlock() = default;
@@ -103,4 +104,13 @@ short CobblestoneStairsBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_TRUE) return 4030;
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_FALSE) return 4031;
   return 3963;
+}
+
+std::shared_ptr<Block> CobblestoneStairsBlock::clone() const {
+  std::shared_ptr<CobblestoneStairsBlock> copy = std::make_shared<CobblestoneStairsBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->shape = shape;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

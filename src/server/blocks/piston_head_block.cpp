@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "piston_head_block.h"
 
 PistonHeadBlock::PistonHeadBlock() = default;
@@ -47,4 +48,12 @@ short PistonHeadBlock::getId() const {
   if (type == TYPE_NORMAL && facing == FACING_DOWN && isShort == SHORT_FALSE) return 1636;
   if (type == TYPE_STICKY && facing == FACING_DOWN && isShort == SHORT_FALSE) return 1637;
   return 1616;
+}
+
+std::shared_ptr<Block> PistonHeadBlock::clone() const {
+  std::shared_ptr<PistonHeadBlock> copy = std::make_shared<PistonHeadBlock>();
+  copy->type = type;
+  copy->facing = facing;
+  copy->isShort = isShort;
+  return copy;
 }

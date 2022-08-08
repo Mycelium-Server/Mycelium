@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "blast_furnace_block.h"
 
 BlastFurnaceBlock::BlastFurnaceBlock() = default;
@@ -31,4 +32,11 @@ short BlastFurnaceBlock::getId() const {
   if (facing == FACING_EAST && lit == LIT_TRUE) return 16022;
   if (facing == FACING_EAST && lit == LIT_FALSE) return 16023;
   return 16017;
+}
+
+std::shared_ptr<Block> BlastFurnaceBlock::clone() const {
+  std::shared_ptr<BlastFurnaceBlock> copy = std::make_shared<BlastFurnaceBlock>();
+  copy->facing = facing;
+  copy->lit = lit;
+  return copy;
 }

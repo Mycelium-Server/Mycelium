@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "white_glazed_terracotta_block.h"
 
 WhiteGlazedTerracottaBlock::WhiteGlazedTerracottaBlock() = default;
@@ -27,4 +28,10 @@ short WhiteGlazedTerracottaBlock::getId() const {
   if (facing == FACING_WEST) return 10257;
   if (facing == FACING_EAST) return 10258;
   return 10255;
+}
+
+std::shared_ptr<Block> WhiteGlazedTerracottaBlock::clone() const {
+  std::shared_ptr<WhiteGlazedTerracottaBlock> copy = std::make_shared<WhiteGlazedTerracottaBlock>();
+  copy->facing = facing;
+  return copy;
 }

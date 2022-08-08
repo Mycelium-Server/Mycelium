@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "green_bed_block.h"
 
 GreenBedBlock::GreenBedBlock() = default;
@@ -39,4 +40,12 @@ short GreenBedBlock::getId() const {
   if (facing == FACING_EAST && occupied == OCCUPIED_FALSE && part == PART_HEAD) return 1501;
   if (facing == FACING_EAST && occupied == OCCUPIED_FALSE && part == PART_FOOT) return 1502;
   return 1490;
+}
+
+std::shared_ptr<Block> GreenBedBlock::clone() const {
+  std::shared_ptr<GreenBedBlock> copy = std::make_shared<GreenBedBlock>();
+  copy->facing = facing;
+  copy->occupied = occupied;
+  copy->part = part;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "polished_blackstone_pressure_plate_block.h"
 
 PolishedBlackstonePressurePlateBlock::PolishedBlackstonePressurePlateBlock() = default;
@@ -25,4 +26,10 @@ short PolishedBlackstonePressurePlateBlock::getId() const {
   if (powered == POWERED_TRUE) return 17960;
   if (powered == POWERED_FALSE) return 17961;
   return 17961;
+}
+
+std::shared_ptr<Block> PolishedBlackstonePressurePlateBlock::clone() const {
+  std::shared_ptr<PolishedBlackstonePressurePlateBlock> copy = std::make_shared<PolishedBlackstonePressurePlateBlock>();
+  copy->powered = powered;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "warped_slab_block.h"
 
 WarpedSlabBlock::WarpedSlabBlock() = default;
@@ -29,4 +30,11 @@ short WarpedSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 16266;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 16267;
   return 16265;
+}
+
+std::shared_ptr<Block> WarpedSlabBlock::clone() const {
+  std::shared_ptr<WarpedSlabBlock> copy = std::make_shared<WarpedSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "brown_mushroom_block_block.h"
 
 BrownMushroomBlockBlock::BrownMushroomBlockBlock() = default;
@@ -87,4 +88,15 @@ short BrownMushroomBlockBlock::getId() const {
   if (down == DOWN_FALSE && east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && up == UP_FALSE && west == WEST_TRUE) return 4942;
   if (down == DOWN_FALSE && east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && up == UP_FALSE && west == WEST_FALSE) return 4943;
   return 4880;
+}
+
+std::shared_ptr<Block> BrownMushroomBlockBlock::clone() const {
+  std::shared_ptr<BrownMushroomBlockBlock> copy = std::make_shared<BrownMushroomBlockBlock>();
+  copy->down = down;
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->up = up;
+  copy->west = west;
+  return copy;
 }

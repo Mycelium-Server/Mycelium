@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "pink_wall_banner_block.h"
 
 PinkWallBannerBlock::PinkWallBannerBlock() = default;
@@ -27,4 +28,10 @@ short PinkWallBannerBlock::getId() const {
   if (facing == FACING_WEST) return 8920;
   if (facing == FACING_EAST) return 8921;
   return 8918;
+}
+
+std::shared_ptr<Block> PinkWallBannerBlock::clone() const {
+  std::shared_ptr<PinkWallBannerBlock> copy = std::make_shared<PinkWallBannerBlock>();
+  copy->facing = facing;
+  return copy;
 }

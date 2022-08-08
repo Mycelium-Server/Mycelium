@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "dark_oak_fence_gate_block.h"
 
 DarkOakFenceGateBlock::DarkOakFenceGateBlock() = default;
@@ -55,4 +56,13 @@ short DarkOakFenceGateBlock::getId() const {
   if (facing == FACING_EAST && in_wall == IN_WALL_FALSE && open == OPEN_FALSE && powered == POWERED_TRUE) return 9329;
   if (facing == FACING_EAST && in_wall == IN_WALL_FALSE && open == OPEN_FALSE && powered == POWERED_FALSE) return 9330;
   return 9306;
+}
+
+std::shared_ptr<Block> DarkOakFenceGateBlock::clone() const {
+  std::shared_ptr<DarkOakFenceGateBlock> copy = std::make_shared<DarkOakFenceGateBlock>();
+  copy->facing = facing;
+  copy->in_wall = in_wall;
+  copy->open = open;
+  copy->powered = powered;
+  return copy;
 }

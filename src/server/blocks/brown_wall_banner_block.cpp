@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "brown_wall_banner_block.h"
 
 BrownWallBannerBlock::BrownWallBannerBlock() = default;
@@ -27,4 +28,10 @@ short BrownWallBannerBlock::getId() const {
   if (facing == FACING_WEST) return 8944;
   if (facing == FACING_EAST) return 8945;
   return 8942;
+}
+
+std::shared_ptr<Block> BrownWallBannerBlock::clone() const {
+  std::shared_ptr<BrownWallBannerBlock> copy = std::make_shared<BrownWallBannerBlock>();
+  copy->facing = facing;
+  return copy;
 }

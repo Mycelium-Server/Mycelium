@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "magenta_glazed_terracotta_block.h"
 
 MagentaGlazedTerracottaBlock::MagentaGlazedTerracottaBlock() = default;
@@ -27,4 +28,10 @@ short MagentaGlazedTerracottaBlock::getId() const {
   if (facing == FACING_WEST) return 10265;
   if (facing == FACING_EAST) return 10266;
   return 10263;
+}
+
+std::shared_ptr<Block> MagentaGlazedTerracottaBlock::clone() const {
+  std::shared_ptr<MagentaGlazedTerracottaBlock> copy = std::make_shared<MagentaGlazedTerracottaBlock>();
+  copy->facing = facing;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "sandstone_slab_block.h"
 
 SandstoneSlabBlock::SandstoneSlabBlock() = default;
@@ -29,4 +30,11 @@ short SandstoneSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 9099;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 9100;
   return 9098;
+}
+
+std::shared_ptr<Block> SandstoneSlabBlock::clone() const {
+  std::shared_ptr<SandstoneSlabBlock> copy = std::make_shared<SandstoneSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

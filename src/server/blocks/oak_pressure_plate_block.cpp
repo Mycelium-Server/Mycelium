@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "oak_pressure_plate_block.h"
 
 OakPressurePlateBlock::OakPressurePlateBlock() = default;
@@ -25,4 +26,10 @@ short OakPressurePlateBlock::getId() const {
   if (powered == POWERED_TRUE) return 4178;
   if (powered == POWERED_FALSE) return 4179;
   return 4179;
+}
+
+std::shared_ptr<Block> OakPressurePlateBlock::clone() const {
+  std::shared_ptr<OakPressurePlateBlock> copy = std::make_shared<OakPressurePlateBlock>();
+  copy->powered = powered;
+  return copy;
 }

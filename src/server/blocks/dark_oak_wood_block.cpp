@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "dark_oak_wood_block.h"
 
 DarkOakWoodBlock::DarkOakWoodBlock() = default;
@@ -26,4 +27,10 @@ short DarkOakWoodBlock::getId() const {
   if (axis == AXIS_Y) return 180;
   if (axis == AXIS_Z) return 181;
   return 180;
+}
+
+std::shared_ptr<Block> DarkOakWoodBlock::clone() const {
+  std::shared_ptr<DarkOakWoodBlock> copy = std::make_shared<DarkOakWoodBlock>();
+  copy->axis = axis;
+  return copy;
 }

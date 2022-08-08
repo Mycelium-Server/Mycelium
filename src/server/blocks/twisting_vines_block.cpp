@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "twisting_vines_block.h"
 
 TwistingVinesBlock::TwistingVinesBlock() = default;
@@ -49,4 +50,10 @@ short TwistingVinesBlock::getId() const {
   if (age == AGE_24) return 16250;
   if (age == AGE_25) return 16251;
   return 16226;
+}
+
+std::shared_ptr<Block> TwistingVinesBlock::clone() const {
+  std::shared_ptr<TwistingVinesBlock> copy = std::make_shared<TwistingVinesBlock>();
+  copy->age = age;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "purple_candle_cake_block.h"
 
 PurpleCandleCakeBlock::PurpleCandleCakeBlock() = default;
@@ -25,4 +26,10 @@ short PurpleCandleCakeBlock::getId() const {
   if (lit == LIT_TRUE) return 18607;
   if (lit == LIT_FALSE) return 18608;
   return 18608;
+}
+
+std::shared_ptr<Block> PurpleCandleCakeBlock::clone() const {
+  std::shared_ptr<PurpleCandleCakeBlock> copy = std::make_shared<PurpleCandleCakeBlock>();
+  copy->lit = lit;
+  return copy;
 }

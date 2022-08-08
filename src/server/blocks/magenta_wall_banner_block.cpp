@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "magenta_wall_banner_block.h"
 
 MagentaWallBannerBlock::MagentaWallBannerBlock() = default;
@@ -27,4 +28,10 @@ short MagentaWallBannerBlock::getId() const {
   if (facing == FACING_WEST) return 8904;
   if (facing == FACING_EAST) return 8905;
   return 8902;
+}
+
+std::shared_ptr<Block> MagentaWallBannerBlock::clone() const {
+  std::shared_ptr<MagentaWallBannerBlock> copy = std::make_shared<MagentaWallBannerBlock>();
+  copy->facing = facing;
+  return copy;
 }

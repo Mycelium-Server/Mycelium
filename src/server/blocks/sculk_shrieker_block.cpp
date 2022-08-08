@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "sculk_shrieker_block.h"
 
 SculkShriekerBlock::SculkShriekerBlock() = default;
@@ -31,4 +32,12 @@ short SculkShriekerBlock::getId() const {
   if (can_summon == CAN_SUMMON_FALSE && shrieking == SHRIEKING_FALSE && waterlogged == WATERLOGGED_TRUE) return 18906;
   if (can_summon == CAN_SUMMON_FALSE && shrieking == SHRIEKING_FALSE && waterlogged == WATERLOGGED_FALSE) return 18907;
   return 18907;
+}
+
+std::shared_ptr<Block> SculkShriekerBlock::clone() const {
+  std::shared_ptr<SculkShriekerBlock> copy = std::make_shared<SculkShriekerBlock>();
+  copy->can_summon = can_summon;
+  copy->shrieking = shrieking;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

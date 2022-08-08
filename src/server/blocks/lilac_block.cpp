@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "lilac_block.h"
 
 LilacBlock::LilacBlock() = default;
@@ -25,4 +26,10 @@ short LilacBlock::getId() const {
   if (half == HALF_UPPER) return 8628;
   if (half == HALF_LOWER) return 8629;
   return 8629;
+}
+
+std::shared_ptr<Block> LilacBlock::clone() const {
+  std::shared_ptr<LilacBlock> copy = std::make_shared<LilacBlock>();
+  copy->half = half;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "oak_trapdoor_block.h"
 
 OakTrapdoorBlock::OakTrapdoorBlock() = default;
@@ -87,4 +88,14 @@ short OakTrapdoorBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && open == OPEN_FALSE && powered == POWERED_FALSE && waterlogged == WATERLOGGED_TRUE) return 4482;
   if (facing == FACING_EAST && half == HALF_BOTTOM && open == OPEN_FALSE && powered == POWERED_FALSE && waterlogged == WATERLOGGED_FALSE) return 4483;
   return 4435;
+}
+
+std::shared_ptr<Block> OakTrapdoorBlock::clone() const {
+  std::shared_ptr<OakTrapdoorBlock> copy = std::make_shared<OakTrapdoorBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->open = open;
+  copy->powered = powered;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "mossy_stone_brick_stairs_block.h"
 
 MossyStoneBrickStairsBlock::MossyStoneBrickStairsBlock() = default;
@@ -103,4 +104,13 @@ short MossyStoneBrickStairsBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_TRUE) return 10788;
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_FALSE) return 10789;
   return 10721;
+}
+
+std::shared_ptr<Block> MossyStoneBrickStairsBlock::clone() const {
+  std::shared_ptr<MossyStoneBrickStairsBlock> copy = std::make_shared<MossyStoneBrickStairsBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->shape = shape;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "mangrove_log_block.h"
 
 MangroveLogBlock::MangroveLogBlock() = default;
@@ -26,4 +27,10 @@ short MangroveLogBlock::getId() const {
   if (axis == AXIS_Y) return 136;
   if (axis == AXIS_Z) return 137;
   return 136;
+}
+
+std::shared_ptr<Block> MangroveLogBlock::clone() const {
+  std::shared_ptr<MangroveLogBlock> copy = std::make_shared<MangroveLogBlock>();
+  copy->axis = axis;
+  return copy;
 }

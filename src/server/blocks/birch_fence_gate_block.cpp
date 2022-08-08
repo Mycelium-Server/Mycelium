@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "birch_fence_gate_block.h"
 
 BirchFenceGateBlock::BirchFenceGateBlock() = default;
@@ -55,4 +56,13 @@ short BirchFenceGateBlock::getId() const {
   if (facing == FACING_EAST && in_wall == IN_WALL_FALSE && open == OPEN_FALSE && powered == POWERED_TRUE) return 9233;
   if (facing == FACING_EAST && in_wall == IN_WALL_FALSE && open == OPEN_FALSE && powered == POWERED_FALSE) return 9234;
   return 9210;
+}
+
+std::shared_ptr<Block> BirchFenceGateBlock::clone() const {
+  std::shared_ptr<BirchFenceGateBlock> copy = std::make_shared<BirchFenceGateBlock>();
+  copy->facing = facing;
+  copy->in_wall = in_wall;
+  copy->open = open;
+  copy->powered = powered;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "magenta_stained_glass_pane_block.h"
 
 MagentaStainedGlassPaneBlock::MagentaStainedGlassPaneBlock() = default;
@@ -55,4 +56,14 @@ short MagentaStainedGlassPaneBlock::getId() const {
   if (east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_TRUE) return 7586;
   if (east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_FALSE) return 7587;
   return 7587;
+}
+
+std::shared_ptr<Block> MagentaStainedGlassPaneBlock::clone() const {
+  std::shared_ptr<MagentaStainedGlassPaneBlock> copy = std::make_shared<MagentaStainedGlassPaneBlock>();
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->waterlogged = waterlogged;
+  copy->west = west;
+  return copy;
 }

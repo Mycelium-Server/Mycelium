@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "redstone_lamp_block.h"
 
 RedstoneLampBlock::RedstoneLampBlock() = default;
@@ -25,4 +26,10 @@ short RedstoneLampBlock::getId() const {
   if (lit == LIT_TRUE) return 5747;
   if (lit == LIT_FALSE) return 5748;
   return 5748;
+}
+
+std::shared_ptr<Block> RedstoneLampBlock::clone() const {
+  std::shared_ptr<RedstoneLampBlock> copy = std::make_shared<RedstoneLampBlock>();
+  copy->lit = lit;
+  return copy;
 }

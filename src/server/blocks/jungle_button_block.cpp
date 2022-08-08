@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "jungle_button_block.h"
 
 JungleButtonBlock::JungleButtonBlock() = default;
@@ -47,4 +48,12 @@ short JungleButtonBlock::getId() const {
   if (face == FACE_CEILING && facing == FACING_EAST && powered == POWERED_TRUE) return 7033;
   if (face == FACE_CEILING && facing == FACING_EAST && powered == POWERED_FALSE) return 7034;
   return 7020;
+}
+
+std::shared_ptr<Block> JungleButtonBlock::clone() const {
+  std::shared_ptr<JungleButtonBlock> copy = std::make_shared<JungleButtonBlock>();
+  copy->face = face;
+  copy->facing = facing;
+  copy->powered = powered;
+  return copy;
 }

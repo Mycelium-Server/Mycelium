@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "powder_snow_cauldron_block.h"
 
 PowderSnowCauldronBlock::PowderSnowCauldronBlock() = default;
@@ -26,4 +27,10 @@ short PowderSnowCauldronBlock::getId() const {
   if (level == LEVEL_2) return 5734;
   if (level == LEVEL_3) return 5735;
   return 5733;
+}
+
+std::shared_ptr<Block> PowderSnowCauldronBlock::clone() const {
+  std::shared_ptr<PowderSnowCauldronBlock> copy = std::make_shared<PowderSnowCauldronBlock>();
+  copy->level = level;
+  return copy;
 }

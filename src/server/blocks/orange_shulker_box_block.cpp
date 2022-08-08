@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "orange_shulker_box_block.h"
 
 OrangeShulkerBoxBlock::OrangeShulkerBoxBlock() = default;
@@ -29,4 +30,10 @@ short OrangeShulkerBoxBlock::getId() const {
   if (facing == FACING_UP) return 10169;
   if (facing == FACING_DOWN) return 10170;
   return 10169;
+}
+
+std::shared_ptr<Block> OrangeShulkerBoxBlock::clone() const {
+  std::shared_ptr<OrangeShulkerBoxBlock> copy = std::make_shared<OrangeShulkerBoxBlock>();
+  copy->facing = facing;
+  return copy;
 }

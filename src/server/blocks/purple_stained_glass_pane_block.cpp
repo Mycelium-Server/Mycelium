@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "purple_stained_glass_pane_block.h"
 
 PurpleStainedGlassPaneBlock::PurpleStainedGlassPaneBlock() = default;
@@ -55,4 +56,14 @@ short PurpleStainedGlassPaneBlock::getId() const {
   if (east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_TRUE) return 7842;
   if (east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_FALSE) return 7843;
   return 7843;
+}
+
+std::shared_ptr<Block> PurpleStainedGlassPaneBlock::clone() const {
+  std::shared_ptr<PurpleStainedGlassPaneBlock> copy = std::make_shared<PurpleStainedGlassPaneBlock>();
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->waterlogged = waterlogged;
+  copy->west = west;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "stripped_warped_stem_block.h"
 
 StrippedWarpedStemBlock::StrippedWarpedStemBlock() = default;
@@ -26,4 +27,10 @@ short StrippedWarpedStemBlock::getId() const {
   if (axis == AXIS_Y) return 16171;
   if (axis == AXIS_Z) return 16172;
   return 16171;
+}
+
+std::shared_ptr<Block> StrippedWarpedStemBlock::clone() const {
+  std::shared_ptr<StrippedWarpedStemBlock> copy = std::make_shared<StrippedWarpedStemBlock>();
+  copy->axis = axis;
+  return copy;
 }

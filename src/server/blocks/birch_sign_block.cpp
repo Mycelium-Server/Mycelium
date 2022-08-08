@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "birch_sign_block.h"
 
 BirchSignBlock::BirchSignBlock() = default;
@@ -55,4 +56,11 @@ short BirchSignBlock::getId() const {
   if (rotation == ROTATION_15 && waterlogged == WATERLOGGED_TRUE) return 3730;
   if (rotation == ROTATION_15 && waterlogged == WATERLOGGED_FALSE) return 3731;
   return 3701;
+}
+
+std::shared_ptr<Block> BirchSignBlock::clone() const {
+  std::shared_ptr<BirchSignBlock> copy = std::make_shared<BirchSignBlock>();
+  copy->rotation = rotation;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

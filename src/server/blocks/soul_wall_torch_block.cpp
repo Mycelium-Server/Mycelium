@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "soul_wall_torch_block.h"
 
 SoulWallTorchBlock::SoulWallTorchBlock() = default;
@@ -27,4 +28,10 @@ short SoulWallTorchBlock::getId() const {
   if (facing == FACING_WEST) return 4320;
   if (facing == FACING_EAST) return 4321;
   return 4318;
+}
+
+std::shared_ptr<Block> SoulWallTorchBlock::clone() const {
+  std::shared_ptr<SoulWallTorchBlock> copy = std::make_shared<SoulWallTorchBlock>();
+  copy->facing = facing;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "nether_brick_wall_block.h"
 
 NetherBrickWallBlock::NetherBrickWallBlock() = default;
@@ -347,4 +348,15 @@ short NetherBrickWallBlock::getId() const {
   if (east == EAST_TALL && north == NORTH_TALL && south == SOUTH_TALL && up == UP_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_LOW) return 14338;
   if (east == EAST_TALL && north == NORTH_TALL && south == SOUTH_TALL && up == UP_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_TALL) return 14339;
   return 14019;
+}
+
+std::shared_ptr<Block> NetherBrickWallBlock::clone() const {
+  std::shared_ptr<NetherBrickWallBlock> copy = std::make_shared<NetherBrickWallBlock>();
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->up = up;
+  copy->waterlogged = waterlogged;
+  copy->west = west;
+  return copy;
 }

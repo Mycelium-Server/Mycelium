@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "verdant_froglight_block.h"
 
 VerdantFroglightBlock::VerdantFroglightBlock() = default;
@@ -26,4 +27,10 @@ short VerdantFroglightBlock::getId() const {
   if (axis == AXIS_Y) return 21441;
   if (axis == AXIS_Z) return 21442;
   return 21441;
+}
+
+std::shared_ptr<Block> VerdantFroglightBlock::clone() const {
+  std::shared_ptr<VerdantFroglightBlock> copy = std::make_shared<VerdantFroglightBlock>();
+  copy->axis = axis;
+  return copy;
 }

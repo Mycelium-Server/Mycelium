@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "dead_tube_coral_wall_fan_block.h"
 
 DeadTubeCoralWallFanBlock::DeadTubeCoralWallFanBlock() = default;
@@ -31,4 +32,11 @@ short DeadTubeCoralWallFanBlock::getId() const {
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_TRUE) return 10447;
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_FALSE) return 10448;
   return 10441;
+}
+
+std::shared_ptr<Block> DeadTubeCoralWallFanBlock::clone() const {
+  std::shared_ptr<DeadTubeCoralWallFanBlock> copy = std::make_shared<DeadTubeCoralWallFanBlock>();
+  copy->facing = facing;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

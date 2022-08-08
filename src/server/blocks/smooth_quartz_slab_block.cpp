@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "smooth_quartz_slab_block.h"
 
 SmoothQuartzSlabBlock::SmoothQuartzSlabBlock() = default;
@@ -29,4 +30,11 @@ short SmoothQuartzSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 11716;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 11717;
   return 11715;
+}
+
+std::shared_ptr<Block> SmoothQuartzSlabBlock::clone() const {
+  std::shared_ptr<SmoothQuartzSlabBlock> copy = std::make_shared<SmoothQuartzSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

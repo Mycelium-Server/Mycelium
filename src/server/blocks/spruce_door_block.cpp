@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "spruce_door_block.h"
 
 SpruceDoorBlock::SpruceDoorBlock() = default;
@@ -87,4 +88,14 @@ short SpruceDoorBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_LOWER && hinge == HINGE_RIGHT && open == OPEN_FALSE && powered == POWERED_TRUE) return 9617;
   if (facing == FACING_EAST && half == HALF_LOWER && hinge == HINGE_RIGHT && open == OPEN_FALSE && powered == POWERED_FALSE) return 9618;
   return 9566;
+}
+
+std::shared_ptr<Block> SpruceDoorBlock::clone() const {
+  std::shared_ptr<SpruceDoorBlock> copy = std::make_shared<SpruceDoorBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->hinge = hinge;
+  copy->open = open;
+  copy->powered = powered;
+  return copy;
 }

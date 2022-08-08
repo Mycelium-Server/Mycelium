@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "acacia_slab_block.h"
 
 AcaciaSlabBlock::AcaciaSlabBlock() = default;
@@ -29,4 +30,11 @@ short AcaciaSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 9069;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 9070;
   return 9068;
+}
+
+std::shared_ptr<Block> AcaciaSlabBlock::clone() const {
+  std::shared_ptr<AcaciaSlabBlock> copy = std::make_shared<AcaciaSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

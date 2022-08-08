@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "dead_tube_coral_fan_block.h"
 
 DeadTubeCoralFanBlock::DeadTubeCoralFanBlock() = default;
@@ -25,4 +26,10 @@ short DeadTubeCoralFanBlock::getId() const {
   if (waterlogged == WATERLOGGED_TRUE) return 10421;
   if (waterlogged == WATERLOGGED_FALSE) return 10422;
   return 10421;
+}
+
+std::shared_ptr<Block> DeadTubeCoralFanBlock::clone() const {
+  std::shared_ptr<DeadTubeCoralFanBlock> copy = std::make_shared<DeadTubeCoralFanBlock>();
+  copy->waterlogged = waterlogged;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "magenta_bed_block.h"
 
 MagentaBedBlock::MagentaBedBlock() = default;
@@ -39,4 +40,12 @@ short MagentaBedBlock::getId() const {
   if (facing == FACING_EAST && occupied == OCCUPIED_FALSE && part == PART_HEAD) return 1325;
   if (facing == FACING_EAST && occupied == OCCUPIED_FALSE && part == PART_FOOT) return 1326;
   return 1314;
+}
+
+std::shared_ptr<Block> MagentaBedBlock::clone() const {
+  std::shared_ptr<MagentaBedBlock> copy = std::make_shared<MagentaBedBlock>();
+  copy->facing = facing;
+  copy->occupied = occupied;
+  copy->part = part;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "stripped_jungle_log_block.h"
 
 StrippedJungleLogBlock::StrippedJungleLogBlock() = default;
@@ -26,4 +27,10 @@ short StrippedJungleLogBlock::getId() const {
   if (axis == AXIS_Y) return 150;
   if (axis == AXIS_Z) return 151;
   return 150;
+}
+
+std::shared_ptr<Block> StrippedJungleLogBlock::clone() const {
+  std::shared_ptr<StrippedJungleLogBlock> copy = std::make_shared<StrippedJungleLogBlock>();
+  copy->axis = axis;
+  return copy;
 }

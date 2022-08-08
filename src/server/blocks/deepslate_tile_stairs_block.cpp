@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "deepslate_tile_stairs_block.h"
 
 DeepslateTileStairsBlock::DeepslateTileStairsBlock() = default;
@@ -103,4 +104,13 @@ short DeepslateTileStairsBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_TRUE) return 20682;
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_FALSE) return 20683;
   return 20615;
+}
+
+std::shared_ptr<Block> DeepslateTileStairsBlock::clone() const {
+  std::shared_ptr<DeepslateTileStairsBlock> copy = std::make_shared<DeepslateTileStairsBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->shape = shape;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

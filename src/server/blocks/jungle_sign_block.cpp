@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "jungle_sign_block.h"
 
 JungleSignBlock::JungleSignBlock() = default;
@@ -55,4 +56,11 @@ short JungleSignBlock::getId() const {
   if (rotation == ROTATION_15 && waterlogged == WATERLOGGED_TRUE) return 3794;
   if (rotation == ROTATION_15 && waterlogged == WATERLOGGED_FALSE) return 3795;
   return 3765;
+}
+
+std::shared_ptr<Block> JungleSignBlock::clone() const {
+  std::shared_ptr<JungleSignBlock> copy = std::make_shared<JungleSignBlock>();
+  copy->rotation = rotation;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

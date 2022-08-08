@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "jungle_pressure_plate_block.h"
 
 JunglePressurePlateBlock::JunglePressurePlateBlock() = default;
@@ -25,4 +26,10 @@ short JunglePressurePlateBlock::getId() const {
   if (powered == POWERED_TRUE) return 4184;
   if (powered == POWERED_FALSE) return 4185;
   return 4185;
+}
+
+std::shared_ptr<Block> JunglePressurePlateBlock::clone() const {
+  std::shared_ptr<JunglePressurePlateBlock> copy = std::make_shared<JunglePressurePlateBlock>();
+  copy->powered = powered;
+  return copy;
 }

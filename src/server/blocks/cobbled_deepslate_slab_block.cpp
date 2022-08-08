@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "cobbled_deepslate_slab_block.h"
 
 CobbledDeepslateSlabBlock::CobbledDeepslateSlabBlock() = default;
@@ -29,4 +30,11 @@ short CobbledDeepslateSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 19866;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 19867;
   return 19865;
+}
+
+std::shared_ptr<Block> CobbledDeepslateSlabBlock::clone() const {
+  std::shared_ptr<CobbledDeepslateSlabBlock> copy = std::make_shared<CobbledDeepslateSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

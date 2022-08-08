@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "polished_blackstone_button_block.h"
 
 PolishedBlackstoneButtonBlock::PolishedBlackstoneButtonBlock() = default;
@@ -47,4 +48,12 @@ short PolishedBlackstoneButtonBlock::getId() const {
   if (face == FACE_CEILING && facing == FACING_EAST && powered == POWERED_TRUE) return 17984;
   if (face == FACE_CEILING && facing == FACING_EAST && powered == POWERED_FALSE) return 17985;
   return 17971;
+}
+
+std::shared_ptr<Block> PolishedBlackstoneButtonBlock::clone() const {
+  std::shared_ptr<PolishedBlackstoneButtonBlock> copy = std::make_shared<PolishedBlackstoneButtonBlock>();
+  copy->face = face;
+  copy->facing = facing;
+  copy->powered = powered;
+  return copy;
 }

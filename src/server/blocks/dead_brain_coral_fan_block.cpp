@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "dead_brain_coral_fan_block.h"
 
 DeadBrainCoralFanBlock::DeadBrainCoralFanBlock() = default;
@@ -25,4 +26,10 @@ short DeadBrainCoralFanBlock::getId() const {
   if (waterlogged == WATERLOGGED_TRUE) return 10423;
   if (waterlogged == WATERLOGGED_FALSE) return 10424;
   return 10423;
+}
+
+std::shared_ptr<Block> DeadBrainCoralFanBlock::clone() const {
+  std::shared_ptr<DeadBrainCoralFanBlock> copy = std::make_shared<DeadBrainCoralFanBlock>();
+  copy->waterlogged = waterlogged;
+  return copy;
 }

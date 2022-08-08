@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "purple_wall_banner_block.h"
 
 PurpleWallBannerBlock::PurpleWallBannerBlock() = default;
@@ -27,4 +28,10 @@ short PurpleWallBannerBlock::getId() const {
   if (facing == FACING_WEST) return 8936;
   if (facing == FACING_EAST) return 8937;
   return 8934;
+}
+
+std::shared_ptr<Block> PurpleWallBannerBlock::clone() const {
+  std::shared_ptr<PurpleWallBannerBlock> copy = std::make_shared<PurpleWallBannerBlock>();
+  copy->facing = facing;
+  return copy;
 }

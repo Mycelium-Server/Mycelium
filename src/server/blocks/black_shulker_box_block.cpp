@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "black_shulker_box_block.h"
 
 BlackShulkerBoxBlock::BlackShulkerBoxBlock() = default;
@@ -29,4 +30,10 @@ short BlackShulkerBoxBlock::getId() const {
   if (facing == FACING_UP) return 10253;
   if (facing == FACING_DOWN) return 10254;
   return 10253;
+}
+
+std::shared_ptr<Block> BlackShulkerBoxBlock::clone() const {
+  std::shared_ptr<BlackShulkerBoxBlock> copy = std::make_shared<BlackShulkerBoxBlock>();
+  copy->facing = facing;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "dead_brain_coral_wall_fan_block.h"
 
 DeadBrainCoralWallFanBlock::DeadBrainCoralWallFanBlock() = default;
@@ -31,4 +32,11 @@ short DeadBrainCoralWallFanBlock::getId() const {
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_TRUE) return 10455;
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_FALSE) return 10456;
   return 10449;
+}
+
+std::shared_ptr<Block> DeadBrainCoralWallFanBlock::clone() const {
+  std::shared_ptr<DeadBrainCoralWallFanBlock> copy = std::make_shared<DeadBrainCoralWallFanBlock>();
+  copy->facing = facing;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

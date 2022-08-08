@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "ladder_block.h"
 
 LadderBlock::LadderBlock() = default;
@@ -31,4 +32,11 @@ short LadderBlock::getId() const {
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_TRUE) return 3930;
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_FALSE) return 3931;
   return 3925;
+}
+
+std::shared_ptr<Block> LadderBlock::clone() const {
+  std::shared_ptr<LadderBlock> copy = std::make_shared<LadderBlock>();
+  copy->facing = facing;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

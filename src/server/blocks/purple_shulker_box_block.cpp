@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "purple_shulker_box_block.h"
 
 PurpleShulkerBoxBlock::PurpleShulkerBoxBlock() = default;
@@ -29,4 +30,10 @@ short PurpleShulkerBoxBlock::getId() const {
   if (facing == FACING_UP) return 10223;
   if (facing == FACING_DOWN) return 10224;
   return 10223;
+}
+
+std::shared_ptr<Block> PurpleShulkerBoxBlock::clone() const {
+  std::shared_ptr<PurpleShulkerBoxBlock> copy = std::make_shared<PurpleShulkerBoxBlock>();
+  copy->facing = facing;
+  return copy;
 }

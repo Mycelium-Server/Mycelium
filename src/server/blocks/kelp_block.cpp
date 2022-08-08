@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "kelp_block.h"
 
 KelpBlock::KelpBlock() = default;
@@ -49,4 +50,10 @@ short KelpBlock::getId() const {
   if (age == AGE_24) return 10375;
   if (age == AGE_25) return 10376;
   return 10351;
+}
+
+std::shared_ptr<Block> KelpBlock::clone() const {
+  std::shared_ptr<KelpBlock> copy = std::make_shared<KelpBlock>();
+  copy->age = age;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "crimson_wall_sign_block.h"
 
 CrimsonWallSignBlock::CrimsonWallSignBlock() = default;
@@ -31,4 +32,11 @@ short CrimsonWallSignBlock::getId() const {
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_TRUE) return 16934;
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_FALSE) return 16935;
   return 16929;
+}
+
+std::shared_ptr<Block> CrimsonWallSignBlock::clone() const {
+  std::shared_ptr<CrimsonWallSignBlock> copy = std::make_shared<CrimsonWallSignBlock>();
+  copy->facing = facing;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

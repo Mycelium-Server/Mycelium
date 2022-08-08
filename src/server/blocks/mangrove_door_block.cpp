@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "mangrove_door_block.h"
 
 MangroveDoorBlock::MangroveDoorBlock() = default;
@@ -87,4 +88,14 @@ short MangroveDoorBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_LOWER && hinge == HINGE_RIGHT && open == OPEN_FALSE && powered == POWERED_TRUE) return 9937;
   if (facing == FACING_EAST && half == HALF_LOWER && hinge == HINGE_RIGHT && open == OPEN_FALSE && powered == POWERED_FALSE) return 9938;
   return 9886;
+}
+
+std::shared_ptr<Block> MangroveDoorBlock::clone() const {
+  std::shared_ptr<MangroveDoorBlock> copy = std::make_shared<MangroveDoorBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->hinge = hinge;
+  copy->open = open;
+  copy->powered = powered;
+  return copy;
 }

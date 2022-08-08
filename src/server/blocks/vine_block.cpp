@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "vine_block.h"
 
 VineBlock::VineBlock() = default;
@@ -55,4 +56,14 @@ short VineBlock::getId() const {
   if (east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && up == UP_FALSE && west == WEST_TRUE) return 5197;
   if (east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && up == UP_FALSE && west == WEST_FALSE) return 5198;
   return 5198;
+}
+
+std::shared_ptr<Block> VineBlock::clone() const {
+  std::shared_ptr<VineBlock> copy = std::make_shared<VineBlock>();
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->up = up;
+  copy->west = west;
+  return copy;
 }

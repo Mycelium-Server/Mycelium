@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "note_block_block.h"
 
 NoteBlockBlock::NoteBlockBlock() = default;
@@ -823,4 +824,12 @@ short NoteBlockBlock::getId() const {
   if (instrument == INSTRUMENT_PLING && note == NOTE_24 && powered == POWERED_TRUE) return 1277;
   if (instrument == INSTRUMENT_PLING && note == NOTE_24 && powered == POWERED_FALSE) return 1278;
   return 480;
+}
+
+std::shared_ptr<Block> NoteBlockBlock::clone() const {
+  std::shared_ptr<NoteBlockBlock> copy = std::make_shared<NoteBlockBlock>();
+  copy->instrument = instrument;
+  copy->note = note;
+  copy->powered = powered;
+  return copy;
 }

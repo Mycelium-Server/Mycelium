@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "loom_block.h"
 
 LoomBlock::LoomBlock() = default;
@@ -27,4 +28,10 @@ short LoomBlock::getId() const {
   if (facing == FACING_WEST) return 15994;
   if (facing == FACING_EAST) return 15995;
   return 15992;
+}
+
+std::shared_ptr<Block> LoomBlock::clone() const {
+  std::shared_ptr<LoomBlock> copy = std::make_shared<LoomBlock>();
+  copy->facing = facing;
+  return copy;
 }

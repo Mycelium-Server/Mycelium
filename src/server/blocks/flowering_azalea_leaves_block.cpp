@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "flowering_azalea_leaves_block.h"
 
 FloweringAzaleaLeavesBlock::FloweringAzaleaLeavesBlock() = default;
@@ -51,4 +52,12 @@ short FloweringAzaleaLeavesBlock::getId() const {
   if (distance == DISTANCE_7 && persistent == PERSISTENT_FALSE && waterlogged == WATERLOGGED_TRUE) return 456;
   if (distance == DISTANCE_7 && persistent == PERSISTENT_FALSE && waterlogged == WATERLOGGED_FALSE) return 457;
   return 457;
+}
+
+std::shared_ptr<Block> FloweringAzaleaLeavesBlock::clone() const {
+  std::shared_ptr<FloweringAzaleaLeavesBlock> copy = std::make_shared<FloweringAzaleaLeavesBlock>();
+  copy->distance = distance;
+  copy->persistent = persistent;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

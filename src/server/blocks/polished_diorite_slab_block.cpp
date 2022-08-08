@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "polished_diorite_slab_block.h"
 
 PolishedDioriteSlabBlock::PolishedDioriteSlabBlock() = default;
@@ -29,4 +30,11 @@ short PolishedDioriteSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 11692;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 11693;
   return 11691;
+}
+
+std::shared_ptr<Block> PolishedDioriteSlabBlock::clone() const {
+  std::shared_ptr<PolishedDioriteSlabBlock> copy = std::make_shared<PolishedDioriteSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

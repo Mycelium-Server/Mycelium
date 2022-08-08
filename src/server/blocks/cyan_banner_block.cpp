@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "cyan_banner_block.h"
 
 CyanBannerBlock::CyanBannerBlock() = default;
@@ -39,4 +40,10 @@ short CyanBannerBlock::getId() const {
   if (rotation == ROTATION_14) return 8796;
   if (rotation == ROTATION_15) return 8797;
   return 8782;
+}
+
+std::shared_ptr<Block> CyanBannerBlock::clone() const {
+  std::shared_ptr<CyanBannerBlock> copy = std::make_shared<CyanBannerBlock>();
+  copy->rotation = rotation;
+  return copy;
 }

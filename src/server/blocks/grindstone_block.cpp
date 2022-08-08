@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "grindstone_block.h"
 
 GrindstoneBlock::GrindstoneBlock() = default;
@@ -35,4 +36,11 @@ short GrindstoneBlock::getId() const {
   if (face == FACE_CEILING && facing == FACING_WEST) return 16036;
   if (face == FACE_CEILING && facing == FACING_EAST) return 16037;
   return 16030;
+}
+
+std::shared_ptr<Block> GrindstoneBlock::clone() const {
+  std::shared_ptr<GrindstoneBlock> copy = std::make_shared<GrindstoneBlock>();
+  copy->face = face;
+  copy->facing = facing;
+  return copy;
 }

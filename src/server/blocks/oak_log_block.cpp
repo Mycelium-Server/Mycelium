@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "oak_log_block.h"
 
 OakLogBlock::OakLogBlock() = default;
@@ -26,4 +27,10 @@ short OakLogBlock::getId() const {
   if (axis == AXIS_Y) return 118;
   if (axis == AXIS_Z) return 119;
   return 118;
+}
+
+std::shared_ptr<Block> OakLogBlock::clone() const {
+  std::shared_ptr<OakLogBlock> copy = std::make_shared<OakLogBlock>();
+  copy->axis = axis;
+  return copy;
 }

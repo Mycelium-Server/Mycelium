@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "purple_banner_block.h"
 
 PurpleBannerBlock::PurpleBannerBlock() = default;
@@ -39,4 +40,10 @@ short PurpleBannerBlock::getId() const {
   if (rotation == ROTATION_14) return 8812;
   if (rotation == ROTATION_15) return 8813;
   return 8798;
+}
+
+std::shared_ptr<Block> PurpleBannerBlock::clone() const {
+  std::shared_ptr<PurpleBannerBlock> copy = std::make_shared<PurpleBannerBlock>();
+  copy->rotation = rotation;
+  return copy;
 }

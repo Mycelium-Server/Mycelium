@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "mud_brick_slab_block.h"
 
 MudBrickSlabBlock::MudBrickSlabBlock() = default;
@@ -29,4 +30,11 @@ short MudBrickSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 9135;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 9136;
   return 9134;
+}
+
+std::shared_ptr<Block> MudBrickSlabBlock::clone() const {
+  std::shared_ptr<MudBrickSlabBlock> copy = std::make_shared<MudBrickSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

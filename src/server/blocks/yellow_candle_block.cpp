@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "yellow_candle_block.h"
 
 YellowCandleBlock::YellowCandleBlock() = default;
@@ -39,4 +40,12 @@ short YellowCandleBlock::getId() const {
   if (candles == CANDLES_4 && lit == LIT_FALSE && waterlogged == WATERLOGGED_TRUE) return 18407;
   if (candles == CANDLES_4 && lit == LIT_FALSE && waterlogged == WATERLOGGED_FALSE) return 18408;
   return 18396;
+}
+
+std::shared_ptr<Block> YellowCandleBlock::clone() const {
+  std::shared_ptr<YellowCandleBlock> copy = std::make_shared<YellowCandleBlock>();
+  copy->candles = candles;
+  copy->lit = lit;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

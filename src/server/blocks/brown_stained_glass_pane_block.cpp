@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "brown_stained_glass_pane_block.h"
 
 BrownStainedGlassPaneBlock::BrownStainedGlassPaneBlock() = default;
@@ -55,4 +56,14 @@ short BrownStainedGlassPaneBlock::getId() const {
   if (east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_TRUE) return 7906;
   if (east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_FALSE) return 7907;
   return 7907;
+}
+
+std::shared_ptr<Block> BrownStainedGlassPaneBlock::clone() const {
+  std::shared_ptr<BrownStainedGlassPaneBlock> copy = std::make_shared<BrownStainedGlassPaneBlock>();
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->waterlogged = waterlogged;
+  copy->west = west;
+  return copy;
 }

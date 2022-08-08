@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "jungle_sapling_block.h"
 
 JungleSaplingBlock::JungleSaplingBlock() = default;
@@ -25,4 +26,10 @@ short JungleSaplingBlock::getId() const {
   if (stage == STAGE_0) return 28;
   if (stage == STAGE_1) return 29;
   return 28;
+}
+
+std::shared_ptr<Block> JungleSaplingBlock::clone() const {
+  std::shared_ptr<JungleSaplingBlock> copy = std::make_shared<JungleSaplingBlock>();
+  copy->stage = stage;
+  return copy;
 }

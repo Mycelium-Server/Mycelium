@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "hay_block_block.h"
 
 HayBlockBlock::HayBlockBlock() = default;
@@ -26,4 +27,10 @@ short HayBlockBlock::getId() const {
   if (axis == AXIS_Y) return 8605;
   if (axis == AXIS_Z) return 8606;
   return 8605;
+}
+
+std::shared_ptr<Block> HayBlockBlock::clone() const {
+  std::shared_ptr<HayBlockBlock> copy = std::make_shared<HayBlockBlock>();
+  copy->axis = axis;
+  return copy;
 }

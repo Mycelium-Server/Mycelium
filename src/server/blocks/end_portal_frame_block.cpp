@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "end_portal_frame_block.h"
 
 EndPortalFrameBlock::EndPortalFrameBlock() = default;
@@ -31,4 +32,11 @@ short EndPortalFrameBlock::getId() const {
   if (eye == EYE_FALSE && facing == FACING_WEST) return 5743;
   if (eye == EYE_FALSE && facing == FACING_EAST) return 5744;
   return 5741;
+}
+
+std::shared_ptr<Block> EndPortalFrameBlock::clone() const {
+  std::shared_ptr<EndPortalFrameBlock> copy = std::make_shared<EndPortalFrameBlock>();
+  copy->eye = eye;
+  copy->facing = facing;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "jack_o_lantern_block.h"
 
 JackOLanternBlock::JackOLanternBlock() = default;
@@ -27,4 +28,10 @@ short JackOLanternBlock::getId() const {
   if (facing == FACING_WEST) return 4331;
   if (facing == FACING_EAST) return 4332;
   return 4329;
+}
+
+std::shared_ptr<Block> JackOLanternBlock::clone() const {
+  std::shared_ptr<JackOLanternBlock> copy = std::make_shared<JackOLanternBlock>();
+  copy->facing = facing;
+  return copy;
 }

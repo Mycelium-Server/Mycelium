@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "nether_brick_fence_block.h"
 
 NetherBrickFenceBlock::NetherBrickFenceBlock() = default;
@@ -55,4 +56,14 @@ short NetherBrickFenceBlock::getId() const {
   if (east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_TRUE) return 5633;
   if (east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_FALSE) return 5634;
   return 5634;
+}
+
+std::shared_ptr<Block> NetherBrickFenceBlock::clone() const {
+  std::shared_ptr<NetherBrickFenceBlock> copy = std::make_shared<NetherBrickFenceBlock>();
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->waterlogged = waterlogged;
+  copy->west = west;
+  return copy;
 }

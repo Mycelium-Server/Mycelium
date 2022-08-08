@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "crimson_fence_block.h"
 
 CrimsonFenceBlock::CrimsonFenceBlock() = default;
@@ -55,4 +56,14 @@ short CrimsonFenceBlock::getId() const {
   if (east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_TRUE) return 16302;
   if (east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_FALSE) return 16303;
   return 16303;
+}
+
+std::shared_ptr<Block> CrimsonFenceBlock::clone() const {
+  std::shared_ptr<CrimsonFenceBlock> copy = std::make_shared<CrimsonFenceBlock>();
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->waterlogged = waterlogged;
+  copy->west = west;
+  return copy;
 }

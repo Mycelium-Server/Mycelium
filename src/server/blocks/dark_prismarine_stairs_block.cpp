@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "dark_prismarine_stairs_block.h"
 
 DarkPrismarineStairsBlock::DarkPrismarineStairsBlock() = default;
@@ -103,4 +104,13 @@ short DarkPrismarineStairsBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_TRUE) return 8583;
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_FALSE) return 8584;
   return 8516;
+}
+
+std::shared_ptr<Block> DarkPrismarineStairsBlock::clone() const {
+  std::shared_ptr<DarkPrismarineStairsBlock> copy = std::make_shared<DarkPrismarineStairsBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->shape = shape;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

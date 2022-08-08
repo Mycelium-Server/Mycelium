@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "ochre_froglight_block.h"
 
 OchreFroglightBlock::OchreFroglightBlock() = default;
@@ -26,4 +27,10 @@ short OchreFroglightBlock::getId() const {
   if (axis == AXIS_Y) return 21438;
   if (axis == AXIS_Z) return 21439;
   return 21438;
+}
+
+std::shared_ptr<Block> OchreFroglightBlock::clone() const {
+  std::shared_ptr<OchreFroglightBlock> copy = std::make_shared<OchreFroglightBlock>();
+  copy->axis = axis;
+  return copy;
 }

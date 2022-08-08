@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #pragma once
 
 #include "block.h"
@@ -27,4 +28,5 @@ class MudBricksBlock : public Block {
 
  public:
   [[nodiscard]] short getId() const override;
-};
+  [[nodiscard]] std::shared_ptr<Block> clone() const override;
+  };

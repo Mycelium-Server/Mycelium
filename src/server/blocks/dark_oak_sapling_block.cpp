@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "dark_oak_sapling_block.h"
 
 DarkOakSaplingBlock::DarkOakSaplingBlock() = default;
@@ -25,4 +26,10 @@ short DarkOakSaplingBlock::getId() const {
   if (stage == STAGE_0) return 32;
   if (stage == STAGE_1) return 33;
   return 32;
+}
+
+std::shared_ptr<Block> DarkOakSaplingBlock::clone() const {
+  std::shared_ptr<DarkOakSaplingBlock> copy = std::make_shared<DarkOakSaplingBlock>();
+  copy->stage = stage;
+  return copy;
 }

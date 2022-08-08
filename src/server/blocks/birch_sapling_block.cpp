@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "birch_sapling_block.h"
 
 BirchSaplingBlock::BirchSaplingBlock() = default;
@@ -25,4 +26,10 @@ short BirchSaplingBlock::getId() const {
   if (stage == STAGE_0) return 26;
   if (stage == STAGE_1) return 27;
   return 26;
+}
+
+std::shared_ptr<Block> BirchSaplingBlock::clone() const {
+  std::shared_ptr<BirchSaplingBlock> copy = std::make_shared<BirchSaplingBlock>();
+  copy->stage = stage;
+  return copy;
 }

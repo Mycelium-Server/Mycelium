@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "deepslate_tile_slab_block.h"
 
 DeepslateTileSlabBlock::DeepslateTileSlabBlock() = default;
@@ -29,4 +30,11 @@ short DeepslateTileSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 20688;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 20689;
   return 20687;
+}
+
+std::shared_ptr<Block> DeepslateTileSlabBlock::clone() const {
+  std::shared_ptr<DeepslateTileSlabBlock> copy = std::make_shared<DeepslateTileSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

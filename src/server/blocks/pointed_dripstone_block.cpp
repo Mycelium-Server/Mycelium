@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "pointed_dripstone_block.h"
 
 PointedDripstoneBlock::PointedDripstoneBlock() = default;
@@ -43,4 +44,12 @@ short PointedDripstoneBlock::getId() const {
   if (thickness == THICKNESS_BASE && vertical_direction == VERTICAL_DIRECTION_DOWN && waterlogged == WATERLOGGED_TRUE) return 19656;
   if (thickness == THICKNESS_BASE && vertical_direction == VERTICAL_DIRECTION_DOWN && waterlogged == WATERLOGGED_FALSE) return 19657;
   return 19643;
+}
+
+std::shared_ptr<Block> PointedDripstoneBlock::clone() const {
+  std::shared_ptr<PointedDripstoneBlock> copy = std::make_shared<PointedDripstoneBlock>();
+  copy->thickness = thickness;
+  copy->vertical_direction = vertical_direction;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

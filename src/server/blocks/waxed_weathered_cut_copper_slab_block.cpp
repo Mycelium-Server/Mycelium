@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "waxed_weathered_cut_copper_slab_block.h"
 
 WaxedWeatheredCutCopperSlabBlock::WaxedWeatheredCutCopperSlabBlock() = default;
@@ -29,4 +30,11 @@ short WaxedWeatheredCutCopperSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 19600;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 19601;
   return 19599;
+}
+
+std::shared_ptr<Block> WaxedWeatheredCutCopperSlabBlock::clone() const {
+  std::shared_ptr<WaxedWeatheredCutCopperSlabBlock> copy = std::make_shared<WaxedWeatheredCutCopperSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

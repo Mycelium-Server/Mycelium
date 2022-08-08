@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "sugar_cane_block.h"
 
 SugarCaneBlock::SugarCaneBlock() = default;
@@ -39,4 +40,10 @@ short SugarCaneBlock::getId() const {
   if (age == AGE_14) return 4271;
   if (age == AGE_15) return 4272;
   return 4257;
+}
+
+std::shared_ptr<Block> SugarCaneBlock::clone() const {
+  std::shared_ptr<SugarCaneBlock> copy = std::make_shared<SugarCaneBlock>();
+  copy->age = age;
+  return copy;
 }

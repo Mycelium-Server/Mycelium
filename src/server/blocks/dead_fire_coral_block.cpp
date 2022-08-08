@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "dead_fire_coral_block.h"
 
 DeadFireCoralBlock::DeadFireCoralBlock() = default;
@@ -25,4 +26,10 @@ short DeadFireCoralBlock::getId() const {
   if (waterlogged == WATERLOGGED_TRUE) return 10407;
   if (waterlogged == WATERLOGGED_FALSE) return 10408;
   return 10407;
+}
+
+std::shared_ptr<Block> DeadFireCoralBlock::clone() const {
+  std::shared_ptr<DeadFireCoralBlock> copy = std::make_shared<DeadFireCoralBlock>();
+  copy->waterlogged = waterlogged;
+  return copy;
 }

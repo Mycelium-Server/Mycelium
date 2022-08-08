@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "cracked_polished_blackstone_bricks_block.h"
 
 CrackedPolishedBlackstoneBricksBlock::CrackedPolishedBlackstoneBricksBlock() = default;
@@ -23,4 +24,9 @@ CrackedPolishedBlackstoneBricksBlock::~CrackedPolishedBlackstoneBricksBlock() = 
 
 short CrackedPolishedBlackstoneBricksBlock::getId() const {
   return 17461;
+}
+
+std::shared_ptr<Block> CrackedPolishedBlackstoneBricksBlock::clone() const {
+  std::shared_ptr<CrackedPolishedBlackstoneBricksBlock> copy = std::make_shared<CrackedPolishedBlackstoneBricksBlock>();
+  return copy;
 }

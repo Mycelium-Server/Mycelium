@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "jukebox_block.h"
 
 JukeboxBlock::JukeboxBlock() = default;
@@ -25,4 +26,10 @@ short JukeboxBlock::getId() const {
   if (has_record == HAS_RECORD_TRUE) return 4273;
   if (has_record == HAS_RECORD_FALSE) return 4274;
   return 4274;
+}
+
+std::shared_ptr<Block> JukeboxBlock::clone() const {
+  std::shared_ptr<JukeboxBlock> copy = std::make_shared<JukeboxBlock>();
+  copy->has_record = has_record;
+  return copy;
 }

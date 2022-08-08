@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "carrots_block.h"
 
 CarrotsBlock::CarrotsBlock() = default;
@@ -31,4 +32,10 @@ short CarrotsBlock::getId() const {
   if (age == AGE_6) return 6929;
   if (age == AGE_7) return 6930;
   return 6923;
+}
+
+std::shared_ptr<Block> CarrotsBlock::clone() const {
+  std::shared_ptr<CarrotsBlock> copy = std::make_shared<CarrotsBlock>();
+  copy->age = age;
+  return copy;
 }

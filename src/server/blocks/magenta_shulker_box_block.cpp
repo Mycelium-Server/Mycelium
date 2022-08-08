@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "magenta_shulker_box_block.h"
 
 MagentaShulkerBoxBlock::MagentaShulkerBoxBlock() = default;
@@ -29,4 +30,10 @@ short MagentaShulkerBoxBlock::getId() const {
   if (facing == FACING_UP) return 10175;
   if (facing == FACING_DOWN) return 10176;
   return 10175;
+}
+
+std::shared_ptr<Block> MagentaShulkerBoxBlock::clone() const {
+  std::shared_ptr<MagentaShulkerBoxBlock> copy = std::make_shared<MagentaShulkerBoxBlock>();
+  copy->facing = facing;
+  return copy;
 }

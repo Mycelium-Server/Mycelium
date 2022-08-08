@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "cocoa_block.h"
 
 CocoaBlock::CocoaBlock() = default;
@@ -35,4 +36,11 @@ short CocoaBlock::getId() const {
   if (age == AGE_2 && facing == FACING_WEST) return 5759;
   if (age == AGE_2 && facing == FACING_EAST) return 5760;
   return 5749;
+}
+
+std::shared_ptr<Block> CocoaBlock::clone() const {
+  std::shared_ptr<CocoaBlock> copy = std::make_shared<CocoaBlock>();
+  copy->age = age;
+  copy->facing = facing;
+  return copy;
 }

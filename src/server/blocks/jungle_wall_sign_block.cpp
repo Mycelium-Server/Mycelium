@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "jungle_wall_sign_block.h"
 
 JungleWallSignBlock::JungleWallSignBlock() = default;
@@ -31,4 +32,11 @@ short JungleWallSignBlock::getId() const {
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_TRUE) return 4070;
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_FALSE) return 4071;
   return 4065;
+}
+
+std::shared_ptr<Block> JungleWallSignBlock::clone() const {
+  std::shared_ptr<JungleWallSignBlock> copy = std::make_shared<JungleWallSignBlock>();
+  copy->facing = facing;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

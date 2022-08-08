@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "iron_bars_block.h"
 
 IronBarsBlock::IronBarsBlock() = default;
@@ -55,4 +56,14 @@ short IronBarsBlock::getId() const {
   if (east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_TRUE) return 5102;
   if (east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_FALSE) return 5103;
   return 5103;
+}
+
+std::shared_ptr<Block> IronBarsBlock::clone() const {
+  std::shared_ptr<IronBarsBlock> copy = std::make_shared<IronBarsBlock>();
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->waterlogged = waterlogged;
+  copy->west = west;
+  return copy;
 }

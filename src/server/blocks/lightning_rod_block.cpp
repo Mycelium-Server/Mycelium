@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "lightning_rod_block.h"
 
 LightningRodBlock::LightningRodBlock() = default;
@@ -47,4 +48,12 @@ short LightningRodBlock::getId() const {
   if (facing == FACING_DOWN && powered == POWERED_FALSE && waterlogged == WATERLOGGED_TRUE) return 19636;
   if (facing == FACING_DOWN && powered == POWERED_FALSE && waterlogged == WATERLOGGED_FALSE) return 19637;
   return 19633;
+}
+
+std::shared_ptr<Block> LightningRodBlock::clone() const {
+  std::shared_ptr<LightningRodBlock> copy = std::make_shared<LightningRodBlock>();
+  copy->facing = facing;
+  copy->powered = powered;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

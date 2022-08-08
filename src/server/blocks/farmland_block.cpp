@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "farmland_block.h"
 
 FarmlandBlock::FarmlandBlock() = default;
@@ -31,4 +32,10 @@ short FarmlandBlock::getId() const {
   if (moisture == MOISTURE_6) return 3626;
   if (moisture == MOISTURE_7) return 3627;
   return 3620;
+}
+
+std::shared_ptr<Block> FarmlandBlock::clone() const {
+  std::shared_ptr<FarmlandBlock> copy = std::make_shared<FarmlandBlock>();
+  copy->moisture = moisture;
+  return copy;
 }

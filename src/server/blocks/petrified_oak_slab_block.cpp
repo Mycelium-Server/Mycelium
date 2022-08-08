@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "petrified_oak_slab_block.h"
 
 PetrifiedOakSlabBlock::PetrifiedOakSlabBlock() = default;
@@ -29,4 +30,11 @@ short PetrifiedOakSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 9111;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 9112;
   return 9110;
+}
+
+std::shared_ptr<Block> PetrifiedOakSlabBlock::clone() const {
+  std::shared_ptr<PetrifiedOakSlabBlock> copy = std::make_shared<PetrifiedOakSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

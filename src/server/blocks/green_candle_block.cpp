@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "green_candle_block.h"
 
 GreenCandleBlock::GreenCandleBlock() = default;
@@ -39,4 +40,12 @@ short GreenCandleBlock::getId() const {
   if (candles == CANDLES_4 && lit == LIT_FALSE && waterlogged == WATERLOGGED_TRUE) return 18551;
   if (candles == CANDLES_4 && lit == LIT_FALSE && waterlogged == WATERLOGGED_FALSE) return 18552;
   return 18540;
+}
+
+std::shared_ptr<Block> GreenCandleBlock::clone() const {
+  std::shared_ptr<GreenCandleBlock> copy = std::make_shared<GreenCandleBlock>();
+  copy->candles = candles;
+  copy->lit = lit;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

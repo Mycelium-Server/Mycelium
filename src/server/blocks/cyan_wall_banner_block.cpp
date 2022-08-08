@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "cyan_wall_banner_block.h"
 
 CyanWallBannerBlock::CyanWallBannerBlock() = default;
@@ -27,4 +28,10 @@ short CyanWallBannerBlock::getId() const {
   if (facing == FACING_WEST) return 8932;
   if (facing == FACING_EAST) return 8933;
   return 8930;
+}
+
+std::shared_ptr<Block> CyanWallBannerBlock::clone() const {
+  std::shared_ptr<CyanWallBannerBlock> copy = std::make_shared<CyanWallBannerBlock>();
+  copy->facing = facing;
+  return copy;
 }

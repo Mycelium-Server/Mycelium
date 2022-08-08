@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "lantern_block.h"
 
 LanternBlock::LanternBlock() = default;
@@ -27,4 +28,11 @@ short LanternBlock::getId() const {
   if (hanging == HANGING_FALSE && waterlogged == WATERLOGGED_TRUE) return 16093;
   if (hanging == HANGING_FALSE && waterlogged == WATERLOGGED_FALSE) return 16094;
   return 16094;
+}
+
+std::shared_ptr<Block> LanternBlock::clone() const {
+  std::shared_ptr<LanternBlock> copy = std::make_shared<LanternBlock>();
+  copy->hanging = hanging;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

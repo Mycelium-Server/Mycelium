@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "acacia_wall_sign_block.h"
 
 AcaciaWallSignBlock::AcaciaWallSignBlock() = default;
@@ -31,4 +32,11 @@ short AcaciaWallSignBlock::getId() const {
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_TRUE) return 4062;
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_FALSE) return 4063;
   return 4057;
+}
+
+std::shared_ptr<Block> AcaciaWallSignBlock::clone() const {
+  std::shared_ptr<AcaciaWallSignBlock> copy = std::make_shared<AcaciaWallSignBlock>();
+  copy->facing = facing;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

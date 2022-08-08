@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "brain_coral_fan_block.h"
 
 BrainCoralFanBlock::BrainCoralFanBlock() = default;
@@ -25,4 +26,10 @@ short BrainCoralFanBlock::getId() const {
   if (waterlogged == WATERLOGGED_TRUE) return 10433;
   if (waterlogged == WATERLOGGED_FALSE) return 10434;
   return 10433;
+}
+
+std::shared_ptr<Block> BrainCoralFanBlock::clone() const {
+  std::shared_ptr<BrainCoralFanBlock> copy = std::make_shared<BrainCoralFanBlock>();
+  copy->waterlogged = waterlogged;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "jungle_slab_block.h"
 
 JungleSlabBlock::JungleSlabBlock() = default;
@@ -29,4 +30,11 @@ short JungleSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 9063;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 9064;
   return 9062;
+}
+
+std::shared_ptr<Block> JungleSlabBlock::clone() const {
+  std::shared_ptr<JungleSlabBlock> copy = std::make_shared<JungleSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

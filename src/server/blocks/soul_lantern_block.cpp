@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "soul_lantern_block.h"
 
 SoulLanternBlock::SoulLanternBlock() = default;
@@ -27,4 +28,11 @@ short SoulLanternBlock::getId() const {
   if (hanging == HANGING_FALSE && waterlogged == WATERLOGGED_TRUE) return 16097;
   if (hanging == HANGING_FALSE && waterlogged == WATERLOGGED_FALSE) return 16098;
   return 16098;
+}
+
+std::shared_ptr<Block> SoulLanternBlock::clone() const {
+  std::shared_ptr<SoulLanternBlock> copy = std::make_shared<SoulLanternBlock>();
+  copy->hanging = hanging;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

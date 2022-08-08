@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "bubble_coral_block.h"
 
 BubbleCoralBlock::BubbleCoralBlock() = default;
@@ -25,4 +26,10 @@ short BubbleCoralBlock::getId() const {
   if (waterlogged == WATERLOGGED_TRUE) return 10415;
   if (waterlogged == WATERLOGGED_FALSE) return 10416;
   return 10415;
+}
+
+std::shared_ptr<Block> BubbleCoralBlock::clone() const {
+  std::shared_ptr<BubbleCoralBlock> copy = std::make_shared<BubbleCoralBlock>();
+  copy->waterlogged = waterlogged;
+  return copy;
 }

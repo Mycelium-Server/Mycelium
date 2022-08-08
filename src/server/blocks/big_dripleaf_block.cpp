@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "big_dripleaf_block.h"
 
 BigDripleafBlock::BigDripleafBlock() = default;
@@ -55,4 +56,12 @@ short BigDripleafBlock::getId() const {
   if (facing == FACING_EAST && tilt == TILT_FULL && waterlogged == WATERLOGGED_TRUE) return 19748;
   if (facing == FACING_EAST && tilt == TILT_FULL && waterlogged == WATERLOGGED_FALSE) return 19749;
   return 19719;
+}
+
+std::shared_ptr<Block> BigDripleafBlock::clone() const {
+  std::shared_ptr<BigDripleafBlock> copy = std::make_shared<BigDripleafBlock>();
+  copy->facing = facing;
+  copy->tilt = tilt;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

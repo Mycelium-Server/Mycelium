@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "observer_block.h"
 
 ObserverBlock::ObserverBlock() = default;
@@ -35,4 +36,11 @@ short ObserverBlock::getId() const {
   if (facing == FACING_DOWN && powered == POWERED_TRUE) return 10151;
   if (facing == FACING_DOWN && powered == POWERED_FALSE) return 10152;
   return 10146;
+}
+
+std::shared_ptr<Block> ObserverBlock::clone() const {
+  std::shared_ptr<ObserverBlock> copy = std::make_shared<ObserverBlock>();
+  copy->facing = facing;
+  copy->powered = powered;
+  return copy;
 }

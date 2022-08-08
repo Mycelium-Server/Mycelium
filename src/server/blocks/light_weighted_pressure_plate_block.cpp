@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "light_weighted_pressure_plate_block.h"
 
 LightWeightedPressurePlateBlock::LightWeightedPressurePlateBlock() = default;
@@ -39,4 +40,10 @@ short LightWeightedPressurePlateBlock::getId() const {
   if (power == POWER_14) return 7277;
   if (power == POWER_15) return 7278;
   return 7263;
+}
+
+std::shared_ptr<Block> LightWeightedPressurePlateBlock::clone() const {
+  std::shared_ptr<LightWeightedPressurePlateBlock> copy = std::make_shared<LightWeightedPressurePlateBlock>();
+  copy->power = power;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "zombie_wall_head_block.h"
 
 ZombieWallHeadBlock::ZombieWallHeadBlock() = default;
@@ -27,4 +28,10 @@ short ZombieWallHeadBlock::getId() const {
   if (facing == FACING_WEST) return 7165;
   if (facing == FACING_EAST) return 7166;
   return 7163;
+}
+
+std::shared_ptr<Block> ZombieWallHeadBlock::clone() const {
+  std::shared_ptr<ZombieWallHeadBlock> copy = std::make_shared<ZombieWallHeadBlock>();
+  copy->facing = facing;
+  return copy;
 }

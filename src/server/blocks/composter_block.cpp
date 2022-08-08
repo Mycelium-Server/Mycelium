@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "composter_block.h"
 
 ComposterBlock::ComposterBlock() = default;
@@ -32,4 +33,10 @@ short ComposterBlock::getId() const {
   if (level == LEVEL_7) return 16967;
   if (level == LEVEL_8) return 16968;
   return 16960;
+}
+
+std::shared_ptr<Block> ComposterBlock::clone() const {
+  std::shared_ptr<ComposterBlock> copy = std::make_shared<ComposterBlock>();
+  copy->level = level;
+  return copy;
 }

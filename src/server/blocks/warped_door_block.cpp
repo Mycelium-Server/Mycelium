@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "warped_door_block.h"
 
 WarpedDoorBlock::WarpedDoorBlock() = default;
@@ -87,4 +88,14 @@ short WarpedDoorBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_LOWER && hinge == HINGE_RIGHT && open == OPEN_FALSE && powered == POWERED_TRUE) return 16862;
   if (facing == FACING_EAST && half == HALF_LOWER && hinge == HINGE_RIGHT && open == OPEN_FALSE && powered == POWERED_FALSE) return 16863;
   return 16811;
+}
+
+std::shared_ptr<Block> WarpedDoorBlock::clone() const {
+  std::shared_ptr<WarpedDoorBlock> copy = std::make_shared<WarpedDoorBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->hinge = hinge;
+  copy->open = open;
+  copy->powered = powered;
+  return copy;
 }

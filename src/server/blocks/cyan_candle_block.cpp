@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "cyan_candle_block.h"
 
 CyanCandleBlock::CyanCandleBlock() = default;
@@ -39,4 +40,12 @@ short CyanCandleBlock::getId() const {
   if (candles == CANDLES_4 && lit == LIT_FALSE && waterlogged == WATERLOGGED_TRUE) return 18487;
   if (candles == CANDLES_4 && lit == LIT_FALSE && waterlogged == WATERLOGGED_FALSE) return 18488;
   return 18476;
+}
+
+std::shared_ptr<Block> CyanCandleBlock::clone() const {
+  std::shared_ptr<CyanCandleBlock> copy = std::make_shared<CyanCandleBlock>();
+  copy->candles = candles;
+  copy->lit = lit;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

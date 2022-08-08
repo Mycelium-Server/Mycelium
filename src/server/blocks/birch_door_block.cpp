@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "birch_door_block.h"
 
 BirchDoorBlock::BirchDoorBlock() = default;
@@ -87,4 +88,14 @@ short BirchDoorBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_LOWER && hinge == HINGE_RIGHT && open == OPEN_FALSE && powered == POWERED_TRUE) return 9681;
   if (facing == FACING_EAST && half == HALF_LOWER && hinge == HINGE_RIGHT && open == OPEN_FALSE && powered == POWERED_FALSE) return 9682;
   return 9630;
+}
+
+std::shared_ptr<Block> BirchDoorBlock::clone() const {
+  std::shared_ptr<BirchDoorBlock> copy = std::make_shared<BirchDoorBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->hinge = hinge;
+  copy->open = open;
+  copy->powered = powered;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "redstone_wall_torch_block.h"
 
 RedstoneWallTorchBlock::RedstoneWallTorchBlock() = default;
@@ -31,4 +32,11 @@ short RedstoneWallTorchBlock::getId() const {
   if (facing == FACING_EAST && lit == LIT_TRUE) return 4204;
   if (facing == FACING_EAST && lit == LIT_FALSE) return 4205;
   return 4198;
+}
+
+std::shared_ptr<Block> RedstoneWallTorchBlock::clone() const {
+  std::shared_ptr<RedstoneWallTorchBlock> copy = std::make_shared<RedstoneWallTorchBlock>();
+  copy->facing = facing;
+  copy->lit = lit;
+  return copy;
 }

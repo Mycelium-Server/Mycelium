@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "warped_button_block.h"
 
 WarpedButtonBlock::WarpedButtonBlock() = default;
@@ -47,4 +48,12 @@ short WarpedButtonBlock::getId() const {
   if (face == FACE_CEILING && facing == FACING_EAST && powered == POWERED_TRUE) return 16734;
   if (face == FACE_CEILING && facing == FACING_EAST && powered == POWERED_FALSE) return 16735;
   return 16721;
+}
+
+std::shared_ptr<Block> WarpedButtonBlock::clone() const {
+  std::shared_ptr<WarpedButtonBlock> copy = std::make_shared<WarpedButtonBlock>();
+  copy->face = face;
+  copy->facing = facing;
+  copy->powered = powered;
+  return copy;
 }

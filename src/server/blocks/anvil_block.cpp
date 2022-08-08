@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "anvil_block.h"
 
 AnvilBlock::AnvilBlock() = default;
@@ -27,4 +28,10 @@ short AnvilBlock::getId() const {
   if (facing == FACING_WEST) return 7229;
   if (facing == FACING_EAST) return 7230;
   return 7227;
+}
+
+std::shared_ptr<Block> AnvilBlock::clone() const {
+  std::shared_ptr<AnvilBlock> copy = std::make_shared<AnvilBlock>();
+  copy->facing = facing;
+  return copy;
 }

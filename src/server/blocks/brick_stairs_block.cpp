@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "brick_stairs_block.h"
 
 BrickStairsBlock::BrickStairsBlock() = default;
@@ -103,4 +104,13 @@ short BrickStairsBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_TRUE) return 5437;
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_FALSE) return 5438;
   return 5370;
+}
+
+std::shared_ptr<Block> BrickStairsBlock::clone() const {
+  std::shared_ptr<BrickStairsBlock> copy = std::make_shared<BrickStairsBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->shape = shape;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

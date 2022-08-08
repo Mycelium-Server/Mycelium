@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "crimson_hyphae_block.h"
 
 CrimsonHyphaeBlock::CrimsonHyphaeBlock() = default;
@@ -26,4 +27,10 @@ short CrimsonHyphaeBlock::getId() const {
   if (axis == AXIS_Y) return 16191;
   if (axis == AXIS_Z) return 16192;
   return 16191;
+}
+
+std::shared_ptr<Block> CrimsonHyphaeBlock::clone() const {
+  std::shared_ptr<CrimsonHyphaeBlock> copy = std::make_shared<CrimsonHyphaeBlock>();
+  copy->axis = axis;
+  return copy;
 }

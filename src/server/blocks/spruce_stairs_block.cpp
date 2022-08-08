@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "spruce_stairs_block.h"
 
 SpruceStairsBlock::SpruceStairsBlock() = default;
@@ -103,4 +104,13 @@ short SpruceStairsBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_TRUE) return 6074;
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_FALSE) return 6075;
   return 6007;
+}
+
+std::shared_ptr<Block> SpruceStairsBlock::clone() const {
+  std::shared_ptr<SpruceStairsBlock> copy = std::make_shared<SpruceStairsBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->shape = shape;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

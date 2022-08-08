@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "dead_horn_coral_block.h"
 
 DeadHornCoralBlock::DeadHornCoralBlock() = default;
@@ -25,4 +26,10 @@ short DeadHornCoralBlock::getId() const {
   if (waterlogged == WATERLOGGED_TRUE) return 10409;
   if (waterlogged == WATERLOGGED_FALSE) return 10410;
   return 10409;
+}
+
+std::shared_ptr<Block> DeadHornCoralBlock::clone() const {
+  std::shared_ptr<DeadHornCoralBlock> copy = std::make_shared<DeadHornCoralBlock>();
+  copy->waterlogged = waterlogged;
+  return copy;
 }

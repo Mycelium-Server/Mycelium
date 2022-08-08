@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "oak_stairs_block.h"
 
 OakStairsBlock::OakStairsBlock() = default;
@@ -103,4 +104,13 @@ short OakStairsBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_TRUE) return 2286;
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_FALSE) return 2287;
   return 2219;
+}
+
+std::shared_ptr<Block> OakStairsBlock::clone() const {
+  std::shared_ptr<OakStairsBlock> copy = std::make_shared<OakStairsBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->shape = shape;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

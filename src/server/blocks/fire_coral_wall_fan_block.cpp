@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "fire_coral_wall_fan_block.h"
 
 FireCoralWallFanBlock::FireCoralWallFanBlock() = default;
@@ -31,4 +32,11 @@ short FireCoralWallFanBlock::getId() const {
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_TRUE) return 10511;
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_FALSE) return 10512;
   return 10505;
+}
+
+std::shared_ptr<Block> FireCoralWallFanBlock::clone() const {
+  std::shared_ptr<FireCoralWallFanBlock> copy = std::make_shared<FireCoralWallFanBlock>();
+  copy->facing = facing;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

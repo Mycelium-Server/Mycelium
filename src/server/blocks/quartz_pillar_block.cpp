@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "quartz_pillar_block.h"
 
 QuartzPillarBlock::QuartzPillarBlock() = default;
@@ -26,4 +27,10 @@ short QuartzPillarBlock::getId() const {
   if (axis == AXIS_Y) return 7358;
   if (axis == AXIS_Z) return 7359;
   return 7358;
+}
+
+std::shared_ptr<Block> QuartzPillarBlock::clone() const {
+  std::shared_ptr<QuartzPillarBlock> copy = std::make_shared<QuartzPillarBlock>();
+  copy->axis = axis;
+  return copy;
 }

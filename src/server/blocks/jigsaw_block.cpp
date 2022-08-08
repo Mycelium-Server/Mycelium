@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "jigsaw_block.h"
 
 JigsawBlock::JigsawBlock() = default;
@@ -35,4 +36,10 @@ short JigsawBlock::getId() const {
   if (orientation == ORIENTATION_NORTH_UP) return 16958;
   if (orientation == ORIENTATION_SOUTH_UP) return 16959;
   return 16958;
+}
+
+std::shared_ptr<Block> JigsawBlock::clone() const {
+  std::shared_ptr<JigsawBlock> copy = std::make_shared<JigsawBlock>();
+  copy->orientation = orientation;
+  return copy;
 }

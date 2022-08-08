@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "warped_fence_block.h"
 
 WarpedFenceBlock::WarpedFenceBlock() = default;
@@ -55,4 +56,14 @@ short WarpedFenceBlock::getId() const {
   if (east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_TRUE) return 16334;
   if (east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_FALSE) return 16335;
   return 16335;
+}
+
+std::shared_ptr<Block> WarpedFenceBlock::clone() const {
+  std::shared_ptr<WarpedFenceBlock> copy = std::make_shared<WarpedFenceBlock>();
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->waterlogged = waterlogged;
+  copy->west = west;
+  return copy;
 }

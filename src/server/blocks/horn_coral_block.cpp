@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "horn_coral_block.h"
 
 HornCoralBlock::HornCoralBlock() = default;
@@ -25,4 +26,10 @@ short HornCoralBlock::getId() const {
   if (waterlogged == WATERLOGGED_TRUE) return 10419;
   if (waterlogged == WATERLOGGED_FALSE) return 10420;
   return 10419;
+}
+
+std::shared_ptr<Block> HornCoralBlock::clone() const {
+  std::shared_ptr<HornCoralBlock> copy = std::make_shared<HornCoralBlock>();
+  copy->waterlogged = waterlogged;
+  return copy;
 }

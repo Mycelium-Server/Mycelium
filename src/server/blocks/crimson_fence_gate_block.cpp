@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "crimson_fence_gate_block.h"
 
 CrimsonFenceGateBlock::CrimsonFenceGateBlock() = default;
@@ -55,4 +56,13 @@ short CrimsonFenceGateBlock::getId() const {
   if (facing == FACING_EAST && in_wall == IN_WALL_FALSE && open == OPEN_FALSE && powered == POWERED_TRUE) return 16494;
   if (facing == FACING_EAST && in_wall == IN_WALL_FALSE && open == OPEN_FALSE && powered == POWERED_FALSE) return 16495;
   return 16471;
+}
+
+std::shared_ptr<Block> CrimsonFenceGateBlock::clone() const {
+  std::shared_ptr<CrimsonFenceGateBlock> copy = std::make_shared<CrimsonFenceGateBlock>();
+  copy->facing = facing;
+  copy->in_wall = in_wall;
+  copy->open = open;
+  copy->powered = powered;
+  return copy;
 }

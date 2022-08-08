@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "oak_sapling_block.h"
 
 OakSaplingBlock::OakSaplingBlock() = default;
@@ -25,4 +26,10 @@ short OakSaplingBlock::getId() const {
   if (stage == STAGE_0) return 22;
   if (stage == STAGE_1) return 23;
   return 22;
+}
+
+std::shared_ptr<Block> OakSaplingBlock::clone() const {
+  std::shared_ptr<OakSaplingBlock> copy = std::make_shared<OakSaplingBlock>();
+  copy->stage = stage;
+  return copy;
 }

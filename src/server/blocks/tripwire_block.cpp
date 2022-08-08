@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "tripwire_block.h"
 
 TripwireBlock::TripwireBlock() = default;
@@ -151,4 +152,16 @@ short TripwireBlock::getId() const {
   if (attached == ATTACHED_FALSE && disarmed == DISARMED_FALSE && east == EAST_FALSE && north == NORTH_FALSE && powered == POWERED_FALSE && south == SOUTH_FALSE && west == WEST_TRUE) return 5993;
   if (attached == ATTACHED_FALSE && disarmed == DISARMED_FALSE && east == EAST_FALSE && north == NORTH_FALSE && powered == POWERED_FALSE && south == SOUTH_FALSE && west == WEST_FALSE) return 5994;
   return 5994;
+}
+
+std::shared_ptr<Block> TripwireBlock::clone() const {
+  std::shared_ptr<TripwireBlock> copy = std::make_shared<TripwireBlock>();
+  copy->attached = attached;
+  copy->disarmed = disarmed;
+  copy->east = east;
+  copy->north = north;
+  copy->powered = powered;
+  copy->south = south;
+  copy->west = west;
+  return copy;
 }

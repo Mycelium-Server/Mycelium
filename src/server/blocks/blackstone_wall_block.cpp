@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "blackstone_wall_block.h"
 
 BlackstoneWallBlock::BlackstoneWallBlock() = default;
@@ -347,4 +348,15 @@ short BlackstoneWallBlock::getId() const {
   if (east == EAST_TALL && north == NORTH_TALL && south == SOUTH_TALL && up == UP_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_LOW) return 17451;
   if (east == EAST_TALL && north == NORTH_TALL && south == SOUTH_TALL && up == UP_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_TALL) return 17452;
   return 17132;
+}
+
+std::shared_ptr<Block> BlackstoneWallBlock::clone() const {
+  std::shared_ptr<BlackstoneWallBlock> copy = std::make_shared<BlackstoneWallBlock>();
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->up = up;
+  copy->waterlogged = waterlogged;
+  copy->west = west;
+  return copy;
 }

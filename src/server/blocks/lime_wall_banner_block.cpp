@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "lime_wall_banner_block.h"
 
 LimeWallBannerBlock::LimeWallBannerBlock() = default;
@@ -27,4 +28,10 @@ short LimeWallBannerBlock::getId() const {
   if (facing == FACING_WEST) return 8916;
   if (facing == FACING_EAST) return 8917;
   return 8914;
+}
+
+std::shared_ptr<Block> LimeWallBannerBlock::clone() const {
+  std::shared_ptr<LimeWallBannerBlock> copy = std::make_shared<LimeWallBannerBlock>();
+  copy->facing = facing;
+  return copy;
 }

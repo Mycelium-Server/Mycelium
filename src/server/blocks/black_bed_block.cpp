@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "black_bed_block.h"
 
 BlackBedBlock::BlackBedBlock() = default;
@@ -39,4 +40,12 @@ short BlackBedBlock::getId() const {
   if (facing == FACING_EAST && occupied == OCCUPIED_FALSE && part == PART_HEAD) return 1533;
   if (facing == FACING_EAST && occupied == OCCUPIED_FALSE && part == PART_FOOT) return 1534;
   return 1522;
+}
+
+std::shared_ptr<Block> BlackBedBlock::clone() const {
+  std::shared_ptr<BlackBedBlock> copy = std::make_shared<BlackBedBlock>();
+  copy->facing = facing;
+  copy->occupied = occupied;
+  copy->part = part;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "cyan_bed_block.h"
 
 CyanBedBlock::CyanBedBlock() = default;
@@ -39,4 +40,12 @@ short CyanBedBlock::getId() const {
   if (facing == FACING_EAST && occupied == OCCUPIED_FALSE && part == PART_HEAD) return 1437;
   if (facing == FACING_EAST && occupied == OCCUPIED_FALSE && part == PART_FOOT) return 1438;
   return 1426;
+}
+
+std::shared_ptr<Block> CyanBedBlock::clone() const {
+  std::shared_ptr<CyanBedBlock> copy = std::make_shared<CyanBedBlock>();
+  copy->facing = facing;
+  copy->occupied = occupied;
+  copy->part = part;
+  return copy;
 }

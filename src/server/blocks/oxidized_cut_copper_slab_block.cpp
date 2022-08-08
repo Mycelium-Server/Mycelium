@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "oxidized_cut_copper_slab_block.h"
 
 OxidizedCutCopperSlabBlock::OxidizedCutCopperSlabBlock() = default;
@@ -29,4 +30,11 @@ short OxidizedCutCopperSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 19242;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 19243;
   return 19241;
+}
+
+std::shared_ptr<Block> OxidizedCutCopperSlabBlock::clone() const {
+  std::shared_ptr<OxidizedCutCopperSlabBlock> copy = std::make_shared<OxidizedCutCopperSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

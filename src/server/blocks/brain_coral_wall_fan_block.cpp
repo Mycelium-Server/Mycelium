@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "brain_coral_wall_fan_block.h"
 
 BrainCoralWallFanBlock::BrainCoralWallFanBlock() = default;
@@ -31,4 +32,11 @@ short BrainCoralWallFanBlock::getId() const {
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_TRUE) return 10495;
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_FALSE) return 10496;
   return 10489;
+}
+
+std::shared_ptr<Block> BrainCoralWallFanBlock::clone() const {
+  std::shared_ptr<BrainCoralWallFanBlock> copy = std::make_shared<BrainCoralWallFanBlock>();
+  copy->facing = facing;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

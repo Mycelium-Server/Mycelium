@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "big_dripleaf_stem_block.h"
 
 BigDripleafStemBlock::BigDripleafStemBlock() = default;
@@ -31,4 +32,11 @@ short BigDripleafStemBlock::getId() const {
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_TRUE) return 19756;
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_FALSE) return 19757;
   return 19751;
+}
+
+std::shared_ptr<Block> BigDripleafStemBlock::clone() const {
+  std::shared_ptr<BigDripleafStemBlock> copy = std::make_shared<BigDripleafStemBlock>();
+  copy->facing = facing;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "daylight_detector_block.h"
 
 DaylightDetectorBlock::DaylightDetectorBlock() = default;
@@ -55,4 +56,11 @@ short DaylightDetectorBlock::getId() const {
   if (inverted == INVERTED_FALSE && power == POWER_14) return 7341;
   if (inverted == INVERTED_FALSE && power == POWER_15) return 7342;
   return 7327;
+}
+
+std::shared_ptr<Block> DaylightDetectorBlock::clone() const {
+  std::shared_ptr<DaylightDetectorBlock> copy = std::make_shared<DaylightDetectorBlock>();
+  copy->inverted = inverted;
+  copy->power = power;
+  return copy;
 }

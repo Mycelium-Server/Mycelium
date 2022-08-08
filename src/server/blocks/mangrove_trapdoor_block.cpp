@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "mangrove_trapdoor_block.h"
 
 MangroveTrapdoorBlock::MangroveTrapdoorBlock() = default;
@@ -87,4 +88,14 @@ short MangroveTrapdoorBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && open == OPEN_FALSE && powered == POWERED_FALSE && waterlogged == WATERLOGGED_TRUE) return 4866;
   if (facing == FACING_EAST && half == HALF_BOTTOM && open == OPEN_FALSE && powered == POWERED_FALSE && waterlogged == WATERLOGGED_FALSE) return 4867;
   return 4819;
+}
+
+std::shared_ptr<Block> MangroveTrapdoorBlock::clone() const {
+  std::shared_ptr<MangroveTrapdoorBlock> copy = std::make_shared<MangroveTrapdoorBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->open = open;
+  copy->powered = powered;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

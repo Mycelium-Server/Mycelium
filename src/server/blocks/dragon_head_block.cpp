@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "dragon_head_block.h"
 
 DragonHeadBlock::DragonHeadBlock() = default;
@@ -39,4 +40,10 @@ short DragonHeadBlock::getId() const {
   if (rotation == ROTATION_14) return 7221;
   if (rotation == ROTATION_15) return 7222;
   return 7207;
+}
+
+std::shared_ptr<Block> DragonHeadBlock::clone() const {
+  std::shared_ptr<DragonHeadBlock> copy = std::make_shared<DragonHeadBlock>();
+  copy->rotation = rotation;
+  return copy;
 }

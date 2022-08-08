@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "redstone_wire_block.h"
 
 RedstoneWireBlock::RedstoneWireBlock() = default;
@@ -1319,4 +1320,14 @@ short RedstoneWireBlock::getId() const {
   if (east == EAST_NONE && north == NORTH_NONE && power == POWER_15 && south == SOUTH_NONE && west == WEST_SIDE) return 3606;
   if (east == EAST_NONE && north == NORTH_NONE && power == POWER_15 && south == SOUTH_NONE && west == WEST_NONE) return 3607;
   return 3472;
+}
+
+std::shared_ptr<Block> RedstoneWireBlock::clone() const {
+  std::shared_ptr<RedstoneWireBlock> copy = std::make_shared<RedstoneWireBlock>();
+  copy->east = east;
+  copy->north = north;
+  copy->power = power;
+  copy->south = south;
+  copy->west = west;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "trapped_chest_block.h"
 
 TrappedChestBlock::TrappedChestBlock() = default;
@@ -47,4 +48,12 @@ short TrappedChestBlock::getId() const {
   if (type == TYPE_RIGHT && facing == FACING_EAST && waterlogged == WATERLOGGED_TRUE) return 7261;
   if (type == TYPE_RIGHT && facing == FACING_EAST && waterlogged == WATERLOGGED_FALSE) return 7262;
   return 7240;
+}
+
+std::shared_ptr<Block> TrappedChestBlock::clone() const {
+  std::shared_ptr<TrappedChestBlock> copy = std::make_shared<TrappedChestBlock>();
+  copy->type = type;
+  copy->facing = facing;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

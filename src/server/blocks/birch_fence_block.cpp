@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "birch_fence_block.h"
 
 BirchFenceBlock::BirchFenceBlock() = default;
@@ -55,4 +56,14 @@ short BirchFenceBlock::getId() const {
   if (east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_TRUE) return 9425;
   if (east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_FALSE) return 9426;
   return 9426;
+}
+
+std::shared_ptr<Block> BirchFenceBlock::clone() const {
+  std::shared_ptr<BirchFenceBlock> copy = std::make_shared<BirchFenceBlock>();
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->waterlogged = waterlogged;
+  copy->west = west;
+  return copy;
 }

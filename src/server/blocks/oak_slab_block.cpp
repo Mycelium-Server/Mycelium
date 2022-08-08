@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "oak_slab_block.h"
 
 OakSlabBlock::OakSlabBlock() = default;
@@ -29,4 +30,11 @@ short OakSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 9045;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 9046;
   return 9044;
+}
+
+std::shared_ptr<Block> OakSlabBlock::clone() const {
+  std::shared_ptr<OakSlabBlock> copy = std::make_shared<OakSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

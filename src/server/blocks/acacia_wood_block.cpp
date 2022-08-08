@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "acacia_wood_block.h"
 
 AcaciaWoodBlock::AcaciaWoodBlock() = default;
@@ -26,4 +27,10 @@ short AcaciaWoodBlock::getId() const {
   if (axis == AXIS_Y) return 177;
   if (axis == AXIS_Z) return 178;
   return 177;
+}
+
+std::shared_ptr<Block> AcaciaWoodBlock::clone() const {
+  std::shared_ptr<AcaciaWoodBlock> copy = std::make_shared<AcaciaWoodBlock>();
+  copy->axis = axis;
+  return copy;
 }

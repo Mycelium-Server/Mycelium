@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "yellow_banner_block.h"
 
 YellowBannerBlock::YellowBannerBlock() = default;
@@ -39,4 +40,10 @@ short YellowBannerBlock::getId() const {
   if (rotation == ROTATION_14) return 8716;
   if (rotation == ROTATION_15) return 8717;
   return 8702;
+}
+
+std::shared_ptr<Block> YellowBannerBlock::clone() const {
+  std::shared_ptr<YellowBannerBlock> copy = std::make_shared<YellowBannerBlock>();
+  copy->rotation = rotation;
+  return copy;
 }

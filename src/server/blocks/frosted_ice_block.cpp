@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "frosted_ice_block.h"
 
 FrostedIceBlock::FrostedIceBlock() = default;
@@ -27,4 +28,10 @@ short FrostedIceBlock::getId() const {
   if (age == AGE_2) return 10132;
   if (age == AGE_3) return 10133;
   return 10130;
+}
+
+std::shared_ptr<Block> FrostedIceBlock::clone() const {
+  std::shared_ptr<FrostedIceBlock> copy = std::make_shared<FrostedIceBlock>();
+  copy->age = age;
+  return copy;
 }

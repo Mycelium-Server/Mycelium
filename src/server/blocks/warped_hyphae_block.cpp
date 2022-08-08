@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "warped_hyphae_block.h"
 
 WarpedHyphaeBlock::WarpedHyphaeBlock() = default;
@@ -26,4 +27,10 @@ short WarpedHyphaeBlock::getId() const {
   if (axis == AXIS_Y) return 16174;
   if (axis == AXIS_Z) return 16175;
   return 16174;
+}
+
+std::shared_ptr<Block> WarpedHyphaeBlock::clone() const {
+  std::shared_ptr<WarpedHyphaeBlock> copy = std::make_shared<WarpedHyphaeBlock>();
+  copy->axis = axis;
+  return copy;
 }

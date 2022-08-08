@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "granite_wall_block.h"
 
 GraniteWallBlock::GraniteWallBlock() = default;
@@ -347,4 +348,15 @@ short GraniteWallBlock::getId() const {
   if (east == EAST_TALL && north == NORTH_TALL && south == SOUTH_TALL && up == UP_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_LOW) return 13366;
   if (east == EAST_TALL && north == NORTH_TALL && south == SOUTH_TALL && up == UP_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_TALL) return 13367;
   return 13047;
+}
+
+std::shared_ptr<Block> GraniteWallBlock::clone() const {
+  std::shared_ptr<GraniteWallBlock> copy = std::make_shared<GraniteWallBlock>();
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->up = up;
+  copy->waterlogged = waterlogged;
+  copy->west = west;
+  return copy;
 }

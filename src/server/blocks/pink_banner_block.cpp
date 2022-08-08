@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "pink_banner_block.h"
 
 PinkBannerBlock::PinkBannerBlock() = default;
@@ -39,4 +40,10 @@ short PinkBannerBlock::getId() const {
   if (rotation == ROTATION_14) return 8748;
   if (rotation == ROTATION_15) return 8749;
   return 8734;
+}
+
+std::shared_ptr<Block> PinkBannerBlock::clone() const {
+  std::shared_ptr<PinkBannerBlock> copy = std::make_shared<PinkBannerBlock>();
+  copy->rotation = rotation;
+  return copy;
 }

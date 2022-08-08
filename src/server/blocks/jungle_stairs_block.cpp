@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "jungle_stairs_block.h"
 
 JungleStairsBlock::JungleStairsBlock() = default;
@@ -103,4 +104,13 @@ short JungleStairsBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_TRUE) return 6234;
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_FALSE) return 6235;
   return 6167;
+}
+
+std::shared_ptr<Block> JungleStairsBlock::clone() const {
+  std::shared_ptr<JungleStairsBlock> copy = std::make_shared<JungleStairsBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->shape = shape;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "ender_chest_block.h"
 
 EnderChestBlock::EnderChestBlock() = default;
@@ -31,4 +32,11 @@ short EnderChestBlock::getId() const {
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_TRUE) return 5849;
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_FALSE) return 5850;
   return 5844;
+}
+
+std::shared_ptr<Block> EnderChestBlock::clone() const {
+  std::shared_ptr<EnderChestBlock> copy = std::make_shared<EnderChestBlock>();
+  copy->facing = facing;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

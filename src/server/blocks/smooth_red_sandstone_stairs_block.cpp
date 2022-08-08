@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "smooth_red_sandstone_stairs_block.h"
 
 SmoothRedSandstoneStairsBlock::SmoothRedSandstoneStairsBlock() = default;
@@ -103,4 +104,13 @@ short SmoothRedSandstoneStairsBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_TRUE) return 10708;
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_FALSE) return 10709;
   return 10641;
+}
+
+std::shared_ptr<Block> SmoothRedSandstoneStairsBlock::clone() const {
+  std::shared_ptr<SmoothRedSandstoneStairsBlock> copy = std::make_shared<SmoothRedSandstoneStairsBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->shape = shape;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

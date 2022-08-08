@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "spruce_fence_gate_block.h"
 
 SpruceFenceGateBlock::SpruceFenceGateBlock() = default;
@@ -55,4 +56,13 @@ short SpruceFenceGateBlock::getId() const {
   if (facing == FACING_EAST && in_wall == IN_WALL_FALSE && open == OPEN_FALSE && powered == POWERED_TRUE) return 9201;
   if (facing == FACING_EAST && in_wall == IN_WALL_FALSE && open == OPEN_FALSE && powered == POWERED_FALSE) return 9202;
   return 9178;
+}
+
+std::shared_ptr<Block> SpruceFenceGateBlock::clone() const {
+  std::shared_ptr<SpruceFenceGateBlock> copy = std::make_shared<SpruceFenceGateBlock>();
+  copy->facing = facing;
+  copy->in_wall = in_wall;
+  copy->open = open;
+  copy->powered = powered;
+  return copy;
 }

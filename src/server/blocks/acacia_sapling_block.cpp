@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "acacia_sapling_block.h"
 
 AcaciaSaplingBlock::AcaciaSaplingBlock() = default;
@@ -25,4 +26,10 @@ short AcaciaSaplingBlock::getId() const {
   if (stage == STAGE_0) return 30;
   if (stage == STAGE_1) return 31;
   return 30;
+}
+
+std::shared_ptr<Block> AcaciaSaplingBlock::clone() const {
+  std::shared_ptr<AcaciaSaplingBlock> copy = std::make_shared<AcaciaSaplingBlock>();
+  copy->stage = stage;
+  return copy;
 }

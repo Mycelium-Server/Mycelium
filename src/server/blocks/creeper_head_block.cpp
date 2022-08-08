@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "creeper_head_block.h"
 
 CreeperHeadBlock::CreeperHeadBlock() = default;
@@ -39,4 +40,10 @@ short CreeperHeadBlock::getId() const {
   if (rotation == ROTATION_14) return 7201;
   if (rotation == ROTATION_15) return 7202;
   return 7187;
+}
+
+std::shared_ptr<Block> CreeperHeadBlock::clone() const {
+  std::shared_ptr<CreeperHeadBlock> copy = std::make_shared<CreeperHeadBlock>();
+  copy->rotation = rotation;
+  return copy;
 }

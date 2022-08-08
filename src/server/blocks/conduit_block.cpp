@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "conduit_block.h"
 
 ConduitBlock::ConduitBlock() = default;
@@ -25,4 +26,10 @@ short ConduitBlock::getId() const {
   if (waterlogged == WATERLOGGED_TRUE) return 10530;
   if (waterlogged == WATERLOGGED_FALSE) return 10531;
   return 10530;
+}
+
+std::shared_ptr<Block> ConduitBlock::clone() const {
+  std::shared_ptr<ConduitBlock> copy = std::make_shared<ConduitBlock>();
+  copy->waterlogged = waterlogged;
+  return copy;
 }

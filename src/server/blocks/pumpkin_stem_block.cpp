@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "pumpkin_stem_block.h"
 
 PumpkinStemBlock::PumpkinStemBlock() = default;
@@ -31,4 +32,10 @@ short PumpkinStemBlock::getId() const {
   if (age == AGE_6) return 5157;
   if (age == AGE_7) return 5158;
   return 5151;
+}
+
+std::shared_ptr<Block> PumpkinStemBlock::clone() const {
+  std::shared_ptr<PumpkinStemBlock> copy = std::make_shared<PumpkinStemBlock>();
+  copy->age = age;
+  return copy;
 }

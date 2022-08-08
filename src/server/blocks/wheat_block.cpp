@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "wheat_block.h"
 
 WheatBlock::WheatBlock() = default;
@@ -31,4 +32,10 @@ short WheatBlock::getId() const {
   if (age == AGE_6) return 3618;
   if (age == AGE_7) return 3619;
   return 3612;
+}
+
+std::shared_ptr<Block> WheatBlock::clone() const {
+  std::shared_ptr<WheatBlock> copy = std::make_shared<WheatBlock>();
+  copy->age = age;
+  return copy;
 }

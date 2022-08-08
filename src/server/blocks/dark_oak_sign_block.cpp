@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "dark_oak_sign_block.h"
 
 DarkOakSignBlock::DarkOakSignBlock() = default;
@@ -55,4 +56,11 @@ short DarkOakSignBlock::getId() const {
   if (rotation == ROTATION_15 && waterlogged == WATERLOGGED_TRUE) return 3826;
   if (rotation == ROTATION_15 && waterlogged == WATERLOGGED_FALSE) return 3827;
   return 3797;
+}
+
+std::shared_ptr<Block> DarkOakSignBlock::clone() const {
+  std::shared_ptr<DarkOakSignBlock> copy = std::make_shared<DarkOakSignBlock>();
+  copy->rotation = rotation;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

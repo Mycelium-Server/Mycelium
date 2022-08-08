@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "dispenser_block.h"
 
 DispenserBlock::DispenserBlock() = default;
@@ -35,4 +36,11 @@ short DispenserBlock::getId() const {
   if (facing == FACING_DOWN && triggered == TRIGGERED_TRUE) return 474;
   if (facing == FACING_DOWN && triggered == TRIGGERED_FALSE) return 475;
   return 465;
+}
+
+std::shared_ptr<Block> DispenserBlock::clone() const {
+  std::shared_ptr<DispenserBlock> copy = std::make_shared<DispenserBlock>();
+  copy->facing = facing;
+  copy->triggered = triggered;
+  return copy;
 }

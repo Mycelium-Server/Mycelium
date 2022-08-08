@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "andesite_slab_block.h"
 
 AndesiteSlabBlock::AndesiteSlabBlock() = default;
@@ -29,4 +30,11 @@ short AndesiteSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 11728;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 11729;
   return 11727;
+}
+
+std::shared_ptr<Block> AndesiteSlabBlock::clone() const {
+  std::shared_ptr<AndesiteSlabBlock> copy = std::make_shared<AndesiteSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

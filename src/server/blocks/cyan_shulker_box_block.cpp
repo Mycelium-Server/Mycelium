@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "cyan_shulker_box_block.h"
 
 CyanShulkerBoxBlock::CyanShulkerBoxBlock() = default;
@@ -29,4 +30,10 @@ short CyanShulkerBoxBlock::getId() const {
   if (facing == FACING_UP) return 10217;
   if (facing == FACING_DOWN) return 10218;
   return 10217;
+}
+
+std::shared_ptr<Block> CyanShulkerBoxBlock::clone() const {
+  std::shared_ptr<CyanShulkerBoxBlock> copy = std::make_shared<CyanShulkerBoxBlock>();
+  copy->facing = facing;
+  return copy;
 }

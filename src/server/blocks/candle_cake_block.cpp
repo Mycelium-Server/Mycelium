@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "candle_cake_block.h"
 
 CandleCakeBlock::CandleCakeBlock() = default;
@@ -25,4 +26,10 @@ short CandleCakeBlock::getId() const {
   if (lit == LIT_TRUE) return 18585;
   if (lit == LIT_FALSE) return 18586;
   return 18586;
+}
+
+std::shared_ptr<Block> CandleCakeBlock::clone() const {
+  std::shared_ptr<CandleCakeBlock> copy = std::make_shared<CandleCakeBlock>();
+  copy->lit = lit;
+  return copy;
 }

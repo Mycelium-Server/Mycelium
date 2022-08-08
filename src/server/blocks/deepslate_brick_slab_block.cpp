@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "deepslate_brick_slab_block.h"
 
 DeepslateBrickSlabBlock::DeepslateBrickSlabBlock() = default;
@@ -29,4 +30,11 @@ short DeepslateBrickSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 21099;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 21100;
   return 21098;
+}
+
+std::shared_ptr<Block> DeepslateBrickSlabBlock::clone() const {
+  std::shared_ptr<DeepslateBrickSlabBlock> copy = std::make_shared<DeepslateBrickSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "pink_candle_block.h"
 
 PinkCandleBlock::PinkCandleBlock() = default;
@@ -39,4 +40,12 @@ short PinkCandleBlock::getId() const {
   if (candles == CANDLES_4 && lit == LIT_FALSE && waterlogged == WATERLOGGED_TRUE) return 18439;
   if (candles == CANDLES_4 && lit == LIT_FALSE && waterlogged == WATERLOGGED_FALSE) return 18440;
   return 18428;
+}
+
+std::shared_ptr<Block> PinkCandleBlock::clone() const {
+  std::shared_ptr<PinkCandleBlock> copy = std::make_shared<PinkCandleBlock>();
+  copy->candles = candles;
+  copy->lit = lit;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

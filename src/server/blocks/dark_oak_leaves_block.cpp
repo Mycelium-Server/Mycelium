@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "dark_oak_leaves_block.h"
 
 DarkOakLeavesBlock::DarkOakLeavesBlock() = default;
@@ -51,4 +52,12 @@ short DarkOakLeavesBlock::getId() const {
   if (distance == DISTANCE_7 && persistent == PERSISTENT_FALSE && waterlogged == WATERLOGGED_TRUE) return 372;
   if (distance == DISTANCE_7 && persistent == PERSISTENT_FALSE && waterlogged == WATERLOGGED_FALSE) return 373;
   return 373;
+}
+
+std::shared_ptr<Block> DarkOakLeavesBlock::clone() const {
+  std::shared_ptr<DarkOakLeavesBlock> copy = std::make_shared<DarkOakLeavesBlock>();
+  copy->distance = distance;
+  copy->persistent = persistent;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

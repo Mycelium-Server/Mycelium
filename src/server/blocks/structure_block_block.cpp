@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "structure_block_block.h"
 
 StructureBlockBlock::StructureBlockBlock() = default;
@@ -27,4 +28,10 @@ short StructureBlockBlock::getId() const {
   if (mode == MODE_CORNER) return 16946;
   if (mode == MODE_DATA) return 16947;
   return 16945;
+}
+
+std::shared_ptr<Block> StructureBlockBlock::clone() const {
+  std::shared_ptr<StructureBlockBlock> copy = std::make_shared<StructureBlockBlock>();
+  copy->mode = mode;
+  return copy;
 }

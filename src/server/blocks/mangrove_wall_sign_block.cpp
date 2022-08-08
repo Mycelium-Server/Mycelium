@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "mangrove_wall_sign_block.h"
 
 MangroveWallSignBlock::MangroveWallSignBlock() = default;
@@ -31,4 +32,11 @@ short MangroveWallSignBlock::getId() const {
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_TRUE) return 4086;
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_FALSE) return 4087;
   return 4081;
+}
+
+std::shared_ptr<Block> MangroveWallSignBlock::clone() const {
+  std::shared_ptr<MangroveWallSignBlock> copy = std::make_shared<MangroveWallSignBlock>();
+  copy->facing = facing;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

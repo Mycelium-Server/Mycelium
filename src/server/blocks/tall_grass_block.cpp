@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "tall_grass_block.h"
 
 TallGrassBlock::TallGrassBlock() = default;
@@ -25,4 +26,10 @@ short TallGrassBlock::getId() const {
   if (half == HALF_UPPER) return 8634;
   if (half == HALF_LOWER) return 8635;
   return 8635;
+}
+
+std::shared_ptr<Block> TallGrassBlock::clone() const {
+  std::shared_ptr<TallGrassBlock> copy = std::make_shared<TallGrassBlock>();
+  copy->half = half;
+  return copy;
 }

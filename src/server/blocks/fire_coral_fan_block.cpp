@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "fire_coral_fan_block.h"
 
 FireCoralFanBlock::FireCoralFanBlock() = default;
@@ -25,4 +26,10 @@ short FireCoralFanBlock::getId() const {
   if (waterlogged == WATERLOGGED_TRUE) return 10437;
   if (waterlogged == WATERLOGGED_FALSE) return 10438;
   return 10437;
+}
+
+std::shared_ptr<Block> FireCoralFanBlock::clone() const {
+  std::shared_ptr<FireCoralFanBlock> copy = std::make_shared<FireCoralFanBlock>();
+  copy->waterlogged = waterlogged;
+  return copy;
 }

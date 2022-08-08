@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "turtle_egg_block.h"
 
 TurtleEggBlock::TurtleEggBlock() = default;
@@ -35,4 +36,11 @@ short TurtleEggBlock::getId() const {
   if (eggs == EGGS_4 && hatch == HATCH_1) return 10389;
   if (eggs == EGGS_4 && hatch == HATCH_2) return 10390;
   return 10379;
+}
+
+std::shared_ptr<Block> TurtleEggBlock::clone() const {
+  std::shared_ptr<TurtleEggBlock> copy = std::make_shared<TurtleEggBlock>();
+  copy->eggs = eggs;
+  copy->hatch = hatch;
+  return copy;
 }

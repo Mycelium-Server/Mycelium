@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "polished_deepslate_slab_block.h"
 
 PolishedDeepslateSlabBlock::PolishedDeepslateSlabBlock() = default;
@@ -29,4 +30,11 @@ short PolishedDeepslateSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 20277;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 20278;
   return 20276;
+}
+
+std::shared_ptr<Block> PolishedDeepslateSlabBlock::clone() const {
+  std::shared_ptr<PolishedDeepslateSlabBlock> copy = std::make_shared<PolishedDeepslateSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

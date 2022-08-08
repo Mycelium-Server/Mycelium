@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "carved_pumpkin_block.h"
 
 CarvedPumpkinBlock::CarvedPumpkinBlock() = default;
@@ -27,4 +28,10 @@ short CarvedPumpkinBlock::getId() const {
   if (facing == FACING_WEST) return 4327;
   if (facing == FACING_EAST) return 4328;
   return 4325;
+}
+
+std::shared_ptr<Block> CarvedPumpkinBlock::clone() const {
+  std::shared_ptr<CarvedPumpkinBlock> copy = std::make_shared<CarvedPumpkinBlock>();
+  copy->facing = facing;
+  return copy;
 }

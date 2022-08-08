@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "dark_prismarine_slab_block.h"
 
 DarkPrismarineSlabBlock::DarkPrismarineSlabBlock() = default;
@@ -29,4 +30,11 @@ short DarkPrismarineSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 8601;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 8602;
   return 8600;
+}
+
+std::shared_ptr<Block> DarkPrismarineSlabBlock::clone() const {
+  std::shared_ptr<DarkPrismarineSlabBlock> copy = std::make_shared<DarkPrismarineSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

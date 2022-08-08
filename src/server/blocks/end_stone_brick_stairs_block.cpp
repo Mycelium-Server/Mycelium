@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "end_stone_brick_stairs_block.h"
 
 EndStoneBrickStairsBlock::EndStoneBrickStairsBlock() = default;
@@ -103,4 +104,13 @@ short EndStoneBrickStairsBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_TRUE) return 11028;
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_FALSE) return 11029;
   return 10961;
+}
+
+std::shared_ptr<Block> EndStoneBrickStairsBlock::clone() const {
+  std::shared_ptr<EndStoneBrickStairsBlock> copy = std::make_shared<EndStoneBrickStairsBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->shape = shape;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

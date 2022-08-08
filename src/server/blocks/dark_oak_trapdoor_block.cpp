@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "dark_oak_trapdoor_block.h"
 
 DarkOakTrapdoorBlock::DarkOakTrapdoorBlock() = default;
@@ -87,4 +88,14 @@ short DarkOakTrapdoorBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && open == OPEN_FALSE && powered == POWERED_FALSE && waterlogged == WATERLOGGED_TRUE) return 4802;
   if (facing == FACING_EAST && half == HALF_BOTTOM && open == OPEN_FALSE && powered == POWERED_FALSE && waterlogged == WATERLOGGED_FALSE) return 4803;
   return 4755;
+}
+
+std::shared_ptr<Block> DarkOakTrapdoorBlock::clone() const {
+  std::shared_ptr<DarkOakTrapdoorBlock> copy = std::make_shared<DarkOakTrapdoorBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->open = open;
+  copy->powered = powered;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

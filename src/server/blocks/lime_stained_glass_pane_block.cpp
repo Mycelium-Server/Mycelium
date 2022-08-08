@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "lime_stained_glass_pane_block.h"
 
 LimeStainedGlassPaneBlock::LimeStainedGlassPaneBlock() = default;
@@ -55,4 +56,14 @@ short LimeStainedGlassPaneBlock::getId() const {
   if (east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_TRUE) return 7682;
   if (east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_FALSE) return 7683;
   return 7683;
+}
+
+std::shared_ptr<Block> LimeStainedGlassPaneBlock::clone() const {
+  std::shared_ptr<LimeStainedGlassPaneBlock> copy = std::make_shared<LimeStainedGlassPaneBlock>();
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->waterlogged = waterlogged;
+  copy->west = west;
+  return copy;
 }

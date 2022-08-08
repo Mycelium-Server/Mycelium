@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "white_bed_block.h"
 
 WhiteBedBlock::WhiteBedBlock() = default;
@@ -39,4 +40,12 @@ short WhiteBedBlock::getId() const {
   if (facing == FACING_EAST && occupied == OCCUPIED_FALSE && part == PART_HEAD) return 1293;
   if (facing == FACING_EAST && occupied == OCCUPIED_FALSE && part == PART_FOOT) return 1294;
   return 1282;
+}
+
+std::shared_ptr<Block> WhiteBedBlock::clone() const {
+  std::shared_ptr<WhiteBedBlock> copy = std::make_shared<WhiteBedBlock>();
+  copy->facing = facing;
+  copy->occupied = occupied;
+  copy->part = part;
+  return copy;
 }

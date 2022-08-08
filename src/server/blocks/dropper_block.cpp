@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "dropper_block.h"
 
 DropperBlock::DropperBlock() = default;
@@ -35,4 +36,11 @@ short DropperBlock::getId() const {
   if (facing == FACING_DOWN && triggered == TRIGGERED_TRUE) return 7474;
   if (facing == FACING_DOWN && triggered == TRIGGERED_FALSE) return 7475;
   return 7465;
+}
+
+std::shared_ptr<Block> DropperBlock::clone() const {
+  std::shared_ptr<DropperBlock> copy = std::make_shared<DropperBlock>();
+  copy->facing = facing;
+  copy->triggered = triggered;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "heavy_weighted_pressure_plate_block.h"
 
 HeavyWeightedPressurePlateBlock::HeavyWeightedPressurePlateBlock() = default;
@@ -39,4 +40,10 @@ short HeavyWeightedPressurePlateBlock::getId() const {
   if (power == POWER_14) return 7293;
   if (power == POWER_15) return 7294;
   return 7279;
+}
+
+std::shared_ptr<Block> HeavyWeightedPressurePlateBlock::clone() const {
+  std::shared_ptr<HeavyWeightedPressurePlateBlock> copy = std::make_shared<HeavyWeightedPressurePlateBlock>();
+  copy->power = power;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "dead_fire_coral_wall_fan_block.h"
 
 DeadFireCoralWallFanBlock::DeadFireCoralWallFanBlock() = default;
@@ -31,4 +32,11 @@ short DeadFireCoralWallFanBlock::getId() const {
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_TRUE) return 10471;
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_FALSE) return 10472;
   return 10465;
+}
+
+std::shared_ptr<Block> DeadFireCoralWallFanBlock::clone() const {
+  std::shared_ptr<DeadFireCoralWallFanBlock> copy = std::make_shared<DeadFireCoralWallFanBlock>();
+  copy->facing = facing;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "jungle_fence_block.h"
 
 JungleFenceBlock::JungleFenceBlock() = default;
@@ -55,4 +56,14 @@ short JungleFenceBlock::getId() const {
   if (east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_TRUE) return 9457;
   if (east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_FALSE) return 9458;
   return 9458;
+}
+
+std::shared_ptr<Block> JungleFenceBlock::clone() const {
+  std::shared_ptr<JungleFenceBlock> copy = std::make_shared<JungleFenceBlock>();
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->waterlogged = waterlogged;
+  copy->west = west;
+  return copy;
 }

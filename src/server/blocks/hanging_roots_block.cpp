@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "hanging_roots_block.h"
 
 HangingRootsBlock::HangingRootsBlock() = default;
@@ -25,4 +26,10 @@ short HangingRootsBlock::getId() const {
   if (waterlogged == WATERLOGGED_TRUE) return 19774;
   if (waterlogged == WATERLOGGED_FALSE) return 19775;
   return 19775;
+}
+
+std::shared_ptr<Block> HangingRootsBlock::clone() const {
+  std::shared_ptr<HangingRootsBlock> copy = std::make_shared<HangingRootsBlock>();
+  copy->waterlogged = waterlogged;
+  return copy;
 }

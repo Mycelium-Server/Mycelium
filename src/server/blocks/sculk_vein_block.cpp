@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "sculk_vein_block.h"
 
 SculkVeinBlock::SculkVeinBlock() = default;
@@ -151,4 +152,16 @@ short SculkVeinBlock::getId() const {
   if (down == DOWN_FALSE && east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && up == UP_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_TRUE) return 18896;
   if (down == DOWN_FALSE && east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && up == UP_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_FALSE) return 18897;
   return 18897;
+}
+
+std::shared_ptr<Block> SculkVeinBlock::clone() const {
+  std::shared_ptr<SculkVeinBlock> copy = std::make_shared<SculkVeinBlock>();
+  copy->down = down;
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->up = up;
+  copy->waterlogged = waterlogged;
+  copy->west = west;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "scaffolding_block.h"
 
 ScaffoldingBlock::ScaffoldingBlock() = default;
@@ -55,4 +56,12 @@ short ScaffoldingBlock::getId() const {
   if (bottom == BOTTOM_FALSE && distance == DISTANCE_7 && waterlogged == WATERLOGGED_TRUE) return 15990;
   if (bottom == BOTTOM_FALSE && distance == DISTANCE_7 && waterlogged == WATERLOGGED_FALSE) return 15991;
   return 15991;
+}
+
+std::shared_ptr<Block> ScaffoldingBlock::clone() const {
+  std::shared_ptr<ScaffoldingBlock> copy = std::make_shared<ScaffoldingBlock>();
+  copy->bottom = bottom;
+  copy->distance = distance;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

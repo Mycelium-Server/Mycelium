@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "magenta_candle_block.h"
 
 MagentaCandleBlock::MagentaCandleBlock() = default;
@@ -39,4 +40,12 @@ short MagentaCandleBlock::getId() const {
   if (candles == CANDLES_4 && lit == LIT_FALSE && waterlogged == WATERLOGGED_TRUE) return 18375;
   if (candles == CANDLES_4 && lit == LIT_FALSE && waterlogged == WATERLOGGED_FALSE) return 18376;
   return 18364;
+}
+
+std::shared_ptr<Block> MagentaCandleBlock::clone() const {
+  std::shared_ptr<MagentaCandleBlock> copy = std::make_shared<MagentaCandleBlock>();
+  copy->candles = candles;
+  copy->lit = lit;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

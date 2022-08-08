@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "nether_brick_slab_block.h"
 
 NetherBrickSlabBlock::NetherBrickSlabBlock() = default;
@@ -29,4 +30,11 @@ short NetherBrickSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 9141;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 9142;
   return 9140;
+}
+
+std::shared_ptr<Block> NetherBrickSlabBlock::clone() const {
+  std::shared_ptr<NetherBrickSlabBlock> copy = std::make_shared<NetherBrickSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

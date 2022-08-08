@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "mangrove_roots_block.h"
 
 MangroveRootsBlock::MangroveRootsBlock() = default;
@@ -25,4 +26,10 @@ short MangroveRootsBlock::getId() const {
   if (waterlogged == WATERLOGGED_TRUE) return 138;
   if (waterlogged == WATERLOGGED_FALSE) return 139;
   return 139;
+}
+
+std::shared_ptr<Block> MangroveRootsBlock::clone() const {
+  std::shared_ptr<MangroveRootsBlock> copy = std::make_shared<MangroveRootsBlock>();
+  copy->waterlogged = waterlogged;
+  return copy;
 }

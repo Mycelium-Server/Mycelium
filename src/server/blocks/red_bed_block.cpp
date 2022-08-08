@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "red_bed_block.h"
 
 RedBedBlock::RedBedBlock() = default;
@@ -39,4 +40,12 @@ short RedBedBlock::getId() const {
   if (facing == FACING_EAST && occupied == OCCUPIED_FALSE && part == PART_HEAD) return 1517;
   if (facing == FACING_EAST && occupied == OCCUPIED_FALSE && part == PART_FOOT) return 1518;
   return 1506;
+}
+
+std::shared_ptr<Block> RedBedBlock::clone() const {
+  std::shared_ptr<RedBedBlock> copy = std::make_shared<RedBedBlock>();
+  copy->facing = facing;
+  copy->occupied = occupied;
+  copy->part = part;
+  return copy;
 }

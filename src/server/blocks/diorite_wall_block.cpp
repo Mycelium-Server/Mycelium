@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "diorite_wall_block.h"
 
 DioriteWallBlock::DioriteWallBlock() = default;
@@ -347,4 +348,15 @@ short DioriteWallBlock::getId() const {
   if (east == EAST_TALL && north == NORTH_TALL && south == SOUTH_TALL && up == UP_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_LOW) return 15958;
   if (east == EAST_TALL && north == NORTH_TALL && south == SOUTH_TALL && up == UP_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_TALL) return 15959;
   return 15639;
+}
+
+std::shared_ptr<Block> DioriteWallBlock::clone() const {
+  std::shared_ptr<DioriteWallBlock> copy = std::make_shared<DioriteWallBlock>();
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->up = up;
+  copy->waterlogged = waterlogged;
+  copy->west = west;
+  return copy;
 }

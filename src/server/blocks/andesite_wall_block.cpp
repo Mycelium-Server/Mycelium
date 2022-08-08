@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "andesite_wall_block.h"
 
 AndesiteWallBlock::AndesiteWallBlock() = default;
@@ -347,4 +348,15 @@ short AndesiteWallBlock::getId() const {
   if (east == EAST_TALL && north == NORTH_TALL && south == SOUTH_TALL && up == UP_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_LOW) return 14662;
   if (east == EAST_TALL && north == NORTH_TALL && south == SOUTH_TALL && up == UP_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_TALL) return 14663;
   return 14343;
+}
+
+std::shared_ptr<Block> AndesiteWallBlock::clone() const {
+  std::shared_ptr<AndesiteWallBlock> copy = std::make_shared<AndesiteWallBlock>();
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->up = up;
+  copy->waterlogged = waterlogged;
+  copy->west = west;
+  return copy;
 }

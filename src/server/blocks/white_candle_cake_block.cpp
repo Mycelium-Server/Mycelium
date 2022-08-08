@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "white_candle_cake_block.h"
 
 WhiteCandleCakeBlock::WhiteCandleCakeBlock() = default;
@@ -25,4 +26,10 @@ short WhiteCandleCakeBlock::getId() const {
   if (lit == LIT_TRUE) return 18587;
   if (lit == LIT_FALSE) return 18588;
   return 18588;
+}
+
+std::shared_ptr<Block> WhiteCandleCakeBlock::clone() const {
+  std::shared_ptr<WhiteCandleCakeBlock> copy = std::make_shared<WhiteCandleCakeBlock>();
+  copy->lit = lit;
+  return copy;
 }

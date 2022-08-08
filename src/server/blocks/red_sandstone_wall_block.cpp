@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "red_sandstone_wall_block.h"
 
 RedSandstoneWallBlock::RedSandstoneWallBlock() = default;
@@ -347,4 +348,15 @@ short RedSandstoneWallBlock::getId() const {
   if (east == EAST_TALL && north == NORTH_TALL && south == SOUTH_TALL && up == UP_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_LOW) return 12718;
   if (east == EAST_TALL && north == NORTH_TALL && south == SOUTH_TALL && up == UP_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_TALL) return 12719;
   return 12399;
+}
+
+std::shared_ptr<Block> RedSandstoneWallBlock::clone() const {
+  std::shared_ptr<RedSandstoneWallBlock> copy = std::make_shared<RedSandstoneWallBlock>();
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->up = up;
+  copy->waterlogged = waterlogged;
+  copy->west = west;
+  return copy;
 }

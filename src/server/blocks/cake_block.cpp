@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "cake_block.h"
 
 CakeBlock::CakeBlock() = default;
@@ -30,4 +31,10 @@ short CakeBlock::getId() const {
   if (bites == BITES_5) return 4338;
   if (bites == BITES_6) return 4339;
   return 4333;
+}
+
+std::shared_ptr<Block> CakeBlock::clone() const {
+  std::shared_ptr<CakeBlock> copy = std::make_shared<CakeBlock>();
+  copy->bites = bites;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "jungle_log_block.h"
 
 JungleLogBlock::JungleLogBlock() = default;
@@ -26,4 +27,10 @@ short JungleLogBlock::getId() const {
   if (axis == AXIS_Y) return 127;
   if (axis == AXIS_Z) return 128;
   return 127;
+}
+
+std::shared_ptr<Block> JungleLogBlock::clone() const {
+  std::shared_ptr<JungleLogBlock> copy = std::make_shared<JungleLogBlock>();
+  copy->axis = axis;
+  return copy;
 }

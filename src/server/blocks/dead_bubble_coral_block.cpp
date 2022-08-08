@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "dead_bubble_coral_block.h"
 
 DeadBubbleCoralBlock::DeadBubbleCoralBlock() = default;
@@ -25,4 +26,10 @@ short DeadBubbleCoralBlock::getId() const {
   if (waterlogged == WATERLOGGED_TRUE) return 10405;
   if (waterlogged == WATERLOGGED_FALSE) return 10406;
   return 10405;
+}
+
+std::shared_ptr<Block> DeadBubbleCoralBlock::clone() const {
+  std::shared_ptr<DeadBubbleCoralBlock> copy = std::make_shared<DeadBubbleCoralBlock>();
+  copy->waterlogged = waterlogged;
+  return copy;
 }

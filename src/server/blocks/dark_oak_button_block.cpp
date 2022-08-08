@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "dark_oak_button_block.h"
 
 DarkOakButtonBlock::DarkOakButtonBlock() = default;
@@ -47,4 +48,12 @@ short DarkOakButtonBlock::getId() const {
   if (face == FACE_CEILING && facing == FACING_EAST && powered == POWERED_TRUE) return 7081;
   if (face == FACE_CEILING && facing == FACING_EAST && powered == POWERED_FALSE) return 7082;
   return 7068;
+}
+
+std::shared_ptr<Block> DarkOakButtonBlock::clone() const {
+  std::shared_ptr<DarkOakButtonBlock> copy = std::make_shared<DarkOakButtonBlock>();
+  copy->face = face;
+  copy->facing = facing;
+  copy->powered = powered;
+  return copy;
 }

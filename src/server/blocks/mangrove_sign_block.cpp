@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "mangrove_sign_block.h"
 
 MangroveSignBlock::MangroveSignBlock() = default;
@@ -55,4 +56,11 @@ short MangroveSignBlock::getId() const {
   if (rotation == ROTATION_15 && waterlogged == WATERLOGGED_TRUE) return 3858;
   if (rotation == ROTATION_15 && waterlogged == WATERLOGGED_FALSE) return 3859;
   return 3829;
+}
+
+std::shared_ptr<Block> MangroveSignBlock::clone() const {
+  std::shared_ptr<MangroveSignBlock> copy = std::make_shared<MangroveSignBlock>();
+  copy->rotation = rotation;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

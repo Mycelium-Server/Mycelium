@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "iron_door_block.h"
 
 IronDoorBlock::IronDoorBlock() = default;
@@ -87,4 +88,14 @@ short IronDoorBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_LOWER && hinge == HINGE_RIGHT && open == OPEN_FALSE && powered == POWERED_TRUE) return 4176;
   if (facing == FACING_EAST && half == HALF_LOWER && hinge == HINGE_RIGHT && open == OPEN_FALSE && powered == POWERED_FALSE) return 4177;
   return 4125;
+}
+
+std::shared_ptr<Block> IronDoorBlock::clone() const {
+  std::shared_ptr<IronDoorBlock> copy = std::make_shared<IronDoorBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->hinge = hinge;
+  copy->open = open;
+  copy->powered = powered;
+  return copy;
 }

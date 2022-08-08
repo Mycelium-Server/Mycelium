@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "redstone_ore_block.h"
 
 RedstoneOreBlock::RedstoneOreBlock() = default;
@@ -25,4 +26,10 @@ short RedstoneOreBlock::getId() const {
   if (lit == LIT_TRUE) return 4192;
   if (lit == LIT_FALSE) return 4193;
   return 4193;
+}
+
+std::shared_ptr<Block> RedstoneOreBlock::clone() const {
+  std::shared_ptr<RedstoneOreBlock> copy = std::make_shared<RedstoneOreBlock>();
+  copy->lit = lit;
+  return copy;
 }

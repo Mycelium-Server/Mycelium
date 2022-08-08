@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "gray_shulker_box_block.h"
 
 GrayShulkerBoxBlock::GrayShulkerBoxBlock() = default;
@@ -29,4 +30,10 @@ short GrayShulkerBoxBlock::getId() const {
   if (facing == FACING_UP) return 10205;
   if (facing == FACING_DOWN) return 10206;
   return 10205;
+}
+
+std::shared_ptr<Block> GrayShulkerBoxBlock::clone() const {
+  std::shared_ptr<GrayShulkerBoxBlock> copy = std::make_shared<GrayShulkerBoxBlock>();
+  copy->facing = facing;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "birch_wall_sign_block.h"
 
 BirchWallSignBlock::BirchWallSignBlock() = default;
@@ -31,4 +32,11 @@ short BirchWallSignBlock::getId() const {
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_TRUE) return 4054;
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_FALSE) return 4055;
   return 4049;
+}
+
+std::shared_ptr<Block> BirchWallSignBlock::clone() const {
+  std::shared_ptr<BirchWallSignBlock> copy = std::make_shared<BirchWallSignBlock>();
+  copy->facing = facing;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

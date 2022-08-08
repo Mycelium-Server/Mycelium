@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "crimson_door_block.h"
 
 CrimsonDoorBlock::CrimsonDoorBlock() = default;
@@ -87,4 +88,14 @@ short CrimsonDoorBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_LOWER && hinge == HINGE_RIGHT && open == OPEN_FALSE && powered == POWERED_TRUE) return 16798;
   if (facing == FACING_EAST && half == HALF_LOWER && hinge == HINGE_RIGHT && open == OPEN_FALSE && powered == POWERED_FALSE) return 16799;
   return 16747;
+}
+
+std::shared_ptr<Block> CrimsonDoorBlock::clone() const {
+  std::shared_ptr<CrimsonDoorBlock> copy = std::make_shared<CrimsonDoorBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->hinge = hinge;
+  copy->open = open;
+  copy->powered = powered;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "skeleton_skull_block.h"
 
 SkeletonSkullBlock::SkeletonSkullBlock() = default;
@@ -39,4 +40,10 @@ short SkeletonSkullBlock::getId() const {
   if (rotation == ROTATION_14) return 7121;
   if (rotation == ROTATION_15) return 7122;
   return 7107;
+}
+
+std::shared_ptr<Block> SkeletonSkullBlock::clone() const {
+  std::shared_ptr<SkeletonSkullBlock> copy = std::make_shared<SkeletonSkullBlock>();
+  copy->rotation = rotation;
+  return copy;
 }

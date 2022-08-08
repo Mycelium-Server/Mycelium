@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "sandstone_stairs_block.h"
 
 SandstoneStairsBlock::SandstoneStairsBlock() = default;
@@ -103,4 +104,13 @@ short SandstoneStairsBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_TRUE) return 5839;
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_FALSE) return 5840;
   return 5772;
+}
+
+std::shared_ptr<Block> SandstoneStairsBlock::clone() const {
+  std::shared_ptr<SandstoneStairsBlock> copy = std::make_shared<SandstoneStairsBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->shape = shape;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

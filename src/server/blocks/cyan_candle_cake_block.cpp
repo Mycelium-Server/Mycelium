@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "cyan_candle_cake_block.h"
 
 CyanCandleCakeBlock::CyanCandleCakeBlock() = default;
@@ -25,4 +26,10 @@ short CyanCandleCakeBlock::getId() const {
   if (lit == LIT_TRUE) return 18605;
   if (lit == LIT_FALSE) return 18606;
   return 18606;
+}
+
+std::shared_ptr<Block> CyanCandleCakeBlock::clone() const {
+  std::shared_ptr<CyanCandleCakeBlock> copy = std::make_shared<CyanCandleCakeBlock>();
+  copy->lit = lit;
+  return copy;
 }

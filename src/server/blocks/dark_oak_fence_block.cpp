@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "dark_oak_fence_block.h"
 
 DarkOakFenceBlock::DarkOakFenceBlock() = default;
@@ -55,4 +56,14 @@ short DarkOakFenceBlock::getId() const {
   if (east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_TRUE) return 9521;
   if (east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_FALSE) return 9522;
   return 9522;
+}
+
+std::shared_ptr<Block> DarkOakFenceBlock::clone() const {
+  std::shared_ptr<DarkOakFenceBlock> copy = std::make_shared<DarkOakFenceBlock>();
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->waterlogged = waterlogged;
+  copy->west = west;
+  return copy;
 }

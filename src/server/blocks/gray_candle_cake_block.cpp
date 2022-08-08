@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "gray_candle_cake_block.h"
 
 GrayCandleCakeBlock::GrayCandleCakeBlock() = default;
@@ -25,4 +26,10 @@ short GrayCandleCakeBlock::getId() const {
   if (lit == LIT_TRUE) return 18601;
   if (lit == LIT_FALSE) return 18602;
   return 18602;
+}
+
+std::shared_ptr<Block> GrayCandleCakeBlock::clone() const {
+  std::shared_ptr<GrayCandleCakeBlock> copy = std::make_shared<GrayCandleCakeBlock>();
+  copy->lit = lit;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "mangrove_slab_block.h"
 
 MangroveSlabBlock::MangroveSlabBlock() = default;
@@ -29,4 +30,11 @@ short MangroveSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 9081;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 9082;
   return 9080;
+}
+
+std::shared_ptr<Block> MangroveSlabBlock::clone() const {
+  std::shared_ptr<MangroveSlabBlock> copy = std::make_shared<MangroveSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

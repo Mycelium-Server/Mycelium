@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "light_block.h"
 
 LightBlock::LightBlock() = default;
@@ -55,4 +56,11 @@ short LightBlock::getId() const {
   if (level == LEVEL_15 && waterlogged == WATERLOGGED_TRUE) return 8276;
   if (level == LEVEL_15 && waterlogged == WATERLOGGED_FALSE) return 8277;
   return 8277;
+}
+
+std::shared_ptr<Block> LightBlock::clone() const {
+  std::shared_ptr<LightBlock> copy = std::make_shared<LightBlock>();
+  copy->level = level;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

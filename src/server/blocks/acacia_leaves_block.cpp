@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "acacia_leaves_block.h"
 
 AcaciaLeavesBlock::AcaciaLeavesBlock() = default;
@@ -51,4 +52,12 @@ short AcaciaLeavesBlock::getId() const {
   if (distance == DISTANCE_7 && persistent == PERSISTENT_FALSE && waterlogged == WATERLOGGED_TRUE) return 344;
   if (distance == DISTANCE_7 && persistent == PERSISTENT_FALSE && waterlogged == WATERLOGGED_FALSE) return 345;
   return 345;
+}
+
+std::shared_ptr<Block> AcaciaLeavesBlock::clone() const {
+  std::shared_ptr<AcaciaLeavesBlock> copy = std::make_shared<AcaciaLeavesBlock>();
+  copy->distance = distance;
+  copy->persistent = persistent;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

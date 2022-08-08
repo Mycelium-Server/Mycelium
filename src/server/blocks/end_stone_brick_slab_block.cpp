@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "end_stone_brick_slab_block.h"
 
 EndStoneBrickSlabBlock::EndStoneBrickSlabBlock() = default;
@@ -29,4 +30,11 @@ short EndStoneBrickSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 11704;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 11705;
   return 11703;
+}
+
+std::shared_ptr<Block> EndStoneBrickSlabBlock::clone() const {
+  std::shared_ptr<EndStoneBrickSlabBlock> copy = std::make_shared<EndStoneBrickSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

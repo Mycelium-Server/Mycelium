@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "birch_leaves_block.h"
 
 BirchLeavesBlock::BirchLeavesBlock() = default;
@@ -51,4 +52,12 @@ short BirchLeavesBlock::getId() const {
   if (distance == DISTANCE_7 && persistent == PERSISTENT_FALSE && waterlogged == WATERLOGGED_TRUE) return 288;
   if (distance == DISTANCE_7 && persistent == PERSISTENT_FALSE && waterlogged == WATERLOGGED_FALSE) return 289;
   return 289;
+}
+
+std::shared_ptr<Block> BirchLeavesBlock::clone() const {
+  std::shared_ptr<BirchLeavesBlock> copy = std::make_shared<BirchLeavesBlock>();
+  copy->distance = distance;
+  copy->persistent = persistent;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "deepslate_tile_wall_block.h"
 
 DeepslateTileWallBlock::DeepslateTileWallBlock() = default;
@@ -347,4 +348,15 @@ short DeepslateTileWallBlock::getId() const {
   if (east == EAST_TALL && north == NORTH_TALL && south == SOUTH_TALL && up == UP_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_LOW) return 21012;
   if (east == EAST_TALL && north == NORTH_TALL && south == SOUTH_TALL && up == UP_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_TALL) return 21013;
   return 20693;
+}
+
+std::shared_ptr<Block> DeepslateTileWallBlock::clone() const {
+  std::shared_ptr<DeepslateTileWallBlock> copy = std::make_shared<DeepslateTileWallBlock>();
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->up = up;
+  copy->waterlogged = waterlogged;
+  copy->west = west;
+  return copy;
 }

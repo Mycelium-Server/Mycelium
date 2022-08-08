@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "piston_block.h"
 
 PistonBlock::PistonBlock() = default;
@@ -35,4 +36,11 @@ short PistonBlock::getId() const {
   if (extended == EXTENDED_FALSE && facing == FACING_UP) return 1612;
   if (extended == EXTENDED_FALSE && facing == FACING_DOWN) return 1613;
   return 1608;
+}
+
+std::shared_ptr<Block> PistonBlock::clone() const {
+  std::shared_ptr<PistonBlock> copy = std::make_shared<PistonBlock>();
+  copy->extended = extended;
+  copy->facing = facing;
+  return copy;
 }

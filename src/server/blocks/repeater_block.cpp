@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "repeater_block.h"
 
 RepeaterBlock::RepeaterBlock() = default;
@@ -87,4 +88,13 @@ short RepeaterBlock::getId() const {
   if (delay == DELAY_4 && facing == FACING_EAST && locked == LOCKED_FALSE && powered == POWERED_TRUE) return 4402;
   if (delay == DELAY_4 && facing == FACING_EAST && locked == LOCKED_FALSE && powered == POWERED_FALSE) return 4403;
   return 4343;
+}
+
+std::shared_ptr<Block> RepeaterBlock::clone() const {
+  std::shared_ptr<RepeaterBlock> copy = std::make_shared<RepeaterBlock>();
+  copy->delay = delay;
+  copy->facing = facing;
+  copy->locked = locked;
+  copy->powered = powered;
+  return copy;
 }

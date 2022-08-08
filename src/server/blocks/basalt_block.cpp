@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "basalt_block.h"
 
 BasaltBlock::BasaltBlock() = default;
@@ -26,4 +27,10 @@ short BasaltBlock::getId() const {
   if (axis == AXIS_Y) return 4312;
   if (axis == AXIS_Z) return 4313;
   return 4312;
+}
+
+std::shared_ptr<Block> BasaltBlock::clone() const {
+  std::shared_ptr<BasaltBlock> copy = std::make_shared<BasaltBlock>();
+  copy->axis = axis;
+  return copy;
 }

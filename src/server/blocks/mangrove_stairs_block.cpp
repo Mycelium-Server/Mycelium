@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "mangrove_stairs_block.h"
 
 MangroveStairsBlock::MangroveStairsBlock() = default;
@@ -103,4 +104,13 @@ short MangroveStairsBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_TRUE) return 8242;
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_FALSE) return 8243;
   return 8175;
+}
+
+std::shared_ptr<Block> MangroveStairsBlock::clone() const {
+  std::shared_ptr<MangroveStairsBlock> copy = std::make_shared<MangroveStairsBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->shape = shape;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

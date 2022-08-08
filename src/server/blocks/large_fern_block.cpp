@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "large_fern_block.h"
 
 LargeFernBlock::LargeFernBlock() = default;
@@ -25,4 +26,10 @@ short LargeFernBlock::getId() const {
   if (half == HALF_UPPER) return 8636;
   if (half == HALF_LOWER) return 8637;
   return 8637;
+}
+
+std::shared_ptr<Block> LargeFernBlock::clone() const {
+  std::shared_ptr<LargeFernBlock> copy = std::make_shared<LargeFernBlock>();
+  copy->half = half;
+  return copy;
 }

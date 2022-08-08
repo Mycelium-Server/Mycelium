@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "light_blue_wall_banner_block.h"
 
 LightBlueWallBannerBlock::LightBlueWallBannerBlock() = default;
@@ -27,4 +28,10 @@ short LightBlueWallBannerBlock::getId() const {
   if (facing == FACING_WEST) return 8908;
   if (facing == FACING_EAST) return 8909;
   return 8906;
+}
+
+std::shared_ptr<Block> LightBlueWallBannerBlock::clone() const {
+  std::shared_ptr<LightBlueWallBannerBlock> copy = std::make_shared<LightBlueWallBannerBlock>();
+  copy->facing = facing;
+  return copy;
 }

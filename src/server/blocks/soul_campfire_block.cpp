@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "soul_campfire_block.h"
 
 SoulCampfireBlock::SoulCampfireBlock() = default;
@@ -55,4 +56,13 @@ short SoulCampfireBlock::getId() const {
   if (facing == FACING_EAST && lit == LIT_FALSE && signal_fire == SIGNAL_FIRE_FALSE && waterlogged == WATERLOGGED_TRUE) return 16161;
   if (facing == FACING_EAST && lit == LIT_FALSE && signal_fire == SIGNAL_FIRE_FALSE && waterlogged == WATERLOGGED_FALSE) return 16162;
   return 16134;
+}
+
+std::shared_ptr<Block> SoulCampfireBlock::clone() const {
+  std::shared_ptr<SoulCampfireBlock> copy = std::make_shared<SoulCampfireBlock>();
+  copy->facing = facing;
+  copy->lit = lit;
+  copy->signal_fire = signal_fire;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

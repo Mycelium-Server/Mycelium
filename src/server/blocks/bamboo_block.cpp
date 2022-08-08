@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "bamboo_block.h"
 
 BambooBlock::BambooBlock() = default;
@@ -35,4 +36,12 @@ short BambooBlock::getId() const {
   if (age == AGE_1 && leaves == LEAVES_LARGE && stage == STAGE_0) return 10543;
   if (age == AGE_1 && leaves == LEAVES_LARGE && stage == STAGE_1) return 10544;
   return 10533;
+}
+
+std::shared_ptr<Block> BambooBlock::clone() const {
+  std::shared_ptr<BambooBlock> copy = std::make_shared<BambooBlock>();
+  copy->age = age;
+  copy->leaves = leaves;
+  copy->stage = stage;
+  return copy;
 }

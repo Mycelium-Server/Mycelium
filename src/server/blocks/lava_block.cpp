@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "lava_block.h"
 
 LavaBlock::LavaBlock() = default;
@@ -39,4 +40,10 @@ short LavaBlock::getId() const {
   if (level == LEVEL_14) return 105;
   if (level == LEVEL_15) return 106;
   return 91;
+}
+
+std::shared_ptr<Block> LavaBlock::clone() const {
+  std::shared_ptr<LavaBlock> copy = std::make_shared<LavaBlock>();
+  copy->level = level;
+  return copy;
 }

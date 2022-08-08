@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "lime_glazed_terracotta_block.h"
 
 LimeGlazedTerracottaBlock::LimeGlazedTerracottaBlock() = default;
@@ -27,4 +28,10 @@ short LimeGlazedTerracottaBlock::getId() const {
   if (facing == FACING_WEST) return 10277;
   if (facing == FACING_EAST) return 10278;
   return 10275;
+}
+
+std::shared_ptr<Block> LimeGlazedTerracottaBlock::clone() const {
+  std::shared_ptr<LimeGlazedTerracottaBlock> copy = std::make_shared<LimeGlazedTerracottaBlock>();
+  copy->facing = facing;
+  return copy;
 }

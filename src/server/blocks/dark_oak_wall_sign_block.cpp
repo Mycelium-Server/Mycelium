@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "dark_oak_wall_sign_block.h"
 
 DarkOakWallSignBlock::DarkOakWallSignBlock() = default;
@@ -31,4 +32,11 @@ short DarkOakWallSignBlock::getId() const {
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_TRUE) return 4078;
   if (facing == FACING_EAST && waterlogged == WATERLOGGED_FALSE) return 4079;
   return 4073;
+}
+
+std::shared_ptr<Block> DarkOakWallSignBlock::clone() const {
+  std::shared_ptr<DarkOakWallSignBlock> copy = std::make_shared<DarkOakWallSignBlock>();
+  copy->facing = facing;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

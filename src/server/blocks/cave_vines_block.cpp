@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "cave_vines_block.h"
 
 CaveVinesBlock::CaveVinesBlock() = default;
@@ -75,4 +76,11 @@ short CaveVinesBlock::getId() const {
   if (age == AGE_25 && berries == BERRIES_TRUE) return 19709;
   if (age == AGE_25 && berries == BERRIES_FALSE) return 19710;
   return 19660;
+}
+
+std::shared_ptr<Block> CaveVinesBlock::clone() const {
+  std::shared_ptr<CaveVinesBlock> copy = std::make_shared<CaveVinesBlock>();
+  copy->age = age;
+  copy->berries = berries;
+  return copy;
 }

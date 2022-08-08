@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "crimson_trapdoor_block.h"
 
 CrimsonTrapdoorBlock::CrimsonTrapdoorBlock() = default;
@@ -87,4 +88,14 @@ short CrimsonTrapdoorBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && open == OPEN_FALSE && powered == POWERED_FALSE && waterlogged == WATERLOGGED_TRUE) return 16398;
   if (facing == FACING_EAST && half == HALF_BOTTOM && open == OPEN_FALSE && powered == POWERED_FALSE && waterlogged == WATERLOGGED_FALSE) return 16399;
   return 16351;
+}
+
+std::shared_ptr<Block> CrimsonTrapdoorBlock::clone() const {
+  std::shared_ptr<CrimsonTrapdoorBlock> copy = std::make_shared<CrimsonTrapdoorBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->open = open;
+  copy->powered = powered;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

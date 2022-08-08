@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "light_blue_bed_block.h"
 
 LightBlueBedBlock::LightBlueBedBlock() = default;
@@ -39,4 +40,12 @@ short LightBlueBedBlock::getId() const {
   if (facing == FACING_EAST && occupied == OCCUPIED_FALSE && part == PART_HEAD) return 1341;
   if (facing == FACING_EAST && occupied == OCCUPIED_FALSE && part == PART_FOOT) return 1342;
   return 1330;
+}
+
+std::shared_ptr<Block> LightBlueBedBlock::clone() const {
+  std::shared_ptr<LightBlueBedBlock> copy = std::make_shared<LightBlueBedBlock>();
+  copy->facing = facing;
+  copy->occupied = occupied;
+  copy->part = part;
+  return copy;
 }

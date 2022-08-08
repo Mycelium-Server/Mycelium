@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "mushroom_stem_block.h"
 
 MushroomStemBlock::MushroomStemBlock() = default;
@@ -87,4 +88,15 @@ short MushroomStemBlock::getId() const {
   if (down == DOWN_FALSE && east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && up == UP_FALSE && west == WEST_TRUE) return 5070;
   if (down == DOWN_FALSE && east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && up == UP_FALSE && west == WEST_FALSE) return 5071;
   return 5008;
+}
+
+std::shared_ptr<Block> MushroomStemBlock::clone() const {
+  std::shared_ptr<MushroomStemBlock> copy = std::make_shared<MushroomStemBlock>();
+  copy->down = down;
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->up = up;
+  copy->west = west;
+  return copy;
 }

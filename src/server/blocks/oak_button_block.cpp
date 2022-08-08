@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "oak_button_block.h"
 
 OakButtonBlock::OakButtonBlock() = default;
@@ -47,4 +48,12 @@ short OakButtonBlock::getId() const {
   if (face == FACE_CEILING && facing == FACING_EAST && powered == POWERED_TRUE) return 6961;
   if (face == FACE_CEILING && facing == FACING_EAST && powered == POWERED_FALSE) return 6962;
   return 6948;
+}
+
+std::shared_ptr<Block> OakButtonBlock::clone() const {
+  std::shared_ptr<OakButtonBlock> copy = std::make_shared<OakButtonBlock>();
+  copy->face = face;
+  copy->facing = facing;
+  copy->powered = powered;
+  return copy;
 }

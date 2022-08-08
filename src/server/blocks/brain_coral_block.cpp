@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "brain_coral_block.h"
 
 BrainCoralBlock::BrainCoralBlock() = default;
@@ -25,4 +26,10 @@ short BrainCoralBlock::getId() const {
   if (waterlogged == WATERLOGGED_TRUE) return 10413;
   if (waterlogged == WATERLOGGED_FALSE) return 10414;
   return 10413;
+}
+
+std::shared_ptr<Block> BrainCoralBlock::clone() const {
+  std::shared_ptr<BrainCoralBlock> copy = std::make_shared<BrainCoralBlock>();
+  copy->waterlogged = waterlogged;
+  return copy;
 }

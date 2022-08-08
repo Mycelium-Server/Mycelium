@@ -20,6 +20,7 @@
 #include "pipeline/handlers.h"
 #include "protocol/protocol.h"
 #include "server.h"
+#include "server/blocks/block_registry.h"
 #include "server/world/generation/flat_world_generator.h"
 #include "server/world/world.h"
 #include "time.h"
@@ -43,6 +44,9 @@ Pipeline* pipelineInitializer(ConnectionContext* ctx) {
 }
 
 int main() {
+  std::cout << "Creating block registry... ";
+  BlockRegistry::init();
+  std::cout << "done" << std::endl;
   http_init();
 
   auto startTime = currentTimeMillis();

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "birch_pressure_plate_block.h"
 
 BirchPressurePlateBlock::BirchPressurePlateBlock() = default;
@@ -25,4 +26,10 @@ short BirchPressurePlateBlock::getId() const {
   if (powered == POWERED_TRUE) return 4182;
   if (powered == POWERED_FALSE) return 4183;
   return 4183;
+}
+
+std::shared_ptr<Block> BirchPressurePlateBlock::clone() const {
+  std::shared_ptr<BirchPressurePlateBlock> copy = std::make_shared<BirchPressurePlateBlock>();
+  copy->powered = powered;
+  return copy;
 }

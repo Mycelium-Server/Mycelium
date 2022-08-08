@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "black_banner_block.h"
 
 BlackBannerBlock::BlackBannerBlock() = default;
@@ -39,4 +40,10 @@ short BlackBannerBlock::getId() const {
   if (rotation == ROTATION_14) return 8892;
   if (rotation == ROTATION_15) return 8893;
   return 8878;
+}
+
+std::shared_ptr<Block> BlackBannerBlock::clone() const {
+  std::shared_ptr<BlackBannerBlock> copy = std::make_shared<BlackBannerBlock>();
+  copy->rotation = rotation;
+  return copy;
 }

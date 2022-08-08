@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "prismarine_wall_block.h"
 
 PrismarineWallBlock::PrismarineWallBlock() = default;
@@ -347,4 +348,15 @@ short PrismarineWallBlock::getId() const {
   if (east == EAST_TALL && north == NORTH_TALL && south == SOUTH_TALL && up == UP_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_LOW) return 12394;
   if (east == EAST_TALL && north == NORTH_TALL && south == SOUTH_TALL && up == UP_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_TALL) return 12395;
   return 12075;
+}
+
+std::shared_ptr<Block> PrismarineWallBlock::clone() const {
+  std::shared_ptr<PrismarineWallBlock> copy = std::make_shared<PrismarineWallBlock>();
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->up = up;
+  copy->waterlogged = waterlogged;
+  copy->west = west;
+  return copy;
 }

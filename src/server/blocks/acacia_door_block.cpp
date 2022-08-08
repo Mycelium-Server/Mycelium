@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "acacia_door_block.h"
 
 AcaciaDoorBlock::AcaciaDoorBlock() = default;
@@ -87,4 +88,14 @@ short AcaciaDoorBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_LOWER && hinge == HINGE_RIGHT && open == OPEN_FALSE && powered == POWERED_TRUE) return 9809;
   if (facing == FACING_EAST && half == HALF_LOWER && hinge == HINGE_RIGHT && open == OPEN_FALSE && powered == POWERED_FALSE) return 9810;
   return 9758;
+}
+
+std::shared_ptr<Block> AcaciaDoorBlock::clone() const {
+  std::shared_ptr<AcaciaDoorBlock> copy = std::make_shared<AcaciaDoorBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->hinge = hinge;
+  copy->open = open;
+  copy->powered = powered;
+  return copy;
 }

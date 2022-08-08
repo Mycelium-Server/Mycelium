@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "beehive_block.h"
 
 BeehiveBlock::BeehiveBlock() = default;
@@ -47,4 +48,11 @@ short BeehiveBlock::getId() const {
   if (facing == FACING_EAST && honey_level == HONEY_LEVEL_4) return 17031;
   if (facing == FACING_EAST && honey_level == HONEY_LEVEL_5) return 17032;
   return 17009;
+}
+
+std::shared_ptr<Block> BeehiveBlock::clone() const {
+  std::shared_ptr<BeehiveBlock> copy = std::make_shared<BeehiveBlock>();
+  copy->facing = facing;
+  copy->honey_level = honey_level;
+  return copy;
 }

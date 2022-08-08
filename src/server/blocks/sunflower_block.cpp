@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "sunflower_block.h"
 
 SunflowerBlock::SunflowerBlock() = default;
@@ -25,4 +26,10 @@ short SunflowerBlock::getId() const {
   if (half == HALF_UPPER) return 8626;
   if (half == HALF_LOWER) return 8627;
   return 8627;
+}
+
+std::shared_ptr<Block> SunflowerBlock::clone() const {
+  std::shared_ptr<SunflowerBlock> copy = std::make_shared<SunflowerBlock>();
+  copy->half = half;
+  return copy;
 }

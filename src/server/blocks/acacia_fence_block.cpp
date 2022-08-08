@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "acacia_fence_block.h"
 
 AcaciaFenceBlock::AcaciaFenceBlock() = default;
@@ -55,4 +56,14 @@ short AcaciaFenceBlock::getId() const {
   if (east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_TRUE) return 9489;
   if (east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_FALSE) return 9490;
   return 9490;
+}
+
+std::shared_ptr<Block> AcaciaFenceBlock::clone() const {
+  std::shared_ptr<AcaciaFenceBlock> copy = std::make_shared<AcaciaFenceBlock>();
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->waterlogged = waterlogged;
+  copy->west = west;
+  return copy;
 }

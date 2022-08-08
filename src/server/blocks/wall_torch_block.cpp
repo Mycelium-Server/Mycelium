@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "wall_torch_block.h"
 
 WallTorchBlock::WallTorchBlock() = default;
@@ -27,4 +28,10 @@ short WallTorchBlock::getId() const {
   if (facing == FACING_WEST) return 1692;
   if (facing == FACING_EAST) return 1693;
   return 1690;
+}
+
+std::shared_ptr<Block> WallTorchBlock::clone() const {
+  std::shared_ptr<WallTorchBlock> copy = std::make_shared<WallTorchBlock>();
+  copy->facing = facing;
+  return copy;
 }

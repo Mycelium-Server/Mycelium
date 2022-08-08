@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "purpur_stairs_block.h"
 
 PurpurStairsBlock::PurpurStairsBlock() = default;
@@ -103,4 +104,13 @@ short PurpurStairsBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_TRUE) return 10097;
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_FALSE) return 10098;
   return 10030;
+}
+
+std::shared_ptr<Block> PurpurStairsBlock::clone() const {
+  std::shared_ptr<PurpurStairsBlock> copy = std::make_shared<PurpurStairsBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->shape = shape;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

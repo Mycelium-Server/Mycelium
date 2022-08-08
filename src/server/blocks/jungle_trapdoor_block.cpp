@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "jungle_trapdoor_block.h"
 
 JungleTrapdoorBlock::JungleTrapdoorBlock() = default;
@@ -87,4 +88,14 @@ short JungleTrapdoorBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && open == OPEN_FALSE && powered == POWERED_FALSE && waterlogged == WATERLOGGED_TRUE) return 4674;
   if (facing == FACING_EAST && half == HALF_BOTTOM && open == OPEN_FALSE && powered == POWERED_FALSE && waterlogged == WATERLOGGED_FALSE) return 4675;
   return 4627;
+}
+
+std::shared_ptr<Block> JungleTrapdoorBlock::clone() const {
+  std::shared_ptr<JungleTrapdoorBlock> copy = std::make_shared<JungleTrapdoorBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->open = open;
+  copy->powered = powered;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

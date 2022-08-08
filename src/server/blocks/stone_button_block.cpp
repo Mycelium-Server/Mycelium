@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "stone_button_block.h"
 
 StoneButtonBlock::StoneButtonBlock() = default;
@@ -47,4 +48,12 @@ short StoneButtonBlock::getId() const {
   if (face == FACE_CEILING && facing == FACING_EAST && powered == POWERED_TRUE) return 4228;
   if (face == FACE_CEILING && facing == FACING_EAST && powered == POWERED_FALSE) return 4229;
   return 4215;
+}
+
+std::shared_ptr<Block> StoneButtonBlock::clone() const {
+  std::shared_ptr<StoneButtonBlock> copy = std::make_shared<StoneButtonBlock>();
+  copy->face = face;
+  copy->facing = facing;
+  copy->powered = powered;
+  return copy;
 }

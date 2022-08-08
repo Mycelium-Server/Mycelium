@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "water_block.h"
 
 WaterBlock::WaterBlock() = default;
@@ -39,4 +40,10 @@ short WaterBlock::getId() const {
   if (level == LEVEL_14) return 89;
   if (level == LEVEL_15) return 90;
   return 75;
+}
+
+std::shared_ptr<Block> WaterBlock::clone() const {
+  std::shared_ptr<WaterBlock> copy = std::make_shared<WaterBlock>();
+  copy->level = level;
+  return copy;
 }

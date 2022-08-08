@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "purple_candle_block.h"
 
 PurpleCandleBlock::PurpleCandleBlock() = default;
@@ -39,4 +40,12 @@ short PurpleCandleBlock::getId() const {
   if (candles == CANDLES_4 && lit == LIT_FALSE && waterlogged == WATERLOGGED_TRUE) return 18503;
   if (candles == CANDLES_4 && lit == LIT_FALSE && waterlogged == WATERLOGGED_FALSE) return 18504;
   return 18492;
+}
+
+std::shared_ptr<Block> PurpleCandleBlock::clone() const {
+  std::shared_ptr<PurpleCandleBlock> copy = std::make_shared<PurpleCandleBlock>();
+  copy->candles = candles;
+  copy->lit = lit;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

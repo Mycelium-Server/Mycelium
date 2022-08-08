@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "bell_block.h"
 
 BellBlock::BellBlock() = default;
@@ -55,4 +56,12 @@ short BellBlock::getId() const {
   if (attachment == ATTACHMENT_DOUBLE_WALL && facing == FACING_EAST && powered == POWERED_TRUE) return 16089;
   if (attachment == ATTACHMENT_DOUBLE_WALL && facing == FACING_EAST && powered == POWERED_FALSE) return 16090;
   return 16060;
+}
+
+std::shared_ptr<Block> BellBlock::clone() const {
+  std::shared_ptr<BellBlock> copy = std::make_shared<BellBlock>();
+  copy->attachment = attachment;
+  copy->facing = facing;
+  copy->powered = powered;
+  return copy;
 }

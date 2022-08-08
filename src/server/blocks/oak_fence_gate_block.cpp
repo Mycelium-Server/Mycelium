@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "oak_fence_gate_block.h"
 
 OakFenceGateBlock::OakFenceGateBlock() = default;
@@ -55,4 +56,13 @@ short OakFenceGateBlock::getId() const {
   if (facing == FACING_EAST && in_wall == IN_WALL_FALSE && open == OPEN_FALSE && powered == POWERED_TRUE) return 5357;
   if (facing == FACING_EAST && in_wall == IN_WALL_FALSE && open == OPEN_FALSE && powered == POWERED_FALSE) return 5358;
   return 5334;
+}
+
+std::shared_ptr<Block> OakFenceGateBlock::clone() const {
+  std::shared_ptr<OakFenceGateBlock> copy = std::make_shared<OakFenceGateBlock>();
+  copy->facing = facing;
+  copy->in_wall = in_wall;
+  copy->open = open;
+  copy->powered = powered;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "command_block_block.h"
 
 CommandBlockBlock::CommandBlockBlock() = default;
@@ -35,4 +36,11 @@ short CommandBlockBlock::getId() const {
   if (conditional == CONDITIONAL_FALSE && facing == FACING_UP) return 6246;
   if (conditional == CONDITIONAL_FALSE && facing == FACING_DOWN) return 6247;
   return 6242;
+}
+
+std::shared_ptr<Block> CommandBlockBlock::clone() const {
+  std::shared_ptr<CommandBlockBlock> copy = std::make_shared<CommandBlockBlock>();
+  copy->conditional = conditional;
+  copy->facing = facing;
+  return copy;
 }

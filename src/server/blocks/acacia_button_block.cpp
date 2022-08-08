@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "acacia_button_block.h"
 
 AcaciaButtonBlock::AcaciaButtonBlock() = default;
@@ -47,4 +48,12 @@ short AcaciaButtonBlock::getId() const {
   if (face == FACE_CEILING && facing == FACING_EAST && powered == POWERED_TRUE) return 7057;
   if (face == FACE_CEILING && facing == FACING_EAST && powered == POWERED_FALSE) return 7058;
   return 7044;
+}
+
+std::shared_ptr<Block> AcaciaButtonBlock::clone() const {
+  std::shared_ptr<AcaciaButtonBlock> copy = std::make_shared<AcaciaButtonBlock>();
+  copy->face = face;
+  copy->facing = facing;
+  copy->powered = powered;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "sweet_berry_bush_block.h"
 
 SweetBerryBushBlock::SweetBerryBushBlock() = default;
@@ -27,4 +28,10 @@ short SweetBerryBushBlock::getId() const {
   if (age == AGE_2) return 16165;
   if (age == AGE_3) return 16166;
   return 16163;
+}
+
+std::shared_ptr<Block> SweetBerryBushBlock::clone() const {
+  std::shared_ptr<SweetBerryBushBlock> copy = std::make_shared<SweetBerryBushBlock>();
+  copy->age = age;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "end_stone_brick_wall_block.h"
 
 EndStoneBrickWallBlock::EndStoneBrickWallBlock() = default;
@@ -347,4 +348,15 @@ short EndStoneBrickWallBlock::getId() const {
   if (east == EAST_TALL && north == NORTH_TALL && south == SOUTH_TALL && up == UP_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_LOW) return 15634;
   if (east == EAST_TALL && north == NORTH_TALL && south == SOUTH_TALL && up == UP_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_TALL) return 15635;
   return 15315;
+}
+
+std::shared_ptr<Block> EndStoneBrickWallBlock::clone() const {
+  std::shared_ptr<EndStoneBrickWallBlock> copy = std::make_shared<EndStoneBrickWallBlock>();
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->up = up;
+  copy->waterlogged = waterlogged;
+  copy->west = west;
+  return copy;
 }

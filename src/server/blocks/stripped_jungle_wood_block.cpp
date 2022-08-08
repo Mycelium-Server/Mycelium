@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "stripped_jungle_wood_block.h"
 
 StrippedJungleWoodBlock::StrippedJungleWoodBlock() = default;
@@ -26,4 +27,10 @@ short StrippedJungleWoodBlock::getId() const {
   if (axis == AXIS_Y) return 195;
   if (axis == AXIS_Z) return 196;
   return 195;
+}
+
+std::shared_ptr<Block> StrippedJungleWoodBlock::clone() const {
+  std::shared_ptr<StrippedJungleWoodBlock> copy = std::make_shared<StrippedJungleWoodBlock>();
+  copy->axis = axis;
+  return copy;
 }

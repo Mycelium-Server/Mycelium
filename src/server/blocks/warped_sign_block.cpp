@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "warped_sign_block.h"
 
 WarpedSignBlock::WarpedSignBlock() = default;
@@ -55,4 +56,11 @@ short WarpedSignBlock::getId() const {
   if (rotation == ROTATION_15 && waterlogged == WATERLOGGED_TRUE) return 16926;
   if (rotation == ROTATION_15 && waterlogged == WATERLOGGED_FALSE) return 16927;
   return 16897;
+}
+
+std::shared_ptr<Block> WarpedSignBlock::clone() const {
+  std::shared_ptr<WarpedSignBlock> copy = std::make_shared<WarpedSignBlock>();
+  copy->rotation = rotation;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

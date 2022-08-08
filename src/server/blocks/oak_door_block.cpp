@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "oak_door_block.h"
 
 OakDoorBlock::OakDoorBlock() = default;
@@ -87,4 +88,14 @@ short OakDoorBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_LOWER && hinge == HINGE_RIGHT && open == OPEN_FALSE && powered == POWERED_TRUE) return 3922;
   if (facing == FACING_EAST && half == HALF_LOWER && hinge == HINGE_RIGHT && open == OPEN_FALSE && powered == POWERED_FALSE) return 3923;
   return 3871;
+}
+
+std::shared_ptr<Block> OakDoorBlock::clone() const {
+  std::shared_ptr<OakDoorBlock> copy = std::make_shared<OakDoorBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->hinge = hinge;
+  copy->open = open;
+  copy->powered = powered;
+  return copy;
 }

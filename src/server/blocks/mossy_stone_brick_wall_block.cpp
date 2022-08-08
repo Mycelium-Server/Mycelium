@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "mossy_stone_brick_wall_block.h"
 
 MossyStoneBrickWallBlock::MossyStoneBrickWallBlock() = default;
@@ -347,4 +348,15 @@ short MossyStoneBrickWallBlock::getId() const {
   if (east == EAST_TALL && north == NORTH_TALL && south == SOUTH_TALL && up == UP_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_LOW) return 13042;
   if (east == EAST_TALL && north == NORTH_TALL && south == SOUTH_TALL && up == UP_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_TALL) return 13043;
   return 12723;
+}
+
+std::shared_ptr<Block> MossyStoneBrickWallBlock::clone() const {
+  std::shared_ptr<MossyStoneBrickWallBlock> copy = std::make_shared<MossyStoneBrickWallBlock>();
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->up = up;
+  copy->waterlogged = waterlogged;
+  copy->west = west;
+  return copy;
 }

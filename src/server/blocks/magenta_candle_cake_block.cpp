@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "magenta_candle_cake_block.h"
 
 MagentaCandleCakeBlock::MagentaCandleCakeBlock() = default;
@@ -25,4 +26,10 @@ short MagentaCandleCakeBlock::getId() const {
   if (lit == LIT_TRUE) return 18591;
   if (lit == LIT_FALSE) return 18592;
   return 18592;
+}
+
+std::shared_ptr<Block> MagentaCandleCakeBlock::clone() const {
+  std::shared_ptr<MagentaCandleCakeBlock> copy = std::make_shared<MagentaCandleCakeBlock>();
+  copy->lit = lit;
+  return copy;
 }

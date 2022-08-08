@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "lime_shulker_box_block.h"
 
 LimeShulkerBoxBlock::LimeShulkerBoxBlock() = default;
@@ -29,4 +30,10 @@ short LimeShulkerBoxBlock::getId() const {
   if (facing == FACING_UP) return 10193;
   if (facing == FACING_DOWN) return 10194;
   return 10193;
+}
+
+std::shared_ptr<Block> LimeShulkerBoxBlock::clone() const {
+  std::shared_ptr<LimeShulkerBoxBlock> copy = std::make_shared<LimeShulkerBoxBlock>();
+  copy->facing = facing;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "furnace_block.h"
 
 FurnaceBlock::FurnaceBlock() = default;
@@ -31,4 +32,11 @@ short FurnaceBlock::getId() const {
   if (facing == FACING_EAST && lit == LIT_TRUE) return 3634;
   if (facing == FACING_EAST && lit == LIT_FALSE) return 3635;
   return 3629;
+}
+
+std::shared_ptr<Block> FurnaceBlock::clone() const {
+  std::shared_ptr<FurnaceBlock> copy = std::make_shared<FurnaceBlock>();
+  copy->facing = facing;
+  copy->lit = lit;
+  return copy;
 }

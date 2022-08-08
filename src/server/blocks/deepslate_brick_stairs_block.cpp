@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "deepslate_brick_stairs_block.h"
 
 DeepslateBrickStairsBlock::DeepslateBrickStairsBlock() = default;
@@ -103,4 +104,13 @@ short DeepslateBrickStairsBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_TRUE) return 21093;
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_FALSE) return 21094;
   return 21026;
+}
+
+std::shared_ptr<Block> DeepslateBrickStairsBlock::clone() const {
+  std::shared_ptr<DeepslateBrickStairsBlock> copy = std::make_shared<DeepslateBrickStairsBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->shape = shape;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "quartz_slab_block.h"
 
 QuartzSlabBlock::QuartzSlabBlock() = default;
@@ -29,4 +30,11 @@ short QuartzSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 9147;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 9148;
   return 9146;
+}
+
+std::shared_ptr<Block> QuartzSlabBlock::clone() const {
+  std::shared_ptr<QuartzSlabBlock> copy = std::make_shared<QuartzSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "purpur_slab_block.h"
 
 PurpurSlabBlock::PurpurSlabBlock() = default;
@@ -29,4 +30,11 @@ short PurpurSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 9165;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 9166;
   return 9164;
+}
+
+std::shared_ptr<Block> PurpurSlabBlock::clone() const {
+  std::shared_ptr<PurpurSlabBlock> copy = std::make_shared<PurpurSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

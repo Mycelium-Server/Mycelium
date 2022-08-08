@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "polished_basalt_block.h"
 
 PolishedBasaltBlock::PolishedBasaltBlock() = default;
@@ -26,4 +27,10 @@ short PolishedBasaltBlock::getId() const {
   if (axis == AXIS_Y) return 4315;
   if (axis == AXIS_Z) return 4316;
   return 4315;
+}
+
+std::shared_ptr<Block> PolishedBasaltBlock::clone() const {
+  std::shared_ptr<PolishedBasaltBlock> copy = std::make_shared<PolishedBasaltBlock>();
+  copy->axis = axis;
+  return copy;
 }

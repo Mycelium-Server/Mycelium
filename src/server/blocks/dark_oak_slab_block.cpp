@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "dark_oak_slab_block.h"
 
 DarkOakSlabBlock::DarkOakSlabBlock() = default;
@@ -29,4 +30,11 @@ short DarkOakSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 9075;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 9076;
   return 9074;
+}
+
+std::shared_ptr<Block> DarkOakSlabBlock::clone() const {
+  std::shared_ptr<DarkOakSlabBlock> copy = std::make_shared<DarkOakSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

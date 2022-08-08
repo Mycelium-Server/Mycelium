@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "oxidized_cut_copper_stairs_block.h"
 
 OxidizedCutCopperStairsBlock::OxidizedCutCopperStairsBlock() = default;
@@ -103,4 +104,13 @@ short OxidizedCutCopperStairsBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_TRUE) return 18996;
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_FALSE) return 18997;
   return 18929;
+}
+
+std::shared_ptr<Block> OxidizedCutCopperStairsBlock::clone() const {
+  std::shared_ptr<OxidizedCutCopperStairsBlock> copy = std::make_shared<OxidizedCutCopperStairsBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->shape = shape;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "moving_piston_block.h"
 
 MovingPistonBlock::MovingPistonBlock() = default;
@@ -35,4 +36,11 @@ short MovingPistonBlock::getId() const {
   if (type == TYPE_NORMAL && facing == FACING_DOWN) return 1664;
   if (type == TYPE_STICKY && facing == FACING_DOWN) return 1665;
   return 1654;
+}
+
+std::shared_ptr<Block> MovingPistonBlock::clone() const {
+  std::shared_ptr<MovingPistonBlock> copy = std::make_shared<MovingPistonBlock>();
+  copy->type = type;
+  copy->facing = facing;
+  return copy;
 }

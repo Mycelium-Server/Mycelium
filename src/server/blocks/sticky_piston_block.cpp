@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "sticky_piston_block.h"
 
 StickyPistonBlock::StickyPistonBlock() = default;
@@ -35,4 +36,11 @@ short StickyPistonBlock::getId() const {
   if (extended == EXTENDED_FALSE && facing == FACING_UP) return 1593;
   if (extended == EXTENDED_FALSE && facing == FACING_DOWN) return 1594;
   return 1589;
+}
+
+std::shared_ptr<Block> StickyPistonBlock::clone() const {
+  std::shared_ptr<StickyPistonBlock> copy = std::make_shared<StickyPistonBlock>();
+  copy->extended = extended;
+  copy->facing = facing;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "brown_bed_block.h"
 
 BrownBedBlock::BrownBedBlock() = default;
@@ -39,4 +40,12 @@ short BrownBedBlock::getId() const {
   if (facing == FACING_EAST && occupied == OCCUPIED_FALSE && part == PART_HEAD) return 1485;
   if (facing == FACING_EAST && occupied == OCCUPIED_FALSE && part == PART_FOOT) return 1486;
   return 1474;
+}
+
+std::shared_ptr<Block> BrownBedBlock::clone() const {
+  std::shared_ptr<BrownBedBlock> copy = std::make_shared<BrownBedBlock>();
+  copy->facing = facing;
+  copy->occupied = occupied;
+  copy->part = part;
+  return copy;
 }

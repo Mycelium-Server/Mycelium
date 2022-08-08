@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "pink_shulker_box_block.h"
 
 PinkShulkerBoxBlock::PinkShulkerBoxBlock() = default;
@@ -29,4 +30,10 @@ short PinkShulkerBoxBlock::getId() const {
   if (facing == FACING_UP) return 10199;
   if (facing == FACING_DOWN) return 10200;
   return 10199;
+}
+
+std::shared_ptr<Block> PinkShulkerBoxBlock::clone() const {
+  std::shared_ptr<PinkShulkerBoxBlock> copy = std::make_shared<PinkShulkerBoxBlock>();
+  copy->facing = facing;
+  return copy;
 }

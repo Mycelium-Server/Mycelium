@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "lever_block.h"
 
 LeverBlock::LeverBlock() = default;
@@ -47,4 +48,12 @@ short LeverBlock::getId() const {
   if (face == FACE_CEILING && facing == FACING_EAST && powered == POWERED_TRUE) return 4110;
   if (face == FACE_CEILING && facing == FACING_EAST && powered == POWERED_FALSE) return 4111;
   return 4097;
+}
+
+std::shared_ptr<Block> LeverBlock::clone() const {
+  std::shared_ptr<LeverBlock> copy = std::make_shared<LeverBlock>();
+  copy->face = face;
+  copy->facing = facing;
+  copy->powered = powered;
+  return copy;
 }

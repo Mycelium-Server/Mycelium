@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "granite_slab_block.h"
 
 GraniteSlabBlock::GraniteSlabBlock() = default;
@@ -29,4 +30,11 @@ short GraniteSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 11722;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 11723;
   return 11721;
+}
+
+std::shared_ptr<Block> GraniteSlabBlock::clone() const {
+  std::shared_ptr<GraniteSlabBlock> copy = std::make_shared<GraniteSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "spruce_slab_block.h"
 
 SpruceSlabBlock::SpruceSlabBlock() = default;
@@ -29,4 +30,11 @@ short SpruceSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 9051;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 9052;
   return 9050;
+}
+
+std::shared_ptr<Block> SpruceSlabBlock::clone() const {
+  std::shared_ptr<SpruceSlabBlock> copy = std::make_shared<SpruceSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

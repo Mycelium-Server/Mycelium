@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "blackstone_slab_block.h"
 
 BlackstoneSlabBlock::BlackstoneSlabBlock() = default;
@@ -29,4 +30,11 @@ short BlackstoneSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 17457;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 17458;
   return 17456;
+}
+
+std::shared_ptr<Block> BlackstoneSlabBlock::clone() const {
+  std::shared_ptr<BlackstoneSlabBlock> copy = std::make_shared<BlackstoneSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "crimson_button_block.h"
 
 CrimsonButtonBlock::CrimsonButtonBlock() = default;
@@ -47,4 +48,12 @@ short CrimsonButtonBlock::getId() const {
   if (face == FACE_CEILING && facing == FACING_EAST && powered == POWERED_TRUE) return 16710;
   if (face == FACE_CEILING && facing == FACING_EAST && powered == POWERED_FALSE) return 16711;
   return 16697;
+}
+
+std::shared_ptr<Block> CrimsonButtonBlock::clone() const {
+  std::shared_ptr<CrimsonButtonBlock> copy = std::make_shared<CrimsonButtonBlock>();
+  copy->face = face;
+  copy->facing = facing;
+  copy->powered = powered;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "gray_stained_glass_pane_block.h"
 
 GrayStainedGlassPaneBlock::GrayStainedGlassPaneBlock() = default;
@@ -55,4 +56,14 @@ short GrayStainedGlassPaneBlock::getId() const {
   if (east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_TRUE) return 7746;
   if (east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_FALSE) return 7747;
   return 7747;
+}
+
+std::shared_ptr<Block> GrayStainedGlassPaneBlock::clone() const {
+  std::shared_ptr<GrayStainedGlassPaneBlock> copy = std::make_shared<GrayStainedGlassPaneBlock>();
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->waterlogged = waterlogged;
+  copy->west = west;
+  return copy;
 }

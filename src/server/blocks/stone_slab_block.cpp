@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "stone_slab_block.h"
 
 StoneSlabBlock::StoneSlabBlock() = default;
@@ -29,4 +30,11 @@ short StoneSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 9087;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 9088;
   return 9086;
+}
+
+std::shared_ptr<Block> StoneSlabBlock::clone() const {
+  std::shared_ptr<StoneSlabBlock> copy = std::make_shared<StoneSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

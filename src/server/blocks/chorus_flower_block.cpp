@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "chorus_flower_block.h"
 
 ChorusFlowerBlock::ChorusFlowerBlock() = default;
@@ -29,4 +30,10 @@ short ChorusFlowerBlock::getId() const {
   if (age == AGE_4) return 10013;
   if (age == AGE_5) return 10014;
   return 10009;
+}
+
+std::shared_ptr<Block> ChorusFlowerBlock::clone() const {
+  std::shared_ptr<ChorusFlowerBlock> copy = std::make_shared<ChorusFlowerBlock>();
+  copy->age = age;
+  return copy;
 }

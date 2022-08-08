@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "respawn_anchor_block.h"
 
 RespawnAnchorBlock::RespawnAnchorBlock() = default;
@@ -28,4 +29,10 @@ short RespawnAnchorBlock::getId() const {
   if (charges == CHARGES_3) return 17041;
   if (charges == CHARGES_4) return 17042;
   return 17038;
+}
+
+std::shared_ptr<Block> RespawnAnchorBlock::clone() const {
+  std::shared_ptr<RespawnAnchorBlock> copy = std::make_shared<RespawnAnchorBlock>();
+  copy->charges = charges;
+  return copy;
 }

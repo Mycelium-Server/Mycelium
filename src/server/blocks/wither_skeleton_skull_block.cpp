@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "wither_skeleton_skull_block.h"
 
 WitherSkeletonSkullBlock::WitherSkeletonSkullBlock() = default;
@@ -39,4 +40,10 @@ short WitherSkeletonSkullBlock::getId() const {
   if (rotation == ROTATION_14) return 7141;
   if (rotation == ROTATION_15) return 7142;
   return 7127;
+}
+
+std::shared_ptr<Block> WitherSkeletonSkullBlock::clone() const {
+  std::shared_ptr<WitherSkeletonSkullBlock> copy = std::make_shared<WitherSkeletonSkullBlock>();
+  copy->rotation = rotation;
+  return copy;
 }

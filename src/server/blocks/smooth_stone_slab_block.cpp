@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "smooth_stone_slab_block.h"
 
 SmoothStoneSlabBlock::SmoothStoneSlabBlock() = default;
@@ -29,4 +30,11 @@ short SmoothStoneSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 9093;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 9094;
   return 9092;
+}
+
+std::shared_ptr<Block> SmoothStoneSlabBlock::clone() const {
+  std::shared_ptr<SmoothStoneSlabBlock> copy = std::make_shared<SmoothStoneSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "polished_andesite_stairs_block.h"
 
 PolishedAndesiteStairsBlock::PolishedAndesiteStairsBlock() = default;
@@ -103,4 +104,13 @@ short PolishedAndesiteStairsBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_TRUE) return 11588;
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_FALSE) return 11589;
   return 11521;
+}
+
+std::shared_ptr<Block> PolishedAndesiteStairsBlock::clone() const {
+  std::shared_ptr<PolishedAndesiteStairsBlock> copy = std::make_shared<PolishedAndesiteStairsBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->shape = shape;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

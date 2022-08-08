@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "warped_trapdoor_block.h"
 
 WarpedTrapdoorBlock::WarpedTrapdoorBlock() = default;
@@ -87,4 +88,14 @@ short WarpedTrapdoorBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && open == OPEN_FALSE && powered == POWERED_FALSE && waterlogged == WATERLOGGED_TRUE) return 16462;
   if (facing == FACING_EAST && half == HALF_BOTTOM && open == OPEN_FALSE && powered == POWERED_FALSE && waterlogged == WATERLOGGED_FALSE) return 16463;
   return 16415;
+}
+
+std::shared_ptr<Block> WarpedTrapdoorBlock::clone() const {
+  std::shared_ptr<WarpedTrapdoorBlock> copy = std::make_shared<WarpedTrapdoorBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->open = open;
+  copy->powered = powered;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "spruce_log_block.h"
 
 SpruceLogBlock::SpruceLogBlock() = default;
@@ -26,4 +27,10 @@ short SpruceLogBlock::getId() const {
   if (axis == AXIS_Y) return 121;
   if (axis == AXIS_Z) return 122;
   return 121;
+}
+
+std::shared_ptr<Block> SpruceLogBlock::clone() const {
+  std::shared_ptr<SpruceLogBlock> copy = std::make_shared<SpruceLogBlock>();
+  copy->axis = axis;
+  return copy;
 }

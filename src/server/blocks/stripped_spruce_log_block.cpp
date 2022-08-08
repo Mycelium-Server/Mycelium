@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "stripped_spruce_log_block.h"
 
 StrippedSpruceLogBlock::StrippedSpruceLogBlock() = default;
@@ -26,4 +27,10 @@ short StrippedSpruceLogBlock::getId() const {
   if (axis == AXIS_Y) return 144;
   if (axis == AXIS_Z) return 145;
   return 144;
+}
+
+std::shared_ptr<Block> StrippedSpruceLogBlock::clone() const {
+  std::shared_ptr<StrippedSpruceLogBlock> copy = std::make_shared<StrippedSpruceLogBlock>();
+  copy->axis = axis;
+  return copy;
 }

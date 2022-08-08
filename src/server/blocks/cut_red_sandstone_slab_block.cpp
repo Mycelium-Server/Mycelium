@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "cut_red_sandstone_slab_block.h"
 
 CutRedSandstoneSlabBlock::CutRedSandstoneSlabBlock() = default;
@@ -29,4 +30,11 @@ short CutRedSandstoneSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 9159;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 9160;
   return 9158;
+}
+
+std::shared_ptr<Block> CutRedSandstoneSlabBlock::clone() const {
+  std::shared_ptr<CutRedSandstoneSlabBlock> copy = std::make_shared<CutRedSandstoneSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

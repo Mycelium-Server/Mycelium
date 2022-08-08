@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "potatoes_block.h"
 
 PotatoesBlock::PotatoesBlock() = default;
@@ -31,4 +32,10 @@ short PotatoesBlock::getId() const {
   if (age == AGE_6) return 6937;
   if (age == AGE_7) return 6938;
   return 6931;
+}
+
+std::shared_ptr<Block> PotatoesBlock::clone() const {
+  std::shared_ptr<PotatoesBlock> copy = std::make_shared<PotatoesBlock>();
+  copy->age = age;
+  return copy;
 }

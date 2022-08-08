@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "yellow_bed_block.h"
 
 YellowBedBlock::YellowBedBlock() = default;
@@ -39,4 +40,12 @@ short YellowBedBlock::getId() const {
   if (facing == FACING_EAST && occupied == OCCUPIED_FALSE && part == PART_HEAD) return 1357;
   if (facing == FACING_EAST && occupied == OCCUPIED_FALSE && part == PART_FOOT) return 1358;
   return 1346;
+}
+
+std::shared_ptr<Block> YellowBedBlock::clone() const {
+  std::shared_ptr<YellowBedBlock> copy = std::make_shared<YellowBedBlock>();
+  copy->facing = facing;
+  copy->occupied = occupied;
+  copy->part = part;
+  return copy;
 }

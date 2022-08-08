@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "tripwire_hook_block.h"
 
 TripwireHookBlock::TripwireHookBlock() = default;
@@ -39,4 +40,12 @@ short TripwireHookBlock::getId() const {
   if (attached == ATTACHED_FALSE && facing == FACING_EAST && powered == POWERED_TRUE) return 5865;
   if (attached == ATTACHED_FALSE && facing == FACING_EAST && powered == POWERED_FALSE) return 5866;
   return 5860;
+}
+
+std::shared_ptr<Block> TripwireHookBlock::clone() const {
+  std::shared_ptr<TripwireHookBlock> copy = std::make_shared<TripwireHookBlock>();
+  copy->attached = attached;
+  copy->facing = facing;
+  copy->powered = powered;
+  return copy;
 }

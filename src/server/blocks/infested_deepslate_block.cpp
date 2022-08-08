@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "infested_deepslate_block.h"
 
 InfestedDeepslateBlock::InfestedDeepslateBlock() = default;
@@ -26,4 +27,10 @@ short InfestedDeepslateBlock::getId() const {
   if (axis == AXIS_Y) return 21429;
   if (axis == AXIS_Z) return 21430;
   return 21429;
+}
+
+std::shared_ptr<Block> InfestedDeepslateBlock::clone() const {
+  std::shared_ptr<InfestedDeepslateBlock> copy = std::make_shared<InfestedDeepslateBlock>();
+  copy->axis = axis;
+  return copy;
 }

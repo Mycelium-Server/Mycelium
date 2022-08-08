@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "crimson_pressure_plate_block.h"
 
 CrimsonPressurePlateBlock::CrimsonPressurePlateBlock() = default;
@@ -25,4 +26,10 @@ short CrimsonPressurePlateBlock::getId() const {
   if (powered == POWERED_TRUE) return 16268;
   if (powered == POWERED_FALSE) return 16269;
   return 16269;
+}
+
+std::shared_ptr<Block> CrimsonPressurePlateBlock::clone() const {
+  std::shared_ptr<CrimsonPressurePlateBlock> copy = std::make_shared<CrimsonPressurePlateBlock>();
+  copy->powered = powered;
+  return copy;
 }

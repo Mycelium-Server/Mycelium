@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "orange_candle_block.h"
 
 OrangeCandleBlock::OrangeCandleBlock() = default;
@@ -39,4 +40,12 @@ short OrangeCandleBlock::getId() const {
   if (candles == CANDLES_4 && lit == LIT_FALSE && waterlogged == WATERLOGGED_TRUE) return 18359;
   if (candles == CANDLES_4 && lit == LIT_FALSE && waterlogged == WATERLOGGED_FALSE) return 18360;
   return 18348;
+}
+
+std::shared_ptr<Block> OrangeCandleBlock::clone() const {
+  std::shared_ptr<OrangeCandleBlock> copy = std::make_shared<OrangeCandleBlock>();
+  copy->candles = candles;
+  copy->lit = lit;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

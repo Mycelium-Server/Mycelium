@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "light_blue_banner_block.h"
 
 LightBlueBannerBlock::LightBlueBannerBlock() = default;
@@ -39,4 +40,10 @@ short LightBlueBannerBlock::getId() const {
   if (rotation == ROTATION_14) return 8700;
   if (rotation == ROTATION_15) return 8701;
   return 8686;
+}
+
+std::shared_ptr<Block> LightBlueBannerBlock::clone() const {
+  std::shared_ptr<LightBlueBannerBlock> copy = std::make_shared<LightBlueBannerBlock>();
+  copy->rotation = rotation;
+  return copy;
 }

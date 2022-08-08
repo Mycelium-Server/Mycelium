@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "light_gray_candle_block.h"
 
 LightGrayCandleBlock::LightGrayCandleBlock() = default;
@@ -39,4 +40,12 @@ short LightGrayCandleBlock::getId() const {
   if (candles == CANDLES_4 && lit == LIT_FALSE && waterlogged == WATERLOGGED_TRUE) return 18471;
   if (candles == CANDLES_4 && lit == LIT_FALSE && waterlogged == WATERLOGGED_FALSE) return 18472;
   return 18460;
+}
+
+std::shared_ptr<Block> LightGrayCandleBlock::clone() const {
+  std::shared_ptr<LightGrayCandleBlock> copy = std::make_shared<LightGrayCandleBlock>();
+  copy->candles = candles;
+  copy->lit = lit;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

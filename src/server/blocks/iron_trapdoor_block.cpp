@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "iron_trapdoor_block.h"
 
 IronTrapdoorBlock::IronTrapdoorBlock() = default;
@@ -87,4 +88,14 @@ short IronTrapdoorBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && open == OPEN_FALSE && powered == POWERED_FALSE && waterlogged == WATERLOGGED_TRUE) return 8340;
   if (facing == FACING_EAST && half == HALF_BOTTOM && open == OPEN_FALSE && powered == POWERED_FALSE && waterlogged == WATERLOGGED_FALSE) return 8341;
   return 8293;
+}
+
+std::shared_ptr<Block> IronTrapdoorBlock::clone() const {
+  std::shared_ptr<IronTrapdoorBlock> copy = std::make_shared<IronTrapdoorBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->open = open;
+  copy->powered = powered;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

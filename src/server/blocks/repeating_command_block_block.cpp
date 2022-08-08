@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "repeating_command_block_block.h"
 
 RepeatingCommandBlockBlock::RepeatingCommandBlockBlock() = default;
@@ -35,4 +36,11 @@ short RepeatingCommandBlockBlock::getId() const {
   if (conditional == CONDITIONAL_FALSE && facing == FACING_UP) return 10116;
   if (conditional == CONDITIONAL_FALSE && facing == FACING_DOWN) return 10117;
   return 10112;
+}
+
+std::shared_ptr<Block> RepeatingCommandBlockBlock::clone() const {
+  std::shared_ptr<RepeatingCommandBlockBlock> copy = std::make_shared<RepeatingCommandBlockBlock>();
+  copy->conditional = conditional;
+  copy->facing = facing;
+  return copy;
 }

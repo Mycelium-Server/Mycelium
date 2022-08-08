@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "target_block.h"
 
 TargetBlock::TargetBlock() = default;
@@ -39,4 +40,10 @@ short TargetBlock::getId() const {
   if (power == POWER_14) return 16983;
   if (power == POWER_15) return 16984;
   return 16969;
+}
+
+std::shared_ptr<Block> TargetBlock::clone() const {
+  std::shared_ptr<TargetBlock> copy = std::make_shared<TargetBlock>();
+  copy->power = power;
+  return copy;
 }

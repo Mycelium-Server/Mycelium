@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "stripped_birch_log_block.h"
 
 StrippedBirchLogBlock::StrippedBirchLogBlock() = default;
@@ -26,4 +27,10 @@ short StrippedBirchLogBlock::getId() const {
   if (axis == AXIS_Y) return 147;
   if (axis == AXIS_Z) return 148;
   return 147;
+}
+
+std::shared_ptr<Block> StrippedBirchLogBlock::clone() const {
+  std::shared_ptr<StrippedBirchLogBlock> copy = std::make_shared<StrippedBirchLogBlock>();
+  copy->axis = axis;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "chipped_anvil_block.h"
 
 ChippedAnvilBlock::ChippedAnvilBlock() = default;
@@ -27,4 +28,10 @@ short ChippedAnvilBlock::getId() const {
   if (facing == FACING_WEST) return 7233;
   if (facing == FACING_EAST) return 7234;
   return 7231;
+}
+
+std::shared_ptr<Block> ChippedAnvilBlock::clone() const {
+  std::shared_ptr<ChippedAnvilBlock> copy = std::make_shared<ChippedAnvilBlock>();
+  copy->facing = facing;
+  return copy;
 }

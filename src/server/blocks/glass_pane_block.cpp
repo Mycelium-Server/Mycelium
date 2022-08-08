@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "glass_pane_block.h"
 
 GlassPaneBlock::GlassPaneBlock() = default;
@@ -55,4 +56,14 @@ short GlassPaneBlock::getId() const {
   if (east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_TRUE) return 5140;
   if (east == EAST_FALSE && north == NORTH_FALSE && south == SOUTH_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_FALSE) return 5141;
   return 5141;
+}
+
+std::shared_ptr<Block> GlassPaneBlock::clone() const {
+  std::shared_ptr<GlassPaneBlock> copy = std::make_shared<GlassPaneBlock>();
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->waterlogged = waterlogged;
+  copy->west = west;
+  return copy;
 }

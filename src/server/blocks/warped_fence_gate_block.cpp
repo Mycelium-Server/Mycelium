@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "warped_fence_gate_block.h"
 
 WarpedFenceGateBlock::WarpedFenceGateBlock() = default;
@@ -55,4 +56,13 @@ short WarpedFenceGateBlock::getId() const {
   if (facing == FACING_EAST && in_wall == IN_WALL_FALSE && open == OPEN_FALSE && powered == POWERED_TRUE) return 16526;
   if (facing == FACING_EAST && in_wall == IN_WALL_FALSE && open == OPEN_FALSE && powered == POWERED_FALSE) return 16527;
   return 16503;
+}
+
+std::shared_ptr<Block> WarpedFenceGateBlock::clone() const {
+  std::shared_ptr<WarpedFenceGateBlock> copy = std::make_shared<WarpedFenceGateBlock>();
+  copy->facing = facing;
+  copy->in_wall = in_wall;
+  copy->open = open;
+  copy->powered = powered;
+  return copy;
 }

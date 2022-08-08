@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "zombie_head_block.h"
 
 ZombieHeadBlock::ZombieHeadBlock() = default;
@@ -39,4 +40,10 @@ short ZombieHeadBlock::getId() const {
   if (rotation == ROTATION_14) return 7161;
   if (rotation == ROTATION_15) return 7162;
   return 7147;
+}
+
+std::shared_ptr<Block> ZombieHeadBlock::clone() const {
+  std::shared_ptr<ZombieHeadBlock> copy = std::make_shared<ZombieHeadBlock>();
+  copy->rotation = rotation;
+  return copy;
 }

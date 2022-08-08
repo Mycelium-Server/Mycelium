@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "cactus_block.h"
 
 CactusBlock::CactusBlock() = default;
@@ -39,4 +40,10 @@ short CactusBlock::getId() const {
   if (age == AGE_14) return 4254;
   if (age == AGE_15) return 4255;
   return 4240;
+}
+
+std::shared_ptr<Block> CactusBlock::clone() const {
+  std::shared_ptr<CactusBlock> copy = std::make_shared<CactusBlock>();
+  copy->age = age;
+  return copy;
 }

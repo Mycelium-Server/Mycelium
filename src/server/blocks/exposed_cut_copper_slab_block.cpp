@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "exposed_cut_copper_slab_block.h"
 
 ExposedCutCopperSlabBlock::ExposedCutCopperSlabBlock() = default;
@@ -29,4 +30,11 @@ short ExposedCutCopperSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 19254;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 19255;
   return 19253;
+}
+
+std::shared_ptr<Block> ExposedCutCopperSlabBlock::clone() const {
+  std::shared_ptr<ExposedCutCopperSlabBlock> copy = std::make_shared<ExposedCutCopperSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

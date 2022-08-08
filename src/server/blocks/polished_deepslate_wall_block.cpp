@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "polished_deepslate_wall_block.h"
 
 PolishedDeepslateWallBlock::PolishedDeepslateWallBlock() = default;
@@ -347,4 +348,15 @@ short PolishedDeepslateWallBlock::getId() const {
   if (east == EAST_TALL && north == NORTH_TALL && south == SOUTH_TALL && up == UP_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_LOW) return 20601;
   if (east == EAST_TALL && north == NORTH_TALL && south == SOUTH_TALL && up == UP_FALSE && waterlogged == WATERLOGGED_FALSE && west == WEST_TALL) return 20602;
   return 20282;
+}
+
+std::shared_ptr<Block> PolishedDeepslateWallBlock::clone() const {
+  std::shared_ptr<PolishedDeepslateWallBlock> copy = std::make_shared<PolishedDeepslateWallBlock>();
+  copy->east = east;
+  copy->north = north;
+  copy->south = south;
+  copy->up = up;
+  copy->waterlogged = waterlogged;
+  copy->west = west;
+  return copy;
 }

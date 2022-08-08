@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "stripped_mangrove_wood_block.h"
 
 StrippedMangroveWoodBlock::StrippedMangroveWoodBlock() = default;
@@ -26,4 +27,10 @@ short StrippedMangroveWoodBlock::getId() const {
   if (axis == AXIS_Y) return 204;
   if (axis == AXIS_Z) return 205;
   return 204;
+}
+
+std::shared_ptr<Block> StrippedMangroveWoodBlock::clone() const {
+  std::shared_ptr<StrippedMangroveWoodBlock> copy = std::make_shared<StrippedMangroveWoodBlock>();
+  copy->axis = axis;
+  return copy;
 }

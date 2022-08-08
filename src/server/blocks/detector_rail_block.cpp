@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "detector_rail_block.h"
 
 DetectorRailBlock::DetectorRailBlock() = default;
@@ -47,4 +48,12 @@ short DetectorRailBlock::getId() const {
   if (powered == POWERED_FALSE && shape == SHAPE_ASCENDING_SOUTH && waterlogged == WATERLOGGED_TRUE) return 1581;
   if (powered == POWERED_FALSE && shape == SHAPE_ASCENDING_SOUTH && waterlogged == WATERLOGGED_FALSE) return 1582;
   return 1572;
+}
+
+std::shared_ptr<Block> DetectorRailBlock::clone() const {
+  std::shared_ptr<DetectorRailBlock> copy = std::make_shared<DetectorRailBlock>();
+  copy->powered = powered;
+  copy->shape = shape;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "crimson_slab_block.h"
 
 CrimsonSlabBlock::CrimsonSlabBlock() = default;
@@ -29,4 +30,11 @@ short CrimsonSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 16260;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 16261;
   return 16259;
+}
+
+std::shared_ptr<Block> CrimsonSlabBlock::clone() const {
+  std::shared_ptr<CrimsonSlabBlock> copy = std::make_shared<CrimsonSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

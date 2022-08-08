@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "lime_candle_block.h"
 
 LimeCandleBlock::LimeCandleBlock() = default;
@@ -39,4 +40,12 @@ short LimeCandleBlock::getId() const {
   if (candles == CANDLES_4 && lit == LIT_FALSE && waterlogged == WATERLOGGED_TRUE) return 18423;
   if (candles == CANDLES_4 && lit == LIT_FALSE && waterlogged == WATERLOGGED_FALSE) return 18424;
   return 18412;
+}
+
+std::shared_ptr<Block> LimeCandleBlock::clone() const {
+  std::shared_ptr<LimeCandleBlock> copy = std::make_shared<LimeCandleBlock>();
+  copy->candles = candles;
+  copy->lit = lit;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

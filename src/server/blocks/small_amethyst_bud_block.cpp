@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "small_amethyst_bud_block.h"
 
 SmallAmethystBudBlock::SmallAmethystBudBlock() = default;
@@ -35,4 +36,11 @@ short SmallAmethystBudBlock::getId() const {
   if (facing == FACING_DOWN && waterlogged == WATERLOGGED_TRUE) return 18667;
   if (facing == FACING_DOWN && waterlogged == WATERLOGGED_FALSE) return 18668;
   return 18666;
+}
+
+std::shared_ptr<Block> SmallAmethystBudBlock::clone() const {
+  std::shared_ptr<SmallAmethystBudBlock> copy = std::make_shared<SmallAmethystBudBlock>();
+  copy->facing = facing;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

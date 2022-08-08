@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "bubble_column_block.h"
 
 BubbleColumnBlock::BubbleColumnBlock() = default;
@@ -25,4 +26,10 @@ short BubbleColumnBlock::getId() const {
   if (drag == DRAG_TRUE) return 10548;
   if (drag == DRAG_FALSE) return 10549;
   return 10548;
+}
+
+std::shared_ptr<Block> BubbleColumnBlock::clone() const {
+  std::shared_ptr<BubbleColumnBlock> copy = std::make_shared<BubbleColumnBlock>();
+  copy->drag = drag;
+  return copy;
 }

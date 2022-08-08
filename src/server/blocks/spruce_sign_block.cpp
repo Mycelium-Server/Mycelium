@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "spruce_sign_block.h"
 
 SpruceSignBlock::SpruceSignBlock() = default;
@@ -55,4 +56,11 @@ short SpruceSignBlock::getId() const {
   if (rotation == ROTATION_15 && waterlogged == WATERLOGGED_TRUE) return 3698;
   if (rotation == ROTATION_15 && waterlogged == WATERLOGGED_FALSE) return 3699;
   return 3669;
+}
+
+std::shared_ptr<Block> SpruceSignBlock::clone() const {
+  std::shared_ptr<SpruceSignBlock> copy = std::make_shared<SpruceSignBlock>();
+  copy->rotation = rotation;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

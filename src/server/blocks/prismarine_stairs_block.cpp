@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "prismarine_stairs_block.h"
 
 PrismarineStairsBlock::PrismarineStairsBlock() = default;
@@ -103,4 +104,13 @@ short PrismarineStairsBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_TRUE) return 8423;
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_FALSE) return 8424;
   return 8356;
+}
+
+std::shared_ptr<Block> PrismarineStairsBlock::clone() const {
+  std::shared_ptr<PrismarineStairsBlock> copy = std::make_shared<PrismarineStairsBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->shape = shape;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

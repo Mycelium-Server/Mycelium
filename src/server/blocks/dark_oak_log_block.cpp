@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "dark_oak_log_block.h"
 
 DarkOakLogBlock::DarkOakLogBlock() = default;
@@ -26,4 +27,10 @@ short DarkOakLogBlock::getId() const {
   if (axis == AXIS_Y) return 133;
   if (axis == AXIS_Z) return 134;
   return 133;
+}
+
+std::shared_ptr<Block> DarkOakLogBlock::clone() const {
+  std::shared_ptr<DarkOakLogBlock> copy = std::make_shared<DarkOakLogBlock>();
+  copy->axis = axis;
+  return copy;
 }

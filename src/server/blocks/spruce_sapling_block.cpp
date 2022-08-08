@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "spruce_sapling_block.h"
 
 SpruceSaplingBlock::SpruceSaplingBlock() = default;
@@ -25,4 +26,10 @@ short SpruceSaplingBlock::getId() const {
   if (stage == STAGE_0) return 24;
   if (stage == STAGE_1) return 25;
   return 24;
+}
+
+std::shared_ptr<Block> SpruceSaplingBlock::clone() const {
+  std::shared_ptr<SpruceSaplingBlock> copy = std::make_shared<SpruceSaplingBlock>();
+  copy->stage = stage;
+  return copy;
 }

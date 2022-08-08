@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "chest_block.h"
 
 ChestBlock::ChestBlock() = default;
@@ -47,4 +48,12 @@ short ChestBlock::getId() const {
   if (type == TYPE_RIGHT && facing == FACING_EAST && waterlogged == WATERLOGGED_TRUE) return 2310;
   if (type == TYPE_RIGHT && facing == FACING_EAST && waterlogged == WATERLOGGED_FALSE) return 2311;
   return 2289;
+}
+
+std::shared_ptr<Block> ChestBlock::clone() const {
+  std::shared_ptr<ChestBlock> copy = std::make_shared<ChestBlock>();
+  copy->type = type;
+  copy->facing = facing;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

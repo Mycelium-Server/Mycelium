@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "white_candle_block.h"
 
 WhiteCandleBlock::WhiteCandleBlock() = default;
@@ -39,4 +40,12 @@ short WhiteCandleBlock::getId() const {
   if (candles == CANDLES_4 && lit == LIT_FALSE && waterlogged == WATERLOGGED_TRUE) return 18343;
   if (candles == CANDLES_4 && lit == LIT_FALSE && waterlogged == WATERLOGGED_FALSE) return 18344;
   return 18332;
+}
+
+std::shared_ptr<Block> WhiteCandleBlock::clone() const {
+  std::shared_ptr<WhiteCandleBlock> copy = std::make_shared<WhiteCandleBlock>();
+  copy->candles = candles;
+  copy->lit = lit;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "granite_stairs_block.h"
 
 GraniteStairsBlock::GraniteStairsBlock() = default;
@@ -103,4 +104,13 @@ short GraniteStairsBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_TRUE) return 11348;
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_FALSE) return 11349;
   return 11281;
+}
+
+std::shared_ptr<Block> GraniteStairsBlock::clone() const {
+  std::shared_ptr<GraniteStairsBlock> copy = std::make_shared<GraniteStairsBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->shape = shape;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

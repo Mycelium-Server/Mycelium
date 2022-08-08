@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "nether_brick_stairs_block.h"
 
 NetherBrickStairsBlock::NetherBrickStairsBlock() = default;
@@ -103,4 +104,13 @@ short NetherBrickStairsBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_TRUE) return 5713;
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_FALSE) return 5714;
   return 5646;
+}
+
+std::shared_ptr<Block> NetherBrickStairsBlock::clone() const {
+  std::shared_ptr<NetherBrickStairsBlock> copy = std::make_shared<NetherBrickStairsBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->shape = shape;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

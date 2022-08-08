@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "orange_banner_block.h"
 
 OrangeBannerBlock::OrangeBannerBlock() = default;
@@ -39,4 +40,10 @@ short OrangeBannerBlock::getId() const {
   if (rotation == ROTATION_14) return 8668;
   if (rotation == ROTATION_15) return 8669;
   return 8654;
+}
+
+std::shared_ptr<Block> OrangeBannerBlock::clone() const {
+  std::shared_ptr<OrangeBannerBlock> copy = std::make_shared<OrangeBannerBlock>();
+  copy->rotation = rotation;
+  return copy;
 }

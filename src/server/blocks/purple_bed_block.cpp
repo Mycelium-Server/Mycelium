@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "purple_bed_block.h"
 
 PurpleBedBlock::PurpleBedBlock() = default;
@@ -39,4 +40,12 @@ short PurpleBedBlock::getId() const {
   if (facing == FACING_EAST && occupied == OCCUPIED_FALSE && part == PART_HEAD) return 1453;
   if (facing == FACING_EAST && occupied == OCCUPIED_FALSE && part == PART_FOOT) return 1454;
   return 1442;
+}
+
+std::shared_ptr<Block> PurpleBedBlock::clone() const {
+  std::shared_ptr<PurpleBedBlock> copy = std::make_shared<PurpleBedBlock>();
+  copy->facing = facing;
+  copy->occupied = occupied;
+  copy->part = part;
+  return copy;
 }

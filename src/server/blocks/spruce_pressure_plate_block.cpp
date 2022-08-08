@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "spruce_pressure_plate_block.h"
 
 SprucePressurePlateBlock::SprucePressurePlateBlock() = default;
@@ -25,4 +26,10 @@ short SprucePressurePlateBlock::getId() const {
   if (powered == POWERED_TRUE) return 4180;
   if (powered == POWERED_FALSE) return 4181;
   return 4181;
+}
+
+std::shared_ptr<Block> SprucePressurePlateBlock::clone() const {
+  std::shared_ptr<SprucePressurePlateBlock> copy = std::make_shared<SprucePressurePlateBlock>();
+  copy->powered = powered;
+  return copy;
 }

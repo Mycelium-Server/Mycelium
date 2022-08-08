@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "attached_pumpkin_stem_block.h"
 
 AttachedPumpkinStemBlock::AttachedPumpkinStemBlock() = default;
@@ -27,4 +28,10 @@ short AttachedPumpkinStemBlock::getId() const {
   if (facing == FACING_WEST) return 5145;
   if (facing == FACING_EAST) return 5146;
   return 5143;
+}
+
+std::shared_ptr<Block> AttachedPumpkinStemBlock::clone() const {
+  std::shared_ptr<AttachedPumpkinStemBlock> copy = std::make_shared<AttachedPumpkinStemBlock>();
+  copy->facing = facing;
+  return copy;
 }

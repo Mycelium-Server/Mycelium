@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "acacia_stairs_block.h"
 
 AcaciaStairsBlock::AcaciaStairsBlock() = default;
@@ -103,4 +104,13 @@ short AcaciaStairsBlock::getId() const {
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_TRUE) return 8082;
   if (facing == FACING_EAST && half == HALF_BOTTOM && shape == SHAPE_OUTER_RIGHT && waterlogged == WATERLOGGED_FALSE) return 8083;
   return 8015;
+}
+
+std::shared_ptr<Block> AcaciaStairsBlock::clone() const {
+  std::shared_ptr<AcaciaStairsBlock> copy = std::make_shared<AcaciaStairsBlock>();
+  copy->facing = facing;
+  copy->half = half;
+  copy->shape = shape;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

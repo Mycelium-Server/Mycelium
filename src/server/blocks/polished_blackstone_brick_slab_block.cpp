@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "polished_blackstone_brick_slab_block.h"
 
 PolishedBlackstoneBrickSlabBlock::PolishedBlackstoneBrickSlabBlock() = default;
@@ -29,4 +30,11 @@ short PolishedBlackstoneBrickSlabBlock::getId() const {
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 17467;
   if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 17468;
   return 17466;
+}
+
+std::shared_ptr<Block> PolishedBlackstoneBrickSlabBlock::clone() const {
+  std::shared_ptr<PolishedBlackstoneBrickSlabBlock> copy = std::make_shared<PolishedBlackstoneBrickSlabBlock>();
+  copy->type = type;
+  copy->waterlogged = waterlogged;
+  return copy;
 }

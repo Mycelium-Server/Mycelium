@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "stripped_oak_log_block.h"
 
 StrippedOakLogBlock::StrippedOakLogBlock() = default;
@@ -26,4 +27,10 @@ short StrippedOakLogBlock::getId() const {
   if (axis == AXIS_Y) return 159;
   if (axis == AXIS_Z) return 160;
   return 159;
+}
+
+std::shared_ptr<Block> StrippedOakLogBlock::clone() const {
+  std::shared_ptr<StrippedOakLogBlock> copy = std::make_shared<StrippedOakLogBlock>();
+  copy->axis = axis;
+  return copy;
 }

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "grass_block_block.h"
 
 GrassBlockBlock::GrassBlockBlock() = default;
@@ -25,4 +26,10 @@ short GrassBlockBlock::getId() const {
   if (snowy == SNOWY_TRUE) return 8;
   if (snowy == SNOWY_FALSE) return 9;
   return 9;
+}
+
+std::shared_ptr<Block> GrassBlockBlock::clone() const {
+  std::shared_ptr<GrassBlockBlock> copy = std::make_shared<GrassBlockBlock>();
+  copy->snowy = snowy;
+  return copy;
 }

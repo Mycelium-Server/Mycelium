@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "spruce_wood_block.h"
 
 SpruceWoodBlock::SpruceWoodBlock() = default;
@@ -26,4 +27,10 @@ short SpruceWoodBlock::getId() const {
   if (axis == AXIS_Y) return 168;
   if (axis == AXIS_Z) return 169;
   return 168;
+}
+
+std::shared_ptr<Block> SpruceWoodBlock::clone() const {
+  std::shared_ptr<SpruceWoodBlock> copy = std::make_shared<SpruceWoodBlock>();
+  copy->axis = axis;
+  return copy;
 }
