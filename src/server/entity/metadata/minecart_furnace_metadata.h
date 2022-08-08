@@ -18,9 +18,9 @@
 
 #pragma once
 
-#include "abstract_minecart_container_metadata.h"
+#include "abstract_minecart_metadata.h"
 
-class MinecraftFurnaceMetadata : public AbstractMinecartContainerMetadata {
+class MinecraftFurnaceMetadata : public AbstractMinecartMetadata {
  public:
   MinecraftFurnaceMetadata();
   ~MinecraftFurnaceMetadata() override;

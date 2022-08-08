@@ -22,6 +22,6 @@ MinecraftFurnaceMetadata::MinecraftFurnaceMetadata() = default;
 MinecraftFurnaceMetadata::~MinecraftFurnaceMetadata() = default;
 
 void MinecraftFurnaceMetadata::wrapperWrite(MetadataBuffer& wrapper) {
-  AbstractMinecartContainerMetadata::wrapperWrite(wrapper);
+  AbstractMinecartMetadata::wrapperWrite(wrapper);
   wrapper.writeBool(14, hasFuel);
 }

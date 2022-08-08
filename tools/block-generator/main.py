@@ -22,6 +22,13 @@ license_header = reformat_license_header(header_f.readlines())
 header_f.close()
 
 
+def write_license(f):
+    for line in license_header:
+        f.write(line)
+        f.write('\n')
+    f.write('\n')
+
+
 def write_header(dst, data, block_id):
     cls = to_class_name(dst)
     f = open('generated/' + dst + '.h', 'w+')
@@ -33,10 +40,7 @@ def write_header(dst, data, block_id):
                 def_state = state['properties']
                 break
 
-    for line in license_header:
-        f.write(line)
-        f.write('\n')
-    f.write('\n')
+    write_license(f)
     f.write('#pragma once\n')
     f.write('\n')
     f.write('#include "block.h"\n')
@@ -74,10 +78,7 @@ def write_source(dst, data, block_id):
             def_id = state['id']
             break
 
-    for line in license_header:
-        f.write(line)
-        f.write('\n')
-    f.write('\n')
+    write_license(f)
     f.write('#include "' + dst + '.h"\n')
     f.write('\n')
     f.write(cls + '::' + cls + '() = default;\n')

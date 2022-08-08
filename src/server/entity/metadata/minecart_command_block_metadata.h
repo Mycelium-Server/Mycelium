@@ -30,5 +30,5 @@ class MinecraftCommandBlockMetadata : public AbstractMinecartMetadata {
  
  public:
   std::string command;
-  std::string lastOutput = "{\"text\":\"\"}"; 
+  std::string lastOutput = R"({"text":""})";
 };
