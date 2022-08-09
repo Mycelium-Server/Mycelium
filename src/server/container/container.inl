@@ -16,9 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef MYCELIUM_CONTAINER_H
+#define MYCELIUM_CONTAINER_H
 #include "container.h"
+#endif
 
 #include <cassert>
+
+AbstractContainer::AbstractContainer() = default;
+AbstractContainer::~AbstractContainer() = default;
 
 template<unsigned size, int id>
 Container<size, id>::Container() = default;
@@ -28,13 +34,13 @@ Container<size, id>::~Container() = default;
 
 template<unsigned size, int id>
 ItemStack& Container<size, id>::get(unsigned n) {
-  assert(n >= 0 && n < size);
+  assert(n < size);
   return slots[n];
 }
 
 template<unsigned size, int id>
-ItemStack Container<size, id>::set(unsigned n, const ItemStack& value) {
-  assert(n >= 0 && n < size);
+ItemStack Container<size, id>::set(unsigned n, ItemStack value) {
+  assert(n < size);
   std::swap(value, slots[n]);
   return value;
 }
@@ -51,7 +57,7 @@ int Container<size, id>::getID() const {
 
 template<unsigned size, int id>
 ItemStack Container<size, id>::operator[](unsigned n) const {
-  assert(n >= 0 && n < size);
+  assert(n < size);
   return slots[n];
 }
 

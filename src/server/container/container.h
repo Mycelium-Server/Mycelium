@@ -20,17 +20,29 @@
 
 #include "../itemstack.h"
 
-template<unsigned size, int id>
-class Container {
+class AbstractContainer {
  public:
-  Container();
-  virtual ~Container();
+  AbstractContainer();
+  virtual ~AbstractContainer();
 
  public:
-  ItemStack& get(unsigned);
-  ItemStack set(unsigned, const ItemStack&);
-  [[nodiscard]] unsigned getSize() const;
-  [[nodiscard]] int getID() const;
+  virtual ItemStack& get(unsigned) = 0;
+  virtual ItemStack set(unsigned, ItemStack) = 0;
+  [[nodiscard]] virtual unsigned getSize() const = 0;
+  [[nodiscard]] virtual int getID() const = 0;
+};
+
+template<unsigned size, int id>
+class Container : public AbstractContainer {
+ public:
+  Container();
+  ~Container() override;
+
+ public:
+  ItemStack& get(unsigned) override;
+  ItemStack set(unsigned, ItemStack) override;
+  [[nodiscard]] unsigned getSize() const override;
+  [[nodiscard]] int getID() const override;
 
  public:
   ItemStack operator[](unsigned) const;
@@ -66,3 +78,8 @@ typedef Container<3, 20> SmithingContainer;
 typedef Container<3, 21> SmokerContainer;
 typedef Container<3, 22> CartographyContainer;
 typedef Container<2, 23> StonecutterContainer;
+
+#ifndef MYCELIUM_CONTAINER_H
+#define MYCELIUM_CONTAINER_H
+#include "container.inl"
+#endif
