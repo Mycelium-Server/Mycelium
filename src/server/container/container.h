@@ -18,6 +18,8 @@
 
 #pragma once
 
+#include <cassert>
+
 #include "../itemstack.h"
 
 class AbstractContainer {
@@ -35,18 +37,38 @@ class AbstractContainer {
 template<unsigned size, int id>
 class Container : public AbstractContainer {
  public:
-  Container();
-  ~Container() override;
+  Container() = default;
+  ~Container() override = default;
 
  public:
-  ItemStack& get(unsigned) override;
-  ItemStack set(unsigned, ItemStack) override;
-  [[nodiscard]] unsigned getSize() const override;
-  [[nodiscard]] int getID() const override;
+  ItemStack& get(unsigned n) override {
+    assert(n < size);
+    return slots[n];
+  }
+
+  ItemStack set(unsigned n, ItemStack value) override {
+    assert(n < size);
+    std::swap(value, slots[n]);
+    return value;
+  }
+
+  [[nodiscard]] unsigned getSize() const override {
+    return size;
+  }
+
+  [[nodiscard]] int getID() const override {
+    return id;
+  }
 
  public:
-  ItemStack operator[](unsigned) const;
-  ItemStack& operator[](unsigned);
+  ItemStack operator[](unsigned n) const {
+    assert(n < size);
+    return slots[n];
+  }
+
+  ItemStack& operator[](unsigned n) {
+    return get(n);
+  }
 
  public:
   std::array<ItemStack, size> slots {};
@@ -78,8 +100,3 @@ typedef Container<3, 20> SmithingContainer;
 typedef Container<3, 21> SmokerContainer;
 typedef Container<3, 22> CartographyContainer;
 typedef Container<2, 23> StonecutterContainer;
-
-#ifndef MYCELIUM_CONTAINER_H
-#define MYCELIUM_CONTAINER_H
-#include "container.inl"
-#endif
