@@ -20,10 +20,10 @@
 
 #include "abstract_minecart_container_metadata.h"
 
-class MinecraftChestMetadata : public AbstractMinecartContainerMetadata {
+class MinecartChestMetadata : public AbstractMinecartContainerMetadata {
  public:
-  MinecraftChestMetadata();
-  ~MinecraftChestMetadata() override;
+  MinecartChestMetadata();
+  ~MinecartChestMetadata() override;
 
  public:
   void wrapperWrite(MetadataBuffer&) override;
