@@ -21,6 +21,9 @@ for path, dirs, files in os.walk(source_dir):
     for fpath in files:
         fpath = os.path.join(path, fpath)
         if fpath.replace(os.sep, "/") in ignore_files: continue
+        with open(fpath, "r") as fp:
+            if sum(1 for line in fp) < len(license_header):
+                raise Exception("License check failed: " + fpath)
         file = open(fpath, "r")
         head = [next(file).rstrip() for x in range(len(license_header))]
         file.close()

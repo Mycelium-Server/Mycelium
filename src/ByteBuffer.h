@@ -62,6 +62,7 @@ class ByteBuffer {
   void writeDouble(double);
 
   void writeItemStack(const ItemStack&);
+  ItemStack readItemStack();
 
   std::vector<unsigned char> readBytes(size_t);
   void writeBytes(std::vector<unsigned char>);

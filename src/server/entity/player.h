@@ -19,6 +19,7 @@
 #pragma once
 
 #include "../../connection_context.h"
+#include "../container/player_inventory.h"
 #include "entity.h"
 
 // TODO: More entities (Metadata)
@@ -30,7 +31,11 @@ class EntityPlayer : public Entity {
 
  public:
   [[nodiscard]] int getRenderDistance() const;
+  [[nodiscard]] PlayerInventory& getInventory();
 
  public:
   ConnectionContext* connection = nullptr;
+
+ private:
+  PlayerInventory inventory;
 };

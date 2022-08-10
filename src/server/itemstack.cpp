@@ -18,10 +18,16 @@
 
 #include "itemstack.h"
 
+#include "items/item_registry.h"
+
 ItemStack::ItemStack(int id, unsigned char count)
     : present(true),
       itemID(id),
       itemCount(count) {}
+
+std::shared_ptr<Item> ItemStack::getItem() const {
+  return ItemRegistry::fromID(itemID);
+}
 
 ItemStack::ItemStack() = default;
 ItemStack::~ItemStack() = default;

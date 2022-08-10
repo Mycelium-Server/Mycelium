@@ -215,3 +215,14 @@ void PlayPacketListener::handleUseItemOn(ConnectionContext* ctx, ServerboundUseI
 
 #undef DIFF_CHECK
 }
+
+void PlayPacketListener::handleClickContainer(ConnectionContext*, ServerboundClickContainer*) {
+  // TODO: Implementation
+}
+
+void PlayPacketListener::handleSetCreativeModeSlot(ConnectionContext* ctx, ServerboundSetCreativeModeSlot* packet) {
+  if (packet->slot < 0 || packet->slot >= ctx->playerEntity->getInventory().getSize()) {
+    return;
+  }
+  ctx->playerEntity->getInventory().set(packet->slot, packet->clickedItem);
+}

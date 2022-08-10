@@ -19,10 +19,12 @@
 #include "protocol.h"
 
 #include "serverbound_chat_message.h"
+#include "serverbound_click_container.h"
 #include "serverbound_client_information.h"
 #include "serverbound_handshake.h"
 #include "serverbound_keepalive.h"
 #include "serverbound_plugin_message.h"
+#include "serverbound_set_creative_mode_slot.h"
 #include "serverbound_set_player_position.h"
 #include "serverbound_set_player_position_rotation.h"
 #include "serverbound_set_player_rotation.h"
@@ -38,4 +40,6 @@ void protocol_registerPackets() {
   ServerboundSetPlayerRotation().registerPacket();
   ServerboundChatMessage().registerPacket();
   ServerboundUseItemOn().registerPacket();
+  ServerboundClickContainer().registerPacket();
+  ServerboundSetCreativeModeSlot().registerPacket();
 }

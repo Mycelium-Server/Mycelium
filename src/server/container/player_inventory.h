@@ -31,11 +31,11 @@ class PlayerInventory {
   PlayerInventoryContainer& getInventoryContainer();
   ItemStack& get(unsigned);
   ItemStack set(unsigned, const ItemStack&);
+  unsigned getSize() const;
 
   ItemStack& operator[](unsigned);
 
  private:
   std::shared_ptr<AbstractContainer> menu;
   PlayerInventoryContainer inventoryContainer;
-
 };

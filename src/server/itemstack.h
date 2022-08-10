@@ -19,12 +19,16 @@
 #pragma once
 
 #include "../NBT.h"
+#include "items/item.h"
 
 class ItemStack {
  public:
   ItemStack(int, unsigned char);
   ItemStack();
   ~ItemStack();
+
+ public:
+  [[nodiscard]] std::shared_ptr<Item> getItem() const;
 
  public:
   bool present = false;

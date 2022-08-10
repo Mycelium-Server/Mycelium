@@ -60,3 +60,10 @@ ItemStack PlayerInventory::set(unsigned n, const ItemStack& value) {
 ItemStack& PlayerInventory::operator[](unsigned n) {
   return get(n);
 }
+
+unsigned PlayerInventory::getSize() const {
+  if (menu != nullptr) {
+    return menu->getSize() + inventoryContainer.getSize();
+  }
+  return inventoryContainer.getSize();
+}

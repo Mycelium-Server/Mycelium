@@ -243,6 +243,20 @@ void ByteBuffer::writeItemStack(const ItemStack& value) {
   }
 }
 
+ItemStack ByteBuffer::readItemStack() {
+  ItemStack is {};
+  is.present = readByte();
+  if (is.present) {
+    is.itemID = readVarInt();
+    is.itemCount = readByte();
+    std::shared_ptr<NBT_Component> nbt = read_nbt(*this);
+    if (nbt->getType() != Type_TAG_End) {
+      is.nbt = nbt;
+    }
+  }
+  return is;
+}
+
 void ByteBuffer::ensureWritableBytes(size_t n) {
   if (data.size() < n + writerIdx)
     data.resize(writerIdx + n);
