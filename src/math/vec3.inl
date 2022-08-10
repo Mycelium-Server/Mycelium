@@ -18,6 +18,10 @@
 
 #pragma once
 
+#include <cmath>
+
+using std::sqrt;
+
 template<typename T>
 class Vector3 {
  public:
@@ -99,7 +103,7 @@ class Vector3 {
   }
 
   T length() const {
-    return std::sqrt(lengthSq());
+    return sqrt(lengthSq());
   }
 
   T lengthSq() const {
