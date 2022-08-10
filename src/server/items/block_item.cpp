@@ -21,8 +21,8 @@
 BlockItem::BlockItem() = default;
 BlockItem::~BlockItem() = default;
 
-int BlockItem::getBlockID() const {
-  return getBlockID(BlockFace::TOP, 0, 0, 0, false);
+int BlockItem::getBlockID(World* world, const Vector3i& blockPos) const {
+  return getBlockID(world, blockPos, {}, BlockFace::TOP, {}, false);
 }
 
 bool BlockItem::isBlockItem() const {

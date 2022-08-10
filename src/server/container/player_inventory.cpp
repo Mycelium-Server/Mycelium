@@ -67,3 +67,16 @@ unsigned PlayerInventory::getSize() const {
   }
   return inventoryContainer.getSize();
 }
+
+ItemStack& PlayerInventory::getActiveSlotData() {
+  return get(36 + activeSlot);
+}
+
+unsigned char PlayerInventory::getActiveSlot() const {
+  return activeSlot;
+}
+
+unsigned char PlayerInventory::setActiveSlot(unsigned char slot) {
+  std::swap(activeSlot, slot);
+  return slot;
+}

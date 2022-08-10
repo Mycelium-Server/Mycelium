@@ -18,6 +18,8 @@
 
 #include "acacia_log_item.h"
 
+#include "../blocks/acacia_log_block.h"
+
 AcaciaLogItem::AcaciaLogItem() = default;
 AcaciaLogItem::~AcaciaLogItem() = default;
 
@@ -27,4 +29,27 @@ int AcaciaLogItem::getID() const {
 
 std::shared_ptr<Item> AcaciaLogItem::clone() const {
   return std::make_shared<AcaciaLogItem>();
+}
+
+int AcaciaLogItem::getBlockID(World *, const Vector3i &, const Vector3f &, const BlockFace &face, const Vector3f &, bool) const {
+  AcaciaLogBlock block;
+
+  switch (face) {
+    case BlockFace::TOP:
+    case BlockFace::BOTTOM:
+      block.axis = AcaciaLogBlock::AXIS_Y;
+      break;
+
+    case BlockFace::NORTH:
+    case BlockFace::SOUTH:
+      block.axis = AcaciaLogBlock::AXIS_Z;
+      break;
+
+    case BlockFace::WEST:
+    case BlockFace::EAST:
+      block.axis = AcaciaLogBlock::AXIS_X;
+      break;
+  }
+
+  return block.getId();
 }

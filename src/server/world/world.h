@@ -42,6 +42,8 @@ class World {// TODO: to do
   Chunk* requireChunk(const ChunkLocation&);
   bool setBlock(int, int, int, int);
   int getBlock(int, int, int);
+  bool setBlock(const Vector3i&, int);
+  int getBlock(const Vector3i&);
   Chunk* createChunk(const ChunkLocation&);
   void destroyChunk(const ChunkLocation&);
   void createSpawnChunks();

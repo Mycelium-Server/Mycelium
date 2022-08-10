@@ -94,6 +94,14 @@ int World::getBlock(int x, int y, int z) {
   return chunk->getSectionByY(y)->getBlock(x % 16, y % 16, z % 16);
 }
 
+bool World::setBlock(const Vector3i& pos, int state) {
+  return setBlock(pos.x, pos.y, pos.z, state);
+}
+
+int World::getBlock(const Vector3i& pos) {
+  return getBlock(pos.x, pos.y, pos.z);
+}
+
 Chunk* World::createChunk(const ChunkLocation& location) {
   auto* chunk = new Chunk(location);
   chunks[(unsigned long long) location.x << 32 | (unsigned) location.z] = chunk;

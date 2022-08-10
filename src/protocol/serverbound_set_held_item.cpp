@@ -16,17 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "serverbound_set_held_item.h"
 
-#include "block_item.h"
+#include "../listeners/play_packet_listener.h"
 
-class AcaciaSlabItem : public BlockItem {
- public:
-  AcaciaSlabItem();
-  ~AcaciaSlabItem() override;
+ServerboundSetHeldItem::ServerboundSetHeldItem() = default;
+ServerboundSetHeldItem::~ServerboundSetHeldItem() = default;
 
- public:
-  [[nodiscard]] int getID() const override;
-  [[nodiscard]] std::shared_ptr<Item> clone() const override;
-  [[nodiscard]] int getBlockID(World *, const Vector3i &, const Vector3f &, const BlockFace &, const Vector3f &, bool) const override;
-};
+void ServerboundSetHeldItem::read(ByteBuffer& buf) {
+  slot = buf.readShort();
+}
+
+int ServerboundSetHeldItem::getPacketID() const {
+  return 0x28;
+}
+
+ServerboundPacket* ServerboundSetHeldItem::createInstance() {
+  return new ServerboundSetHeldItem;
+}
+
+void ServerboundSetHeldItem::handle(ConnectionContext* ctx) {
+  if (ctx->state == ConnectionState::PLAY) {
+    ((PlayPacketListener*) ctx->packetListener)->handleSetHeldItem(ctx, this);
+  }
+  delete this;
+}

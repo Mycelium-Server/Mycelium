@@ -170,7 +170,7 @@ void continueLogin(ConnectionContext* ctx) {
   delete abilities;
 
   auto* heldSlot = new ClientboundSetHeldItem();
-  heldSlot->slot = 4;
+  heldSlot->slot = ctx->playerEntity->getInventory().getActiveSlot();
   ctx->write(heldSlot);
   delete heldSlot;
 

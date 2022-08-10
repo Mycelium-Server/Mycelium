@@ -18,6 +18,12 @@
 
 #include "acacia_sign_item.h"
 
+#include "../blocks/acacia_sign_block.h"
+#include "../blocks/acacia_wall_sign_block.h"
+#include "../world/world.h"
+
+#define WATER_BLOCK 90
+
 AcaciaSignItem::AcaciaSignItem() = default;
 AcaciaSignItem::~AcaciaSignItem() = default;
 
@@ -27,4 +33,47 @@ int AcaciaSignItem::getID() const {
 
 std::shared_ptr<Item> AcaciaSignItem::clone() const {
   return std::make_shared<AcaciaSignItem>();
+}
+
+int AcaciaSignItem::getBlockID(World *world, const Vector3i &blockPos, const Vector3f &, const BlockFace &face, const Vector3f &, bool) const {
+  bool waterlogged = (world->getBlock(blockPos) == WATER_BLOCK);
+
+  if (face == BlockFace::TOP) {
+    AcaciaSignBlock block;
+    if (waterlogged) {
+      block.waterlogged = AcaciaSignBlock::WATERLOGGED_TRUE;
+    }
+    // TODO: Rotation
+    return block.getId();
+  }
+
+  AcaciaWallSignBlock block;
+
+  if (waterlogged) {
+    block.waterlogged = AcaciaWallSignBlock::WATERLOGGED_TRUE;
+  }
+
+  switch (face) {
+    case BlockFace::EAST:
+      block.facing = AcaciaWallSignBlock::FACING_EAST;
+      break;
+
+    case BlockFace::WEST:
+      block.facing = AcaciaWallSignBlock::FACING_WEST;
+      break;
+
+    case BlockFace::SOUTH:
+      block.facing = AcaciaWallSignBlock::FACING_SOUTH;
+      break;
+
+    case BlockFace::NORTH:
+      block.facing = AcaciaWallSignBlock::FACING_NORTH;
+      break;
+
+    default:
+      // TODO: Facing by direction
+      break;
+  }
+
+  return block.getId();
 }

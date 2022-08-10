@@ -18,6 +18,7 @@
 
 #pragma once
 
+#include "../math/vec3.inl"
 #include "dimension.h"
 
 struct ProtocolPosition {
@@ -45,12 +46,6 @@ struct ProtocolPosition {
 struct RotatedProtocolPosition {
   ProtocolPosition position;
   float angle = 0;
-};
-
-struct Vector3i {
-  int x = 0;
-  int y = 0;
-  int z = 0;
 };
 
 struct Rotation3f {

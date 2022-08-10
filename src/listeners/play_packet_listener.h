@@ -25,6 +25,7 @@
 #include "../protocol/serverbound_confirm_teleportation.h"
 #include "../protocol/serverbound_plugin_message.h"
 #include "../protocol/serverbound_set_creative_mode_slot.h"
+#include "../protocol/serverbound_set_held_item.h"
 #include "../protocol/serverbound_set_player_position.h"
 #include "../protocol/serverbound_set_player_position_rotation.h"
 #include "../protocol/serverbound_set_player_rotation.h"
@@ -50,6 +51,7 @@ class PlayPacketListener {
   void handleUseItemOn(ConnectionContext*, ServerboundUseItemOn*);
   void handleClickContainer(ConnectionContext*, ServerboundClickContainer*);
   void handleSetCreativeModeSlot(ConnectionContext*, ServerboundSetCreativeModeSlot*);
+  void handleSetHeldItem(ConnectionContext*, ServerboundSetHeldItem*);
   // TODO: 0x17 packet
 
  private:

@@ -27,7 +27,7 @@ class BlockItem : public Item {
   ~BlockItem() override;
 
  public:
-  [[nodiscard]] virtual int getBlockID(const BlockFace&, float, float, float, bool) const = 0;
-  [[nodiscard]] virtual int getBlockID() const;
+  [[nodiscard]] virtual int getBlockID(World*, const Vector3i&, const Vector3f&, const BlockFace&, const Vector3f&, bool) const = 0;
+  [[nodiscard]] virtual int getBlockID(World*, const Vector3i&) const;
   [[nodiscard]] bool isBlockItem() const override;
 };

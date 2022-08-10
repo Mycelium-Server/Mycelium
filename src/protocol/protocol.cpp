@@ -25,6 +25,7 @@
 #include "serverbound_keepalive.h"
 #include "serverbound_plugin_message.h"
 #include "serverbound_set_creative_mode_slot.h"
+#include "serverbound_set_held_item.h"
 #include "serverbound_set_player_position.h"
 #include "serverbound_set_player_position_rotation.h"
 #include "serverbound_set_player_rotation.h"
@@ -42,4 +43,5 @@ void protocol_registerPackets() {
   ServerboundUseItemOn().registerPacket();
   ServerboundClickContainer().registerPacket();
   ServerboundSetCreativeModeSlot().registerPacket();
+  ServerboundSetHeldItem().registerPacket();
 }
