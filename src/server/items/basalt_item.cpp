@@ -18,6 +18,8 @@
 
 #include "basalt_item.h"
 
+#include "../blocks/basalt_block.h"
+
 BasaltItem::BasaltItem() = default;
 BasaltItem::~BasaltItem() = default;
 
@@ -27,4 +29,8 @@ int BasaltItem::getID() const {
 
 std::shared_ptr<Item> BasaltItem::clone() const {
   return std::make_shared<BasaltItem>();
+}
+
+int BasaltItem::getBlockID(World *, const Vector3i &, const Vector3f &, const BlockFace &, const Vector3f &, bool) const {
+  return BasaltBlock().getId();
 }

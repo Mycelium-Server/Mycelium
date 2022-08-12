@@ -18,6 +18,8 @@
 
 #include "barrier_item.h"
 
+#include "../blocks/barrier_block.h"
+
 BarrierItem::BarrierItem() = default;
 BarrierItem::~BarrierItem() = default;
 
@@ -27,4 +29,8 @@ int BarrierItem::getID() const {
 
 std::shared_ptr<Item> BarrierItem::clone() const {
   return std::make_shared<BarrierItem>();
+}
+
+int BarrierItem::getBlockID(World *, const Vector3i &, const Vector3f &, const BlockFace &, const Vector3f &, bool) const {
+  return BarrierBlock().getId();
 }
