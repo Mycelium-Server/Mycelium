@@ -31,7 +31,7 @@ class World {// TODO: to do
 
  public:
   static int getChunkPosition(double);
-  static int getChunkPositioni(int);
+  static int getChunkPositionI(int);
   static ChunkLocation getChunkLocation(const ProtocolPosition& position);
   static ChunkLocation getChunkLocation(const Position3d& position);
 

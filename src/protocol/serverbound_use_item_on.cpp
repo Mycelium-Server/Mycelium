@@ -27,9 +27,7 @@ void ServerboundUseItemOn::read(ByteBuffer& buf) {
   hand = (MainHand) buf.readVarInt();
   position = ProtocolPosition(buf.readLong());
   face = (BlockFace) buf.readVarInt();
-  cursorX = buf.readFloat();
-  cursorY = buf.readFloat();
-  cursorZ = buf.readFloat();
+  cursor = {buf.readFloat(), buf.readFloat(), buf.readFloat()};
   insideBlock = buf.readByte();
   sequence = buf.readVarInt();
 }

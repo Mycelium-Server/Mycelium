@@ -53,7 +53,7 @@ void PlayPacketListener::handlePluginMessage(ConnectionContext* ctx, Serverbound
 
 void PlayPacketListener::handleConfirmTeleport(ConnectionContext*, ServerboundConfirmTeleportation* packet) {
   if (packet->teleportID != teleportID) {
-    std::cerr << "Invalid teleport id" << std::endl;
+    std::cerr << "Invalid teleport ID" << std::endl;
     // TODO: Disconnect
   }
   teleportID = 0;
@@ -130,22 +130,30 @@ void PlayPacketListener::handleSetPlayerRotation(ConnectionContext* ctx, Serverb
 
 void PlayPacketListener::handlePlayerPosition(ConnectionContext* ctx, const Position3d& position) {
   ChunkLocation current = World::getChunkLocation(position);
-  if (current.x != chunkLocation.x || current.z != chunkLocation.z || std::floor(position.y) != std::floor(ctx->playerEntity->getLocation().position.position.y)) {
+
+  EntityPlayer* player = ctx->playerEntity;
+  Location& location = player->getLocation();
+  RotatedPosition3d& rotPos = location.position;
+  World* world = location.dimension.world;
+  Position3d& pos = rotPos.position;
+
+  if (current.x != chunkLocation.x || current.z != chunkLocation.z || std::floor(position.y) != std::floor(pos.y)) {
     auto* setCenter = new ClientboundSetCenterChunk();
     setCenter->location = current;
     ctx->write(setCenter);
     delete setCenter;
+
     chunkLocation = current;
   }
-  ctx->playerEntity->location.position.position = position;
+  pos = position;
 
-  int r = ctx->playerEntity->getRenderDistance() - 1;
+  int r = player->getRenderDistance() - 1;
   for (int x = -r; x <= r; x++) {
     for (int z = -r; z <= r; z++) {// Ensure that chunks are always loaded
       ChunkLocation loc = {x + current.x, z + current.z};
-      unsigned long long id = (unsigned long long) loc.x << 32 | (unsigned) loc.z;
+      unsigned long long id = loc.getID();
       if (std::find(loadedChunks.begin(), loadedChunks.end(), id) == loadedChunks.end()) {
-        Chunk* chunk = ctx->playerEntity->location.dimension.world->requireChunk(loc);
+        Chunk* chunk = world->requireChunk(loc);
         auto* packet = new ClientboundChunkData(chunk);
         ctx->write(packet);
         delete packet;
@@ -156,8 +164,11 @@ void PlayPacketListener::handlePlayerPosition(ConnectionContext* ctx, const Posi
 }
 
 void PlayPacketListener::handlePlayerRotation(ConnectionContext* ctx, float yaw, float pitch) {
-  ctx->playerEntity->location.position.yaw = yaw;
-  ctx->playerEntity->location.position.pitch = pitch;
+  EntityPlayer* player = ctx->playerEntity;
+  Location& location = player->getLocation();
+  RotatedPosition3d& position = location.position;
+  position.yaw = yaw;
+  position.pitch = pitch;
 }
 
 void PlayPacketListener::handleChatMessage(ConnectionContext* ctx, ServerboundChatMessage* packet) {
@@ -178,49 +189,66 @@ void PlayPacketListener::handleChatMessage(ConnectionContext* ctx, ServerboundCh
 }
 
 void PlayPacketListener::handleUseItemOn(ConnectionContext* ctx, ServerboundUseItemOn* packet) {
-  ItemStack& is = ctx->playerEntity->getInventory().getActiveSlotData();
+  EntityPlayer* player = ctx->playerEntity;
+
+  ItemStack& is = player->getInventory().getActiveSlotData();
   auto item = ItemRegistry::fromID(is.itemID);
+
   if (is.present && item->isBlockItem()) {
     // TODO: Check if player is trying to place block
     Vector3i offset = BlockFaceOffsets[packet->face];
+
     int targetX = offset.x + packet->position.x;
     int targetZ = offset.z + packet->position.z;
     int targetY = offset.y + packet->position.y;
+    Vector3i target = {targetX, targetY, targetZ};
+
+    auto* blockItem = (BlockItem*) item.get();
+    Location& location = player->getLocation();
+    Dimension& dimension = location.dimension;
+    World* world = dimension.world;
+
     // TODO: check Y
-    int targetBlockID = ((BlockItem*) item.get())->getBlockID(ctx->playerEntity->location.dimension.world,
-                                                              {targetX, targetY, targetZ},
-                                                              {/* TODO: Player eye position */},
-                                                              packet->face,
-                                                              {packet->cursorX, packet->cursorY, packet->cursorZ},
-                                                              packet->insideBlock);
-    ctx->playerEntity->location.dimension.world->setBlock(targetX, targetY, targetZ, targetBlockID);
+    int targetBlockID =
+        blockItem->getBlockID(
+                  world,
+                  target,
+                  {/* TODO: Player eye position */},
+                  packet->face,
+                  packet->cursor,
+                  packet->insideBlock);
+
+    world->setBlock(targetX, targetY, targetZ, targetBlockID);
 
     int d = ctx->gameServer->getViewDistance() * 32;
 #define DIFF_CHECK(x, target) (std::abs(targetX - x) <= d)
 
     auto* block = new ClientboundBlockUpdate();
-    block->location.x = targetX;
-    block->location.y = targetY;
-    block->location.z = targetZ;
+    block->location = {target.x, target.y, target.z};
     block->blockID = targetBlockID;
 
     auto* clicked = new ClientboundBlockUpdate();
     clicked->location = packet->position;
-    clicked->blockID = ctx->playerEntity->location.dimension.world->getBlock(packet->position.x, packet->position.y, packet->position.z);
+    clicked->blockID = world->getBlock(packet->position.asVec3i());
 
     auto* ack = new ClientboundAckBlockChange();
     ack->sequence = packet->sequence;
 
-    for (auto& player: ctx->gameServer->getPlayers()) {
-      int pX = (int) player->entity->location.position.position.x;
-      int pY = (int) player->entity->location.position.position.y;
-      int pZ = (int) player->entity->location.position.position.z;
+    for (auto& p: ctx->gameServer->getPlayers()) {
+      EntityPlayer* entity = p->entity;
+      Position3d& position = entity->location.position.position;
+      int pX = (int) position.x;
+      int pY = (int) position.y;
+      int pZ = (int) position.z;
       if (DIFF_CHECK(pX, targetX) && DIFF_CHECK(pY, targetY) && DIFF_CHECK(pZ, targetZ)) {
-        player->entity->connection->write(block);
-        player->entity->connection->write(ack);
+        ConnectionContext* con = entity->connection;
+        con->write(clicked);
+        con->write(block);
+        con->write(ack);
       }
     }
 
+    delete clicked;
     delete block;
     delete ack;
 

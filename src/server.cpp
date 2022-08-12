@@ -79,8 +79,8 @@ void ConnectionTCP::read() {
             if (self->ctx) {
               self->ctx->read(buf);
             }
+            self->read();
           });
-          self->read();
         }
       });
 }

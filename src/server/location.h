@@ -41,6 +41,23 @@ struct ProtocolPosition {
   [[nodiscard]] unsigned long long toProtocol() const {
     return (((unsigned long long) x & 0x3FFFFFF) << 38) | ((z & 0x3FFFFFF) << 12) | (y & 0xFFF);
   }
+
+  template<class T>
+  [[nodiscard]] Vector3<T> asVec3() const {
+    return Vector3<T>((T) x, (T) y, (T) z);
+  }
+
+  [[nodiscard]] Vector3i asVec3i() const {
+    return asVec3<int>();
+  }
+
+  [[nodiscard]] Vector3f asVec3f() const {
+    return asVec3<float>();
+  }
+
+  [[nodiscard]] Vector3d asVec3d() const {
+    return asVec3<double>();
+  }
 };
 
 struct RotatedProtocolPosition {

@@ -23,6 +23,10 @@
 
 struct ChunkLocation {
   int x = 0, z = 0;
+
+  [[nodiscard]] unsigned long long getID() const {
+    return (unsigned long long) x << 32 | (unsigned) z;
+  }
 };
 
 class Chunk {

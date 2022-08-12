@@ -29,7 +29,7 @@ World::~World() {
   }
 }
 
-int World::getChunkPositioni(int block) {
+int World::getChunkPositionI(int block) {
   return getChunkPosition(double(block));
 }
 
@@ -42,7 +42,7 @@ ChunkLocation World::getChunkLocation(const Position3d& position) {
 }
 
 ChunkLocation World::getChunkLocation(const ProtocolPosition& position) {
-  return {getChunkPositioni(position.x), getChunkPositioni(position.z)};
+  return {getChunkPositionI(position.x), getChunkPositionI(position.z)};
 }
 
 Chunk* World::getChunkByBlock(int x, int z) {
@@ -59,27 +59,22 @@ Chunk* World::getChunk(const ChunkLocation& location) {
 
 std::map<unsigned long long, Chunk*>::iterator
 World::getChunkIterator(const ChunkLocation& location) {
-  return chunks.find((unsigned long long) location.x << 32 | (unsigned) location.z);
+  return chunks.find(location.getID());
 }
+
+#define TO_LOCAL(x) x %= 16; if (x < 0) x += 16;
 
 bool World::setBlock(int x, int y, int z, int id) {
   if (y < -64 || y >= 360) {
     return false;
   }
-  Chunk* chunk = requireChunk({getChunkPositioni(x), getChunkPositioni(z)});
+  Chunk* chunk = requireChunk({getChunkPositionI(x), getChunkPositionI(z)});
   if (!chunk) {
     return false;
   }
-  int localX = x % 16;
-  int localY = y % 16;
-  int localZ = z % 16;
-  if (localX < 0)
-    localX += 16;
-  if (localY < 0)
-    localY += 16;
-  if (localZ < 0)
-    localZ += 16;
-  chunk->getSectionByY(y)->setBlock(localX, localY, localZ, id);
+  TO_LOCAL(x)
+  TO_LOCAL(z)
+  chunk->setBlock(x, y, z, id);
   return true;
 }
 
@@ -91,8 +86,12 @@ int World::getBlock(int x, int y, int z) {
   if (!chunk) {
     return false;
   }
-  return chunk->getSectionByY(y)->getBlock(x % 16, y % 16, z % 16);
+  TO_LOCAL(x)
+  TO_LOCAL(z)
+  return chunk->getBlock(x, y, z);
 }
+
+#undef TO_LOCAL
 
 bool World::setBlock(const Vector3i& pos, int state) {
   return setBlock(pos.x, pos.y, pos.z, state);
@@ -134,7 +133,7 @@ void World::setWorldGenerator(WorldGenerator* worldgen) {
 }
 
 Chunk* World::requireChunk(const ChunkLocation& location) {
-  auto it = chunks.find((unsigned long long) location.x << 32 | (unsigned) location.z);
+  auto it = getChunkIterator(location);
   if (it != chunks.end()) {
     return it->second;
   } else {

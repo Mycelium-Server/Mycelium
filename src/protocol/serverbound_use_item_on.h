@@ -36,9 +36,7 @@ class ServerboundUseItemOn : public ServerboundPacket {
   MainHand hand = (MainHand) 0;
   ProtocolPosition position {};
   BlockFace face = (BlockFace) 0;
-  float cursorX = 0;
-  float cursorY = 0;
-  float cursorZ = 0;
+  Vector3f cursor;
   bool insideBlock = false;
   int sequence = 0;
 };
