@@ -26,7 +26,7 @@ class EndCrystalMetadata : public EntityMetadata {
   ~EndCrystalMetadata() override;
 
  public:
-  void wrapperWrite(MetadataBuffer&);
+  void wrapperWrite(MetadataBuffer&) override;
 
  public:
   std::optional<ProtocolPosition> beamTarget;
