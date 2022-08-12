@@ -3,6 +3,7 @@ serverPort: 25565
 motd: "Hello, world!"
 maxPlayers: 20
 compressionThreshold: 256
+compressionLevel: 6
 onlineMode: false
 hardcore: false
 viewDistance: 20

@@ -16,8 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <zlib.h>
-
 #include <iostream>
 
 #include "../connection_context.h"
@@ -34,13 +32,16 @@ bool PacketCompressor::encode(ConnectionContext* ctx, void* in, void*& out) {
     outbuf->writeVarInt(0);
     outbuf->writeBytes(*inbuf);
   } else {
+    libdeflate_compressor* compressor = ctx->gameServer->getCompressor();
+
     const char* uncompr = (const char*) inbuf->data.data();
-    auto slen = (uLong) inbuf->readableBytes();
-    uLong dlen = compressBound(slen);
+    size_t slen = (size_t) inbuf->readableBytes();
+    size_t dlen = libdeflate_deflate_compress_bound(compressor, slen);
+
     auto* compr = (unsigned char*) malloc(dlen);
-    int res = compress((Bytef*) compr, &dlen, (Bytef*) uncompr, slen);
-    if (res == Z_BUF_ERROR || res == Z_MEM_ERROR) {
-      std::cerr << "Unable to compress buffer" << std::endl;
+    dlen = libdeflate_zlib_compress(compressor, uncompr, slen, compr, dlen);
+    if (dlen <= 0) {
+      std::cerr << "Couldn't compress buffer" << std::endl;
       return false;
     }
 

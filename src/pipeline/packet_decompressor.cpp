@@ -16,8 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <zlib.h>
-
+#include "../connection_context.h"
 #include "handlers.h"
 
 PacketDecompressor::PacketDecompressor() = default;
@@ -34,14 +33,16 @@ bool PacketDecompressor::onDisconnect(ConnectionContext*) {
 bool PacketDecompressor::decode(ConnectionContext* ctx, void* in, std::vector<void*>& dst) {
   auto* inbuf = (ByteBuffer*) in;
 
-  uLongf dlen = inbuf->readVarInt();
+  size_t dlen = inbuf->readVarInt();
   if (dlen > 0) {
+    libdeflate_decompressor* decompressor = ctx->gameServer->getDecompressor();
+
     auto* uncompr = (unsigned char*) malloc(dlen);
-    uLong slen = inbuf->readableBytes();
-    std::vector<unsigned char> compr = inbuf->readBytes(inbuf->readableBytes());
-    int res = uncompress((Bytef*) uncompr, &dlen, (Bytef*) compr.data(), slen);
-    if (res == Z_BUF_ERROR || res == Z_MEM_ERROR) {
-      std::cout << "Could not uncompress message" << std::endl;
+    size_t slen = inbuf->readableBytes();
+    std::vector<unsigned char> compr = inbuf->readBytes(slen);
+    libdeflate_result res = libdeflate_zlib_decompress(decompressor, compr.data(), slen, uncompr, dlen, nullptr);
+    if (res != LIBDEFLATE_SUCCESS) {
+      std::cout << "Could not decompress buffer: " << res << std::endl;
       return false;
     }
 

@@ -9,8 +9,10 @@ include_directories(thirdparty/rapidyaml/src)
 
 include_directories(thirdparty/asio/include)
 
-add_subdirectory(thirdparty/zlib)
-include_directories(thirdparty/zlib)
+set(BUILD_SHARED_LIBS OFF)
+
+add_subdirectory(thirdparty/libdeflate)
+include_directories(thirdparty/libdeflate)
 
 add_subdirectory(thirdparty/openssl)
 include_directories(thirdparty/openssl/include)
@@ -35,7 +37,6 @@ if (${MYCELIUM_BUILD_CURL})
         message(STATUS "Enable OpenSSL support")
         set(CURL_USE_OPENSSL ON)
     endif ()
-    set(BUILD_SHARED_LIBS OFF)
     add_subdirectory(thirdparty/curl)
     include_directories(thirdparty/curl/include)
     link_libraries(libcurl)
@@ -48,7 +49,7 @@ endif ()
 file(GLOB_RECURSE SRC src/*.cpp)
 
 add_executable(Mycelium ${SRC})
-target_link_libraries(Mycelium ssl crypto zlibstatic ryml::ryml)
+target_link_libraries(Mycelium ssl crypto libdeflate ryml::ryml)
 
 if (WIN32)
     target_link_libraries(Mycelium wsock32)

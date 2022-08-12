@@ -28,6 +28,7 @@
 #include "../protocol/clientbound_spawn_player.h"
 
 GameServer::GameServer() {
+  decompressor = libdeflate_alloc_decompressor();
   reloadConfig();
 }
 
@@ -57,6 +58,10 @@ int GameServer::getMaxPlayers() const {
 
 int GameServer::getCompressionThreshold() const {
   return cfg_compressionThreshold;
+}
+
+int GameServer::getCompressionLevel() const {
+  return cfg_compressionLevel;
 }
 
 KeyPairRSA GameServer::getRSAKeyPair() {
@@ -169,6 +174,14 @@ int GameServer::maxConnectionThreads() const {
   return cfg_maxConnectionThreads;
 }
 
+libdeflate_compressor* GameServer::getCompressor() const {
+  return compressor;
+}
+
+libdeflate_decompressor* GameServer::getDecompressor() const {
+  return decompressor;
+}
+
 #define SET_IF_EXIST(dst, path) \
   if (tree path.has_val()) {    \
     root path >> dst;           \
@@ -196,6 +209,8 @@ void GameServer::reloadConfig() {
   SET_IF_EXIST(cfg_motd, ["motd"])
   SET_IF_EXIST(cfg_maxPlayers, ["maxPlayers"])
   SET_IF_EXIST(cfg_compressionThreshold, ["compressionThreshold"])
+  SET_IF_EXIST(cfg_compressionLevel, ["compressionLevel"])
+  CHECK_RANGE(cfg_compressionLevel, 0, 12)
   SET_IF_EXIST(cfg_onlineMode, ["onlineMode"])
   SET_IF_EXIST(cfg_hardcore, ["hardcore"])
   SET_IF_EXIST(cfg_viewDistance, ["viewDistance"])
@@ -221,4 +236,9 @@ void GameServer::reloadConfig() {
   std::ofstream configOut("properties.yml", std::ios::out | std::ios::binary | std::ios::trunc);
   configOut << tree;
   configOut.close();
+
+  if (compressor) {
+    libdeflate_free_compressor(compressor);
+  }
+  compressor = libdeflate_alloc_compressor(cfg_compressionLevel);
 }

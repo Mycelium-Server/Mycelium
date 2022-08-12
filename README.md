@@ -22,7 +22,7 @@ $ cmake --build .
  - [cURL](https://github.com/curl/curl)
  - [asio](https://github.com/chriskohlhoff/asio)
  - [OpenSSL](https://github.com/openssl/openssl)
- - [zlib](https://github.com/madler/zlib)
+ - [libdeflate](https://github.com/ebiggers/libdeflate)
  - [stduuid](https://github.com/mariusbancila/stduuid)
  - [gsl](https://github.com/microsoft/GSL)
  - [nlohmann/json](https://github.com/nlohmann/json)

@@ -18,6 +18,8 @@
 
 #pragma once
 
+#include <libdeflate.h>
+
 #include <string>
 #include <thread>
 
@@ -42,6 +44,7 @@ class GameServer {
   [[nodiscard]] int getServerPort() const;
   // void* getFavicon(); // TODO: Implement this
   [[nodiscard]] int getCompressionThreshold() const;
+  [[nodiscard]] int getCompressionLevel() const;
   KeyPairRSA getRSAKeyPair();
   [[nodiscard]] bool isOnlineMode() const;
   [[nodiscard]] bool isHardcore() const;
@@ -59,9 +62,14 @@ class GameServer {
   void removePlayer(PlayerData*);
   std::vector<PlayerData*>& getPlayers();
 
+  libdeflate_compressor* getCompressor() const;
+  libdeflate_decompressor* getDecompressor() const;
+
  private:
   KeyPairRSA keypair {};
   std::vector<PlayerData*> players;
+  libdeflate_compressor* compressor = nullptr;
+  libdeflate_decompressor* decompressor = nullptr;
 
  private:
   std::string cfg_serverIP = "0.0.0.0";
@@ -69,6 +77,7 @@ class GameServer {
   std::string cfg_motd = "Hello, world!";
   int cfg_maxPlayers = 20;
   int cfg_compressionThreshold = 256;
+  int cfg_compressionLevel = 6;
   bool cfg_onlineMode = false;
   bool cfg_hardcore = false;
   int cfg_viewDistance = 20;
