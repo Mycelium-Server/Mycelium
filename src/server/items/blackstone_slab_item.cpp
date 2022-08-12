@@ -18,6 +18,8 @@
 
 #include "blackstone_slab_item.h"
 
+#include "../blocks/blackstone_slab_block.h"
+
 BlackstoneSlabItem::BlackstoneSlabItem() = default;
 BlackstoneSlabItem::~BlackstoneSlabItem() = default;
 
@@ -27,4 +29,8 @@ int BlackstoneSlabItem::getID() const {
 
 std::shared_ptr<Item> BlackstoneSlabItem::clone() const {
   return std::make_shared<BlackstoneSlabItem>();
+}
+
+int BlackstoneSlabItem::getBlockID(World *, const Vector3i &, const Vector3f &, const BlockFace &, const Vector3f &, bool) const {
+  return BlackstoneSlabBlock().getId();
 }
