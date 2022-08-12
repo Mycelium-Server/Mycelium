@@ -40,6 +40,13 @@ jobs:
           name: Mycelium-${{ matrix.os }}
           path: |
             build/Mycelium*
+      - if: matrix.os == 'macos-latest'
+        name: Upload executable (MacOS)
+        uses: actions/upload-artifact@v2
+        with:
+          name: Mycelium-debug-${{ matrix.os }}
+          path: |
+            build/Mycelium*
       - name: Create runtime
         run: |
           mkdir runtime

@@ -15,7 +15,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ ubuntu-latest, windows-latest, macos-latest ]
+        os: [ ubuntu-latest, windows-latest ]
 
     steps:
       - uses: actions/checkout@v3
@@ -35,13 +35,6 @@ jobs:
             build/${{env.BUILD_TYPE}}/*.exe
       - if: matrix.os == 'ubuntu-latest'
         name: Upload executable (Linux)
-        uses: actions/upload-artifact@v2
-        with:
-          name: Mycelium-debug-${{ matrix.os }}
-          path: |
-            build/Mycelium*
-      - if: matrix.os == 'macos-latest'
-        name: Upload executable (MacOS)
         uses: actions/upload-artifact@v2
         with:
           name: Mycelium-debug-${{ matrix.os }}
