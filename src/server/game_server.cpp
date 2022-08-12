@@ -28,6 +28,11 @@
 #include "../protocol/clientbound_spawn_player.h"
 
 GameServer::GameServer() {
+  cfg_maxConnectionThreads = std::thread::hardware_concurrency();
+  if (cfg_maxConnectionThreads == 0) {
+    cfg_maxConnectionThreads = 512;
+  }
+
   decompressor = libdeflate_alloc_decompressor();
   reloadConfig();
 }
@@ -170,7 +175,7 @@ bool GameServer::debugPackets() const {
   return cfg_debugPackets;
 }
 
-int GameServer::maxConnectionThreads() const {
+unsigned int GameServer::maxConnectionThreads() const {
   return cfg_maxConnectionThreads;
 }
 

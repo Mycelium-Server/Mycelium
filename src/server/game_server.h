@@ -55,15 +55,15 @@ class GameServer {
   [[nodiscard]] Difficulty getDifficulty() const;
   [[nodiscard]] WorldBorder getWorldBorder() const;
   [[nodiscard]] bool debugPackets() const;
-  [[nodiscard]] int maxConnectionThreads() const;
+  [[nodiscard]] unsigned int maxConnectionThreads() const;
   RotatedProtocolPosition getSpawnPosition();
 
   void addPlayer(PlayerData*);
   void removePlayer(PlayerData*);
   std::vector<PlayerData*>& getPlayers();
 
-  libdeflate_compressor* getCompressor() const;
-  libdeflate_decompressor* getDecompressor() const;
+  [[nodiscard]] libdeflate_compressor* getCompressor() const;
+  [[nodiscard]] libdeflate_decompressor* getDecompressor() const;
 
  private:
   KeyPairRSA keypair {};
@@ -86,6 +86,6 @@ class GameServer {
   bool cfg_showRespawnScreen = true;
   int cfg_difficulty = (int) Difficulty::NORMAL;
   bool cfg_debugPackets = false;
-  unsigned int cfg_maxConnectionThreads = std::min(1u, std::thread::hardware_concurrency());
+  unsigned int cfg_maxConnectionThreads;
   WorldBorder cfg_worldBorder = {0, 0, 29999984, 29999984, 0, 0};
 };
