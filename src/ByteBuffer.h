@@ -18,6 +18,7 @@
 
 #pragma once
 
+#include <filesystem>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -30,6 +31,7 @@ class ByteBuffer {
  public:
   ByteBuffer();
   explicit ByteBuffer(size_t);
+  explicit ByteBuffer(const std::filesystem::path&);
   explicit ByteBuffer(const std::vector<unsigned char>&);
   ByteBuffer(const unsigned char*, size_t);
 

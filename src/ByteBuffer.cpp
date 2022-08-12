@@ -19,6 +19,7 @@
 #include "ByteBuffer.h"
 
 #include <cstring>
+#include <fstream>
 
 #include "server/itemstack.h"
 
@@ -32,6 +33,20 @@ ByteBuffer::ByteBuffer(size_t size) {
 ByteBuffer::ByteBuffer(const unsigned char* data, size_t len) {
   this->data = std::vector<unsigned char>(data, data + len);
   writerIdx = len;
+}
+
+ByteBuffer::ByteBuffer(const std::filesystem::path& path) {
+  std::ifstream file(path, std::ios_base::binary);
+
+  file.seekg(0, std::ios_base::end);
+  size_t length = file.tellg();
+  file.seekg(0, std::ios_base::beg);
+
+  data.reserve(length);
+  std::copy(std::istreambuf_iterator<char>(file),
+            std::istreambuf_iterator<char>(),
+            std::back_inserter(data));
+  writerIdx = length;
 }
 
 ByteBuffer::ByteBuffer(const std::vector<unsigned char>& data) {
