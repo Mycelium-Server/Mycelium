@@ -18,8 +18,12 @@
 
 #include "NBT.h"
 
+#include <libdeflate.h>
+
+static libdeflate_decompressor* decompressor = nullptr;
+
 std::string nbt_read_name(ByteBuffer& buf) {
-  int length = buf.readByte() << 8 | buf.readByte();
+  int length = buf.readShort();
   std::string name;
   for (int i = 0; i < length; i++) name += (char) buf.readByte();
   return name;
@@ -67,6 +71,9 @@ std::shared_ptr<NBT_Component> nbt_read_raw_data(ByteBuffer& buf, int type) {
     case 9: {
       int list_type = buf.readByte();
       int length = buf.readInt();
+      if (length <= 0) {
+        return std::make_shared<TAG_List>((TAG_TypeID) list_type, NBT_Components {});
+      }
       NBT_Components components;
       components.resize(length);
       for (int i = 0; i < length; i++) {
@@ -107,7 +114,7 @@ std::shared_ptr<NBT_Component> nbt_read_raw_data(ByteBuffer& buf, int type) {
   }
 }
 
-std::shared_ptr<NBT_Component> read_nbt(ByteBuffer& buf) {
+std::shared_ptr<NBT_Component> read_nbt_uncompressed(ByteBuffer& buf) {
   int type = buf.readByte();
   if (type == 0)
     return std::make_shared<TAG_End>();
@@ -115,6 +122,70 @@ std::shared_ptr<NBT_Component> read_nbt(ByteBuffer& buf) {
   std::shared_ptr<NBT_Component> component = nbt_read_raw_data(buf, type);
   component->name = name;
   return component;
+}
+
+static void init_decompressor() {
+  if (!decompressor) {
+    decompressor = libdeflate_alloc_decompressor();
+  }
+}
+
+std::shared_ptr<NBT_Component> read_nbt_gzipped(ByteBuffer& buf) {
+  init_decompressor();
+
+  size_t slen = buf.length();
+  size_t dlen = buf.length() * 2;
+  while (true) {
+    auto* rbuf = (unsigned char*) malloc(dlen);
+    libdeflate_result res = libdeflate_gzip_decompress(decompressor, buf.data.data(), slen, rbuf, dlen, &dlen);
+    if (res != LIBDEFLATE_INSUFFICIENT_SPACE) {
+      if (res != LIBDEFLATE_SUCCESS) {
+        std::cerr << "Couldn't decompress data: " << res << std::endl;
+        return {};
+      }
+
+      ByteBuffer uncompressed(rbuf, dlen);
+      free(rbuf);
+      return read_nbt_uncompressed(uncompressed);
+    }
+    free(rbuf);
+    dlen *= 2;
+  }
+}
+
+std::shared_ptr<NBT_Component> read_nbt_zlib(ByteBuffer& buf) {
+  init_decompressor();
+
+  size_t slen = buf.length();
+  size_t dlen = buf.length() * 2;
+  while (true) {
+    auto* rbuf = (unsigned char*) malloc(dlen);
+    libdeflate_result res = libdeflate_zlib_decompress(decompressor, buf.data.data(), slen, rbuf, dlen, &dlen);
+    if (res != LIBDEFLATE_INSUFFICIENT_SPACE) {
+      if (res != LIBDEFLATE_SUCCESS) {
+        std::cerr << "Couldn't decompress data: " << res << std::endl;
+        return {};
+      }
+
+      ByteBuffer uncompressed(rbuf, dlen);
+      free(rbuf);
+      return read_nbt_uncompressed(uncompressed);
+    }
+    free(rbuf);
+    dlen *= 2;
+  }
+}
+
+std::shared_ptr<NBT_Component> read_nbt(ByteBuffer& buf) {
+  if (buf.readableBytes() >= 2) {
+    unsigned char b1 = buf.data[buf.readerIdx];
+    if (b1 == 31) {
+      return read_nbt_gzipped(buf);
+    } else if (b1 == 120) {
+      return read_nbt_zlib(buf);
+    }
+  }
+  return read_nbt_uncompressed(buf);
 }
 
 // TODO: json -> nbt impl

@@ -508,6 +508,9 @@ typedef std::vector<std::shared_ptr<NBT_Component>> NBT_Components;
 
 std::string nbt_read_name(ByteBuffer& buf);
 std::shared_ptr<NBT_Component> nbt_read_raw_data(ByteBuffer& buf, int type);
+std::shared_ptr<NBT_Component> read_nbt_uncompressed(ByteBuffer&);
+std::shared_ptr<NBT_Component> read_nbt_gzipped(ByteBuffer&);
+std::shared_ptr<NBT_Component> read_nbt_zlib(ByteBuffer&);
 std::shared_ptr<NBT_Component> read_nbt(ByteBuffer&);
 
 // TODO: json -> nbt
