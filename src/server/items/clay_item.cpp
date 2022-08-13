@@ -18,6 +18,8 @@
 
 #include "clay_item.h"
 
+#include "../blocks/clay_block.h"
+
 ClayItem::ClayItem() = default;
 ClayItem::~ClayItem() = default;
 
@@ -27,4 +29,8 @@ int ClayItem::getID() const {
 
 std::shared_ptr<Item> ClayItem::clone() const {
   return std::make_shared<ClayItem>();
+}
+
+int ClayItem::getBlockID(World *, const Vector3i &, const Vector3f &, const BlockFace &, const Vector3f &, bool) const {
+  return ClayBlock().getId();
 }

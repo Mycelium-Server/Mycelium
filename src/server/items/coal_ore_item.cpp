@@ -18,6 +18,8 @@
 
 #include "coal_ore_item.h"
 
+#include "../blocks/coal_ore_block.h"
+
 CoalOreItem::CoalOreItem() = default;
 CoalOreItem::~CoalOreItem() = default;
 
@@ -27,4 +29,8 @@ int CoalOreItem::getID() const {
 
 std::shared_ptr<Item> CoalOreItem::clone() const {
   return std::make_shared<CoalOreItem>();
+}
+
+int CoalOreItem::getBlockID(World *, const Vector3i &, const Vector3f &, const BlockFace &, const Vector3f &, bool) const {
+  return CoalOreBlock().getId();
 }
