@@ -18,6 +18,8 @@
 
 #include "jigsaw_item.h"
 
+#include "../blocks/jigsaw_block.h"
+
 JigsawItem::JigsawItem() = default;
 JigsawItem::~JigsawItem() = default;
 
@@ -27,4 +29,8 @@ int JigsawItem::getID() const {
 
 std::shared_ptr<Item> JigsawItem::clone() const {
   return std::make_shared<JigsawItem>();
+}
+
+int JigsawItem::getBlockID(World *, const Vector3i &, const Vector3f &, const BlockFace &, const Vector3f &, bool) const {
+  return JigsawBlock().getId();
 }

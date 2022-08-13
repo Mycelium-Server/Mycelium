@@ -18,6 +18,8 @@
 
 #include "mycelium_item.h"
 
+#include "../blocks/mycelium_block.h"
+
 MyceliumItem::MyceliumItem() = default;
 MyceliumItem::~MyceliumItem() = default;
 
@@ -27,4 +29,8 @@ int MyceliumItem::getID() const {
 
 std::shared_ptr<Item> MyceliumItem::clone() const {
   return std::make_shared<MyceliumItem>();
+}
+
+int MyceliumItem::getBlockID(World *, const Vector3i &, const Vector3f &, const BlockFace &, const Vector3f &, bool) const {
+  return MyceliumBlock().getId();
 }

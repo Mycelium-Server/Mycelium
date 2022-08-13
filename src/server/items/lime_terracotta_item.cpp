@@ -18,6 +18,8 @@
 
 #include "lime_terracotta_item.h"
 
+#include "../blocks/lime_terracotta_block.h"
+
 LimeTerracottaItem::LimeTerracottaItem() = default;
 LimeTerracottaItem::~LimeTerracottaItem() = default;
 
@@ -27,4 +29,8 @@ int LimeTerracottaItem::getID() const {
 
 std::shared_ptr<Item> LimeTerracottaItem::clone() const {
   return std::make_shared<LimeTerracottaItem>();
+}
+
+int LimeTerracottaItem::getBlockID(World *, const Vector3i &, const Vector3f &, const BlockFace &, const Vector3f &, bool) const {
+  return LimeTerracottaBlock().getId();
 }

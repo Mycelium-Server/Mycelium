@@ -18,9 +18,9 @@
 
 #pragma once
 
-#include "item.h"
+#include "block_item.h"
 
-class LimeCarpetItem : public Item {
+class LimeCarpetItem : public BlockItem {
  public:
   LimeCarpetItem();
   ~LimeCarpetItem() override;
@@ -28,4 +28,5 @@ class LimeCarpetItem : public Item {
  public:
   [[nodiscard]] int getID() const override;
   [[nodiscard]] std::shared_ptr<Item> clone() const override;
+  [[nodiscard]] int getBlockID(World *, const Vector3i &, const Vector3f &, const BlockFace &, const Vector3f &, bool) const override;
 };
