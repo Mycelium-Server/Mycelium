@@ -18,9 +18,9 @@
 
 #pragma once
 
-#include "item.h"
+#include "block_item.h"
 
-class EndRodItem : public Item {
+class EndRodItem : public BlockItem {
  public:
   EndRodItem();
   ~EndRodItem() override;
@@ -28,4 +28,5 @@ class EndRodItem : public Item {
  public:
   [[nodiscard]] int getID() const override;
   [[nodiscard]] std::shared_ptr<Item> clone() const override;
+  [[nodiscard]] int getBlockID(World *, const Vector3i &, const Vector3f &, const BlockFace &, const Vector3f &, bool) const override;
 };
