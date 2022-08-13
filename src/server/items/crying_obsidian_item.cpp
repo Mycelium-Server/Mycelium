@@ -18,6 +18,8 @@
 
 #include "crying_obsidian_item.h"
 
+#include "../blocks/crying_obsidian_block.h"
+
 CryingObsidianItem::CryingObsidianItem() = default;
 CryingObsidianItem::~CryingObsidianItem() = default;
 
@@ -27,4 +29,8 @@ int CryingObsidianItem::getID() const {
 
 std::shared_ptr<Item> CryingObsidianItem::clone() const {
   return std::make_shared<CryingObsidianItem>();
+}
+
+int CryingObsidianItem::getBlockID(World *, const Vector3i &, const Vector3f &, const BlockFace &, const Vector3f &, bool) const {
+  return CryingObsidianBlock().getId();
 }

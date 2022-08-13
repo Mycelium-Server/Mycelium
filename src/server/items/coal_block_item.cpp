@@ -18,6 +18,8 @@
 
 #include "coal_block_item.h"
 
+#include "../blocks/coal_block_block.h"
+
 CoalBlockItem::CoalBlockItem() = default;
 CoalBlockItem::~CoalBlockItem() = default;
 
