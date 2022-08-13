@@ -18,6 +18,8 @@
 
 #include "glowstone_item.h"
 
+#include "../blocks/glowstone_block.h"
+
 GlowstoneItem::GlowstoneItem() = default;
 GlowstoneItem::~GlowstoneItem() = default;
 
@@ -27,4 +29,8 @@ int GlowstoneItem::getID() const {
 
 std::shared_ptr<Item> GlowstoneItem::clone() const {
   return std::make_shared<GlowstoneItem>();
+}
+
+int GlowstoneItem::getBlockID(World *, const Vector3i &, const Vector3f &, const BlockFace &, const Vector3f &, bool) const {
+  return GlowstoneBlock().getId();
 }

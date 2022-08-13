@@ -18,6 +18,8 @@
 
 #include "glass_item.h"
 
+#include "../blocks/glass_block.h"
+
 GlassItem::GlassItem() = default;
 GlassItem::~GlassItem() = default;
 
@@ -27,4 +29,8 @@ int GlassItem::getID() const {
 
 std::shared_ptr<Item> GlassItem::clone() const {
   return std::make_shared<GlassItem>();
+}
+
+int GlassItem::getBlockID(World *, const Vector3i &, const Vector3f &, const BlockFace &, const Vector3f &, bool) const {
+  return GlassBlock().getId();
 }
