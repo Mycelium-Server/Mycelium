@@ -18,6 +18,8 @@
 
 #include "quartz_block_item.h"
 
+#include "../blocks/quartz_block_block.h"
+
 QuartzBlockItem::QuartzBlockItem() = default;
 QuartzBlockItem::~QuartzBlockItem() = default;
 
@@ -27,4 +29,8 @@ int QuartzBlockItem::getID() const {
 
 std::shared_ptr<Item> QuartzBlockItem::clone() const {
   return std::make_shared<QuartzBlockItem>();
+}
+
+int QuartzBlockItem::getBlockID(World *, const Vector3i &, const Vector3f &, const BlockFace &, const Vector3f &, bool) const {
+  return QuartzBlockBlock().getId();
 }

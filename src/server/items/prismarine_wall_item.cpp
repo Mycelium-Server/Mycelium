@@ -18,6 +18,8 @@
 
 #include "prismarine_wall_item.h"
 
+#include "../blocks/prismarine_wall_block.h"
+
 PrismarineWallItem::PrismarineWallItem() = default;
 PrismarineWallItem::~PrismarineWallItem() = default;
 
@@ -27,4 +29,8 @@ int PrismarineWallItem::getID() const {
 
 std::shared_ptr<Item> PrismarineWallItem::clone() const {
   return std::make_shared<PrismarineWallItem>();
+}
+
+int PrismarineWallItem::getBlockID(World *, const Vector3i &, const Vector3f &, const BlockFace &, const Vector3f &, bool) const {
+  return PrismarineWallBlock().getId();
 }

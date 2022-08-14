@@ -18,9 +18,9 @@
 
 #pragma once
 
-#include "item.h"
+#include "block_item.h"
 
-class RedstoneOreItem : public Item {
+class RedstoneOreItem : public BlockItem {
  public:
   RedstoneOreItem();
   ~RedstoneOreItem() override;
@@ -28,4 +28,5 @@ class RedstoneOreItem : public Item {
  public:
   [[nodiscard]] int getID() const override;
   [[nodiscard]] std::shared_ptr<Item> clone() const override;
+  [[nodiscard]] int getBlockID(World *, const Vector3i &, const Vector3f &, const BlockFace &, const Vector3f &, bool) const override;
 };
