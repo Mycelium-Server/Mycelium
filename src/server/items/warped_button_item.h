@@ -18,9 +18,9 @@
 
 #pragma once
 
-#include "item.h"
+#include "block_item.h"
 
-class WarpedButtonItem : public Item {
+class WarpedButtonItem : public BlockItem {
  public:
   WarpedButtonItem();
   ~WarpedButtonItem() override;
@@ -28,4 +28,5 @@ class WarpedButtonItem : public Item {
  public:
   [[nodiscard]] int getID() const override;
   [[nodiscard]] std::shared_ptr<Item> clone() const override;
+  [[nodiscard]] int getBlockID(World *, const Vector3i &, const Vector3f &, const BlockFace &, const Vector3f &, bool) const override;
 };

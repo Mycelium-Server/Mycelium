@@ -18,6 +18,8 @@
 
 #include "waxed_exposed_cut_copper_item.h"
 
+#include "../blocks/waxed_exposed_cut_copper_block.h"
+
 WaxedExposedCutCopperItem::WaxedExposedCutCopperItem() = default;
 WaxedExposedCutCopperItem::~WaxedExposedCutCopperItem() = default;
 
@@ -27,4 +29,8 @@ int WaxedExposedCutCopperItem::getID() const {
 
 std::shared_ptr<Item> WaxedExposedCutCopperItem::clone() const {
   return std::make_shared<WaxedExposedCutCopperItem>();
+}
+
+int WaxedExposedCutCopperItem::getBlockID(World *, const Vector3i &, const Vector3f &, const BlockFace &, const Vector3f &, bool) const {
+  return WaxedExposedCutCopperBlock().getId();
 }
