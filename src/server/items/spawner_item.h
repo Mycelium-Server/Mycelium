@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include "blocK_item.h"
+#include "block_item.h"
 
 class SpawnerItem : public BlockItem {
  public:
