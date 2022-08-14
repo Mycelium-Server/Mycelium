@@ -18,6 +18,8 @@
 
 #include "stone_button_item.h"
 
+#include "../blocks/stone_button_block.h"
+
 StoneButtonItem::StoneButtonItem() = default;
 StoneButtonItem::~StoneButtonItem() = default;
 
@@ -27,4 +29,8 @@ int StoneButtonItem::getID() const {
 
 std::shared_ptr<Item> StoneButtonItem::clone() const {
   return std::make_shared<StoneButtonItem>();
+}
+
+int StoneButtonItem::getBlockID(World *, const Vector3i &, const Vector3f &, const BlockFace &, const Vector3f &, bool) const {
+  return StoneButtonBlock().getId();
 }

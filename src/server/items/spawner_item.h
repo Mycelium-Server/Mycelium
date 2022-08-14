@@ -18,9 +18,9 @@
 
 #pragma once
 
-#include "item.h"
+#include "blocK_item.h"
 
-class SpawnerItem : public Item {
+class SpawnerItem : public BlockItem {
  public:
   SpawnerItem();
   ~SpawnerItem() override;
@@ -28,4 +28,5 @@ class SpawnerItem : public Item {
  public:
   [[nodiscard]] int getID() const override;
   [[nodiscard]] std::shared_ptr<Item> clone() const override;
+  [[nodiscard]] int getBlockID(World *, const Vector3i &, const Vector3f &, const BlockFace &, const Vector3f &, bool) const override;
 };

@@ -18,6 +18,8 @@
 
 #include "spruce_log_item.h"
 
+#include "../blocks/spruce_log_block.h"
+
 SpruceLogItem::SpruceLogItem() = default;
 SpruceLogItem::~SpruceLogItem() = default;
 
@@ -27,4 +29,8 @@ int SpruceLogItem::getID() const {
 
 std::shared_ptr<Item> SpruceLogItem::clone() const {
   return std::make_shared<SpruceLogItem>();
+}
+
+int SpruceLogItem::getBlockID(World *, const Vector3i &, const Vector3f &, const BlockFace &, const Vector3f &, bool) const {
+  return SpruceLogBlock().getId();
 }

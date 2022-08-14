@@ -18,6 +18,8 @@
 
 #include "stone_bricks_item.h"
 
+#include "../blocks/stone_bricks_block.h"
+
 StoneBricksItem::StoneBricksItem() = default;
 StoneBricksItem::~StoneBricksItem() = default;
 
@@ -27,4 +29,8 @@ int StoneBricksItem::getID() const {
 
 std::shared_ptr<Item> StoneBricksItem::clone() const {
   return std::make_shared<StoneBricksItem>();
+}
+
+int StoneBricksItem::getBlockID(World *, const Vector3i &, const Vector3f &, const BlockFace &, const Vector3f &, bool) const {
+  return StoneBricksBlock().getId();
 }

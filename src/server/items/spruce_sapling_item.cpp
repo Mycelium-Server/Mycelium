@@ -18,6 +18,8 @@
 
 #include "spruce_sapling_item.h"
 
+#include "../blocks/spruce_sapling_block.h"
+
 SpruceSaplingItem::SpruceSaplingItem() = default;
 SpruceSaplingItem::~SpruceSaplingItem() = default;
 
@@ -27,4 +29,8 @@ int SpruceSaplingItem::getID() const {
 
 std::shared_ptr<Item> SpruceSaplingItem::clone() const {
   return std::make_shared<SpruceSaplingItem>();
+}
+
+int SpruceSaplingItem::getBlockID(World *, const Vector3i &, const Vector3f &, const BlockFace &, const Vector3f &, bool) const {
+  return SpruceSaplingBlock().getId();
 }

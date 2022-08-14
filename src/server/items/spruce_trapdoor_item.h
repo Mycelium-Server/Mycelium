@@ -18,9 +18,9 @@
 
 #pragma once
 
-#include "item.h"
+#include "block_item.h"
 
-class SpruceTrapdoorItem : public Item {
+class SpruceTrapdoorItem : public BlockItem {
  public:
   SpruceTrapdoorItem();
   ~SpruceTrapdoorItem() override;
@@ -28,4 +28,5 @@ class SpruceTrapdoorItem : public Item {
  public:
   [[nodiscard]] int getID() const override;
   [[nodiscard]] std::shared_ptr<Item> clone() const override;
+  [[nodiscard]] int getBlockID(World *, const Vector3i &, const Vector3f &, const BlockFace &, const Vector3f &, bool) const override;
 };

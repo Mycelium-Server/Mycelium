@@ -18,6 +18,8 @@
 
 #include "smooth_sandstone_item.h"
 
+#include "../blocks/smooth_sandstone_block.h"
+
 SmoothSandstoneItem::SmoothSandstoneItem() = default;
 SmoothSandstoneItem::~SmoothSandstoneItem() = default;
 
@@ -27,4 +29,8 @@ int SmoothSandstoneItem::getID() const {
 
 std::shared_ptr<Item> SmoothSandstoneItem::clone() const {
   return std::make_shared<SmoothSandstoneItem>();
+}
+
+int SmoothSandstoneItem::getBlockID(World *, const Vector3i &, const Vector3f &, const BlockFace &, const Vector3f &, bool) const {
+  return SmoothSandstoneBlock().getId();
 }

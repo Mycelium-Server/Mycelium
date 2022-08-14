@@ -18,6 +18,8 @@
 
 #include "spruce_fence_item.h"
 
+#include "../blocks/spruce_fence_block.h"
+
 SpruceFenceItem::SpruceFenceItem() = default;
 SpruceFenceItem::~SpruceFenceItem() = default;
 
@@ -27,4 +29,8 @@ int SpruceFenceItem::getID() const {
 
 std::shared_ptr<Item> SpruceFenceItem::clone() const {
   return std::make_shared<SpruceFenceItem>();
+}
+
+int SpruceFenceItem::getBlockID(World *, const Vector3i &, const Vector3f &, const BlockFace &, const Vector3f &, bool) const {
+  return SpruceFenceBlock().getId();
 }
