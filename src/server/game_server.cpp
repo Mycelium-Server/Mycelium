@@ -25,6 +25,7 @@
 #include "../event_loop_factory.h"
 #include "../protocol/clientbound_player_info.h"
 #include "../protocol/clientbound_remove_entities.h"
+#include "../protocol/clientbound_set_equipment.h"
 #include "../protocol/clientbound_spawn_player.h"
 
 GameServer::GameServer() {
@@ -132,6 +133,11 @@ void GameServer::addPlayer(PlayerData* data) {
   for (auto& player: players) {// TODO: `This packet is sent by the server when a player comes into visible range, not when a player joins.`
     spawnOther->data = *player;
     data->entity->connection->write(spawnOther);
+
+    auto* equipment = new ClientboundSetEquipment;
+    equipment->addAll(player->entity);
+    data->entity->connection->write(equipment);
+    delete equipment;
   }
   delete spawnOther;
 

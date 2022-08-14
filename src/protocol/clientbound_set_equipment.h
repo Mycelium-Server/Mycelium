@@ -16,18 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "player.h"
+#pragma once
 
-EntityPlayer::EntityPlayer() {
-  inventory.bindPlayer(this);
-}
+#include "packet.h"
 
-EntityPlayer::~EntityPlayer() = default;
+class ClientboundSetEquipment : public ClientboundPacket {
+ public:
+  ClientboundSetEquipment();
+  ~ClientboundSetEquipment();
 
-int EntityPlayer::getRenderDistance() const {
-  return std::min(connection->gameServer->getViewDistance(), (int) connection->clientSettings.viewDistance);
-}
+ public:
+  void write(ByteBuffer&) override;
+  [[nodiscard]] int getPacketID() const override;
+  void addAll(PlayerInventory&);
+  void addAll(EntityPlayer*);
 
-PlayerInventory& EntityPlayer::getInventory() {
-  return inventory;
-}
+ public:
+  enum EquipmentType {
+    MAIN_HAND = 0,
+    OFF_HAND = 1,
+    BOOTS = 2,
+    LEGGINGS = 3,
+    CHESTPLATE = 4,
+    HELMET = 5,
+  };
+
+  Entity* entity;
+  std::unordered_map<EquipmentType, ItemStack> equipment;
+
+};

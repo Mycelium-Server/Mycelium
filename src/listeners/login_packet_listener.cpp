@@ -36,7 +36,6 @@
 #include "../protocol/clientbound_set_center_chunk.h"
 #include "../protocol/clientbound_set_compression.h"
 #include "../protocol/clientbound_set_default_spawn_position.h"
-#include "../protocol/clientbound_set_held_item.h"
 #include "../protocol/clientbound_synchronize_player_position.h"
 #include "../protocol/clientbound_system_message.h"
 #include "../protocol/plugin_channels.h"
@@ -169,10 +168,7 @@ void continueLogin(ConnectionContext* ctx) {
   ctx->write(abilities);
   delete abilities;
 
-  auto* heldSlot = new ClientboundSetHeldItem();
-  heldSlot->slot = ctx->playerEntity->getInventory().getActiveSlot();
-  ctx->write(heldSlot);
-  delete heldSlot;
+  ctx->playerEntity->getInventory().setActiveSlot(0);
 
   ctx->gameServer->addPlayer(&ctx->playerData);
 

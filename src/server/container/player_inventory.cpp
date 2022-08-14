@@ -18,6 +18,9 @@
 
 #include "player_inventory.h"
 
+#include "../../protocol/clientbound_set_equipment.h"
+#include "../../protocol/clientbound_set_held_item.h"
+
 PlayerInventory::PlayerInventory() = default;
 PlayerInventory::~PlayerInventory() = default;
 
@@ -45,16 +48,21 @@ ItemStack& PlayerInventory::get(unsigned n) {
   }
 }
 
-ItemStack PlayerInventory::set(unsigned n, const ItemStack& value) {
+ItemStack PlayerInventory::set(unsigned n, const ItemStack& value, bool ackClient, bool ignoreMenu) {
+  ItemStack res;
   if (menu != nullptr) {
     if (n < menu->getSize()) {
-      return menu->set(n, value);
+      res = menu->set(n, value);
     } else {
-      return inventoryContainer.set(n - menu->getSize() + 9, value);
+      res = inventoryContainer.set(n - menu->getSize() + 9, value);
     }
   } else {
-    return inventoryContainer.set(n, value);
+    res = inventoryContainer.set(n, value);
   }
+  if (ackClient) {
+    updateEquipment(n, ignoreMenu);
+  }
+  return res;
 }
 
 ItemStack& PlayerInventory::operator[](unsigned n) {
@@ -76,7 +84,98 @@ unsigned char PlayerInventory::getActiveSlot() const {
   return activeSlot;
 }
 
-unsigned char PlayerInventory::setActiveSlot(unsigned char slot) {
+unsigned char PlayerInventory::setActiveSlot(unsigned char slot, bool ackClient) {
   std::swap(activeSlot, slot);
+
+  if (ackClient && player) {
+    auto* heldSlot = new ClientboundSetHeldItem();
+    heldSlot->slot = activeSlot;
+    player->connection->write(heldSlot);
+    delete heldSlot;
+
+    updateEquipment(36 + activeSlot, true);
+  }
+
   return slot;
+}
+
+void PlayerInventory::bindPlayer(EntityPlayer* p) {
+  player = p;
+}
+
+void PlayerInventory::updateEquipment(unsigned int slot, bool ignoreMenu) {
+  if (player) {
+    ClientboundSetEquipment::EquipmentType type;
+
+    if (!ignoreMenu && menu) {
+      if (slot == activeSlot + 27 + menu->getSize()) {
+        type = ClientboundSetEquipment::MAIN_HAND;
+      } else {
+        return;
+      }
+    } else {
+      if (slot == activeSlot + 36) {
+        type = ClientboundSetEquipment::MAIN_HAND;
+      } else {
+        switch (slot) {
+          case 45:
+            type = ClientboundSetEquipment::OFF_HAND;
+            break;
+
+          case 5:
+            type = ClientboundSetEquipment::HELMET;
+            break;
+
+          case 6:
+            type = ClientboundSetEquipment::CHESTPLATE;
+            break;
+
+          case 7:
+            type = ClientboundSetEquipment::LEGGINGS;
+            break;
+
+          case 8:
+            type = ClientboundSetEquipment::BOOTS;
+            break;
+
+          default:
+            return;
+        }
+      }
+    }
+
+    auto* packet = new ClientboundSetEquipment;
+    packet->entity = player;
+    packet->equipment[type] = get(slot);
+
+    for (auto& data: player->connection->gameServer->getPlayers()) {
+      if (data->entity == player) {
+        continue;
+      }
+      // TODO: Check distance
+      data->entity->connection->write(packet);
+    }
+
+    delete packet;
+  }
+}
+
+ItemStack& PlayerInventory::getHelmet() {
+  return inventoryContainer.get(5);
+}
+
+ItemStack& PlayerInventory::getChestplate() {
+  return inventoryContainer.get(6);
+}
+
+ItemStack& PlayerInventory::getLeggings() {
+  return inventoryContainer.get(7);
+}
+
+ItemStack& PlayerInventory::getBoots() {
+  return inventoryContainer.get(8);
+}
+
+ItemStack& PlayerInventory::getOffHandItem() {
+  return inventoryContainer.get(45);
 }

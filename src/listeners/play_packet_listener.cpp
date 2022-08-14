@@ -270,5 +270,7 @@ void PlayPacketListener::handleSetCreativeModeSlot(ConnectionContext* ctx, Serve
 }
 
 void PlayPacketListener::handleSetHeldItem(ConnectionContext* ctx, ServerboundSetHeldItem* packet) {
-  ctx->playerEntity->getInventory().setActiveSlot(packet->slot);
+  PlayerInventory& target = ctx->playerEntity->getInventory();
+  target.setActiveSlot(packet->slot, false);
+  target.updateEquipment(packet->slot + 36, true);
 }

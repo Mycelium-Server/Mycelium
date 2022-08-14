@@ -20,6 +20,8 @@
 
 #include "container.h"
 
+class EntityPlayer;
+
 class PlayerInventory {
  public:
   PlayerInventory();
@@ -30,16 +32,25 @@ class PlayerInventory {
   void setMenu(const std::shared_ptr<AbstractContainer>&);
   PlayerInventoryContainer& getInventoryContainer();
   ItemStack& get(unsigned);
-  ItemStack set(unsigned, const ItemStack&);
+  ItemStack set(unsigned, const ItemStack&, bool = true, bool = false);
   ItemStack& getActiveSlotData();
   [[nodiscard]] unsigned getSize() const;
   [[nodiscard]] unsigned char getActiveSlot() const;
-  unsigned char setActiveSlot(unsigned char);
+  unsigned char setActiveSlot(unsigned char, bool = true);
+  void bindPlayer(EntityPlayer*);
+  void updateEquipment(unsigned, bool = false);
+
+  ItemStack& getHelmet();
+  ItemStack& getChestplate();
+  ItemStack& getLeggings();
+  ItemStack& getBoots();
+  ItemStack& getOffHandItem();
 
   ItemStack& operator[](unsigned);
 
  private:
   std::shared_ptr<AbstractContainer> menu;
   PlayerInventoryContainer inventoryContainer;
+  EntityPlayer* player = nullptr;
   unsigned char activeSlot = 0;
 };
