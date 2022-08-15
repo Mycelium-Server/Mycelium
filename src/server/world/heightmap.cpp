@@ -24,8 +24,8 @@ Heightmap::Heightmap() = default;
 Heightmap::~Heightmap() = default;
 
 void Heightmap::set(short height) {
-  data[currentLong] &= ~(((unsigned long long) 0b111111111) << currentBit);
-  data[currentLong] |= ((unsigned long long) (height & 0b111111111)) << currentBit;
+  data[currentLong] &= ~(0b11111111ull << currentBit);
+  data[currentLong] |= (height & 0b111111111ull) << currentBit;
 }
 
 void Heightmap::resetIndex() {
@@ -34,7 +34,7 @@ void Heightmap::resetIndex() {
 }
 
 short Heightmap::next() {
-  auto prev = (short) ((data[currentLong] & ((unsigned long long) 0b111111111 << currentBit)) >> currentBit);
+  auto prev = (short) ((data[currentLong] & (0b111111111ull << currentBit)) >> currentBit);
   currentBit += 9;
   if (currentBit >= 64) {
     currentBit = 1;

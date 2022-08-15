@@ -51,23 +51,23 @@ std::vector<unsigned long long> IndirectPalette::apply(std::vector<unsigned shor
   unsigned long long current = 0;
   int currentBit = 0;
 
-  for (int element: data) {
+  for (auto& element: data) {
     auto iter = std::find(palette.begin(), palette.end(), element);
     if (iter == palette.end()) {
       std::cerr << "Invalid element " << element << std::endl;
       return {};
     }
-    auto index = (unsigned int) std::distance(palette.begin(), iter);
-    current |= ((unsigned long long) index << currentBit);
+    auto index = (unsigned long long) std::distance(palette.begin(), iter);
+    current |= (index << currentBit);
     currentBit += bitsPerEntry;
-    if (currentBit >= 64) {
+    if (currentBit + bitsPerEntry > 64) {
       dst.push_back(current);
       currentBit = 0;
       current = 0;
     }
   }
 
-  if (current != 0) {
+  if (current != 0 || currentBit != 0) {
     dst.push_back(current);
   }
 
@@ -76,7 +76,7 @@ std::vector<unsigned long long> IndirectPalette::apply(std::vector<unsigned shor
 
 void IndirectPalette::write(ByteBuffer& out) {
   out.writeVarInt((int) palette.size());
-  for (unsigned short element: palette) {
+  for (auto& element: palette) {
     out.writeVarInt(element);
   }
 }
@@ -91,17 +91,17 @@ std::vector<unsigned long long> DirectPalette::apply(std::vector<unsigned short>
   unsigned long long current = 0;
   int currentBit = 0;
 
-  for (unsigned short element: data) {
-    current |= ((unsigned long long) element << currentBit);
+  for (auto& element: data) {
+    current |= ((unsigned long long) element) << currentBit;
     currentBit += bitsPerEntry;
-    if (currentBit >= 64) {
+    if (currentBit + bitsPerEntry > 64) {
       currentBit = 0;
       dst.push_back(current);
       current = 0;
     }
   }
 
-  if (current != 0) {
+  if (current != 0 || currentBit != 0) {
     dst.push_back(current);
   }
 

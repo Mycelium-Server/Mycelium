@@ -48,10 +48,10 @@ int ChunkSection::getBlockBitsPerEntry() const {
   if (blockPalette.size() == 1) {
     return 0;
   }
-  int bits = (int) std::log2(blockPalette.size() - 1) + 1;
-  if (bits < 4) {
+  int bits = (int) std::ceil(std::log2(blockPalette.size()));
+  if (bits <= 4) {
     return 4;
-  } else if (bits < 9) {
+  } else if (bits <= 8) {
     return bits;
   } else {
     return 15;
@@ -62,8 +62,8 @@ int ChunkSection::getBiomeBitsPerEntry() const {
   if (biomePalette.size() == 1) {
     return 0;
   }
-  int bits = (int) std::log2(biomePalette.size() - 1) + 1;
-  if (bits < 4) {
+  int bits = (int) std::ceil(std::log2(biomePalette.size()));
+  if (bits <= 3) {
     return bits;
   } else {
     return 6;
@@ -74,7 +74,7 @@ Palette* ChunkSection::createBlockPalette() const {
   int bits = getBlockBitsPerEntry();
   if (bits == 0) {
     return new SingleValuedPalette(blockPalette);
-  } else if (bits < 9) {
+  } else if (bits <= 8) {
     return new IndirectPalette(bits, blockPalette);
   } else {
     return new DirectPalette();
@@ -86,7 +86,7 @@ Palette* ChunkSection::createBiomePalette() const {
   int bits = getBiomeBitsPerEntry();
   if (bits == 0) {
     return new SingleValuedPalette(biomePalette);
-  } else if (bits < 4) {
+  } else if (bits <= 3) {
     return new IndirectPalette(bits, biomePalette);
   } else {
     return new DirectPalette();
@@ -106,10 +106,12 @@ void ChunkSection::write(ByteBuffer& out) const {
 
   PalettedContainer* blockContainer = createBlockContainer();// TODO: Cache
   blockContainer->write(out);
+  delete blockContainer->getPalette();
   delete blockContainer;
 
   PalettedContainer* biomeContainer = createBiomeContainer();// TODO: Cache
   biomeContainer->write(out);
+  delete biomeContainer->getPalette();
   delete biomeContainer;
 }
 
