@@ -19,83 +19,39 @@
 #pragma once
 
 #include "../math/vec3.inl"
-#include "dimension.h"
 
-struct ProtocolPosition {
-  ProtocolPosition() = default;
-  explicit ProtocolPosition(unsigned long long val) {
-    x = (int) (val >> 38);
-    y = (int) (val & 0xFFF);
-    z = (int) ((val >> 12) & 0x3FFFFFF);
-  }
+class Dimension;
 
-  ProtocolPosition(int x, int y, int z)
-      : x(x),
-        y(y),
-        z(z) {}
+typedef Vector3i BlockPosition;
 
-  int x = 0;
-  int y = 0;
-  int z = 0;
+class EntityPosition {
+ public:
+  EntityPosition(double, double, double, float, float);
+  EntityPosition(double, double, double);
+  EntityPosition();
+  ~EntityPosition();
 
-  [[nodiscard]] unsigned long long toProtocol() const {
-    return (((unsigned long long) x & 0x3FFFFFF) << 38) | ((z & 0x3FFFFFF) << 12) | (y & 0xFFF);
-  }
+ public:
+  [[nodiscard]] Vector3i getBlockPosition() const;
+  [[nodiscard]] Vector3f getDirectionVector() const;
+  void setPosition(const EntityPosition&);
+  void setRotation(const EntityPosition&);
+  EntityPosition& operator=(const EntityPosition&);
 
-  template<class T>
-  [[nodiscard]] Vector3<T> asVec3() const {
-    return Vector3<T>((T) x, (T) y, (T) z);
-  }
-
-  [[nodiscard]] Vector3i asVec3i() const {
-    return asVec3<int>();
-  }
-
-  [[nodiscard]] Vector3f asVec3f() const {
-    return asVec3<float>();
-  }
-
-  [[nodiscard]] Vector3d asVec3d() const {
-    return asVec3<double>();
-  }
+ public:
+  double x, y, z;
+  float yaw, pitch;
 };
 
-struct RotatedProtocolPosition {
-  ProtocolPosition position;
-  float angle = 0;
-};
+class Location : public EntityPosition {
+ public:
+  Location();
+  Location(Dimension*, const EntityPosition&);
+  ~Location();
 
-struct Rotation3f {
-  float x = 0;
-  float y = 0;
-  float z = 0;
-};
+ public:
+  Location& operator=(const Location& to);
 
-struct Position3d {
-  double x;
-  double y;
-  double z;
-
-  [[nodiscard]] ProtocolPosition toProtocolPosition() const {
-    ProtocolPosition dst {};
-    dst.x = ((unsigned) x) & 0b11111111111111111111111111;
-    dst.z = ((unsigned) z) & 0b11111111111111111111111111;
-    dst.y = ((unsigned) y) & 0b111111111111;
-    return dst;
-  }
-};
-
-struct RotatedPosition3d {
-  Position3d position;
-  float yaw;
-  float pitch;
-
-  [[nodiscard]] ProtocolPosition toProtocolPosition() const {
-    return position.toProtocolPosition();
-  }
-};
-
-struct Location {
-  Dimension dimension {};
-  RotatedPosition3d position {};
+ public:
+  Dimension* dimension = nullptr;
 };

@@ -135,7 +135,7 @@ void continueLogin(ConnectionContext* ctx) {
   ctx->playerData.entity = ctx->playerEntity;
   ctx->playerData.gamemode = Gamemode::CREATIVE;
   ctx->playerEntity->connection = ctx;
-  ctx->playerEntity->setLocation({m_default_dimensions[OVERWORLD], {256, 20, 256}});// TODO: Save/load location, default spawn location
+  ctx->playerEntity->setLocation({(Dimension*) &m_default_dimensions[OVERWORLD], ctx->gameServer->getSpawnPosition()});// TODO: Save/load location, default spawn location
 
   ctx->state = ConnectionState::PLAY;
   delete ((LoginPacketListener*) ctx->packetListener);
@@ -172,13 +172,13 @@ void continueLogin(ConnectionContext* ctx) {
 
   ctx->gameServer->addPlayer(&ctx->playerData);
 
-  auto currentChunk = World::getChunkLocation(ctx->playerEntity->getLocation().position.position);
+  auto currentChunk = World::getChunkLocation(ctx->playerEntity->getLocation());
   auto* setCenterChunk = new ClientboundSetCenterChunk();
   setCenterChunk->location = currentChunk;
   ctx->write(setCenterChunk);
   delete setCenterChunk;
 
-  World* world = ctx->playerEntity->getLocation().dimension.world;
+  World* world = ctx->playerEntity->getLocation().dimension->world;
   auto* chunkPacket = new ClientboundChunkData(nullptr);
   for (int x = -1; x <= 1; x++) {
     for (int z = -1; z <= 1; z++) {

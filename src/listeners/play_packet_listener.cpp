@@ -31,6 +31,7 @@
 #include "../protocol/clientbound_update_entity_position_rotation.h"
 #include "../protocol/clientbound_update_entity_rotation.h"
 #include "../protocol/plugin_channels.h"
+#include "../server/dimension.h"
 #include "../server/items/block_item.h"
 #include "../server/items/item_registry.h"
 
@@ -98,7 +99,7 @@ void PlayPacketListener::handleSetPlayerPositionRotation(ConnectionContext* ctx,
   delete update;
   delete rotation;
 
-  handlePlayerPosition(ctx, packet->location.position);
+  handlePlayerPosition(ctx, packet->location);
   handlePlayerRotation(ctx, packet->location.yaw, packet->location.pitch);
 }
 
@@ -128,16 +129,14 @@ void PlayPacketListener::handleSetPlayerRotation(ConnectionContext* ctx, Serverb
   handlePlayerRotation(ctx, packet->yaw, packet->pitch);
 }
 
-void PlayPacketListener::handlePlayerPosition(ConnectionContext* ctx, const Position3d& position) {
+void PlayPacketListener::handlePlayerPosition(ConnectionContext* ctx, const EntityPosition& position) {
   ChunkLocation current = World::getChunkLocation(position);
 
   EntityPlayer* player = ctx->playerEntity;
   Location& location = player->getLocation();
-  RotatedPosition3d& rotPos = location.position;
-  World* world = location.dimension.world;
-  Position3d& pos = rotPos.position;
+  World* world = location.dimension->world;
 
-  if (current.x != chunkLocation.x || current.z != chunkLocation.z || std::floor(position.y) != std::floor(pos.y)) {
+  if (current.x != chunkLocation.x || current.z != chunkLocation.z || std::floor(position.y) != std::floor(location.y)) {
     auto* setCenter = new ClientboundSetCenterChunk();
     setCenter->location = current;
     ctx->write(setCenter);
@@ -145,7 +144,7 @@ void PlayPacketListener::handlePlayerPosition(ConnectionContext* ctx, const Posi
 
     chunkLocation = current;
   }
-  pos = position;
+  location.setPosition(position);
 
   int r = player->getRenderDistance() - 1;
   for (int x = -r; x <= r; x++) {
@@ -166,9 +165,8 @@ void PlayPacketListener::handlePlayerPosition(ConnectionContext* ctx, const Posi
 void PlayPacketListener::handlePlayerRotation(ConnectionContext* ctx, float yaw, float pitch) {
   EntityPlayer* player = ctx->playerEntity;
   Location& location = player->getLocation();
-  RotatedPosition3d& position = location.position;
-  position.yaw = yaw;
-  position.pitch = pitch;
+  location.yaw = yaw;
+  location.pitch = pitch;
 }
 
 void PlayPacketListener::handleChatMessage(ConnectionContext* ctx, ServerboundChatMessage* packet) {
@@ -205,18 +203,18 @@ void PlayPacketListener::handleUseItemOn(ConnectionContext* ctx, ServerboundUseI
 
     auto* blockItem = (BlockItem*) item.get();
     Location& location = player->getLocation();
-    Dimension& dimension = location.dimension;
-    World* world = dimension.world;
+    Dimension* dimension = location.dimension;
+    World* world = dimension->world;
 
     // TODO: check Y
     int targetBlockID =
         blockItem->getBlockID(
-                  world,
-                  target,
-                  {/* TODO: Player eye position */},
-                  packet->face,
-                  packet->cursor,
-                  packet->insideBlock);
+            world,
+            target,
+            {/* TODO: Player eye position */},
+            packet->face,
+            packet->cursor,
+            packet->insideBlock);
 
     world->setBlock(targetX, targetY, targetZ, targetBlockID);
 
@@ -229,14 +227,14 @@ void PlayPacketListener::handleUseItemOn(ConnectionContext* ctx, ServerboundUseI
 
     auto* clicked = new ClientboundBlockUpdate();
     clicked->location = packet->position;
-    clicked->blockID = world->getBlock(packet->position.asVec3i());
+    clicked->blockID = world->getBlock(packet->position);
 
     auto* ack = new ClientboundAckBlockChange();
     ack->sequence = packet->sequence;
 
     for (auto& p: ctx->gameServer->getPlayers()) {
       EntityPlayer* entity = p->entity;
-      Position3d& position = entity->location.position.position;
+      EntityPosition& position = entity->location;
       int pX = (int) position.x;
       int pY = (int) position.y;
       int pZ = (int) position.z;

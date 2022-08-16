@@ -34,5 +34,5 @@ int ClientboundSetHeadRotation::getPacketID() const {
 
 void ClientboundSetHeadRotation::construct(Entity* target) {
   entity = target;
-  yaw = target->getLocation().position.yaw;
+  yaw = target->getLocation().yaw;
 }

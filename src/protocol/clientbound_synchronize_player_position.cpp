@@ -22,11 +22,11 @@ ClientboundSynchronizePlayerPosition::ClientboundSynchronizePlayerPosition() = d
 ClientboundSynchronizePlayerPosition::~ClientboundSynchronizePlayerPosition() = default;
 
 void ClientboundSynchronizePlayerPosition::write(ByteBuffer& out) {
-  out.writeDouble(location.position.position.x);
-  out.writeDouble(location.position.position.y);
-  out.writeDouble(location.position.position.z);
-  out.writeFloat(location.position.yaw);
-  out.writeFloat(location.position.pitch);
+  out.writeDouble(location.x);
+  out.writeDouble(location.y);
+  out.writeDouble(location.z);
+  out.writeFloat(location.yaw);
+  out.writeFloat(location.pitch);
   out.writeByte(flags.value);
   out.writeVarInt(teleportId);
   out.writeByte(dismountVehicle);

@@ -173,8 +173,8 @@ WorldBorder GameServer::getWorldBorder() const {
   return cfg_worldBorder;
 }
 
-RotatedProtocolPosition GameServer::getSpawnPosition() {
-  return {{0, 10, 0}, 0.f};// TODO: properties.yml
+EntityPosition GameServer::getSpawnPosition() {
+  return {0, 10, 0};// TODO: properties.yml
 }
 
 bool GameServer::debugPackets() const {

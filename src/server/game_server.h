@@ -56,7 +56,7 @@ class GameServer {
   [[nodiscard]] WorldBorder getWorldBorder() const;
   [[nodiscard]] bool debugPackets() const;
   [[nodiscard]] unsigned int maxConnectionThreads() const;
-  RotatedProtocolPosition getSpawnPosition();
+  [[nodiscard]] EntityPosition getSpawnPosition();
 
   void addPlayer(PlayerData*);
   void removePlayer(PlayerData*);

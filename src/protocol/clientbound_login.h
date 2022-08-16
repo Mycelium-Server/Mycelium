@@ -18,6 +18,7 @@
 
 #pragma once
 
+#include "../server/dimension.h"
 #include "../server/game_server.h"
 #include "packet.h"
 

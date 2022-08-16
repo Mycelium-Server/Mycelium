@@ -77,16 +77,16 @@ void MetadataBuffer::writeRotation(unsigned char idx, float x, float y, float z)
   buf.writeFloat(z);
 }
 
-void MetadataBuffer::writePosition(unsigned char idx, const ProtocolPosition& value) {
+void MetadataBuffer::writePosition(unsigned char idx, const BlockPosition& value) {
   WRITE_ENTRY_HEADER(9)
-  buf.writeLong((long long) value.toProtocol());
+  buf.writeBlockPosition(value);
 }
 
-void MetadataBuffer::writeOptPosition(unsigned char idx, const std::optional<ProtocolPosition>& value) {
+void MetadataBuffer::writeOptPosition(unsigned char idx, const std::optional<BlockPosition>& value) {
   WRITE_ENTRY_HEADER(10)
   buf.writeByte(value.has_value());
   if (value.has_value()) {
-    buf.writeLong((long long) value.value().toProtocol());
+    buf.writeBlockPosition(value.value());
   }
 }
 

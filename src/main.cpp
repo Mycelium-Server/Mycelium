@@ -21,6 +21,7 @@
 #include "protocol/protocol.h"
 #include "server.h"
 #include "server/blocks/block_registry.h"
+#include "server/dimension.h"
 #include "server/items/item_registry.h"
 #include "server/world/generation/flat_world_generator.h"
 #include "server/world/world.h"

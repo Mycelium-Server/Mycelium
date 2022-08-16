@@ -37,5 +37,5 @@ class LivingEntityMetadata : public EntityMetadata {
   bool ambientPotionEffect = false;
   int numArrows = 0;
   int numBeeStingers = 0;
-  std::optional<ProtocolPosition> bedLocation = {};
+  std::optional<BlockPosition> bedLocation = {};
 };

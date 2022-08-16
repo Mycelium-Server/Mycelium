@@ -33,10 +33,10 @@ class ArmorStandMetadata : public LivingEntityMetadata {
   bool hasArms = false;
   bool hasNoBasePlate = false;
   bool isMarker = false;
-  Rotation3f headRotation;
-  Rotation3f bodyRotation;
-  Rotation3f leftArmRotation;
-  Rotation3f rightArmRotation;
-  Rotation3f leftLegRotation;
-  Rotation3f rightLegRotation;
+  Vector3f headRotation;
+  Vector3f bodyRotation;
+  Vector3f leftArmRotation;
+  Vector3f rightArmRotation;
+  Vector3f leftLegRotation;
+  Vector3f rightLegRotation;
 };

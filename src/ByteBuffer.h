@@ -23,6 +23,7 @@
 #include <string>
 #include <vector>
 
+#include "server/location.h"
 #include "uuid.h"
 
 struct ItemStack;
@@ -65,6 +66,9 @@ class ByteBuffer {
 
   void writeItemStack(const ItemStack&);
   ItemStack readItemStack();
+
+  void writeBlockPosition(const BlockPosition&);
+  BlockPosition readBlockPosition();
 
   std::vector<unsigned char> readBytes(size_t);
   void writeBytes(std::vector<unsigned char>);

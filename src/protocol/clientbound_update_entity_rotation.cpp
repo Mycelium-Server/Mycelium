@@ -36,6 +36,6 @@ int ClientboundUpdateEntityRotation::getPacketID() const {
 
 void ClientboundUpdateEntityRotation::construct(Entity* target) {
   entity = target;
-  yaw = target->getLocation().position.yaw;
-  pitch = target->getLocation().position.pitch;
+  yaw = target->getLocation().yaw;
+  pitch = target->getLocation().pitch;
 }

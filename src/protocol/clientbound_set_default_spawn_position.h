@@ -30,5 +30,5 @@ class ClientboundSetDefaultSpawnPosition : public ClientboundPacket {
   [[nodiscard]] int getPacketID() const override;
 
  public:
-  RotatedProtocolPosition position {};
+  EntityPosition position {};
 };

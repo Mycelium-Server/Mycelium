@@ -120,6 +120,10 @@ class Vector3 {
         z * v.x - x * v.z,
         x * v.y - y * v.x);
   }
+  
+  Vector3<T> normalize() const {
+    return *this / length();
+  }
 
  public:
   T x;

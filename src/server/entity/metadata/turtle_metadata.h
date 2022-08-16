@@ -29,10 +29,10 @@ class TurtleMetadata : public AnimalMetadata {
   void wrapperWrite(MetadataBuffer&) override;
 
  public:
-  ProtocolPosition homePos {};
+  BlockPosition homePos {};
   bool hasEgg = false;
   bool isLayingEgg = false;
-  ProtocolPosition travelPos {};
+  BlockPosition travelPos {};
   bool isGoingHome = false;
   bool isTraveling = false;
 };

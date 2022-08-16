@@ -25,7 +25,7 @@ ServerboundUseItemOn::~ServerboundUseItemOn() = default;
 
 void ServerboundUseItemOn::read(ByteBuffer& buf) {
   hand = (MainHand) buf.readVarInt();
-  position = ProtocolPosition(buf.readLong());
+  position = buf.readBlockPosition();
   face = (BlockFace) buf.readVarInt();
   cursor = {buf.readFloat(), buf.readFloat(), buf.readFloat()};
   insideBlock = buf.readByte();

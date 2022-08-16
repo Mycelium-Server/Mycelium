@@ -32,8 +32,8 @@ class World {// TODO: to do
  public:
   static int getChunkPosition(double);
   static int getChunkPositionI(int);
-  static ChunkLocation getChunkLocation(const ProtocolPosition& position);
-  static ChunkLocation getChunkLocation(const Position3d& position);
+  static ChunkLocation getChunkLocation(const BlockPosition& position);
+  static ChunkLocation getChunkLocation(const EntityPosition& position);
 
  public:
   std::map<unsigned long long, Chunk*>::iterator getChunkIterator(const ChunkLocation&);

@@ -37,11 +37,11 @@ int World::getChunkPosition(double block) {
   return (int) std::floor(block / 16.0);
 }
 
-ChunkLocation World::getChunkLocation(const Position3d& position) {
+ChunkLocation World::getChunkLocation(const EntityPosition& position) {
   return {getChunkPosition(position.x), getChunkPosition(position.z)};
 }
 
-ChunkLocation World::getChunkLocation(const ProtocolPosition& position) {
+ChunkLocation World::getChunkLocation(const BlockPosition& position) {
   return {getChunkPositionI(position.x), getChunkPositionI(position.z)};
 }
 

@@ -29,6 +29,6 @@ class EndCrystalMetadata : public EntityMetadata {
   void wrapperWrite(MetadataBuffer&) override;
 
  public:
-  std::optional<ProtocolPosition> beamTarget;
+  std::optional<BlockPosition> beamTarget;
   bool showBottom = true;
 };

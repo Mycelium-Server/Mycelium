@@ -19,6 +19,7 @@
 #pragma once
 
 #include "../face.h"
+#include "../world/world.h"
 #include "item.h"
 
 class BlockItem : public Item {

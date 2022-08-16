@@ -22,7 +22,7 @@ ClientboundBlockUpdate::ClientboundBlockUpdate() = default;
 ClientboundBlockUpdate::~ClientboundBlockUpdate() = default;
 
 void ClientboundBlockUpdate::write(ByteBuffer& buf) {
-  buf.writeLong(location.toProtocol());
+  buf.writeBlockPosition(location);
   buf.writeVarInt(blockID);
 }
 

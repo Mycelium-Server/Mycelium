@@ -25,11 +25,11 @@ void ClientboundSpawnPlayer::write(ByteBuffer& buf) {
   buf.writeVarInt(data.entity->getEID());
   buf.writeUUID(data.uuid);
   auto& location = data.entity->getLocation();
-  buf.writeDouble(location.position.position.x);
-  buf.writeDouble(location.position.position.y);
-  buf.writeDouble(location.position.position.z);
-  buf.writeByte((unsigned char) (location.position.yaw * 256));
-  buf.writeByte((unsigned char) (location.position.pitch * 256));
+  buf.writeDouble(location.x);
+  buf.writeDouble(location.y);
+  buf.writeDouble(location.z);
+  buf.writeByte((unsigned char) (location.yaw * 256));
+  buf.writeByte((unsigned char) (location.pitch * 256));
 }
 
 int ClientboundSpawnPlayer::getPacketID() const {

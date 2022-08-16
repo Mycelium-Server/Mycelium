@@ -29,7 +29,7 @@ class DolphinMetadata : public WaterAnimalMetadata {
   void wrapperWrite(MetadataBuffer&) override;
 
  public:
-  ProtocolPosition treasurePosition {};
+  BlockPosition treasurePosition {};
   bool hasFish = false;
   int moistureLevel = 2400;
 };

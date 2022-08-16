@@ -55,7 +55,7 @@ class PlayPacketListener {
   // TODO: 0x17 packet
 
  private:
-  void handlePlayerPosition(ConnectionContext*, const Position3d&);
+  void handlePlayerPosition(ConnectionContext*, const EntityPosition&);
   void handlePlayerRotation(ConnectionContext*, float, float);
 
  public:

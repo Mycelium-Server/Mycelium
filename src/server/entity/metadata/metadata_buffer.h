@@ -44,8 +44,8 @@ class MetadataBuffer {
   void writeItem(unsigned char, const ItemStack&);
   void writeBool(unsigned char, bool);
   void writeRotation(unsigned char, float, float, float);
-  void writePosition(unsigned char, const ProtocolPosition&);
-  void writeOptPosition(unsigned char, const std::optional<ProtocolPosition>&);
+  void writePosition(unsigned char, const BlockPosition&);
+  void writeOptPosition(unsigned char, const std::optional<BlockPosition>&);
   void writeDirection(unsigned char, const Direction&);
   void writeOptUUID(unsigned char, const std::optional<uuids::uuid>&);
   void writeOptBlockID(unsigned char, int);

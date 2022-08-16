@@ -29,5 +29,5 @@ class FallingBlockMetadata : public EntityMetadata {
   void wrapperWrite(MetadataBuffer&) override;
 
  public:
-  ProtocolPosition spawnPosition {};
+  BlockPosition spawnPosition {};
 };

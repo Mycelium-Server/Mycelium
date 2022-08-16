@@ -272,6 +272,36 @@ ItemStack ByteBuffer::readItemStack() {
   return is;
 }
 
+void ByteBuffer::writeBlockPosition(const BlockPosition& pos) {
+  unsigned long long val = 0;
+  val |= (pos.x & 0x3FFFFFFull) << 38;
+  val |= (pos.z & 0x3FFFFFFull) << 12;
+  val |= (pos.y & 0x3FFFull);
+  writeLong((long long) val);
+}
+
+BlockPosition ByteBuffer::readBlockPosition() {
+  auto val = (unsigned long long) readLong();
+  BlockPosition pos;
+  pos.x = (int) (val >> 38);
+  pos.y = (int) (val & 0xFFF);
+  pos.z = (int) ((val >> 12) & 0x3FFFFFF);
+
+  if (pos.x >= (1 << 25)) {
+    pos.x -= 1 << 26;
+  }
+
+  if (pos.y >= (1 << 11)) {
+    pos.y -= 1 << 12;
+  }
+
+  if (pos.z >= (1 << 25)) {
+    pos.z -= 1 << 26;
+  }
+
+  return pos;
+}
+
 void ByteBuffer::ensureWritableBytes(size_t n) {
   if (data.size() < n + writerIdx)
     data.resize(writerIdx + n);

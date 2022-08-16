@@ -30,6 +30,6 @@ class ClientboundBlockUpdate : public ClientboundPacket {
   [[nodiscard]] int getPacketID() const override;
 
  public:
-  ProtocolPosition location;
+  BlockPosition location;
   int blockID = 0;
 };

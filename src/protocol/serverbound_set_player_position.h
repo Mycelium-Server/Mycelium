@@ -33,6 +33,6 @@ class ServerboundSetPlayerPosition : public ServerboundPacket {
   void handle(ConnectionContext*) override;
 
  public:
-  Position3d location {};
+  EntityPosition location {};
   bool onGround = false;
 };

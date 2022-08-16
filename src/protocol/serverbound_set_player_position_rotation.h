@@ -33,6 +33,6 @@ class ServerboundSetPlayerPositionRotation : public ServerboundPacket {
   void handle(ConnectionContext*) override;
 
  public:
-  RotatedPosition3d location {};
+  EntityPosition location {};
   bool onGround = false;
 };

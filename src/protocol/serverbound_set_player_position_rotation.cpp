@@ -24,9 +24,9 @@ ServerboundSetPlayerPositionRotation::ServerboundSetPlayerPositionRotation() = d
 ServerboundSetPlayerPositionRotation::~ServerboundSetPlayerPositionRotation() = default;
 
 void ServerboundSetPlayerPositionRotation::read(ByteBuffer& buf) {
-  location.position.x = buf.readDouble();
-  location.position.y = buf.readDouble();
-  location.position.z = buf.readDouble();
+  location.x = buf.readDouble();
+  location.y = buf.readDouble();
+  location.z = buf.readDouble();
   location.yaw = buf.readFloat();
   location.pitch = buf.readFloat();
   onGround = buf.readByte();

@@ -31,5 +31,5 @@ class ClientboundUpdateEntityPositionRotation : public ClientboundPacket {
 
  public:
   Entity* entity = nullptr;
-  RotatedPosition3d position {};
+  EntityPosition position {};
 };

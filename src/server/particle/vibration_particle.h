@@ -33,7 +33,7 @@ class VibrationParticle : public AbstractParticle {
 
  public:
   std::string positionSourceType;
-  ProtocolPosition blockPosition {};
+  BlockPosition blockPosition {};
   Entity* entity = nullptr;
   float entityEyeHeight = 0;// TODO: Move to Entity class
   int ticks = 0;
