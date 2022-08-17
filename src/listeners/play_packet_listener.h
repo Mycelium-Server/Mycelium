@@ -30,6 +30,7 @@
 #include "../protocol/serverbound_set_player_position.h"
 #include "../protocol/serverbound_set_player_position_rotation.h"
 #include "../protocol/serverbound_set_player_rotation.h"
+#include "../protocol/serverbound_swing_arm.h"
 #include "../protocol/serverbound_use_item_on.h"
 #include "../server/world/world.h"
 
@@ -54,6 +55,7 @@ class PlayPacketListener {
   void handleSetCreativeModeSlot(ConnectionContext*, ServerboundSetCreativeModeSlot*);
   void handleSetHeldItem(ConnectionContext*, ServerboundSetHeldItem*);
   void handlePlayerAction(ConnectionContext*, ServerboundPlayerAction*);
+  void handleSwingArm(ConnectionContext*, ServerboundSwingArm*);
   // TODO: 0x17 packet
 
  private:

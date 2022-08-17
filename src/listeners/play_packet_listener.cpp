@@ -24,6 +24,7 @@
 #include "../protocol/clientbound_ack_block_change.h"
 #include "../protocol/clientbound_block_update.h"
 #include "../protocol/clientbound_chunk_data.h"
+#include "../protocol/clientbound_entity_animation.h"
 #include "../protocol/clientbound_set_center_chunk.h"
 #include "../protocol/clientbound_set_head_rotation.h"
 #include "../protocol/clientbound_system_message.h"
@@ -305,4 +306,25 @@ void PlayPacketListener::handlePlayerAction(ConnectionContext* ctx, ServerboundP
     default:
       break;
   }
+}
+
+void PlayPacketListener::handleSwingArm(ConnectionContext* ctx, ServerboundSwingArm* packet) {
+  auto* animation = new ClientboundEntityAnimation;
+  animation->target = ctx->playerEntity;
+  animation->animation =
+      packet->hand ? ClientboundEntityAnimation::SWING_OFFHAND
+                   : ClientboundEntityAnimation::SWING_MAIN_ARM;
+
+  for (auto& p: ctx->gameServer->getPlayers()) {
+    if (p->entity == ctx->playerEntity) {
+      continue;
+    }
+
+    // TODO: Check distance
+
+    ConnectionContext* con = p->entity->connection;
+    con->write(animation);
+  }
+
+  delete animation;
 }

@@ -30,6 +30,7 @@
 #include "serverbound_set_player_position.h"
 #include "serverbound_set_player_position_rotation.h"
 #include "serverbound_set_player_rotation.h"
+#include "serverbound_swing_arm.h"
 #include "serverbound_use_item_on.h"
 
 void protocol_registerPackets() {
@@ -46,4 +47,5 @@ void protocol_registerPackets() {
   ServerboundSetCreativeModeSlot().registerPacket();
   ServerboundSetHeldItem().registerPacket();
   ServerboundPlayerAction().registerPacket();
+  ServerboundSwingArm().registerPacket();
 }
