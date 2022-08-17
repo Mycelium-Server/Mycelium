@@ -24,6 +24,9 @@
 
 // TODO: More entities (Metadata)
 
+class World;
+class Chunk;
+
 class EntityPlayer : public Entity {
  public:
   EntityPlayer();
@@ -32,6 +35,7 @@ class EntityPlayer : public Entity {
  public:
   [[nodiscard]] int getRenderDistance() const;
   [[nodiscard]] PlayerInventory& getInventory();
+  [[nodiscard]] bool isChunkLoaded(Chunk*) const;
 
  public:
   ConnectionContext* connection = nullptr;

@@ -106,3 +106,11 @@ void Chunk::write(ByteBuffer& out) const {
   out.writeVarInt(0);
   out.writeVarInt(0);
 }
+
+World* Chunk::getOwner() {
+  return owner;
+}
+
+void Chunk::setOwner(World* world) {
+  owner = world;
+}

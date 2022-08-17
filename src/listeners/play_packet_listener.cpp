@@ -202,7 +202,7 @@ void PlayPacketListener::handleUseItemOn(ConnectionContext* ctx, ServerboundUseI
       int targetX = offset.x + packet->position.x;
       int targetZ = offset.z + packet->position.z;
       int targetY = offset.y + packet->position.y;
-      Vector3i target = {targetX, targetY, targetZ};
+      BlockPosition target = {targetX, targetY, targetZ};
 
       auto* blockItem = (BlockItem*) item.get();
       Location& location = player->getLocation();
@@ -219,13 +219,11 @@ void PlayPacketListener::handleUseItemOn(ConnectionContext* ctx, ServerboundUseI
               packet->cursor,
               packet->insideBlock);
 
-      world->setBlock(targetX, targetY, targetZ, targetBlockID);
-
-      int d = ctx->gameServer->getViewDistance() * 32;
-#define DIFF_CHECK(x, target) (std::abs(targetX - x) <= d)
+      Chunk* targetChunk = world->requireChunk(World::getChunkLocation(target));
+      world->setBlock(target, targetBlockID);
 
       auto* block = new ClientboundBlockUpdate();
-      block->location = {target.x, target.y, target.z};
+      block->location = target;
       block->blockID = targetBlockID;
 
       auto* clicked = new ClientboundBlockUpdate();
@@ -237,11 +235,7 @@ void PlayPacketListener::handleUseItemOn(ConnectionContext* ctx, ServerboundUseI
 
       for (auto& p: ctx->gameServer->getPlayers()) {
         EntityPlayer* entity = p->entity;
-        EntityPosition& position = entity->location;
-        int pX = (int) position.x;
-        int pY = (int) position.y;
-        int pZ = (int) position.z;
-        if (DIFF_CHECK(pX, targetX) && DIFF_CHECK(pY, targetY) && DIFF_CHECK(pZ, targetZ)) {
+        if (entity->isChunkLoaded(targetChunk)) {
           ConnectionContext* con = entity->connection;
           con->write(clicked);
           con->write(block);
@@ -252,8 +246,6 @@ void PlayPacketListener::handleUseItemOn(ConnectionContext* ctx, ServerboundUseI
       delete clicked;
       delete block;
       delete ack;
-
-#undef DIFF_CHECK
     }
   } else {
     // TODO: Handle interact
@@ -279,8 +271,38 @@ void PlayPacketListener::handleSetHeldItem(ConnectionContext* ctx, ServerboundSe
 }
 
 void PlayPacketListener::handlePlayerAction(ConnectionContext* ctx, ServerboundPlayerAction* packet) {
-  if (packet->status == ServerboundPlayerAction::SWAP_ITEM_IN_HAND) {
-    PlayerInventory& inv = ctx->playerEntity->getInventory();
-    inv.set(36 + inv.getActiveSlot(), inv.set(45, inv.getActiveSlotData(), true), true);
+  switch (packet->status) {
+    case ServerboundPlayerAction::SWAP_ITEM_IN_HAND: {
+      PlayerInventory& inv = ctx->playerEntity->getInventory();
+      inv.set(36 + inv.getActiveSlot(), inv.set(45, inv.getActiveSlotData(), true), true);
+      break;
+    }
+
+    case ServerboundPlayerAction::STARTED_DIGGING: {
+      if (ctx->playerData.gamemode == Gamemode::CREATIVE) {
+        World* world = ctx->playerEntity->location.dimension->world;
+        Chunk* targetChunk = world->requireChunk(World::getChunkLocation(packet->location));
+        world->setBlock(packet->location, 0);
+
+        auto* block = new ClientboundBlockUpdate();
+        block->location = packet->location;
+        block->blockID = 0;
+
+        for (auto& p: ctx->gameServer->getPlayers()) {
+          EntityPlayer* entity = p->entity;
+          if (entity->isChunkLoaded(targetChunk)) {
+            ConnectionContext* con = entity->connection;
+            // TODO: Particle
+            con->write(block);
+          }
+        }
+
+        delete block;
+      }
+      break;
+    }
+
+    default:
+      break;
   }
 }

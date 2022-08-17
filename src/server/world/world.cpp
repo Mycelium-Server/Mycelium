@@ -103,10 +103,11 @@ int World::getBlock(const Vector3i& pos) {
 
 Chunk* World::createChunk(const ChunkLocation& location) {
   auto* chunk = new Chunk(location);
-  chunks[(unsigned long long) location.x << 32 | (unsigned) location.z] = chunk;
+  chunks[location.getID()] = chunk;
   if (worldGenerator) {
     worldGenerator->generateChunk(chunk);
   }
+  chunk->setOwner(this);
   return chunk;
 }
 

@@ -21,6 +21,8 @@
 #include "chunk_section.h"
 #include "heightmap.h"
 
+class World;
+
 struct ChunkLocation {
   int x = 0, z = 0;
 
@@ -42,9 +44,14 @@ class Chunk {
   [[nodiscard]] int getAbsoluteX(int) const;
   [[nodiscard]] int getAbsoluteZ(int) const;
   [[nodiscard]] Heightmap* createHeightmap() const;
+  [[nodiscard]] World* getOwner();
+  void setOwner(World*);
   void write(ByteBuffer&) const;
 
  public:
   ChunkLocation location;
   ChunkSection* sections[24] {};
+
+ private:
+  World* owner;
 };

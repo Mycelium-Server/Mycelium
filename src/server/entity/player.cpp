@@ -18,6 +18,9 @@
 
 #include "player.h"
 
+#include "../../listeners/play_packet_listener.h"
+#include "../dimension.h"
+
 EntityPlayer::EntityPlayer() {
   inventory.bindPlayer(this);
 }
@@ -30,4 +33,17 @@ int EntityPlayer::getRenderDistance() const {
 
 PlayerInventory& EntityPlayer::getInventory() {
   return inventory;
+}
+
+bool EntityPlayer::isChunkLoaded(Chunk* chunk) const {
+  if (connection->state != ConnectionState::PLAY) {
+    return false;
+  }
+
+  if (chunk->getOwner() != connection->playerEntity->location.dimension->world) {
+    return false;
+  }
+
+  auto loaded = ((PlayPacketListener*) connection->packetListener)->loadedChunks;
+  return std::find(loaded.begin(), loaded.end(), chunk->location.getID()) != loaded.end();
 }
