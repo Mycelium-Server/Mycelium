@@ -189,68 +189,72 @@ void PlayPacketListener::handleChatMessage(ConnectionContext* ctx, ServerboundCh
 void PlayPacketListener::handleUseItemOn(ConnectionContext* ctx, ServerboundUseItemOn* packet) {
   EntityPlayer* player = ctx->playerEntity;
 
-  ItemStack& is = player->getInventory().getActiveSlotData();
-  auto item = ItemRegistry::fromID(is.itemID);
+  ItemStack& mainHand = player->getInventory().getActiveSlotData();
+  ItemStack& offHand = player->getInventory().getOffHandItem();
 
-  if (is.present && item->isBlockItem()) {
-    // TODO: Check if player is trying to place block
-    Vector3i offset = BlockFaceOffsets[packet->face];
+  if (mainHand.present || offHand.present) {
+    ItemStack& is = mainHand.present ? mainHand : offHand;
+    auto item = ItemRegistry::fromID(is.itemID);
+    if (item->isBlockItem()) {
+      // TODO: Check if player is trying to place block
+      Vector3i offset = BlockFaceOffsets[packet->face];
 
-    int targetX = offset.x + packet->position.x;
-    int targetZ = offset.z + packet->position.z;
-    int targetY = offset.y + packet->position.y;
-    Vector3i target = {targetX, targetY, targetZ};
+      int targetX = offset.x + packet->position.x;
+      int targetZ = offset.z + packet->position.z;
+      int targetY = offset.y + packet->position.y;
+      Vector3i target = {targetX, targetY, targetZ};
 
-    auto* blockItem = (BlockItem*) item.get();
-    Location& location = player->getLocation();
-    Dimension* dimension = location.dimension;
-    World* world = dimension->world;
+      auto* blockItem = (BlockItem*) item.get();
+      Location& location = player->getLocation();
+      Dimension* dimension = location.dimension;
+      World* world = dimension->world;
 
-    // TODO: check Y
-    int targetBlockID =
-        blockItem->getBlockID(
-            world,
-            target,
-            {/* TODO: Player eye position */},
-            packet->face,
-            packet->cursor,
-            packet->insideBlock);
+      // TODO: check Y
+      int targetBlockID =
+          blockItem->getBlockID(
+              world,
+              target,
+              {/* TODO: Player eye position */},
+              packet->face,
+              packet->cursor,
+              packet->insideBlock);
 
-    world->setBlock(targetX, targetY, targetZ, targetBlockID);
+      world->setBlock(targetX, targetY, targetZ, targetBlockID);
 
-    int d = ctx->gameServer->getViewDistance() * 32;
+      int d = ctx->gameServer->getViewDistance() * 32;
 #define DIFF_CHECK(x, target) (std::abs(targetX - x) <= d)
 
-    auto* block = new ClientboundBlockUpdate();
-    block->location = {target.x, target.y, target.z};
-    block->blockID = targetBlockID;
+      auto* block = new ClientboundBlockUpdate();
+      block->location = {target.x, target.y, target.z};
+      block->blockID = targetBlockID;
 
-    auto* clicked = new ClientboundBlockUpdate();
-    clicked->location = packet->position;
-    clicked->blockID = world->getBlock(packet->position);
+      auto* clicked = new ClientboundBlockUpdate();
+      clicked->location = packet->position;
+      clicked->blockID = world->getBlock(packet->position);
 
-    auto* ack = new ClientboundAckBlockChange();
-    ack->sequence = packet->sequence;
+      auto* ack = new ClientboundAckBlockChange();
+      ack->sequence = packet->sequence;
 
-    for (auto& p: ctx->gameServer->getPlayers()) {
-      EntityPlayer* entity = p->entity;
-      EntityPosition& position = entity->location;
-      int pX = (int) position.x;
-      int pY = (int) position.y;
-      int pZ = (int) position.z;
-      if (DIFF_CHECK(pX, targetX) && DIFF_CHECK(pY, targetY) && DIFF_CHECK(pZ, targetZ)) {
-        ConnectionContext* con = entity->connection;
-        con->write(clicked);
-        con->write(block);
-        con->write(ack);
+      for (auto& p: ctx->gameServer->getPlayers()) {
+        EntityPlayer* entity = p->entity;
+        EntityPosition& position = entity->location;
+        int pX = (int) position.x;
+        int pY = (int) position.y;
+        int pZ = (int) position.z;
+        if (DIFF_CHECK(pX, targetX) && DIFF_CHECK(pY, targetY) && DIFF_CHECK(pZ, targetZ)) {
+          ConnectionContext* con = entity->connection;
+          con->write(clicked);
+          con->write(block);
+          con->write(ack);
+        }
       }
-    }
 
-    delete clicked;
-    delete block;
-    delete ack;
+      delete clicked;
+      delete block;
+      delete ack;
 
 #undef DIFF_CHECK
+    }
   } else {
     // TODO: Handle interact
   }
@@ -261,14 +265,22 @@ void PlayPacketListener::handleClickContainer(ConnectionContext*, ServerboundCli
 }
 
 void PlayPacketListener::handleSetCreativeModeSlot(ConnectionContext* ctx, ServerboundSetCreativeModeSlot* packet) {
-  if (packet->slot < 0 || packet->slot >= ctx->playerEntity->getInventory().getSize()) {
+  PlayerInventory& target = ctx->playerEntity->getInventory();
+  if (packet->slot < 0 || packet->slot >= target.getSize()) {
     return;
   }
-  ctx->playerEntity->getInventory().set(packet->slot, packet->clickedItem);
+  target.set(packet->slot, packet->clickedItem);
 }
 
 void PlayPacketListener::handleSetHeldItem(ConnectionContext* ctx, ServerboundSetHeldItem* packet) {
   PlayerInventory& target = ctx->playerEntity->getInventory();
   target.setActiveSlot(packet->slot, false);
   target.updateEquipment(packet->slot + 36, true);
+}
+
+void PlayPacketListener::handlePlayerAction(ConnectionContext* ctx, ServerboundPlayerAction* packet) {
+  if (packet->status == ServerboundPlayerAction::SWAP_ITEM_IN_HAND) {
+    PlayerInventory& inv = ctx->playerEntity->getInventory();
+    inv.set(36 + inv.getActiveSlot(), inv.set(45, inv.getActiveSlotData(), true), true);
+  }
 }

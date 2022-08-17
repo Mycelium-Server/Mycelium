@@ -31,7 +31,7 @@ class PlayerInventory {
   std::shared_ptr<AbstractContainer> getMenu();
   void setMenu(const std::shared_ptr<AbstractContainer>&);
   PlayerInventoryContainer& getInventoryContainer();
-  ItemStack& get(unsigned);
+  ItemStack& get(unsigned, bool = false);
   ItemStack set(unsigned, const ItemStack&, bool = true, bool = false);
   ItemStack& getActiveSlotData();
   [[nodiscard]] unsigned getSize() const;

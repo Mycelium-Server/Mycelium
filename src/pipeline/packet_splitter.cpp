@@ -19,7 +19,9 @@
 #include "handlers.h"
 
 PacketSplitter::PacketSplitter() = default;
-PacketSplitter::~PacketSplitter() = default;
+PacketSplitter::~PacketSplitter() {
+  delete buf;
+}
 
 bool PacketSplitter::onConnect(ConnectionContext*) {
   return true;

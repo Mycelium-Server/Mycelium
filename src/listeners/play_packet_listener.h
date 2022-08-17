@@ -23,6 +23,7 @@
 #include "../protocol/serverbound_click_container.h"
 #include "../protocol/serverbound_client_information.h"
 #include "../protocol/serverbound_confirm_teleportation.h"
+#include "../protocol/serverbound_player_action.h"
 #include "../protocol/serverbound_plugin_message.h"
 #include "../protocol/serverbound_set_creative_mode_slot.h"
 #include "../protocol/serverbound_set_held_item.h"
@@ -52,6 +53,7 @@ class PlayPacketListener {
   void handleClickContainer(ConnectionContext*, ServerboundClickContainer*);
   void handleSetCreativeModeSlot(ConnectionContext*, ServerboundSetCreativeModeSlot*);
   void handleSetHeldItem(ConnectionContext*, ServerboundSetHeldItem*);
+  void handlePlayerAction(ConnectionContext*, ServerboundPlayerAction*);
   // TODO: 0x17 packet
 
  private:

@@ -35,7 +35,7 @@ bool PacketCompressor::encode(ConnectionContext* ctx, void* in, void*& out) {
     libdeflate_compressor* compressor = ctx->gameServer->getCompressor();
 
     const char* uncompr = (const char*) inbuf->data.data();
-    size_t slen = (size_t) inbuf->readableBytes();
+    auto slen = (size_t) inbuf->readableBytes();
     size_t dlen = libdeflate_deflate_compress_bound(compressor, slen);
 
     auto* compr = (unsigned char*) malloc(dlen);

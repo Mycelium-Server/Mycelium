@@ -18,6 +18,7 @@
 
 #include "player_inventory.h"
 
+#include "../../protocol/clientbound_set_container_slot.h"
 #include "../../protocol/clientbound_set_equipment.h"
 #include "../../protocol/clientbound_set_held_item.h"
 
@@ -36,8 +37,8 @@ PlayerInventoryContainer& PlayerInventory::getInventoryContainer() {
   return inventoryContainer;
 }
 
-ItemStack& PlayerInventory::get(unsigned n) {
-  if (menu != nullptr) {
+ItemStack& PlayerInventory::get(unsigned n, bool ignoreMenu) {
+  if (!ignoreMenu && menu != nullptr) {
     if (n < menu->getSize()) {
       return menu->get(n);
     } else {
@@ -48,20 +49,44 @@ ItemStack& PlayerInventory::get(unsigned n) {
   }
 }
 
-ItemStack PlayerInventory::set(unsigned n, const ItemStack& value, bool ackClient, bool ignoreMenu) {
+ItemStack PlayerInventory::set(unsigned n, const ItemStack& value, bool syncClient, bool ignoreMenu) {
   ItemStack res;
-  if (menu != nullptr) {
+  if (!ignoreMenu && menu != nullptr) {
     if (n < menu->getSize()) {
       res = menu->set(n, value);
+
+      if (player && syncClient) {
+        auto* packet = new ClientboundSetContainerSlot();
+        packet->construct(*menu, (short) n);
+        player->connection->write(packet);
+        delete packet;
+      }
     } else {
-      res = inventoryContainer.set(n - menu->getSize() + 9, value);
+      unsigned slot = n - menu->getSize() + 9;
+      res = inventoryContainer.set(slot, value);
+
+      if (player && syncClient) {
+        auto* packet = new ClientboundSetContainerSlot();
+        packet->construct(inventoryContainer, (short) slot);
+        player->connection->write(packet);
+        delete packet;
+      }
     }
   } else {
     res = inventoryContainer.set(n, value);
+
+    if (player && syncClient) {
+      auto* packet = new ClientboundSetContainerSlot();
+      packet->construct(inventoryContainer, (short) n);
+      player->connection->write(packet);
+      delete packet;
+    }
   }
-  if (ackClient) {
+
+  if (syncClient) {
     updateEquipment(n, ignoreMenu);
   }
+
   return res;
 }
 

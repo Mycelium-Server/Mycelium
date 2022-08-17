@@ -23,6 +23,7 @@
 #include "serverbound_client_information.h"
 #include "serverbound_handshake.h"
 #include "serverbound_keepalive.h"
+#include "serverbound_player_action.h"
 #include "serverbound_plugin_message.h"
 #include "serverbound_set_creative_mode_slot.h"
 #include "serverbound_set_held_item.h"
@@ -44,4 +45,5 @@ void protocol_registerPackets() {
   ServerboundClickContainer().registerPacket();
   ServerboundSetCreativeModeSlot().registerPacket();
   ServerboundSetHeldItem().registerPacket();
+  ServerboundPlayerAction().registerPacket();
 }
