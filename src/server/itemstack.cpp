@@ -18,7 +18,7 @@
 
 #include "itemstack.h"
 
-#include "items/item_registry.h"
+#include "item/item_registry.h"
 
 ItemStack::ItemStack(int id, unsigned char count)
     : present(true),

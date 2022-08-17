@@ -32,8 +32,8 @@
 #include "../protocol/clientbound_update_entity_rotation.h"
 #include "../protocol/plugin_channels.h"
 #include "../server/dimension.h"
-#include "../server/items/block_item.h"
-#include "../server/items/item_registry.h"
+#include "../server/item/block_item.h"
+#include "../server/item/item_registry.h"
 
 PlayPacketListener::PlayPacketListener() = default;
 PlayPacketListener::~PlayPacketListener() = default;

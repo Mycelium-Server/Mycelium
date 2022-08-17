@@ -19,7 +19,7 @@
 #pragma once
 
 #include "../NBT.h"
-#include "items/item.h"
+#include "item/item.h"
 
 class ItemStack {
  public:
