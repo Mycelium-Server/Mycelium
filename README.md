@@ -2,20 +2,20 @@
 
 ### Building
 
-1. Compile Mycelium <pre><code>$ git clone https://github.com/JNNGL/Mycelium
+1. Requirements:
+   - CMake (>= 3.20)
+   - C compiler
+   - C++17 compiler
+   - Python 3
+   - Linux (32-bit):
+     1. libcurl
+
+2. Compile Mycelium <pre><code>$ git clone https://github.com/JNNGL/Mycelium
 $ mkdir Mycelium/build
 $ cd Mycelium/build
 $ cmake ..
 $ cmake --build .
 </code></pre>
-  
-  <b>Requirements:</b>
-- CMake (>= 3.20)
-- C compiler
-- C++17 compiler
-- Python 3
-- Linux (32-bit):
-  1. libcurl
 
 ### Third-Party libraries
 
