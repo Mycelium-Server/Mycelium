@@ -49,6 +49,7 @@ class CommandNode {
   [[nodiscard]] virtual NodeType getType() const = 0;
   void setGraph(CommandGraph*, int);
   [[nodiscard]] CommandGraph* getGraph() const;
+  [[nodiscard]] int getIndex() const;
 
  public:
   std::vector<CommandNode*> children;

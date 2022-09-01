@@ -27,4 +27,5 @@ class RootCommandNode : public CommandNode {
 
  public:
   void writeOptional(ByteBuffer&) const override;
+  [[nodiscard]] NodeType getType() const override;
 };

@@ -24,11 +24,14 @@
 class ArgumentCommandNode : public CommandNode {
  public:
   ArgumentCommandNode();
+  ArgumentCommandNode(std::string, ArgumentParser*);
   ~ArgumentCommandNode() override;
 
  public:
   void writeOptional(ByteBuffer&) const override;
+  [[nodiscard]] NodeType getType() const override;
 
  public:
+  std::string name;
   ArgumentParser* parser = nullptr;
 };

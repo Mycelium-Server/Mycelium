@@ -61,3 +61,7 @@ void CommandNode::setGraph(CommandGraph* g, int i) {
 CommandGraph* CommandNode::getGraph() const {
   return graph;
 }
+
+int CommandNode::getIndex() const {
+  return index;
+}
