@@ -24,6 +24,9 @@
 #include <thread>
 
 #include "../encryption.h"
+#include "command/command.h"
+#include "command/command_node.h"
+#include "command/root_command_node.h"
 #include "difficulty.h"
 #include "player_data.h"
 #include "world/world_border.h"
@@ -31,12 +34,15 @@
 class GameServer {
  public:
   GameServer();
+  ~GameServer();
 
  public:
   void reloadConfig();
 
  public:
   void generateKeypair();
+  void registerCommand(const std::string&, Command*);
+
   [[nodiscard]] std::string getMOTD() const;
   [[nodiscard]] int getOnline() const;
   [[nodiscard]] int getMaxPlayers() const;
@@ -46,6 +52,9 @@ class GameServer {
   [[nodiscard]] int getCompressionThreshold() const;
   [[nodiscard]] int getCompressionLevel() const;
   KeyPairRSA getRSAKeyPair();
+  [[nodiscard]] CommandGraph* getCommandGraph() const;
+  [[nodiscard]] RootCommandNode* getRootCommandNode() const;
+  [[nodiscard]] std::unordered_map<std::string, Command*>& getCommands();
   [[nodiscard]] bool isOnlineMode() const;
   [[nodiscard]] bool isHardcore() const;
   [[nodiscard]] int getViewDistance() const;
@@ -66,6 +75,9 @@ class GameServer {
   [[nodiscard]] libdeflate_decompressor* getDecompressor() const;
 
  private:
+  CommandGraph* commandGraph;
+  RootCommandNode* rootCommandNode;
+  std::unordered_map<std::string, Command*> commands;
   KeyPairRSA keypair {};
   std::vector<PlayerData*> players;
   libdeflate_compressor* compressor = nullptr;

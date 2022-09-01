@@ -27,6 +27,7 @@
 #include "../protocol/clientbound_remove_entities.h"
 #include "../protocol/clientbound_set_equipment.h"
 #include "../protocol/clientbound_spawn_player.h"
+#include "command/command_graph.h"
 
 GameServer::GameServer() {
   cfg_maxConnectionThreads = std::thread::hardware_concurrency();
@@ -34,12 +35,31 @@ GameServer::GameServer() {
     cfg_maxConnectionThreads = 512;
   }
 
+  rootCommandNode = new RootCommandNode();
+  commandGraph = new CommandGraph();
+  commandGraph->addNode(rootCommandNode);
+
   decompressor = libdeflate_alloc_decompressor();
   reloadConfig();
 }
 
+GameServer::~GameServer() {
+  if (compressor) {
+    libdeflate_free_compressor(compressor);
+  }
+  libdeflate_free_decompressor(decompressor);
+
+  delete commandGraph;
+  delete rootCommandNode;
+}
+
 void GameServer::generateKeypair() {
   keypair = rsa_create_keypair();
+}
+
+void GameServer::registerCommand(const std::string& name, Command* command) {
+  command->addToGraph(commandGraph, rootCommandNode);
+  commands[name] = command;
 }
 
 std::string GameServer::getServerIP() const {
@@ -191,6 +211,18 @@ libdeflate_compressor* GameServer::getCompressor() const {
 
 libdeflate_decompressor* GameServer::getDecompressor() const {
   return decompressor;
+}
+
+CommandGraph* GameServer::getCommandGraph() const {
+  return commandGraph;
+}
+
+RootCommandNode* GameServer::getRootCommandNode() const {
+  return rootCommandNode;
+}
+
+std::unordered_map<std::string, Command*>& GameServer::getCommands() {
+  return commands;
 }
 
 #define SET_IF_EXIST(dst, path) \

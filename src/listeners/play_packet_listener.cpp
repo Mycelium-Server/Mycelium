@@ -19,6 +19,7 @@
 #include "play_packet_listener.h"
 
 #include <iostream>
+#include <regex>
 
 #include "../json.hpp"
 #include "../protocol/clientbound_ack_block_change.h"
@@ -27,6 +28,7 @@
 #include "../protocol/clientbound_entity_animation.h"
 #include "../protocol/clientbound_set_center_chunk.h"
 #include "../protocol/clientbound_set_head_rotation.h"
+#include "../protocol/clientbound_suggestions_response.h"
 #include "../protocol/clientbound_system_message.h"
 #include "../protocol/clientbound_update_entity_position.h"
 #include "../protocol/clientbound_update_entity_position_rotation.h"
@@ -327,4 +329,43 @@ void PlayPacketListener::handleSwingArm(ConnectionContext* ctx, ServerboundSwing
   }
 
   delete animation;
+}
+
+static void splitCommand(const std::string& text, std::string& command, std::vector<std::string>& args) {
+  std::regex r("\\s+");
+  std::sregex_token_iterator begin {text.begin() + 1, text.end(), r, -1}, end;
+  command = *begin++;
+  args = {begin, end};
+}
+
+void PlayPacketListener::handleCommandSuggestionRequest(ConnectionContext* ctx, ServerboundCommandSuggestionRequest* packet) {
+  std::string command;
+  std::vector<std::string> args;
+  splitCommand(packet->text, command, args);
+
+  auto& commands = ctx->gameServer->getCommands();
+  auto it = commands.find(command);
+  if (it != commands.end()) {
+    Command* cmd = it->second;
+    auto suggestions = cmd->suggest(ctx, args);
+    if (!suggestions.empty()) {
+      std::unordered_map<std::string, std::optional<std::string>> matches;
+
+      for (const auto& p: suggestions) {
+        if (args.empty() || p.first.rfind(*(args.end() - 1), 0) == 0) {
+          matches[p.first] = p.second;
+        }
+      }
+
+      if (!matches.empty()) {
+        auto* response = new ClientboundSuggestionsResponse();
+        response->start = (int) packet->text.rfind(' ') + 1;
+        response->length = (int) packet->text.length() - response->start;
+        response->matches = suggestions;
+        response->transactionID = packet->transactionID;
+        ctx->write(response);
+        delete response;
+      }
+    }
+  }
 }

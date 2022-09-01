@@ -21,6 +21,8 @@
 #include "protocol/protocol.h"
 #include "server.h"
 #include "server/block/block_registry.h"
+#include "server/command/command_graph.h"
+#include "server/command/vanilla/kick_command.h"
 #include "server/dimension.h"
 #include "server/item/item_registry.h"
 #include "server/world/generation/flat_world_generator.h"
@@ -62,6 +64,8 @@ int main() {
   if (server->isOnlineMode()) {
     server->generateKeypair();
   }
+
+  server->registerCommand("kick", new KickCommand);
 
   protocol_registerPackets();
   tcp_start_server(pipelineInitializer, server->getServerIP().c_str(), server->getServerPort());

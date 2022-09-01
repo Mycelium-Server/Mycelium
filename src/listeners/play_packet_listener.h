@@ -22,6 +22,7 @@
 #include "../protocol/serverbound_chat_message.h"
 #include "../protocol/serverbound_click_container.h"
 #include "../protocol/serverbound_client_information.h"
+#include "../protocol/serverbound_command_suggestion_request.h"
 #include "../protocol/serverbound_confirm_teleportation.h"
 #include "../protocol/serverbound_player_action.h"
 #include "../protocol/serverbound_plugin_message.h"
@@ -56,6 +57,7 @@ class PlayPacketListener {
   void handleSetHeldItem(ConnectionContext*, ServerboundSetHeldItem*);
   void handlePlayerAction(ConnectionContext*, ServerboundPlayerAction*);
   void handleSwingArm(ConnectionContext*, ServerboundSwingArm*);
+  void handleCommandSuggestionRequest(ConnectionContext*, ServerboundCommandSuggestionRequest*);
   // TODO: 0x17 packet
 
  private:

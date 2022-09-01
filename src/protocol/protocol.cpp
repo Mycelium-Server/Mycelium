@@ -21,6 +21,7 @@
 #include "serverbound_chat_message.h"
 #include "serverbound_click_container.h"
 #include "serverbound_client_information.h"
+#include "serverbound_command_suggestion_request.h"
 #include "serverbound_handshake.h"
 #include "serverbound_keepalive.h"
 #include "serverbound_player_action.h"
@@ -48,4 +49,5 @@ void protocol_registerPackets() {
   ServerboundSetHeldItem().registerPacket();
   ServerboundPlayerAction().registerPacket();
   ServerboundSwingArm().registerPacket();
+  ServerboundCommandSuggestionRequest().registerPacket();
 }

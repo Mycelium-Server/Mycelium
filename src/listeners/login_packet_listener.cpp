@@ -25,6 +25,7 @@
 #include "../pipeline/handlers.h"
 #include "../protocol/clientbound_change_difficulty.h"
 #include "../protocol/clientbound_chunk_data.h"
+#include "../protocol/clientbound_commands.h"
 #include "../protocol/clientbound_encryption_request.h"
 #include "../protocol/clientbound_initialize_world_border.h"
 #include "../protocol/clientbound_keepalive.h"
@@ -169,6 +170,12 @@ void continueLogin(ConnectionContext* ctx) {
   delete abilities;
 
   ctx->playerEntity->getInventory().setActiveSlot(0);
+
+  auto* declareCommands = new ClientboundCommands();
+  declareCommands->graph = ctx->gameServer->getCommandGraph();
+  declareCommands->root = ctx->gameServer->getRootCommandNode();
+  ctx->write(declareCommands);
+  delete declareCommands;
 
   ctx->gameServer->addPlayer(&ctx->playerData);
 
