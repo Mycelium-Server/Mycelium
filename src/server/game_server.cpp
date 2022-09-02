@@ -185,6 +185,15 @@ void GameServer::removePlayer(PlayerData* data) {
   }
 }
 
+PlayerData* GameServer::getPlayer(const std::string& name) const {
+  for (auto* player: players) {
+    if (player->name == name) {
+      return player;
+    }
+  }
+  return nullptr;
+}
+
 std::vector<PlayerData*>& GameServer::getPlayers() {
   return players;
 }

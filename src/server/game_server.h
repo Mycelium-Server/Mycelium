@@ -70,6 +70,7 @@ class GameServer {
   void addPlayer(PlayerData*);
   void removePlayer(PlayerData*);
   std::vector<PlayerData*>& getPlayers();
+  PlayerData* getPlayer(const std::string&) const;
 
   [[nodiscard]] libdeflate_compressor* getCompressor() const;
   [[nodiscard]] libdeflate_decompressor* getDecompressor() const;

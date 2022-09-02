@@ -19,6 +19,7 @@
 #pragma once
 
 #include "../connection_context.h"
+#include "../protocol/serverbound_chat_command.h"
 #include "../protocol/serverbound_chat_message.h"
 #include "../protocol/serverbound_click_container.h"
 #include "../protocol/serverbound_client_information.h"
@@ -58,6 +59,7 @@ class PlayPacketListener {
   void handlePlayerAction(ConnectionContext*, ServerboundPlayerAction*);
   void handleSwingArm(ConnectionContext*, ServerboundSwingArm*);
   void handleCommandSuggestionRequest(ConnectionContext*, ServerboundCommandSuggestionRequest*);
+  void handleChatCommand(ConnectionContext*, ServerboundChatCommand*);
   // TODO: 0x17 packet
 
  private:

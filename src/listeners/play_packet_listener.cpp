@@ -333,7 +333,11 @@ void PlayPacketListener::handleSwingArm(ConnectionContext* ctx, ServerboundSwing
 
 static void splitCommand(const std::string& text, std::string& command, std::vector<std::string>& args) {
   std::regex r("\\s+");
-  std::sregex_token_iterator begin {text.begin() + 1, text.end(), r, -1}, end;
+  auto sbegin = text.begin();
+  if (!text.empty() && text[0] == '/') {
+    sbegin++;
+  }
+  std::sregex_token_iterator begin {sbegin, text.end(), r, -1}, end;
   command = *begin++;
   args = {begin, end};
 }
@@ -367,5 +371,28 @@ void PlayPacketListener::handleCommandSuggestionRequest(ConnectionContext* ctx, 
         delete response;
       }
     }
+  }
+}
+
+void PlayPacketListener::handleChatCommand(ConnectionContext* ctx, ServerboundChatCommand* packet) {
+  std::vector<std::string> plainArgs;
+  std::string command;
+  splitCommand(packet->command, command, plainArgs);
+
+  auto& commands = ctx->gameServer->getCommands();
+  auto it = commands.find(command);
+  if (it != commands.end()) {
+
+    for (const auto& arg: packet->arguments) {
+      plainArgs.push_back(arg.argument);
+    }
+
+    std::cout << ctx->playerData.name << " issued command: " << command;
+    for (const auto& arg: plainArgs) {
+      std::cout << ' ' << arg;
+    }
+    std::cout << std::endl;
+
+    it->second->execute(ctx, plainArgs);
   }
 }

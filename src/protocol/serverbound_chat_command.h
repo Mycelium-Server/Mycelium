@@ -18,15 +18,29 @@
 
 #pragma once
 
-#include "../command.h"
+#include "packet.h"
 
-class KickCommand : public Command {
+class ServerboundChatCommand : public ServerboundPacket {
  public:
-  KickCommand();
-  ~KickCommand() override;
+  struct SignedCommandArgument {
+    std::string argument;
+    ByteBuffer signature;
+  };
 
  public:
-  void addToGraph(CommandGraph*, RootCommandNode*) override;
-  [[nodiscard]] std::unordered_map<std::string, std::optional<std::string>> suggest(ConnectionContext*, const std::vector<std::string>&) override;
-  void execute(ConnectionContext*, const std::vector<std::string>&) override;
+  ServerboundChatCommand();
+  ~ServerboundChatCommand();
+
+ public:
+  void read(ByteBuffer&) override;
+  ServerboundPacket* createInstance() override;
+  [[nodiscard]] int getPacketID() const override;
+  void handle(ConnectionContext*) override;
+
+ public:
+  std::string command;
+  uint64_t timestamp = 0;
+  uint64_t salt = 0;
+  std::vector<SignedCommandArgument> arguments;
+  bool signedPreview = false;
 };
