@@ -125,7 +125,7 @@ Difficulty GameServer::getDifficulty() const {
 void GameServer::addPlayer(PlayerData* data) {
   if (!players.empty()) {
     auto* current = new ClientboundPlayerInfo();
-    current->playerActions.push_back(new ClientboundPlayerInfo::AddPlayerAction(*data, {}));// TODO: Mojang API
+    current->playerActions.push_back(new ClientboundPlayerInfo::AddPlayerAction(*data));
 
     auto* spawnPlayer = new ClientboundSpawnPlayer();
     spawnPlayer->data = *data;
@@ -142,9 +142,9 @@ void GameServer::addPlayer(PlayerData* data) {
 
   auto* other = new ClientboundPlayerInfo();
   for (auto& player: players) {
-    other->playerActions.push_back(new ClientboundPlayerInfo::AddPlayerAction(*player, {}));// TODO: Mojang API
+    other->playerActions.push_back(new ClientboundPlayerInfo::AddPlayerAction(*player));
   }
-  other->playerActions.push_back(new ClientboundPlayerInfo::AddPlayerAction(*data, {}));// TODO: Mojang API
+  other->playerActions.push_back(new ClientboundPlayerInfo::AddPlayerAction(*data));
 
   data->entity->connection->write(other);
   delete other;

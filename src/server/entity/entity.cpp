@@ -29,10 +29,18 @@ Entity::Entity()
 }
 
 Entity::Entity(int eid)
-    : eid(eid) {
+    : Entity(eid, new EntityMetadata) {
 }
 
-Entity::~Entity() = default;
+Entity::Entity(EntityMetadata* metadata)
+    : Entity(createEntityID(), metadata) {}
+
+Entity::Entity(int eid, EntityMetadata* metadata)
+    : eid(eid), metadata(metadata) {}
+
+Entity::~Entity() {
+  delete metadata;
+}
 
 int Entity::getEID() const {
   return eid;

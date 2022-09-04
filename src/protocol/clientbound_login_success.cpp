@@ -25,7 +25,7 @@ void ClientboundLoginSuccess::write(ByteBuffer& dst) {
   dst.writeUUID(uuid);
   dst.writeString(name);
   dst.writeVarInt((int) properties.size());
-  for (Property& property: properties) {
+  for (auto& property: properties) {
     dst.writeString(property.name);
     dst.writeString(property.value);
     dst.writeByte(property.signature.has_value());

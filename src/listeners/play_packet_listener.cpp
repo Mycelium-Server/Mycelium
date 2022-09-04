@@ -27,6 +27,7 @@
 #include "../protocol/clientbound_chunk_data.h"
 #include "../protocol/clientbound_entity_animation.h"
 #include "../protocol/clientbound_set_center_chunk.h"
+#include "../protocol/clientbound_set_entity_metadata.h"
 #include "../protocol/clientbound_set_head_rotation.h"
 #include "../protocol/clientbound_suggestions_response.h"
 #include "../protocol/clientbound_system_message.h"
@@ -35,6 +36,7 @@
 #include "../protocol/clientbound_update_entity_rotation.h"
 #include "../protocol/plugin_channels.h"
 #include "../server/dimension.h"
+#include "../server/entity/metadata/player_metadata.h"
 #include "../server/item/block_item.h"
 #include "../server/item/item_registry.h"
 
@@ -46,7 +48,20 @@ void PlayPacketListener::setTeleportID(int id) {
 }
 
 void PlayPacketListener::handleClientInformation(ConnectionContext* ctx, ServerboundClientInformation* packet) {
+  ClientSettings& settings = packet->settings;
+  auto* metadata = ctx->playerEntity->getMetadata<PlayerMetadata>();
+
   ctx->clientSettings = packet->settings;
+
+  metadata->displayedSkinParts = settings.displayedSkinParts;
+  metadata->mainHand = settings.mainHand;
+
+  auto* metadataPacket = new ClientboundSetEntityMetadata();
+  metadataPacket->entity = ctx->playerEntity;
+  for (auto* player: ctx->gameServer->getPlayers()) {
+    player->entity->connection->write(metadataPacket);
+  }
+  delete metadataPacket;
 }
 
 void PlayPacketListener::handlePluginMessage(ConnectionContext* ctx, ServerboundPluginMessage* packet) {

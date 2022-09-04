@@ -29,7 +29,7 @@ class ShulkerMetadata : public AbstractGolemMetadata {
   void wrapperWrite(MetadataBuffer &) override;
 
  public:
-  Direction attachFace = Direction::DOWN;
+  Direction attachFace = Direction::DIRECTION_DOWN;
   std::optional<BlockPosition> attachmentPosition;
   unsigned char shieldHeight = 0;
   unsigned char color = 10;

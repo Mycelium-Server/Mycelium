@@ -80,8 +80,6 @@ void LoginPacketListener::handleLoginStart(ConnectionContext* ctx, ServerboundLo
     ctx->playerData.uuid = playerUUID;
     continueLogin(ctx);
   } else {
-    auto playerUUID = uuids::uuid_name_generator {{}}("OfflinePlayer:" + packet->name);
-    ctx->playerData.uuid = playerUUID;// TODO: Mojang API
     auto* request = new ClientboundEncryptionRequest();
     request->serverID = "";
     request->rsa = ctx->gameServer->getRSAKeyPair();
@@ -101,9 +99,16 @@ void LoginPacketListener::handleEncryptionResponse(ConnectionContext* ctx, Serve
   ctx->pipeline->addBefore("packet_splitter", "packet_decrypt", new PacketDecrypt(aes));
   ctx->pipeline->addAfter("packet_prepender", "packet_encrypt", new PacketEncrypt(aes));
 
-  // TODO: this
-  //    MojangAPI::AuthResponse auth = MojangAPI::requestAuth(ctx);
-  //    std::cout << auth.success << std::endl;
+  MojangAPI::GameProfile profile = MojangAPI::requestAuth(ctx);
+  if (!profile.success) {
+    auto* disconnect = new ClientboundLoginDisconnect;
+    disconnect->reason = R"({"text":"Couldn't authenticate with Mojang API.","color":"red"})";
+    ctx->write(disconnect);
+    delete disconnect;
+    return;
+  }
+  ctx->playerData.uuid = profile.id;
+  ctx->playerData.gameProfile = profile;
 
   continueLogin(ctx);
 }
@@ -115,7 +120,7 @@ std::string LoginPacketListener::createHash() {
   return hash.finalise();
 }
 
-void continueLogin(ConnectionContext* ctx) {
+static void continueLogin(ConnectionContext* ctx) {
   if (ctx->gameServer->getCompressionThreshold() > 0) {
     auto* setCompression = new ClientboundSetCompression();
     setCompression->threshold = ctx->gameServer->getCompressionThreshold();
@@ -129,6 +134,7 @@ void continueLogin(ConnectionContext* ctx) {
   auto* loginSuccess = new ClientboundLoginSuccess();
   loginSuccess->name = ctx->playerData.name;
   loginSuccess->uuid = ctx->playerData.uuid;
+  loginSuccess->properties = ctx->playerData.gameProfile.value_or(MojangAPI::GameProfile{}).properties;
   ctx->write(loginSuccess);
   delete loginSuccess;
 

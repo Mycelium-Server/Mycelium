@@ -48,26 +48,21 @@ class ClientboundPlayerInfo : public ClientboundPacket {
 
   class AddPlayerAction : public PlayerAction {
    public:
-    struct Property {// TODO: Mojang API
-      std::string name;
-      std::string value;
-      std::optional<std::string> signature;
-    };
 
    public:
     explicit AddPlayerAction(const uuids::uuid&);
     explicit AddPlayerAction(const PlayerData&);
-    AddPlayerAction(const PlayerData&, const std::vector<Property>&);
+    AddPlayerAction(const PlayerData&, const std::vector<MojangAPI::ProfileProperty>&);
     ~AddPlayerAction() override;
 
    public:
     [[nodiscard]] int getID() const override;
     void write(ByteBuffer&) override;
-    void construct(const PlayerData&, const std::vector<Property>&);// TODO: Replace std::vector<Property> with Mojang API response
+    void construct(const PlayerData&, const std::vector<MojangAPI::ProfileProperty>&);
 
    public:
     std::string name;
-    std::vector<Property> properties;
+    std::vector<MojangAPI::ProfileProperty> properties;
     Gamemode gamemode = (Gamemode) 0;
     int ping = 0;
     std::optional<std::string> displayName;

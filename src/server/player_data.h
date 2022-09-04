@@ -17,7 +17,7 @@
  */
 
 #pragma once
-
+#include "../mojangapi/auth_request.h"
 #include "../protocol/signature_data.h"
 #include "../uuid.h"
 #include "gamemode.h"
@@ -32,4 +32,5 @@ struct PlayerData {
   EntityPlayer* entity;
   std::optional<Location> deathLocation;
   std::optional<SigData> signatureData;
+  std::optional<MojangAPI::GameProfile> gameProfile;
 };

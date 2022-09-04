@@ -35,23 +35,23 @@ int AcaciaDoorItem::getBlockID(World*, const Vector3i&, const Vector3f&, const B
   AcaciaDoorBlock block;
   block.open = AcaciaDoorBlock::OPEN_FALSE;
   block.powered = AcaciaDoorBlock::POWERED_FALSE;
-  block.half = face == BlockFace::BOTTOM ? AcaciaDoorBlock::HALF_UPPER : AcaciaDoorBlock::HALF_LOWER;
+  block.half = face == BlockFace::DIRECTION_DOWN ? AcaciaDoorBlock::HALF_UPPER : AcaciaDoorBlock::HALF_LOWER;
   // TODO: hinge
 
   switch (face) {
-    case BlockFace::EAST:
+    case BlockFace::DIRECTION_EAST:
       block.facing = AcaciaDoorBlock::FACING_EAST;
       break;
 
-    case BlockFace::NORTH:
+    case BlockFace::DIRECTION_NORTH:
       block.facing = AcaciaDoorBlock::FACING_NORTH;
       break;
 
-    case BlockFace::SOUTH:
+    case BlockFace::DIRECTION_SOUTH:
       block.facing = AcaciaDoorBlock::FACING_SOUTH;
       break;
 
-    case BlockFace::WEST:
+    case BlockFace::DIRECTION_WEST:
       block.facing = AcaciaDoorBlock::FACING_WEST;
       break;
 

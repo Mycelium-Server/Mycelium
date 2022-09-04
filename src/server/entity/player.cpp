@@ -20,8 +20,10 @@
 
 #include "../../listeners/play_packet_listener.h"
 #include "../dimension.h"
+#include "metadata/player_metadata.h"
 
-EntityPlayer::EntityPlayer() {
+EntityPlayer::EntityPlayer()
+  : Entity(new PlayerMetadata) {
   inventory.bindPlayer(this);
 }
 

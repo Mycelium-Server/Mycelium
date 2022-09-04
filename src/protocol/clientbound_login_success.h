@@ -26,13 +26,6 @@
 
 class ClientboundLoginSuccess : public ClientboundPacket {
  public:
-  struct Property {
-    std::string name;
-    std::string value;
-    std::optional<std::string> signature;
-  };
-
- public:
   ClientboundLoginSuccess();
   ~ClientboundLoginSuccess();
 
@@ -43,5 +36,5 @@ class ClientboundLoginSuccess : public ClientboundPacket {
  public:
   uuids::uuid uuid;
   std::string name;
-  std::vector<Property> properties;
+  std::vector<MojangAPI::ProfileProperty> properties;
 };

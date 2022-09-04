@@ -19,10 +19,10 @@
 #pragma once
 
 enum Direction {
-  DOWN = 0,
-  UP = 1,
-  NORTH = 2,
-  SOUTH = 3,
-  WEST = 4,
-  EAST = 5
+  DIRECTION_DOWN = 0,
+  DIRECTION_UP = 1,
+  DIRECTION_NORTH = 2,
+  DIRECTION_SOUTH = 3,
+  DIRECTION_WEST = 4,
+  DIRECTION_EAST = 5
 };

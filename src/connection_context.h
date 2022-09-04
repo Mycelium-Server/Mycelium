@@ -22,6 +22,7 @@
 #include <thread>
 
 #include "event_loop.h"
+#include "mojangapi/auth_request.h"
 #include "pipeline.h"
 #include "server/client_settings.h"
 #include "server/entity/entity.h"

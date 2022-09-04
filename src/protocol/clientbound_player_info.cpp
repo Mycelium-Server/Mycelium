@@ -57,9 +57,9 @@ ClientboundPlayerInfo::PlayerAction::~PlayerAction() = default;
 ClientboundPlayerInfo::AddPlayerAction::AddPlayerAction(const uuids::uuid& uuid)
     : PlayerAction(uuid) {}
 ClientboundPlayerInfo::AddPlayerAction::AddPlayerAction(const PlayerData& data)
-    : PlayerAction(data) {}
+    : AddPlayerAction(data, data.gameProfile.value_or(MojangAPI::GameProfile{}).properties) {}
 ClientboundPlayerInfo::AddPlayerAction::~AddPlayerAction() = default;
-ClientboundPlayerInfo::AddPlayerAction::AddPlayerAction(const PlayerData& data, const std::vector<Property>& properties)
+ClientboundPlayerInfo::AddPlayerAction::AddPlayerAction(const PlayerData& data, const std::vector<MojangAPI::ProfileProperty>& properties)
     : PlayerAction(data.uuid) {
   construct(data, properties);
 }
@@ -71,6 +71,14 @@ int ClientboundPlayerInfo::AddPlayerAction::getID() const {
 void ClientboundPlayerInfo::AddPlayerAction::write(ByteBuffer& out) {
   out.writeString(name);
   out.writeVarInt((int) properties.size());
+  for (auto& property: properties) {
+    out.writeString(property.name);
+    out.writeString(property.value);
+    out.writeByte(property.signature.has_value());
+    if (property.signature.has_value()) {
+      out.writeString(property.signature.value());
+    }
+  }
   out.writeVarInt((int) gamemode);
   out.writeVarInt(ping);
   out.writeByte(displayName.has_value());
@@ -88,7 +96,7 @@ void ClientboundPlayerInfo::AddPlayerAction::write(ByteBuffer& out) {
   }
 }
 
-void ClientboundPlayerInfo::AddPlayerAction::construct(const PlayerData& data, const std::vector<Property>& props) {
+void ClientboundPlayerInfo::AddPlayerAction::construct(const PlayerData& data, const std::vector<MojangAPI::ProfileProperty>& props) {
   name = data.name;
   properties = props;
   gamemode = data.gamemode;
@@ -114,6 +122,10 @@ void ClientboundPlayerInfo::UpdatePlayerGamemode::write(ByteBuffer& out) {
   out.writeVarInt((int) gamemode);
 }
 
+ClientboundPlayerInfo::UpdatePlayerLatency::UpdatePlayerLatency(const uuids::uuid& uuid)
+    : PlayerAction(uuid) {}
+ClientboundPlayerInfo::UpdatePlayerLatency::UpdatePlayerLatency(const PlayerData& data)
+    : PlayerAction(data) {}
 ClientboundPlayerInfo::UpdatePlayerLatency::UpdatePlayerLatency(const uuids::uuid& uuid, int ping)
     : PlayerAction(uuid),
       ping(ping) {}

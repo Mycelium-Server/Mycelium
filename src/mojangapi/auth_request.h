@@ -18,23 +18,31 @@
 
 #pragma once
 
-#include "../connection_context.h"
 #include "../json.hpp"
+#include "../uuid.h"
 #include "http.h"
 
+class ConnectionContext;
 class EntityPlayer;
 
 namespace MojangAPI {
+  struct ProfileProperty {
+    std::string name;
+    std::string value;
+    std::optional<std::string> signature;
+  };
 
-  struct AuthResponse {
+  struct GameProfile {
     std::string raw;
     bool success = false;
 
     nlohmann::json json;
 
-    // TODO: Fields
+    uuids::uuid id;
+    std::string name;
+    std::vector<ProfileProperty> properties;
   };
 
-  AuthResponse requestAuth(ConnectionContext*);
+  GameProfile requestAuth(ConnectionContext*);
 
 }// namespace MojangAPI

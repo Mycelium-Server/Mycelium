@@ -35,18 +35,18 @@ int AcaciaLogItem::getBlockID(World *, const Vector3i &, const Vector3f &, const
   AcaciaLogBlock block;
 
   switch (face) {
-    case BlockFace::TOP:
-    case BlockFace::BOTTOM:
+    case BlockFace::DIRECTION_UP:
+    case BlockFace::DIRECTION_DOWN:
       block.axis = AcaciaLogBlock::AXIS_Y;
       break;
 
-    case BlockFace::NORTH:
-    case BlockFace::SOUTH:
+    case BlockFace::DIRECTION_NORTH:
+    case BlockFace::DIRECTION_SOUTH:
       block.axis = AcaciaLogBlock::AXIS_Z;
       break;
 
-    case BlockFace::WEST:
-    case BlockFace::EAST:
+    case BlockFace::DIRECTION_WEST:
+    case BlockFace::DIRECTION_EAST:
       block.axis = AcaciaLogBlock::AXIS_X;
       break;
   }

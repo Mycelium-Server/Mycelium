@@ -47,11 +47,11 @@ int AcaciaSlabItem::getBlockID(World *world, const Vector3i &blockPos, const Vec
     block.type = AcaciaSlabBlock::TYPE_DOUBLE;
   } else {
     switch (face) {
-      case BlockFace::BOTTOM:
+      case BlockFace::DIRECTION_DOWN:
         block.type = AcaciaSlabBlock::TYPE_TOP;
         break;
 
-      case BlockFace::TOP:
+      case BlockFace::DIRECTION_UP:
         block.type = AcaciaSlabBlock::TYPE_BOTTOM;
         break;
 

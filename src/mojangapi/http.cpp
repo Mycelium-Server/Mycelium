@@ -47,34 +47,39 @@ void http_init() {
 
 ResponseHTTP http_get(const std::string& url) {
   curl_global_init(CURL_GLOBAL_ALL);
-  CURL* m_curl = curl_easy_init();
+  CURL* curl = curl_easy_init();
 
-  curl_easy_setopt(m_curl, CURLOPT_URL, url.c_str());
-  curl_easy_setopt(m_curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
-  curl_easy_setopt(m_curl, CURLOPT_HTTPGET, 1L);
-  curl_easy_setopt(m_curl, CURLOPT_FORBID_REUSE, 1L);
-  curl_easy_setopt(m_curl, CURLOPT_CAINFO, "cert.pem");
-  curl_easy_setopt(m_curl, CURLOPT_USERAGENT, "Mycelium");
-  curl_easy_setopt(m_curl, CURLOPT_SSL_VERIFYPEER, 0L);
+  curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+  curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
+  curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
+  curl_easy_setopt(curl, CURLOPT_FORBID_REUSE, 1L);
+  curl_easy_setopt(curl, CURLOPT_CAINFO, "cert.pem");
+  curl_easy_setopt(curl, CURLOPT_USERAGENT, "Mycelium");
+  curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
 
   std::string response;
-  curl_easy_setopt(m_curl, CURLOPT_WRITEFUNCTION, write_fn);
-  curl_easy_setopt(m_curl, CURLOPT_WRITEDATA, &response);
-  curl_easy_setopt(m_curl, CURLOPT_VERBOSE, 1L);
+  curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_fn);
+  curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
+  curl_easy_setopt(curl, CURLOPT_VERBOSE, 0L);
 
-  int code = 0;
-  curl_easy_perform(m_curl);
-  curl_easy_getinfo(m_curl, CURLINFO_RESPONSE_CODE, &code);
-
-  ResponseHTTP dst;
-  dst.response_code = code;
-  dst.response = response;
-
-  for (int i = 0; i < 100000;) {
-    i++;
+  CURLcode status = curl_easy_perform(curl);
+  if (status != CURLE_OK) {
+    std::cerr << "curl_easy_perform: " << status << std::endl;
+    return {};
   }
 
-  curl_easy_cleanup(m_curl);
+  int code = 0;
+  status = curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &code);
+  if (status != CURLE_OK) {
+    std::cerr << "curl_easy_getinfo: " << status << std::endl;
+    return {};
+  }
+
+  ResponseHTTP dst;
+  dst.response = response;
+  dst.response_code = code;
+
+  curl_easy_cleanup(curl);
   curl_global_cleanup();
-  return {};
+  return dst;
 }

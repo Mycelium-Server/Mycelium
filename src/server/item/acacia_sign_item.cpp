@@ -38,7 +38,7 @@ std::shared_ptr<Item> AcaciaSignItem::clone() const {
 int AcaciaSignItem::getBlockID(World *world, const Vector3i &blockPos, const Vector3f &, const BlockFace &face, const Vector3f &, bool) const {
   bool waterlogged = (world->getBlock(blockPos) == WATER_BLOCK);
 
-  if (face == BlockFace::TOP) {
+  if (face == BlockFace::DIRECTION_UP) {
     AcaciaSignBlock block;
     if (waterlogged) {
       block.waterlogged = AcaciaSignBlock::WATERLOGGED_TRUE;
@@ -54,19 +54,19 @@ int AcaciaSignItem::getBlockID(World *world, const Vector3i &blockPos, const Vec
   }
 
   switch (face) {
-    case BlockFace::EAST:
+    case BlockFace::DIRECTION_EAST:
       block.facing = AcaciaWallSignBlock::FACING_EAST;
       break;
 
-    case BlockFace::WEST:
+    case BlockFace::DIRECTION_WEST:
       block.facing = AcaciaWallSignBlock::FACING_WEST;
       break;
 
-    case BlockFace::SOUTH:
+    case BlockFace::DIRECTION_SOUTH:
       block.facing = AcaciaWallSignBlock::FACING_SOUTH;
       break;
 
-    case BlockFace::NORTH:
+    case BlockFace::DIRECTION_NORTH:
       block.facing = AcaciaWallSignBlock::FACING_NORTH;
       break;
 

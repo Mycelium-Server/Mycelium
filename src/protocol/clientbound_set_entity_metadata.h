@@ -16,21 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "player_metadata.h"
+#pragma once
 
-PlayerMetadata::PlayerMetadata() = default;
-PlayerMetadata::~PlayerMetadata() = default;
+#include "packet.h"
 
-void PlayerMetadata::wrapperWrite(MetadataBuffer& wrapper) {
-  LivingEntityMetadata::wrapperWrite(wrapper);
-  wrapper.writeFloat(15, additionalHearts);
-  wrapper.writeVarInt(16, score);
-  wrapper.writeByte(17, displayedSkinParts.value);
-  wrapper.writeByte(18, (unsigned char) mainHand);
-  if (leftShoulderEntityData) {
-    wrapper.writeNBT(19, leftShoulderEntityData);
-  }
-  if (rightShoulderEntityData) {
-    wrapper.writeNBT(20, rightShoulderEntityData);
-  }
-}
+class ClientboundSetEntityMetadata : ClientboundPacket {
+ public:
+  ClientboundSetEntityMetadata();
+  ~ClientboundSetEntityMetadata();
+
+ public:
+  void write(ByteBuffer&) override;
+  [[nodiscard]] int getPacketID() const override;
+
+ public:
+  Entity* entity = nullptr;
+};
