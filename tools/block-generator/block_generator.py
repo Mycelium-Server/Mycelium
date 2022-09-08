@@ -1,4 +1,5 @@
 import json
+import string
 from pathlib import Path
 
 
@@ -137,6 +138,10 @@ def generate_block_registry(data):
     f.write('  static void init();\n')
     f.write('  static std::shared_ptr<Block> fromID(int);\n')
     f.write('  static std::shared_ptr<Block> newInstanceFromID(int);\n')
+    f.write("\n")
+    f.write(" private:\n")
+    for letter in string.ascii_uppercase:
+        f.write("  static void generate" + letter + "();\n")
     f.write('\n')
     f.write(' private:\n')
     f.write('  static std::vector<std::shared_ptr<Block>> registry;\n')
@@ -146,56 +151,80 @@ def generate_block_registry(data):
 
     f = open('generated/block_registry.cpp', 'w+')
 
-    write_license(f)
-    f.write('#include "block_registry.h"\n')
-    f.write('\n')
+    generator_files = []
+
+    for letter in string.ascii_lowercase:
+        generator = open("generated/block_registry_" + letter + ".cpp", "w+")
+        write_license(generator)
+        generator.write("#include \"block_registry.h\"\n")
+        generator.write("\n")
+        generator_files.append(generator)
+
     for blockId in data:
-        f.write('#include "')
-        f.write(blockId[10:])
-        f.write('_block.h"\n')
-    f.write('\n')
-    f.write('void BlockRegistry::init() {\n')
+        generator = generator_files[ord(blockId[10]) - ord('a')]
+        generator.write('#include "')
+        generator.write(blockId[10:])
+        generator.write('_block.h"\n')
+
+    for generator in generator_files:
+        letter = chr(generator_files.index(generator) + ord('a'))
+        generator.write("\n")
+        generator.write("void BlockRegistry::generate" + letter.upper() + "() {\n")
 
     total_blocks = 0
     for blockId in data:
         for state in data[blockId]['states']:
             total_blocks = max(state['id'] + 1, total_blocks)
 
-    f.write('  registry.resize(')
-    f.write(str(total_blocks))
-    f.write(');\n')
-
     for i in range(total_blocks):
-        f.write('\n')
-        f.write('  { // ID: ')
-        f.write(str(i))
-        f.write('\n')
         for blockId in data:
             for state in data[blockId]['states']:
                 if state['id'] == i:
                     cls = to_class_name(blockId[10:] + "_block")
-                    f.write('    std::shared_ptr<')
-                    f.write(cls)
-                    f.write('> block = std::make_shared<')
-                    f.write(cls)
-                    f.write('>();\n')
+                    generator = generator_files[ord(blockId[10]) - ord('a')]
+                    generator.write('\n')
+                    generator.write('  { // ID: ')
+                    generator.write(str(i))
+                    generator.write('\n')
+                    generator.write('    std::shared_ptr<')
+                    generator.write(cls)
+                    generator.write('> block = std::make_shared<')
+                    generator.write(cls)
+                    generator.write('>();\n')
                     if 'properties' in state:
                         for prop in state['properties']:
-                            f.write('    block->')
-                            f.write(to_member_name(prop))
-                            f.write(' = ')
-                            f.write(cls)
-                            f.write('::')
-                            f.write((prop + '_' + state['properties'][prop]).upper())
-                            f.write(';\n')
-                    f.write('    registry[')
-                    f.write(str(i))
-                    f.write('] = block;\n')
+                            generator.write('    block->')
+                            generator.write(to_member_name(prop))
+                            generator.write(' = ')
+                            generator.write(cls)
+                            generator.write('::')
+                            generator.write((prop + '_' + state['properties'][prop]).upper())
+                            generator.write(';\n')
+                    generator.write('    registry[')
+                    generator.write(str(i))
+                    generator.write('] = block;\n')
+                    generator.write('  }\n')
                     break
             else:
                 continue
             break
-        f.write('  }\n')
+
+    for generator in generator_files:
+        generator.write("}")
+        generator.close()
+
+    write_license(f)
+    f.write('#include "block_registry.h"\n')
+    f.write('\n')
+    f.write('void BlockRegistry::init() {\n')
+
+    f.write('  registry.resize(')
+    f.write(str(total_blocks))
+    f.write(');\n')
+
+    for letter in string.ascii_uppercase:
+        f.write("  generate" + letter + "();\n")
+
     f.write('}\n')
     f.write('\n')
     f.write('std::shared_ptr<Block> BlockRegistry::fromID(int id) {\n')
