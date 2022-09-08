@@ -203,7 +203,7 @@ WorldBorder GameServer::getWorldBorder() const {
 }
 
 EntityPosition GameServer::getSpawnPosition() {
-  return {0, 10, 0};// TODO: properties.yml
+  return {0, 100, 0};// TODO: properties.yml
 }
 
 bool GameServer::debugPackets() const {

@@ -11,6 +11,9 @@ include_directories(thirdparty/asio/include)
 
 set(BUILD_SHARED_LIBS OFF)
 
+add_subdirectory(thirdparty/libnoise)
+include_directories(thirdparty/libnoise/src)
+
 add_subdirectory(thirdparty/libdeflate)
 include_directories(thirdparty/libdeflate)
 
@@ -49,7 +52,7 @@ endif ()
 file(GLOB_RECURSE SRC src/*.cpp)
 
 add_executable(Mycelium ${SRC})
-target_link_libraries(Mycelium ssl crypto libdeflate ryml::ryml)
+target_link_libraries(Mycelium ssl crypto libdeflate ryml::ryml noise-static)
 
 if (WIN32)
     target_link_libraries(Mycelium wsock32)

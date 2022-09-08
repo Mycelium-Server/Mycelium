@@ -25,7 +25,7 @@
 #include "server/command/vanilla/kick_command.h"
 #include "server/dimension.h"
 #include "server/item/item_registry.h"
-#include "server/world/generation/flat_world_generator.h"
+#include "server/world/generation/noise_world_generator.h"
 #include "server/world/world.h"
 #include "time.h"
 
@@ -56,7 +56,7 @@ int main() {
 
   auto startTime = currentTimeMillis();
   World* world = m_default_dimensions[OVERWORLD].world;
-  world->setWorldGenerator(new FlatWorldGenerator);
+  world->setWorldGenerator(new NoiseWorldGenerator);
   world->createSpawnChunks();
   std::cout << "Generated " << world->chunks.size() << " chunks in " << (currentTimeMillis() - startTime) << "ms" << std::endl;
 
