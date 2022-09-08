@@ -19,6 +19,7 @@
 #pragma once
 
 #include <map>
+#include <mutex>
 
 #include "../location.h"
 #include "chunk.h"
@@ -51,6 +52,7 @@ class World {// TODO: to do
   void setWorldGenerator(WorldGenerator*);
 
  public:
+  std::mutex chunksMutex;
   std::map<unsigned long long, Chunk*> chunks;
 
  private:

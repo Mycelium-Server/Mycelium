@@ -19,6 +19,7 @@
 #include "world.h"
 
 #include <cmath>
+#include <thread>
 
 World::World() = default;
 World::~World() {
@@ -103,7 +104,9 @@ int World::getBlock(const Vector3i& pos) {
 
 Chunk* World::createChunk(const ChunkLocation& location) {
   auto* chunk = new Chunk(location);
+  chunksMutex.lock();
   chunks[location.getID()] = chunk;
+  chunksMutex.unlock();
   if (worldGenerator) {
     worldGenerator->generateChunk(chunk);
   }
@@ -114,14 +117,24 @@ Chunk* World::createChunk(const ChunkLocation& location) {
 void World::destroyChunk(const ChunkLocation& location) {
   auto it = getChunkIterator(location);
   delete it->second;
+  chunksMutex.lock();
   chunks.erase(it);
+  chunksMutex.unlock();
 }
 
 void World::createSpawnChunks() {
+  std::thread threads[25];
+
   for (int x = -12; x <= 12; x++) {
-    for (int z = -12; z <= 12; z++) {
-      createChunk({x, z});
-    }
+    threads[x + 12] = std::thread([=]() {
+      for (int z = -12; z <= 12; z++) {
+        createChunk({x, z});
+      }
+    });
+  }
+
+  for (auto& t: threads) {
+    t.join();
   }
 }
 
