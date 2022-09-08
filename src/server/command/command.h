@@ -18,6 +18,8 @@
 
 #pragma once
 
+#include <unordered_map>
+
 #include "command_graph.h"
 #include "root_command_node.h"
 
