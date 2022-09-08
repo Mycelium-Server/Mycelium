@@ -24,7 +24,7 @@
 #include <utility>
 #include <vector>
 
-#include "ByteBuffer.h"
+#include "byte_buffer.h"
 
 // TODO: Rewrite this
 

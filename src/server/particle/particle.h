@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include "../../ByteBuffer.h"
+#include "../../byte_buffer.h"
 
 #define DECL_DEFAULT_PARTICLE(className)      \
   class className : public AbstractParticle { \

@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include "../ByteBuffer.h"
+#include "../byte_buffer.h"
 
 struct MessageSignature {
   long long timestamp = 0;

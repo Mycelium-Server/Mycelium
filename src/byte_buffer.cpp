@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ByteBuffer.h"
+#include "byte_buffer.h"
 
 #include <cstring>
 #include <fstream>

@@ -27,3 +27,4 @@ $ cmake --build .
  - [gsl](https://github.com/microsoft/GSL)
  - [nlohmann/json](https://github.com/nlohmann/json)
  - [rapidyaml](https://github.com/biojppm/rapidyaml)
+ - [libnoise](https://github.com/qknight/libnoise)

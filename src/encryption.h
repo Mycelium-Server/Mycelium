@@ -22,7 +22,7 @@
 #include <openssl/rsa.h>
 #include <openssl/x509.h>
 
-#include "ByteBuffer.h"
+#include "byte_buffer.h"
 
 struct KeyPairRSA {
   RSA* rsa = nullptr;

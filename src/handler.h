@@ -20,7 +20,7 @@
 
 #include <vector>
 
-#include "ByteBuffer.h"
+#include "byte_buffer.h"
 
 class ConnectionContext;
 

@@ -18,6 +18,6 @@
 
 #pragma once
 
-#include "ByteBuffer.h"
+#include "byte_buffer.h"
 
 ByteBuffer* default_registry_codec();

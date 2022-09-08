@@ -20,7 +20,7 @@
 
 #include <memory>
 
-#include "../ByteBuffer.h"
+#include "../byte_buffer.h"
 #include "../connection_context.h"
 
 class ServerboundPacket {

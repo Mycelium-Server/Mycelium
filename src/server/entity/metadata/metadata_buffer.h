@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include "../../../ByteBuffer.h"
+#include "../../../byte_buffer.h"
 #include "../../direction.h"
 #include "../../itemstack.h"
 #include "../../location.h"

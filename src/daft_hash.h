@@ -5,7 +5,7 @@
 //
 #pragma once
 
-#include "ByteBuffer.h"
+#include "byte_buffer.h"
 //#include "minecraft/net.hpp"
 #include <openssl/sha.h>
 

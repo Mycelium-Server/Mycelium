@@ -18,8 +18,8 @@
 
 #pragma once
 
-#include "../../../ByteBuffer.h"
 #include "../../../NBT.h"
+#include "../../../byte_buffer.h"
 #include "../../difficulty.h"
 #include "../../gamemode.h"
 #include "../../gamerules.h"
