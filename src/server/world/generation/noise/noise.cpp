@@ -19,6 +19,7 @@
 #include "noise.h"
 
 #include <noise/module/perlin.h>
+#include <algorithm>
 
 #define HILL_THRESHOLD 0.98
 
