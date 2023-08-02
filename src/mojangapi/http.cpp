@@ -43,10 +43,10 @@ std::string toURL(std::string s) {
 }
 
 void http_init() {
+  curl_global_init(CURL_GLOBAL_ALL);
 }
 
 ResponseHTTP http_get(const std::string& url) {
-  curl_global_init(CURL_GLOBAL_ALL);
   CURL* curl = curl_easy_init();
 
   curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
@@ -80,6 +80,5 @@ ResponseHTTP http_get(const std::string& url) {
   dst.response_code = code;
 
   curl_easy_cleanup(curl);
-  curl_global_cleanup();
   return dst;
 }

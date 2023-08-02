@@ -18,8 +18,6 @@
 
 #include "connection_context.h"
 
-#include <iostream>
-
 #include "event_loop_factory.h"
 #include "server.h"
 

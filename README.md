@@ -9,6 +9,7 @@
    - Python 3
    - libcurl
    - OpenSSL
+   - pkg-config
 
 2. Compile Mycelium <pre><code>$ git clone https://github.com/JNNGL/Mycelium
 $ mkdir Mycelium/build

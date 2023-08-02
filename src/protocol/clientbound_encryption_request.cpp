@@ -24,7 +24,7 @@ ClientboundEncryptionRequest::~ClientboundEncryptionRequest() = default;
 void ClientboundEncryptionRequest::write(ByteBuffer& out) {
   out.writeString(serverID);
   out.writeVarInt((int) rsa.publicKey.readableBytes());
-  out.writeBytes(rsa.publicKey);
+  out.writeBytes(rsa.publicKey.data);
   out.writeVarInt((int) verifyToken.readableBytes());
   out.writeBytes(verifyToken);
 }
