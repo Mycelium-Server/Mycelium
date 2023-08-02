@@ -1,0 +1,67 @@
+name: CMake Stable
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest ]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Configure CMake
+        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      - name: Build
+        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+      - name: Test
+        working-directory: ${{github.workspace}}/build
+        run: ctest -C ${{env.BUILD_TYPE}}
+      - if: matrix.os == 'windows-latest'
+        name: Upload executable (Windows)
+        uses: actions/upload-artifact@v2
+        with:
+          name: Mycelium-${{ matrix.os }}
+          path: |
+            build/${{env.BUILD_TYPE}}/*.exe
+      - if: matrix.os == 'ubuntu-latest'
+        name: Upload executable (Linux)
+        uses: actions/upload-artifact@v2
+        with:
+          name: Mycelium-${{ matrix.os }}
+          path: |
+            build/Mycelium*
+      - if: matrix.os == 'macos-latest'
+        name: Upload executable (MacOS)
+        uses: actions/upload-artifact@v2
+        with:
+          name: Mycelium-debug-${{ matrix.os }}
+          path: |
+            build/Mycelium*
+      - name: Create runtime
+        run: |
+          mkdir runtime
+      - name: Add `registry_codec.nbt` to runtime
+        run: |
+          cp registry_codec.nbt runtime/registry_codec.nbt
+      - name: Add `cert.pem` to runtime
+        run: |
+          cp cert.pem runtime/cert.pem
+      - name: Add `properties.yml` to runtime
+        run: |
+          cp properties.yml runtime/properties.yml
+      - name: Upload runtime
+        uses: actions/upload-artifact@v2
+        with:
+          name: Mycelium-${{ matrix.os }}
+          path: |
+            runtime
