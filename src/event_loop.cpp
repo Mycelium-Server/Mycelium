@@ -41,11 +41,11 @@ EventLoop::EventLoop() {
 }
 
 EventLoop::~EventLoop() {
-  thread.detach();
+  addToQueue([&]() { running = false; });
+  thread.join();
 }
 
 void EventLoop::destroy() {
-  addToQueue([&]() { running = false; });
   delete this;
 }
 
