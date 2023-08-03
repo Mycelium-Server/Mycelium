@@ -32,5 +32,5 @@ class ServerboundKeepAlive : public ServerboundPacket {
   void handle(ConnectionContext*) override;
 
  public:
-  long long id = 0;
+  int64_t id = 0;
 };

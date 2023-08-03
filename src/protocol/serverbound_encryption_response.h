@@ -23,7 +23,7 @@
 class ServerboundEncryptionResponse : public ServerboundPacket {
  public:
   struct Cryptography {
-    long long salt;
+    int64_t salt;
     ByteBuffer messageSignature;
   };
 

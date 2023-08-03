@@ -30,8 +30,8 @@ ByteBuffer::ByteBuffer(size_t size) {
   writerIdx = size;
 }
 
-ByteBuffer::ByteBuffer(const unsigned char* data, size_t len) {
-  this->data = std::vector<unsigned char>(data, data + len);
+ByteBuffer::ByteBuffer(const uint8_t* data, size_t len) {
+  this->data = std::vector<uint8_t>(data, data + len);
   writerIdx = len;
 }
 
@@ -49,18 +49,18 @@ ByteBuffer::ByteBuffer(const std::filesystem::path& path) {
   writerIdx = length;
 }
 
-ByteBuffer::ByteBuffer(const std::vector<unsigned char>& data) {
-  this->data = std::vector<unsigned char>(data);
+ByteBuffer::ByteBuffer(const std::vector<uint8_t>& data) {
+  this->data = std::vector<uint8_t>(data);
   writerIdx = data.size();
 }
 
-unsigned char ByteBuffer::readByte() {
+uint8_t ByteBuffer::readByte() {
   if (readerIdx >= writerIdx)
     return 0;
   return data[readerIdx++];
 }
 
-void ByteBuffer::writeByte(unsigned char b) {
+void ByteBuffer::writeByte(uint8_t b) {
   ensureWritableBytes(1);
   data[writerIdx++] = b;
 }
@@ -101,8 +101,8 @@ void ByteBuffer::writeInt(int value) {
   }
 }
 
-long long ByteBuffer::readLong() {
-  long long res = 0;
+int64_t ByteBuffer::readLong() {
+  int64_t res = 0;
   for (int i = 0; i < sizeof(res); i++) {
     res <<= 8;
     res |= readByte();
@@ -110,12 +110,12 @@ long long ByteBuffer::readLong() {
   return res;
 }
 
-void ByteBuffer::writeLong(long long value) {
+void ByteBuffer::writeLong(int64_t value) {
   ensureWritableBytes(sizeof(value));
   int shift = sizeof(value) * 8;
   for (int i = 0; i < sizeof(value); i++) {
     shift -= 8;
-    data[writerIdx++] = (value & ((long long) 0xFF << shift)) >> shift;
+    data[writerIdx++] = (value & ((int64_t) 0xFF << shift)) >> shift;
   }
 }
 
@@ -126,13 +126,13 @@ std::string ByteBuffer::readString() {
 
 void ByteBuffer::writeString(std::string str) {
   writeVarInt((int) str.size());
-  writeBytes((unsigned char*) str.data(), str.size());
+  writeBytes((uint8_t*) str.data(), str.size());
 }
 
 int ByteBuffer::readVarInt() {
   int value = 0;
   int position = 0;
-  unsigned char current;
+  uint8_t current;
   while (true) {
     current = readByte();
     value |= (current & 0x7F) << position;
@@ -152,17 +152,17 @@ void ByteBuffer::writeVarInt(int value) {
       return;
     }
     writeByte(((value & 0x7F) | 0x80) & 0xFF);
-    value = (int) (((unsigned int) value) >> 7);
+    value = (int) (((uint32_t) value) >> 7);
   }
 }
 
-long long ByteBuffer::readVarLong() {
-  long long value = 0;
+int64_t ByteBuffer::readVarLong() {
+  int64_t value = 0;
   int position = 0;
-  unsigned char current;
+  uint8_t current;
   while (true) {
     current = readByte();
-    value |= ((long long) (current & 0x7F)) << position;
+    value |= ((int64_t) (current & 0x7F)) << position;
     if ((current & 0x80) == 0)
       break;
     position += 7;
@@ -172,14 +172,14 @@ long long ByteBuffer::readVarLong() {
   return value;
 }
 
-void ByteBuffer::writeVarLong(long long value) {
+void ByteBuffer::writeVarLong(int64_t value) {
   while (true) {
-    if ((value & ~((long long) 0x7F)) == 0) {
+    if ((value & ~((int64_t) 0x7F)) == 0) {
       writeByte(value & 0xFF);
       return;
     }
     writeByte(((value & 0x7F) | 0x80) & 0xFF);
-    value = (long long) (((unsigned long long) value) >> 7);
+    value = (int64_t) (((uint64_t) value) >> 7);
   }
 }
 
@@ -206,22 +206,22 @@ double ByteBuffer::readDouble() {
 void ByteBuffer::writeDouble(double value) {
   uint64_t x;
   memcpy(&x, &value, sizeof(double));
-  writeLong((long long) x);
+  writeLong((int64_t) x);
 }
 
-std::vector<unsigned char> ByteBuffer::readBytes(size_t n) {
-  std::vector<unsigned char> dst;
+std::vector<uint8_t> ByteBuffer::readBytes(size_t n) {
+  std::vector<uint8_t> dst;
   dst.resize(n);
   for (size_t i = 0; i < n; i++)
     dst[i] = readByte();
   return dst;
 }
 
-void ByteBuffer::writeBytes(std::vector<unsigned char> buf) {
+void ByteBuffer::writeBytes(std::vector<uint8_t> buf) {
   writeBytes(buf.data(), buf.size());
 }
 
-void ByteBuffer::writeBytes(const unsigned char* buf, size_t n) {
+void ByteBuffer::writeBytes(const uint8_t* buf, size_t n) {
   ensureWritableBytes(n);
   for (size_t i = 0; i < n; i++) {
     this->data[writerIdx++] = buf[i];
@@ -240,8 +240,8 @@ void ByteBuffer::writeBytes(ByteBuffer& buf) {
 
 void ByteBuffer::writeUUID(const uuids::uuid& uuid) {
   uuids::span<std::byte const, 16> uuidBytes = uuid.as_bytes();
-  writeLong((long long) ((uint64_t*) uuidBytes.data())[0]);
-  writeLong((long long) ((uint64_t*) uuidBytes.data())[1]);
+  writeLong((int64_t) ((uint64_t*) uuidBytes.data())[0]);
+  writeLong((int64_t) ((uint64_t*) uuidBytes.data())[1]);
 }
 
 void ByteBuffer::writeItemStack(const ItemStack& value) {
@@ -273,15 +273,15 @@ ItemStack ByteBuffer::readItemStack() {
 }
 
 void ByteBuffer::writeBlockPosition(const BlockPosition& pos) {
-  unsigned long long val = 0;
+  uint64_t val = 0;
   val |= (pos.x & 0x3FFFFFFull) << 38;
   val |= (pos.z & 0x3FFFFFFull) << 12;
   val |= (pos.y & 0x3FFFull);
-  writeLong((long long) val);
+  writeLong((int64_t) val);
 }
 
 BlockPosition ByteBuffer::readBlockPosition() {
-  auto val = (unsigned long long) readLong();
+  auto val = (uint64_t) readLong();
   BlockPosition pos;
   pos.x = (int) (val >> 38);
   pos.y = (int) (val & 0xFFF);

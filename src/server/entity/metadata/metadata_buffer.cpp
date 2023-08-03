@@ -27,32 +27,32 @@ MetadataBuffer::MetadataBuffer(ByteBuffer& buf)
 
 MetadataBuffer::~MetadataBuffer() = default;
 
-void MetadataBuffer::writeByte(unsigned char idx, unsigned char value) {
+void MetadataBuffer::writeByte(uint8_t idx, uint8_t value) {
   WRITE_ENTRY_HEADER(0)
   buf.writeByte(value);
 }
 
-void MetadataBuffer::writeVarInt(unsigned char idx, int value) {
+void MetadataBuffer::writeVarInt(uint8_t idx, int value) {
   WRITE_ENTRY_HEADER(1)
   buf.writeVarInt(value);
 }
 
-void MetadataBuffer::writeFloat(unsigned char idx, float value) {
+void MetadataBuffer::writeFloat(uint8_t idx, float value) {
   WRITE_ENTRY_HEADER(2)
   buf.writeFloat(value);
 }
 
-void MetadataBuffer::writeString(unsigned char idx, const std::string& value) {
+void MetadataBuffer::writeString(uint8_t idx, const std::string& value) {
   WRITE_ENTRY_HEADER(3)
   buf.writeString(value);
 }
 
-void MetadataBuffer::writeChat(unsigned char idx, const std::string& value) {
+void MetadataBuffer::writeChat(uint8_t idx, const std::string& value) {
   WRITE_ENTRY_HEADER(4)
   buf.writeString(value);
 }
 
-void MetadataBuffer::writeOptChat(unsigned char idx, const std::optional<std::string>& value) {
+void MetadataBuffer::writeOptChat(uint8_t idx, const std::optional<std::string>& value) {
   WRITE_ENTRY_HEADER(5)
   buf.writeByte(value.has_value());
   if (value.has_value()) {
@@ -60,29 +60,29 @@ void MetadataBuffer::writeOptChat(unsigned char idx, const std::optional<std::st
   }
 }
 
-void MetadataBuffer::writeItem(unsigned char idx, const ItemStack& value) {
+void MetadataBuffer::writeItem(uint8_t idx, const ItemStack& value) {
   WRITE_ENTRY_HEADER(6)
   buf.writeItemStack(value);
 }
 
-void MetadataBuffer::writeBool(unsigned char idx, bool value) {
+void MetadataBuffer::writeBool(uint8_t idx, bool value) {
   WRITE_ENTRY_HEADER(7)
   buf.writeByte(value);
 }
 
-void MetadataBuffer::writeRotation(unsigned char idx, float x, float y, float z) {
+void MetadataBuffer::writeRotation(uint8_t idx, float x, float y, float z) {
   WRITE_ENTRY_HEADER(8)
   buf.writeFloat(x);
   buf.writeFloat(y);
   buf.writeFloat(z);
 }
 
-void MetadataBuffer::writePosition(unsigned char idx, const BlockPosition& value) {
+void MetadataBuffer::writePosition(uint8_t idx, const BlockPosition& value) {
   WRITE_ENTRY_HEADER(9)
   buf.writeBlockPosition(value);
 }
 
-void MetadataBuffer::writeOptPosition(unsigned char idx, const std::optional<BlockPosition>& value) {
+void MetadataBuffer::writeOptPosition(uint8_t idx, const std::optional<BlockPosition>& value) {
   WRITE_ENTRY_HEADER(10)
   buf.writeByte(value.has_value());
   if (value.has_value()) {
@@ -90,12 +90,12 @@ void MetadataBuffer::writeOptPosition(unsigned char idx, const std::optional<Blo
   }
 }
 
-void MetadataBuffer::writeDirection(unsigned char idx, const Direction& value) {
+void MetadataBuffer::writeDirection(uint8_t idx, const Direction& value) {
   WRITE_ENTRY_HEADER(11)
   buf.writeVarInt((int) value);
 }
 
-void MetadataBuffer::writeOptUUID(unsigned char idx, const std::optional<uuids::uuid>& value) {
+void MetadataBuffer::writeOptUUID(uint8_t idx, const std::optional<uuids::uuid>& value) {
   WRITE_ENTRY_HEADER(12)
   buf.writeByte(value.has_value());
   if (value.has_value()) {
@@ -103,30 +103,30 @@ void MetadataBuffer::writeOptUUID(unsigned char idx, const std::optional<uuids::
   }
 }
 
-void MetadataBuffer::writeOptBlockID(unsigned char idx, int value) {
+void MetadataBuffer::writeOptBlockID(uint8_t idx, int value) {
   WRITE_ENTRY_HEADER(13)
   buf.writeVarInt(value);
 }
 
-void MetadataBuffer::writeNBT(unsigned char idx, const std::shared_ptr<NBT_Component>& value) {
+void MetadataBuffer::writeNBT(uint8_t idx, const std::shared_ptr<NBT_Component>& value) {
   WRITE_ENTRY_HEADER(14)
   auto data = value->asByteBuffer();
   buf.writeBytes(data);
 }
 
-void MetadataBuffer::writeParticle(unsigned char idx, AbstractParticle* particle) {
+void MetadataBuffer::writeParticle(uint8_t idx, AbstractParticle* particle) {
   WRITE_ENTRY_HEADER(15)
   particle->write(buf);
 }
 
-void MetadataBuffer::writeVillagerData(unsigned char idx, const VillagerData& value) {
+void MetadataBuffer::writeVillagerData(uint8_t idx, const VillagerData& value) {
   WRITE_ENTRY_HEADER(16)
   buf.writeVarInt((int) value.type);
   buf.writeVarInt((int) value.profession);
   buf.writeVarInt(value.level);
 }
 
-void MetadataBuffer::writeOptVarInt(unsigned char idx, const std::optional<int>& value) {
+void MetadataBuffer::writeOptVarInt(uint8_t idx, const std::optional<int>& value) {
   WRITE_ENTRY_HEADER(17)
   if (value.has_value()) {
     buf.writeVarInt(1 + value.value());
@@ -135,22 +135,22 @@ void MetadataBuffer::writeOptVarInt(unsigned char idx, const std::optional<int>&
   }
 }
 
-void MetadataBuffer::writePose(unsigned char idx, const Pose& value) {
+void MetadataBuffer::writePose(uint8_t idx, const Pose& value) {
   WRITE_ENTRY_HEADER(18)
   buf.writeVarInt((int) value);
 }
 
-void MetadataBuffer::writeCatVariant(unsigned char idx, const CatVariant& value) {
+void MetadataBuffer::writeCatVariant(uint8_t idx, const CatVariant& value) {
   WRITE_ENTRY_HEADER(19)
   buf.writeVarInt((int) value);
 }
 
-void MetadataBuffer::writeFrogVariant(unsigned char idx, const FrogVariant& value) {
+void MetadataBuffer::writeFrogVariant(uint8_t idx, const FrogVariant& value) {
   WRITE_ENTRY_HEADER(20)
   buf.writeVarInt((int) value);
 }
 
-void MetadataBuffer::writePaintingVariant(unsigned char idx, const PaintingVariant& value) {
+void MetadataBuffer::writePaintingVariant(uint8_t idx, const PaintingVariant& value) {
   WRITE_ENTRY_HEADER(21)
   buf.writeVarInt((int) value);
 }

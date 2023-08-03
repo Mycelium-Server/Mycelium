@@ -26,7 +26,7 @@ void ClientboundSetEquipment::write(ByteBuffer& buf) {
 
   auto it = equipment.begin();
   while (it != equipment.end()) {
-    unsigned char slot = it->first;
+    uint8_t slot = it->first;
     ItemStack is = it->second;
 
     it++;

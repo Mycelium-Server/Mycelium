@@ -31,6 +31,6 @@ class BrigadierLongParser : public ArgumentParser {
   void writeProperties(ByteBuffer &) const override;
 
  public:
-  std::optional<long long> min;
-  std::optional<long long> max;
+  std::optional<int64_t> min;
+  std::optional<int64_t> max;
 };

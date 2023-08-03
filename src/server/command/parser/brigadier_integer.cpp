@@ -30,8 +30,8 @@ std::string BrigadierIntegerParser::getIdentifier() const {
 }
 
 void BrigadierIntegerParser::writeProperties(ByteBuffer& buf) const {
-  buf.writeByte(((unsigned char) min.has_value()) |
-                ((unsigned char) max.has_value()) << 1);
+  buf.writeByte(((uint8_t) min.has_value()) |
+                ((uint8_t) max.has_value()) << 1);
   if (min.has_value()) {
     buf.writeInt(min.value());
   }

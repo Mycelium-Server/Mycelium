@@ -29,7 +29,7 @@ ServerboundHandshake::~ServerboundHandshake() = default;
 void ServerboundHandshake::read(ByteBuffer& in) {
   protocolVersion = in.readVarInt();
   serverAddress = in.readString();
-  serverPort = (unsigned short) in.readShort();
+  serverPort = (uint16_t) in.readShort();
   nextState = (NextState) in.readVarInt();
 }
 

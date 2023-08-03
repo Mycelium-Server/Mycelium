@@ -22,18 +22,18 @@
 #include <iostream>
 #include <utility>
 
-Palette::Palette(int bpe, std::set<unsigned short> palette)
+Palette::Palette(int bpe, std::set<uint16_t> palette)
     : bitsPerEntry(bpe),
       palette(std::move(palette)) {}
 
 Palette::~Palette() = default;
 
-SingleValuedPalette::SingleValuedPalette(std::set<unsigned short> palette)
+SingleValuedPalette::SingleValuedPalette(std::set<uint16_t> palette)
     : Palette(0, std::move(palette)) {}
 
 SingleValuedPalette::~SingleValuedPalette() = default;
 
-std::vector<unsigned long long> SingleValuedPalette::apply(std::vector<unsigned short>) {
+std::vector<uint64_t> SingleValuedPalette::apply(std::vector<uint16_t>) {
   return {};
 }
 
@@ -41,14 +41,14 @@ void SingleValuedPalette::write(ByteBuffer& out) {
   out.writeVarInt(*palette.begin());
 }
 
-IndirectPalette::IndirectPalette(int bpe, std::set<unsigned short> palette)
+IndirectPalette::IndirectPalette(int bpe, std::set<uint16_t> palette)
     : Palette(bpe, std::move(palette)) {}
 
 IndirectPalette::~IndirectPalette() = default;
 
-std::vector<unsigned long long> IndirectPalette::apply(std::vector<unsigned short> data) {
-  std::vector<unsigned long long> dst;
-  unsigned long long current = 0;
+std::vector<uint64_t> IndirectPalette::apply(std::vector<uint16_t> data) {
+  std::vector<uint64_t> dst;
+  uint64_t current = 0;
   int currentBit = 0;
 
   for (auto& element: data) {
@@ -57,7 +57,7 @@ std::vector<unsigned long long> IndirectPalette::apply(std::vector<unsigned shor
       std::cerr << "Invalid element " << element << std::endl;
       return {};
     }
-    auto index = (unsigned long long) std::distance(palette.begin(), iter);
+    auto index = (uint64_t) std::distance(palette.begin(), iter);
     current |= (index << currentBit);
     currentBit += bitsPerEntry;
     if (currentBit + bitsPerEntry > 64) {
@@ -86,13 +86,13 @@ DirectPalette::DirectPalette()
 
 DirectPalette::~DirectPalette() = default;
 
-std::vector<unsigned long long> DirectPalette::apply(std::vector<unsigned short> data) {
-  std::vector<unsigned long long> dst;
-  unsigned long long current = 0;
+std::vector<uint64_t> DirectPalette::apply(std::vector<uint16_t> data) {
+  std::vector<uint64_t> dst;
+  uint64_t current = 0;
   int currentBit = 0;
 
   for (auto& element: data) {
-    current |= ((unsigned long long) element) << currentBit;
+    current |= ((uint64_t) element) << currentBit;
     currentBit += bitsPerEntry;
     if (currentBit + bitsPerEntry > 64) {
       currentBit = 0;

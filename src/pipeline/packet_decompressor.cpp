@@ -37,9 +37,9 @@ bool PacketDecompressor::decode(ConnectionContext* ctx, void* in, std::vector<vo
   if (dlen > 0) {
     libdeflate_decompressor* decompressor = ctx->gameServer->getDecompressor();
 
-    auto* uncompr = (unsigned char*) malloc(dlen);
+    auto* uncompr = (uint8_t*) malloc(dlen);
     size_t slen = inbuf->readableBytes();
-    std::vector<unsigned char> compr = inbuf->readBytes(slen);
+    std::vector<uint8_t> compr = inbuf->readBytes(slen);
     libdeflate_result res = libdeflate_zlib_decompress(decompressor, compr.data(), slen, uncompr, dlen, nullptr);
     if (res != LIBDEFLATE_SUCCESS) {
       std::cout << "Could not decompress buffer: " << res << std::endl;

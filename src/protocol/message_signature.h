@@ -21,7 +21,7 @@
 #include "../byte_buffer.h"
 
 struct MessageSignature {
-  long long timestamp = 0;
-  long long salt = 0;
+  int64_t timestamp = 0;
+  int64_t salt = 0;
   ByteBuffer signature;
 };

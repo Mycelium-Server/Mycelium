@@ -45,8 +45,8 @@ short Heightmap::next() {
 
 void Heightmap::write(ByteBuffer& out) {
   ByteBuffer nbt = TAG_Compound(NBT_Components {
-                                    std::make_shared<TAG_Long_Array>("MOTION_BLOCKING", 37, (long long*) data),
-                                    std::make_shared<TAG_Long_Array>("WORLD_SURFACE", 37, (long long*) data)})
+                                    std::make_shared<TAG_Long_Array>("MOTION_BLOCKING", 37, (int64_t*) data),
+                                    std::make_shared<TAG_Long_Array>("WORLD_SURFACE", 37, (int64_t*) data)})
                        .asByteBuffer();
   out.writeBytes(nbt);
 }

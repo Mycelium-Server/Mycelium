@@ -25,20 +25,20 @@
 
 class PalettedContainer {
  public:
-  PalettedContainer(Palette*, std::vector<unsigned short>);
+  PalettedContainer(Palette*, std::vector<uint16_t>);
   ~PalettedContainer();
 
  public:
-  [[nodiscard]] std::vector<unsigned short> getData() const;
-  void setData(std::vector<unsigned short>);
+  [[nodiscard]] std::vector<uint16_t> getData() const;
+  void setData(std::vector<uint16_t>);
   Palette* getPalette();
   void setPalette(Palette*);
-  std::vector<unsigned long long> remap();
+  std::vector<uint64_t> remap();
   void write(ByteBuffer&);
 
  private:
   Palette* palette;
-  std::vector<unsigned short> data;
+  std::vector<uint16_t> data;
   bool dirty = true;
-  std::vector<unsigned long long> cache;
+  std::vector<uint64_t> cache;
 };

@@ -30,5 +30,5 @@ std::string ScoreHolderParser::getIdentifier() const {
 }
 
 void ScoreHolderParser::writeProperties(ByteBuffer& buf) const {
-  buf.writeByte((unsigned char) allowMultiple);
+  buf.writeByte((uint8_t) allowMultiple);
 }

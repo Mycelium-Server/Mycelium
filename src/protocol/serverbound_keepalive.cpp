@@ -37,7 +37,7 @@ int ServerboundKeepAlive::getPacketID() const {
 
 
 void ServerboundKeepAlive::handle(ConnectionContext* ctx) {
-  long long diff = ctx->lastKeepalive - id;
+  int64_t diff = ctx->lastKeepalive - id;
   auto* updLatency = new ClientboundPlayerInfo();
   updLatency->playerActions.push_back(new ClientboundPlayerInfo::UpdatePlayerLatency(ctx->playerData.uuid, (int) diff));
   for (auto& player: ctx->gameServer->getPlayers()) {

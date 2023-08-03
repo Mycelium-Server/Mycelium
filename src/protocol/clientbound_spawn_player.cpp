@@ -28,8 +28,8 @@ void ClientboundSpawnPlayer::write(ByteBuffer& buf) {
   buf.writeDouble(location.x);
   buf.writeDouble(location.y);
   buf.writeDouble(location.z);
-  buf.writeByte((unsigned char) (location.yaw * 256));
-  buf.writeByte((unsigned char) (location.pitch * 256));
+  buf.writeByte((uint8_t) (location.yaw * 256));
+  buf.writeByte((uint8_t) (location.pitch * 256));
 }
 
 int ClientboundSpawnPlayer::getPacketID() const {

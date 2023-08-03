@@ -33,12 +33,12 @@ class ByteBuffer {
   ByteBuffer();
   explicit ByteBuffer(size_t);
   explicit ByteBuffer(const std::filesystem::path&);
-  explicit ByteBuffer(const std::vector<unsigned char>&);
-  ByteBuffer(const unsigned char*, size_t);
+  explicit ByteBuffer(const std::vector<uint8_t>&);
+  ByteBuffer(const uint8_t*, size_t);
 
  public:
-  unsigned char readByte();
-  void writeByte(unsigned char);
+  uint8_t readByte();
+  void writeByte(uint8_t);
 
   short readShort();
   void writeShort(short);
@@ -46,8 +46,8 @@ class ByteBuffer {
   int readInt();
   void writeInt(int);
 
-  long long readLong();
-  void writeLong(long long);
+  int64_t readLong();
+  void writeLong(int64_t);
 
   std::string readString();
   void writeString(std::string);
@@ -55,8 +55,8 @@ class ByteBuffer {
   int readVarInt();
   void writeVarInt(int);
 
-  long long readVarLong();
-  void writeVarLong(long long);
+  int64_t readVarLong();
+  void writeVarLong(int64_t);
 
   float readFloat();
   void writeFloat(float);
@@ -70,9 +70,9 @@ class ByteBuffer {
   void writeBlockPosition(const BlockPosition&);
   BlockPosition readBlockPosition();
 
-  std::vector<unsigned char> readBytes(size_t);
-  void writeBytes(std::vector<unsigned char>);
-  void writeBytes(const unsigned char*, size_t);
+  std::vector<uint8_t> readBytes(size_t);
+  void writeBytes(std::vector<uint8_t>);
+  void writeBytes(const uint8_t*, size_t);
   void writeBytes(ByteBuffer&, size_t);
   void writeBytes(ByteBuffer&);
 
@@ -86,5 +86,5 @@ class ByteBuffer {
   size_t readerIdx = 0;
   size_t writerIdx = 0;
 
-  std::vector<unsigned char> data;
+  std::vector<uint8_t> data;
 };

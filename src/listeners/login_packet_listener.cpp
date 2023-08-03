@@ -83,7 +83,7 @@ void LoginPacketListener::handleLoginStart(ConnectionContext* ctx, ServerboundLo
     auto* request = new ClientboundEncryptionRequest();
     request->serverID = "";
     request->rsa = ctx->gameServer->getRSAKeyPair();
-    unsigned char token[4];
+    uint8_t token[4];
     RAND_bytes(token, 4);
     request->verifyToken = {token, 4};
     ctx->write(request);
@@ -198,7 +198,7 @@ static void continueLogin(ConnectionContext* ctx) {
       ChunkLocation loc = {x + currentChunk.x, z + currentChunk.z};
       chunkPacket->chunk = world->requireChunk(loc);
       ctx->write(chunkPacket);
-      unsigned long long id = (unsigned long long) loc.x << 32 | (unsigned) loc.z;
+      uint64_t id = (uint64_t) loc.x << 32 | (uint32_t) loc.z;
       ((PlayPacketListener*) ctx->packetListener)->loadedChunks.push_back(id);
     }
   }

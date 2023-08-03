@@ -23,14 +23,14 @@
 EventLoopFactory::EventLoopFactory() = default;
 EventLoopFactory::~EventLoopFactory() = default;
 
-void EventLoopFactory::init(unsigned int threadCount) {
+void EventLoopFactory::init(uint32_t threadCount) {
   mutex.lock();
   for (auto& eventLoop: eventLoops) {
     eventLoop->destroy();
   }
   eventLoops.resize(threadCount);
   owners.resize(threadCount);
-  for (unsigned i = 0; i < threadCount; i++) {
+  for (uint32_t i = 0; i < threadCount; i++) {
     eventLoops[i] = nullptr;
     owners[i] = 0;
   }
@@ -53,7 +53,7 @@ EventLoop* EventLoopFactory::next() {
   return eventLoops[current++];
 }
 
-unsigned int EventLoopFactory::getMaxThreadCount() {
+uint32_t EventLoopFactory::getMaxThreadCount() {
   return eventLoops.size();
 }
 
@@ -75,6 +75,6 @@ void EventLoopFactory::removeOwner(EventLoop* eventLoop) {
 }
 
 std::vector<EventLoop*> EventLoopFactory::eventLoops;
-std::vector<unsigned int> EventLoopFactory::owners;
-unsigned int EventLoopFactory::current = 0;
+std::vector<uint32_t> EventLoopFactory::owners;
+uint32_t EventLoopFactory::current = 0;
 std::mutex EventLoopFactory::mutex;

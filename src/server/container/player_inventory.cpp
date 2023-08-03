@@ -37,7 +37,7 @@ PlayerInventoryContainer& PlayerInventory::getInventoryContainer() {
   return inventoryContainer;
 }
 
-ItemStack& PlayerInventory::get(unsigned n, bool ignoreMenu) {
+ItemStack& PlayerInventory::get(uint32_t n, bool ignoreMenu) {
   if (!ignoreMenu && menu != nullptr) {
     if (n < menu->getSize()) {
       return menu->get(n);
@@ -49,7 +49,7 @@ ItemStack& PlayerInventory::get(unsigned n, bool ignoreMenu) {
   }
 }
 
-ItemStack PlayerInventory::set(unsigned n, const ItemStack& value, bool syncClient, bool ignoreMenu) {
+ItemStack PlayerInventory::set(uint32_t n, const ItemStack& value, bool syncClient, bool ignoreMenu) {
   ItemStack res;
   if (!ignoreMenu && menu != nullptr) {
     if (n < menu->getSize()) {
@@ -62,7 +62,7 @@ ItemStack PlayerInventory::set(unsigned n, const ItemStack& value, bool syncClie
         delete packet;
       }
     } else {
-      unsigned slot = n - menu->getSize() + 9;
+      uint32_t slot = n - menu->getSize() + 9;
       res = inventoryContainer.set(slot, value);
 
       if (player && syncClient) {
@@ -90,11 +90,11 @@ ItemStack PlayerInventory::set(unsigned n, const ItemStack& value, bool syncClie
   return res;
 }
 
-ItemStack& PlayerInventory::operator[](unsigned n) {
+ItemStack& PlayerInventory::operator[](uint32_t n) {
   return get(n);
 }
 
-unsigned PlayerInventory::getSize() const {
+uint32_t PlayerInventory::getSize() const {
   if (menu != nullptr) {
     return menu->getSize() + inventoryContainer.getSize();
   }
@@ -105,11 +105,11 @@ ItemStack& PlayerInventory::getActiveSlotData() {
   return get(36 + activeSlot);
 }
 
-unsigned char PlayerInventory::getActiveSlot() const {
+uint8_t PlayerInventory::getActiveSlot() const {
   return activeSlot;
 }
 
-unsigned char PlayerInventory::setActiveSlot(unsigned char slot, bool ackClient) {
+uint8_t PlayerInventory::setActiveSlot(uint8_t slot, bool ackClient) {
   std::swap(activeSlot, slot);
 
   if (ackClient && player) {
@@ -128,7 +128,7 @@ void PlayerInventory::bindPlayer(EntityPlayer* p) {
   player = p;
 }
 
-void PlayerInventory::updateEquipment(unsigned int slot, bool ignoreMenu) {
+void PlayerInventory::updateEquipment(uint32_t slot, bool ignoreMenu) {
   if (player) {
     ClientboundSetEquipment::EquipmentType type;
 

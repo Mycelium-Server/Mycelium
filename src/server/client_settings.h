@@ -33,22 +33,22 @@ enum MainHand {
 
 union SkinParts {
   struct {
-    unsigned char capeEnabled : 1;
-    unsigned char jacketEnabled : 1;
-    unsigned char leftSleeveEnabled : 1;
-    unsigned char rightSleeveEnabled : 1;
-    unsigned char leftPantsLegEnabled : 1;
-    unsigned char rightPantsLegEnabled : 1;
-    unsigned char hatEnabled : 1;
-    unsigned char unused : 1;
+    uint8_t capeEnabled : 1;
+    uint8_t jacketEnabled : 1;
+    uint8_t leftSleeveEnabled : 1;
+    uint8_t rightSleeveEnabled : 1;
+    uint8_t leftPantsLegEnabled : 1;
+    uint8_t rightPantsLegEnabled : 1;
+    uint8_t hatEnabled : 1;
+    uint8_t unused : 1;
   };
 
-  unsigned char value;
+  uint8_t value;
 };
 
 struct ClientSettings {
   std::string locale;
-  unsigned char viewDistance = 0;
+  uint8_t viewDistance = 0;
   ChatMode chatMode = (ChatMode) 0;
   bool chatColors = false;
   SkinParts displayedSkinParts;

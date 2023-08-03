@@ -33,5 +33,5 @@ class ClientboundInitializeWorldBorder : public ClientboundPacket {
  public:
   WorldBorder old {};
   WorldBorder newBorder {};
-  long long speed = 0;
+  int64_t speed = 0;
 };

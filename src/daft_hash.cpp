@@ -30,9 +30,9 @@ std::string daft_hash_impl::finalise() {
     result += '-';
 
     // perform 1's compliment on the bignum's bits
-    auto tmp = std::vector<unsigned char>(BN_num_bytes(bn));
+    auto tmp = std::vector<uint8_t>(BN_num_bytes(bn));
     BN_bn2bin(bn, tmp.data());
-    std::transform(tmp.begin(), tmp.end(), tmp.begin(), [](unsigned char b) { return ~b; });
+    std::transform(tmp.begin(), tmp.end(), tmp.begin(), [](uint8_t b) { return ~b; });
     BN_bin2bn(tmp.data(), tmp.size(), bn);
 
     // add 1 "as-if" 2's compliment
@@ -55,7 +55,7 @@ std::string daft_hash_impl::finalise() {
 
   // convert the hex to lower case
   std::transform(result.begin(), result.end(), result.begin(),
-                 [](unsigned char c) { return std::tolower(c); });
+                 [](uint8_t c) { return std::tolower(c); });
 
   return result;
 }

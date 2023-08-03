@@ -58,7 +58,7 @@ Chunk* World::getChunk(const ChunkLocation& location) {
   return it->second;
 }
 
-std::map<unsigned long long, Chunk*>::iterator
+std::map<uint64_t, Chunk*>::iterator
 World::getChunkIterator(const ChunkLocation& location) {
   return chunks.find(location.getID());
 }

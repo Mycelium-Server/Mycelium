@@ -32,7 +32,7 @@ KeyPairRSA rsa_create_keypair() {
   rsa = RSA_new();
   RSA_generate_key_ex(rsa, 1024, bn, nullptr);
 
-  unsigned char* derEncoded;
+  uint8_t* derEncoded;
   int len = i2d_RSA_PUBKEY(rsa, &derEncoded);
   if (len < 0) {
     std::cerr << "Unable to encode public key" << std::endl;
@@ -46,7 +46,7 @@ KeyPairRSA rsa_create_keypair() {
 }
 
 ByteBuffer rsa_decrypt(const KeyPairRSA& keypair, const ByteBuffer& buf) {
-  auto* out = (unsigned char*) malloc(buf.data.size());
+  auto* out = (uint8_t*) malloc(buf.data.size());
   int len = RSA_private_decrypt((int) buf.data.size(), buf.data.data(), out, keypair.rsa, RSA_PKCS1_PADDING);
   if (len < 0) {
     std::cerr << "Could not decrypt message" << std::endl;
@@ -70,7 +70,7 @@ CipherAES aes_create_cipher(const ByteBuffer& key) {
 }
 
 ByteBuffer* aes_encrypt(const CipherAES& cipher, ByteBuffer* buf) {
-  auto* out = (unsigned char*) malloc(buf->data.size() + cipher.blockSize - 1);
+  auto* out = (uint8_t*) malloc(buf->data.size() + cipher.blockSize - 1);
   int len;
   EVP_EncryptUpdate(cipher.encryptCtx, out, &len, buf->data.data(), (int) buf->data.size());
   if (len < 0) {
@@ -83,7 +83,7 @@ ByteBuffer* aes_encrypt(const CipherAES& cipher, ByteBuffer* buf) {
 }
 
 ByteBuffer* aes_decrypt(const CipherAES& cipher, ByteBuffer* buf) {
-  auto* out = (unsigned char*) malloc(buf->data.size() + cipher.blockSize);
+  auto* out = (uint8_t*) malloc(buf->data.size() + cipher.blockSize);
   int len;
   EVP_DecryptUpdate(cipher.decryptCtx, out, &len, buf->data.data(), (int) buf->data.size());
   if (len < 0) {

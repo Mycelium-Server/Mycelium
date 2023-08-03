@@ -21,7 +21,7 @@
 #include "../byte_buffer.h"
 
 struct SigData {// TODO: Cryptography
-  long long timestamp = 0;
+  int64_t timestamp = 0;
   ByteBuffer publicKey;
   ByteBuffer signature;
 };

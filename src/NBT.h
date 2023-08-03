@@ -85,8 +85,9 @@ class TAG_End : public NBT_Component {
 
 class TAG_Byte : public NBT_Component {
  public:
-  TAG_Byte(const std::string& name, signed char value) : NBT_Component(name),
-                                                         value(value) {}
+  TAG_Byte(const std::string& name, signed char value)
+      : NBT_Component(name),
+        value(value) {}
   explicit TAG_Byte(signed char value) : TAG_Byte("", value) {}
 
   ByteBuffer asByteBuffer() override {
@@ -115,8 +116,9 @@ class TAG_Byte : public NBT_Component {
 
 class TAG_Short : public NBT_Component {
  public:
-  TAG_Short(const std::string& name, int16_t value) : NBT_Component(name),
-                                                      value(value) {}
+  TAG_Short(const std::string& name, int16_t value)
+      : NBT_Component(name),
+        value(value) {}
   explicit TAG_Short(int16_t value) : TAG_Short("", value) {}
 
   ByteBuffer asByteBuffer() override {
@@ -145,8 +147,9 @@ class TAG_Short : public NBT_Component {
 
 class TAG_Int : public NBT_Component {
  public:
-  TAG_Int(const std::string& name, int32_t value) : NBT_Component(name),
-                                                    value(value) {}
+  TAG_Int(const std::string& name, int32_t value)
+      : NBT_Component(name),
+        value(value) {}
   explicit TAG_Int(int32_t value) : TAG_Int("", value) {}
 
   ByteBuffer asByteBuffer() override {
@@ -175,8 +178,9 @@ class TAG_Int : public NBT_Component {
 
 class TAG_Long : public NBT_Component {
  public:
-  TAG_Long(const std::string& name, int64_t value) : NBT_Component(name),
-                                                     value(value) {}
+  TAG_Long(const std::string& name, int64_t value)
+      : NBT_Component(name),
+        value(value) {}
   explicit TAG_Long(int64_t value) : TAG_Long("", value) {}
 
   ByteBuffer asByteBuffer() override {
@@ -205,8 +209,9 @@ class TAG_Long : public NBT_Component {
 
 class TAG_Float : public NBT_Component {
  public:
-  TAG_Float(const std::string& name, float value) : NBT_Component(name),
-                                                    value(value) {}
+  TAG_Float(const std::string& name, float value)
+      : NBT_Component(name),
+        value(value) {}
   explicit TAG_Float(float value) : TAG_Float("", value) {}
 
   ByteBuffer asByteBuffer() override {
@@ -235,8 +240,9 @@ class TAG_Float : public NBT_Component {
 
 class TAG_Double : public NBT_Component {
  public:
-  TAG_Double(const std::string& name, double value) : NBT_Component(name),
-                                                      value(value) {}
+  TAG_Double(const std::string& name, double value)
+      : NBT_Component(name),
+        value(value) {}
   explicit TAG_Double(double value) : TAG_Double("", value) {}
 
   ByteBuffer asByteBuffer() override {
@@ -265,10 +271,11 @@ class TAG_Double : public NBT_Component {
 
 class TAG_Byte_Array : public NBT_Component {
  public:
-  TAG_Byte_Array(const std::string& name, int32_t size, unsigned char* arr) : NBT_Component(name),
-                                                                              array_length(size),
-                                                                              array(arr) {}
-  explicit TAG_Byte_Array(int32_t size, unsigned char* arr) : TAG_Byte_Array("", size, arr) {}
+  TAG_Byte_Array(const std::string& name, int32_t size, uint8_t* arr)
+      : NBT_Component(name),
+        array_length(size),
+        array(arr) {}
+  explicit TAG_Byte_Array(int32_t size, uint8_t* arr) : TAG_Byte_Array("", size, arr) {}
 
   ByteBuffer asByteBuffer() override {
     ByteBuffer buf;
@@ -294,13 +301,14 @@ class TAG_Byte_Array : public NBT_Component {
 
  public:
   int32_t array_length;
-  unsigned char* array;
+  uint8_t* array;
 };
 
 class TAG_String : public NBT_Component {
  public:
-  TAG_String(const std::string& name, std::string value) : NBT_Component(name),
-                                                           value(std::move(value)) {}
+  TAG_String(const std::string& name, std::string value)
+      : NBT_Component(name),
+        value(std::move(value)) {}
   explicit TAG_String(std::string value) : TAG_String("", std::move(value)) {}
 
   ByteBuffer asByteBuffer() override {
@@ -437,9 +445,10 @@ class TAG_Compound : public NBT_Component {
 
 class TAG_Int_Array : public NBT_Component {
  public:
-  TAG_Int_Array(const std::string& name, int32_t size, int* arr) : NBT_Component(name),
-                                                                   array_length(size),
-                                                                   array(arr) {}
+  TAG_Int_Array(const std::string& name, int32_t size, int* arr)
+      : NBT_Component(name),
+        array_length(size),
+        array(arr) {}
   explicit TAG_Int_Array(int32_t size, int* arr) : TAG_Int_Array("", size, arr) {}
 
   ByteBuffer asByteBuffer() override {
@@ -471,10 +480,11 @@ class TAG_Int_Array : public NBT_Component {
 
 class TAG_Long_Array : public NBT_Component {
  public:
-  TAG_Long_Array(const std::string& name, int32_t size, long long* arr) : NBT_Component(name),
-                                                                          array_length(size),
-                                                                          array(arr) {}
-  explicit TAG_Long_Array(int32_t size, long long* arr) : TAG_Long_Array("", size, arr) {}
+  TAG_Long_Array(const std::string& name, int32_t size, int64_t* arr)
+      : NBT_Component(name),
+        array_length(size),
+        array(arr) {}
+  explicit TAG_Long_Array(int32_t size, int64_t* arr) : TAG_Long_Array("", size, arr) {}
 
   ByteBuffer asByteBuffer() override {
     ByteBuffer buf;
@@ -500,7 +510,7 @@ class TAG_Long_Array : public NBT_Component {
 
  public:
   int32_t array_length;
-  long long* array;
+  int64_t* array;
 };
 
 

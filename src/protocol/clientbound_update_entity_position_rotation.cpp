@@ -19,7 +19,7 @@
 #include "clientbound_update_entity_position_rotation.h"
 
 #define TO_PROTOCOL_DELTA(x) ((short) ((x) * 32 * 128))
-#define TO_PROTOCOL_ANGLE(x) ((unsigned char) (((x) / 360.F) * 256.F))
+#define TO_PROTOCOL_ANGLE(x) ((uint8_t) (((x) / 360.F) * 256.F))
 
 ClientboundUpdateEntityPositionRotation::ClientboundUpdateEntityPositionRotation() = default;
 ClientboundUpdateEntityPositionRotation::~ClientboundUpdateEntityPositionRotation() = default;

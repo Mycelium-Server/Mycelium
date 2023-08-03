@@ -31,5 +31,5 @@ class AbstractArrowMetadata : public EntityMetadata {
  public:
   bool isCritical = false;
   bool isNoclip = false;
-  unsigned char piercingLevel = 0;
+  uint8_t piercingLevel = 0;
 };

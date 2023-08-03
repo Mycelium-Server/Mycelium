@@ -210,7 +210,7 @@ bool GameServer::debugPackets() const {
   return cfg_debugPackets;
 }
 
-unsigned int GameServer::maxConnectionThreads() const {
+uint32_t GameServer::maxConnectionThreads() const {
   return cfg_maxConnectionThreads;
 }
 

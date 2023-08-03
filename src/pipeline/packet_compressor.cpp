@@ -38,7 +38,7 @@ bool PacketCompressor::encode(ConnectionContext* ctx, void* in, void*& out) {
     auto slen = (size_t) inbuf->readableBytes();
     size_t dlen = libdeflate_deflate_compress_bound(compressor, slen);
 
-    auto* compr = (unsigned char*) malloc(dlen);
+    auto* compr = (uint8_t*) malloc(dlen);
     dlen = libdeflate_zlib_compress(compressor, uncompr, slen, compr, dlen);
     if (dlen <= 0) {
       std::cerr << "Couldn't compress buffer" << std::endl;
@@ -46,7 +46,7 @@ bool PacketCompressor::encode(ConnectionContext* ctx, void* in, void*& out) {
     }
 
     outbuf->writeVarInt((int) slen);
-    outbuf->writeBytes((const unsigned char*) compr, dlen);
+    outbuf->writeBytes((const uint8_t*) compr, dlen);
 
     free(compr);
   }

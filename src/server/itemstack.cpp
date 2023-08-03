@@ -20,7 +20,7 @@
 
 #include "item/item_registry.h"
 
-ItemStack::ItemStack(int id, unsigned char count)
+ItemStack::ItemStack(int id, uint8_t count)
     : present(true),
       itemID(id),
       itemCount(count) {}

@@ -29,6 +29,6 @@ class SpellcasterIllagerMetadata : public AbstractIllagerMetadata {
   void wrapperWrite(MetadataBuffer&) override;
 
  public:
-  unsigned char spell = 0;
+  uint8_t spell = 0;
 
 };

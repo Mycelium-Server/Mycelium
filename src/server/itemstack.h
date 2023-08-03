@@ -23,7 +23,7 @@
 
 class ItemStack {
  public:
-  ItemStack(int, unsigned char);
+  ItemStack(int, uint8_t);
   ItemStack();
   ~ItemStack();
 
@@ -33,6 +33,6 @@ class ItemStack {
  public:
   bool present = false;
   int itemID = 0;// TODO: Item enum/class/struct
-  unsigned char itemCount = 0;
+  uint8_t itemCount = 0;
   std::optional<std::shared_ptr<NBT_Component>> nbt {};
 };

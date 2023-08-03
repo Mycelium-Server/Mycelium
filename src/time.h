@@ -18,4 +18,6 @@
 
 #pragma once
 
-long long currentTimeMillis();
+#include <cstdint>
+
+int64_t currentTimeMillis();

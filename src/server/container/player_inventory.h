@@ -31,14 +31,14 @@ class PlayerInventory {
   std::shared_ptr<AbstractContainer> getMenu();
   void setMenu(const std::shared_ptr<AbstractContainer>&);
   PlayerInventoryContainer& getInventoryContainer();
-  ItemStack& get(unsigned, bool = false);
-  ItemStack set(unsigned, const ItemStack&, bool = true, bool = false);
+  ItemStack& get(uint32_t, bool = false);
+  ItemStack set(uint32_t, const ItemStack&, bool = true, bool = false);
   ItemStack& getActiveSlotData();
-  [[nodiscard]] unsigned getSize() const;
-  [[nodiscard]] unsigned char getActiveSlot() const;
-  unsigned char setActiveSlot(unsigned char, bool = true);
+  [[nodiscard]] uint32_t getSize() const;
+  [[nodiscard]] uint8_t getActiveSlot() const;
+  uint8_t setActiveSlot(uint8_t, bool = true);
   void bindPlayer(EntityPlayer*);
-  void updateEquipment(unsigned, bool = false);
+  void updateEquipment(uint32_t, bool = false);
 
   ItemStack& getHelmet();
   ItemStack& getChestplate();
@@ -46,11 +46,11 @@ class PlayerInventory {
   ItemStack& getBoots();
   ItemStack& getOffHandItem();
 
-  ItemStack& operator[](unsigned);
+  ItemStack& operator[](uint32_t);
 
  private:
   std::shared_ptr<AbstractContainer> menu;
   PlayerInventoryContainer inventoryContainer;
   EntityPlayer* player = nullptr;
-  unsigned char activeSlot = 0;
+  uint8_t activeSlot = 0;
 };

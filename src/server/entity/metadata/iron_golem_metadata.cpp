@@ -23,5 +23,5 @@ IronGolemMetadata::~IronGolemMetadata() = default;
 
 void IronGolemMetadata::wrapperWrite(MetadataBuffer& wrapper) {
   AbstractGolemMetadata::wrapperWrite(wrapper);
-  wrapper.writeByte(16, (unsigned char) isPlayerCreated); 
+  wrapper.writeByte(16, (uint8_t) isPlayerCreated);
 }

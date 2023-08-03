@@ -64,7 +64,7 @@ class ConnectionContext {
   ClientSettings clientSettings;
   std::string clientBrand;
   std::thread keepaliveThread;
-  long long lastKeepalive = 0;
+  int64_t lastKeepalive = 0;
 
  public:
   bool active = false;

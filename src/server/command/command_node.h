@@ -43,7 +43,7 @@ class CommandNode {
   virtual ~CommandNode();
 
  public:
-  [[nodiscard]] unsigned char getFlags() const;
+  [[nodiscard]] uint8_t getFlags() const;
   void write(ByteBuffer&) const;
   virtual void writeOptional(ByteBuffer&) const = 0;
   [[nodiscard]] virtual NodeType getType() const = 0;

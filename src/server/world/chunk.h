@@ -26,8 +26,8 @@ class World;
 struct ChunkLocation {
   int x = 0, z = 0;
 
-  [[nodiscard]] unsigned long long getID() const {
-    return (unsigned long long) x << 32 | (unsigned) z;
+  [[nodiscard]] uint64_t getID() const {
+    return (uint64_t) x << 32 | (uint32_t) z;
   }
 };
 

@@ -30,5 +30,5 @@ class FrogMetadata : public AnimalMetadata {
 
  public:
   FrogVariant variant = (FrogVariant) 0;
-  unsigned tongueTarget = 0;
+  uint32_t tongueTarget = 0;
 };

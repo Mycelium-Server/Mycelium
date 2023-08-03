@@ -32,7 +32,7 @@ class Heightmap {
   void write(ByteBuffer&);
 
  public:
-  unsigned long long data[37] {};
+  uint64_t data[37] {};
 
  private:
   int currentLong = 0;

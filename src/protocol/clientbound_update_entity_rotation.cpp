@@ -18,7 +18,7 @@
 
 #include "clientbound_update_entity_rotation.h"
 
-#define TO_PROTOCOL_ANGLE(x) ((unsigned char) (((x) / 360.F) * 256.F))
+#define TO_PROTOCOL_ANGLE(x) ((uint8_t) (((x) / 360.F) * 256.F))
 
 ClientboundUpdateEntityRotation::ClientboundUpdateEntityRotation() = default;
 ClientboundUpdateEntityRotation::~ClientboundUpdateEntityRotation() = default;

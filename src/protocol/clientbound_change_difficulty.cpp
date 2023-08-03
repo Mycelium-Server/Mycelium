@@ -22,7 +22,7 @@ ClientboundChangeDifficulty::ClientboundChangeDifficulty() = default;
 ClientboundChangeDifficulty::~ClientboundChangeDifficulty() = default;
 
 void ClientboundChangeDifficulty::write(ByteBuffer& out) {
-  out.writeByte((unsigned char) difficulty);
+  out.writeByte((uint8_t) difficulty);
   out.writeByte(isLocked);
 }
 

@@ -74,7 +74,7 @@ void ConnectionTCP::read() {
         }
 
         if (self->ctx) {
-          auto* buf = new ByteBuffer((const unsigned char*) self->dataBlock, len);
+          auto* buf = new ByteBuffer((const uint8_t*) self->dataBlock, len);
           self->ctx->eventLoop->addToQueue([=]() {
             if (self->ctx) {
               self->ctx->read(buf);

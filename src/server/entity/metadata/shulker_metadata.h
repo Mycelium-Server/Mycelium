@@ -31,6 +31,6 @@ class ShulkerMetadata : public AbstractGolemMetadata {
  public:
   Direction attachFace = Direction::DIRECTION_DOWN;
   std::optional<BlockPosition> attachmentPosition;
-  unsigned char shieldHeight = 0;
-  unsigned char color = 10;
+  uint8_t shieldHeight = 0;
+  uint8_t color = 10;
 };

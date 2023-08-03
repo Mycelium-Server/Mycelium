@@ -32,7 +32,7 @@ class ClientboundSetContainerSlot : public ClientboundPacket {
   void construct(PlayerInventory&, short, bool = false);
 
  public:
-  unsigned char windowID = 0;
+  uint8_t windowID = 0;
   int stateID = 0;
   short slot = 0;
   ItemStack slotData;

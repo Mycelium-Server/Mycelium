@@ -40,6 +40,6 @@ class ServerboundHandshake : public ServerboundPacket {
  public:
   int protocolVersion = 0;
   std::string serverAddress;
-  unsigned short serverPort = 0;
+  uint16_t serverPort = 0;
   NextState nextState = (NextState) 0;
 };

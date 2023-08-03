@@ -30,5 +30,5 @@ class ClientboundPingResponse : public ClientboundPacket {
   [[nodiscard]] int getPacketID() const override;
 
  public:
-  long long payload = 0;
+  int64_t payload = 0;
 };

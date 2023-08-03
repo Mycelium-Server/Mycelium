@@ -20,17 +20,17 @@
 
 #include <utility>
 
-PalettedContainer::PalettedContainer(Palette* palette, std::vector<unsigned short> data)
+PalettedContainer::PalettedContainer(Palette* palette, std::vector<uint16_t> data)
     : palette(palette),
       data(std::move(data)) {}
 
 PalettedContainer::~PalettedContainer() = default;
 
-std::vector<unsigned short> PalettedContainer::getData() const {
+std::vector<uint16_t> PalettedContainer::getData() const {
   return data;
 }
 
-void PalettedContainer::setData(std::vector<unsigned short> v) {
+void PalettedContainer::setData(std::vector<uint16_t> v) {
   data = std::move(v);
   dirty = true;
 }
@@ -44,7 +44,7 @@ void PalettedContainer::setPalette(Palette* p) {
   dirty = true;
 }
 
-std::vector<unsigned long long> PalettedContainer::remap() {
+std::vector<uint64_t> PalettedContainer::remap() {
   if (dirty) {
     cache = palette->apply(data);
     dirty = false;
@@ -53,11 +53,11 @@ std::vector<unsigned long long> PalettedContainer::remap() {
 }
 
 void PalettedContainer::write(ByteBuffer& out) {
-  out.writeByte((unsigned char) palette->bitsPerEntry);
+  out.writeByte((uint8_t) palette->bitsPerEntry);
   palette->write(out);
   remap();
   out.writeVarInt((int) cache.size());
-  for (unsigned long long i: cache) {
-    out.writeLong((long long) i);
+  for (uint64_t i: cache) {
+    out.writeLong((int64_t) i);
   }
 }

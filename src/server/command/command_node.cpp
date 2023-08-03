@@ -23,15 +23,15 @@
 CommandNode::CommandNode() = default;
 CommandNode::~CommandNode() = default;
 
-unsigned char CommandNode::getFlags() const {
-  return ((unsigned char) getType() & 0x03) |
+uint8_t CommandNode::getFlags() const {
+  return ((uint8_t) getType() & 0x03) |
          (isExecutable << 2) |
          (redirect.has_value() << 3) |
          (suggestionType.has_value() << 4);
 }
 
 void CommandNode::write(ByteBuffer& buf) const {
-  buf.writeByte((unsigned char) getFlags());
+  buf.writeByte((uint8_t) getFlags());
   buf.writeVarInt((int) children.size());
   for (auto& child: children) {
     if (child->graph != graph) {

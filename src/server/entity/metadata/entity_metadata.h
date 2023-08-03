@@ -32,16 +32,16 @@ class EntityMetadata : public AbstractEntityMetadata {
  public:
   union {
     struct {
-      unsigned char isOnFire : 1;
-      unsigned char isCrouching : 1;
-      unsigned char unused : 1;
-      unsigned char isSprinting : 1;
-      unsigned char isSwimming : 1;
-      unsigned char isInvisible : 1;
-      unsigned char isGlowing : 1;
-      unsigned char isFlying : 1;
+      uint8_t isOnFire : 1;
+      uint8_t isCrouching : 1;
+      uint8_t unused : 1;
+      uint8_t isSprinting : 1;
+      uint8_t isSwimming : 1;
+      uint8_t isInvisible : 1;
+      uint8_t isGlowing : 1;
+      uint8_t isFlying : 1;
     };
-    unsigned char value = 0;
+    uint8_t value = 0;
   } bitfield {};
   int airTicks = 300;
   std::optional<std::string> customName;

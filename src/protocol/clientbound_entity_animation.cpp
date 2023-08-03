@@ -23,7 +23,7 @@ ClientboundEntityAnimation::~ClientboundEntityAnimation() = default;
 
 void ClientboundEntityAnimation::write(ByteBuffer& buf) {
   buf.writeVarInt(target->getEID());
-  buf.writeByte((unsigned char) animation);
+  buf.writeByte((uint8_t) animation);
 }
 
 int ClientboundEntityAnimation::getPacketID() const {

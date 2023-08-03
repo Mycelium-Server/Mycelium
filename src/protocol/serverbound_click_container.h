@@ -33,10 +33,10 @@ class ServerboundClickContainer : public ServerboundPacket {
   void handle(ConnectionContext*) override;
 
  public:
-  unsigned char windowID = 0;
+  uint8_t windowID = 0;
   int stateID = 0;
   short slot = 0;
-  unsigned char button = 0;
+  uint8_t button = 0;
   int mode = 0;
   std::vector<Slot> slots;
   ItemStack carriedItem;

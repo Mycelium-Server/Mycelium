@@ -23,21 +23,21 @@
 ChunkSection::ChunkSection() = default;
 ChunkSection::~ChunkSection() = default;
 
-void ChunkSection::setBlock(unsigned char x, unsigned char y, unsigned char z, int id) {
+void ChunkSection::setBlock(uint8_t x, uint8_t y, uint8_t z, int id) {
   if (x < 16 && y < 16 && z < 16) {
     int index = y * 256 + z * 16 + x;
     int current = blocks[index];
-    blockPalette.insert((unsigned short) id);
+    blockPalette.insert((uint16_t) id);
     if (current == 0 && id != 0) {
       totalBlocks++;
     } else if (current != 0 && id == 0) {
       totalBlocks--;
     }
-    blocks[index] = (unsigned short) id;
+    blocks[index] = (uint16_t) id;
   }
 }
 
-int ChunkSection::getBlock(unsigned char x, unsigned char y, unsigned char z) {
+int ChunkSection::getBlock(uint8_t x, uint8_t y, uint8_t z) {
   if (x < 16 && y < 16 && z < 16) {
     return blocks[y * 256 + z * 16 + x];
   }

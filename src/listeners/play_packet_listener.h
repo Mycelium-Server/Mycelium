@@ -67,7 +67,7 @@ class PlayPacketListener {
   void handlePlayerRotation(ConnectionContext*, float, float);
 
  public:
-  std::vector<unsigned long long> loadedChunks;
+  std::vector<uint64_t> loadedChunks;
 
  private:
   int teleportID = 0;

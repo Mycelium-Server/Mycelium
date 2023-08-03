@@ -32,5 +32,5 @@ class ServerboundPingRequest : public ServerboundPacket {
   void handle(ConnectionContext*) override;
 
  public:
-  long long payload = 0;
+  int64_t payload = 0;
 };

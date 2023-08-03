@@ -32,7 +32,7 @@ struct KeyPairRSA {
 struct CipherAES {
   EVP_CIPHER_CTX* encryptCtx = nullptr;
   EVP_CIPHER_CTX* decryptCtx = nullptr;
-  unsigned int blockSize = 0;
+  uint32_t blockSize = 0;
 };
 
 KeyPairRSA rsa_create_keypair();

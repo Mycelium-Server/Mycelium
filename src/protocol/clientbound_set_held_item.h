@@ -30,5 +30,5 @@ class ClientboundSetHeldItem : public ClientboundPacket {
   [[nodiscard]] int getPacketID() const override;
 
  public:
-  unsigned char slot = 0;
+  uint8_t slot = 0;
 };

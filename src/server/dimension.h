@@ -27,7 +27,7 @@ class World;
 struct Dimension {
   std::string name;
   std::string type;
-  long long seed;
+  int64_t seed;
   bool isFlat;
   bool isDebug;
   World* world;

@@ -18,7 +18,7 @@
 
 #include "clientbound_set_head_rotation.h"
 
-#define TO_PROTOCOL_ANGLE(x) ((unsigned char) (((x) / 360.F) * 256.F))
+#define TO_PROTOCOL_ANGLE(x) ((uint8_t) (((x) / 360.F) * 256.F))
 
 ClientboundSetHeadRotation::ClientboundSetHeadRotation() = default;
 ClientboundSetHeadRotation::~ClientboundSetHeadRotation() = default;

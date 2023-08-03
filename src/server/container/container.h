@@ -28,31 +28,31 @@ class AbstractContainer {
   virtual ~AbstractContainer();
 
  public:
-  virtual ItemStack& get(unsigned) = 0;
-  virtual ItemStack set(unsigned, ItemStack) = 0;
-  [[nodiscard]] virtual unsigned getSize() const = 0;
+  virtual ItemStack& get(uint32_t) = 0;
+  virtual ItemStack set(uint32_t, ItemStack) = 0;
+  [[nodiscard]] virtual uint32_t getSize() const = 0;
   [[nodiscard]] virtual int getID() const = 0;
 };
 
-template<unsigned size, int id>
+template<uint32_t size, int id>
 class Container : public AbstractContainer {
  public:
   Container() = default;
   ~Container() override = default;
 
  public:
-  ItemStack& get(unsigned n) override {
+  ItemStack& get(uint32_t n) override {
     assert(n < size);
     return slots[n];
   }
 
-  ItemStack set(unsigned n, ItemStack value) override {
+  ItemStack set(uint32_t n, ItemStack value) override {
     assert(n < size);
     std::swap(value, slots[n]);
     return value;
   }
 
-  [[nodiscard]] unsigned getSize() const override {
+  [[nodiscard]] uint32_t getSize() const override {
     return size;
   }
 
@@ -61,12 +61,12 @@ class Container : public AbstractContainer {
   }
 
  public:
-  ItemStack operator[](unsigned n) const {
+  ItemStack operator[](uint32_t n) const {
     assert(n < size);
     return slots[n];
   }
 
-  ItemStack& operator[](unsigned n) {
+  ItemStack& operator[](uint32_t n) {
     return get(n);
   }
 

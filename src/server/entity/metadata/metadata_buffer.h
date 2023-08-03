@@ -35,28 +35,28 @@ class MetadataBuffer {
   ~MetadataBuffer();
 
  public:
-  void writeByte(unsigned char, unsigned char);
-  void writeVarInt(unsigned char, int);
-  void writeFloat(unsigned char, float);
-  void writeString(unsigned char, const std::string&);
-  void writeChat(unsigned char, const std::string&);
-  void writeOptChat(unsigned char, const std::optional<std::string>&);
-  void writeItem(unsigned char, const ItemStack&);
-  void writeBool(unsigned char, bool);
-  void writeRotation(unsigned char, float, float, float);
-  void writePosition(unsigned char, const BlockPosition&);
-  void writeOptPosition(unsigned char, const std::optional<BlockPosition>&);
-  void writeDirection(unsigned char, const Direction&);
-  void writeOptUUID(unsigned char, const std::optional<uuids::uuid>&);
-  void writeOptBlockID(unsigned char, int);
-  void writeNBT(unsigned char, const std::shared_ptr<NBT_Component>&);
-  void writeParticle(unsigned char, AbstractParticle*);
-  void writeVillagerData(unsigned char, const VillagerData&);
-  void writeOptVarInt(unsigned char, const std::optional<int>&);
-  void writePose(unsigned char, const Pose&);
-  void writeCatVariant(unsigned char, const CatVariant&);
-  void writeFrogVariant(unsigned char, const FrogVariant&);
-  void writePaintingVariant(unsigned char, const PaintingVariant&);
+  void writeByte(uint8_t, uint8_t);
+  void writeVarInt(uint8_t, int);
+  void writeFloat(uint8_t, float);
+  void writeString(uint8_t, const std::string&);
+  void writeChat(uint8_t, const std::string&);
+  void writeOptChat(uint8_t, const std::optional<std::string>&);
+  void writeItem(uint8_t, const ItemStack&);
+  void writeBool(uint8_t, bool);
+  void writeRotation(uint8_t, float, float, float);
+  void writePosition(uint8_t, const BlockPosition&);
+  void writeOptPosition(uint8_t, const std::optional<BlockPosition>&);
+  void writeDirection(uint8_t, const Direction&);
+  void writeOptUUID(uint8_t, const std::optional<uuids::uuid>&);
+  void writeOptBlockID(uint8_t, int);
+  void writeNBT(uint8_t, const std::shared_ptr<NBT_Component>&);
+  void writeParticle(uint8_t, AbstractParticle*);
+  void writeVillagerData(uint8_t, const VillagerData&);
+  void writeOptVarInt(uint8_t, const std::optional<int>&);
+  void writePose(uint8_t, const Pose&);
+  void writeCatVariant(uint8_t, const CatVariant&);
+  void writeFrogVariant(uint8_t, const FrogVariant&);
+  void writePaintingVariant(uint8_t, const PaintingVariant&);
 
   ByteBuffer& finalize();
 

@@ -37,7 +37,7 @@ class World {// TODO: to do
   static ChunkLocation getChunkLocation(const EntityPosition& position);
 
  public:
-  std::map<unsigned long long, Chunk*>::iterator getChunkIterator(const ChunkLocation&);
+  std::map<uint64_t, Chunk*>::iterator getChunkIterator(const ChunkLocation&);
   [[nodiscard]] Chunk* getChunkByBlock(int x, int y);
   [[nodiscard]] Chunk* getChunk(const ChunkLocation&);
   Chunk* requireChunk(const ChunkLocation&);
@@ -53,7 +53,7 @@ class World {// TODO: to do
 
  public:
   std::mutex chunksMutex;
-  std::map<unsigned long long, Chunk*> chunks;
+  std::map<uint64_t, Chunk*> chunks;
 
  private:
   WorldGenerator* worldGenerator = nullptr;

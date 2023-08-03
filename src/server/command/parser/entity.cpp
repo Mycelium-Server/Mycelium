@@ -30,6 +30,6 @@ std::string EntityParser::getIdentifier() const {
 }
 
 void EntityParser::writeProperties(ByteBuffer& buf) const {
-  buf.writeByte(((unsigned char) onlySingleEntity) |
-                ((unsigned char) allowOnlyPlayers) << 1);
+  buf.writeByte(((uint8_t) onlySingleEntity) |
+                ((uint8_t) allowOnlyPlayers) << 1);
 }
