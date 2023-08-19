@@ -23,9 +23,7 @@ LightGrayCandleCakeBlock::LightGrayCandleCakeBlock() = default;
 LightGrayCandleCakeBlock::~LightGrayCandleCakeBlock() = default;
 
 short LightGrayCandleCakeBlock::getId() const {
-  if (lit == LIT_TRUE) return 18603;
-  if (lit == LIT_FALSE) return 18604;
-  return 18604;
+  return 18603 + lit * 1;
 }
 
 std::shared_ptr<Block> LightGrayCandleCakeBlock::clone() const {

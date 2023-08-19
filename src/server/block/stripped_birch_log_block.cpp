@@ -23,10 +23,7 @@ StrippedBirchLogBlock::StrippedBirchLogBlock() = default;
 StrippedBirchLogBlock::~StrippedBirchLogBlock() = default;
 
 short StrippedBirchLogBlock::getId() const {
-  if (axis == AXIS_X) return 146;
-  if (axis == AXIS_Y) return 147;
-  if (axis == AXIS_Z) return 148;
-  return 147;
+  return 146 + axis * 1;
 }
 
 std::shared_ptr<Block> StrippedBirchLogBlock::clone() const {

@@ -23,10 +23,7 @@ StrippedWarpedStemBlock::StrippedWarpedStemBlock() = default;
 StrippedWarpedStemBlock::~StrippedWarpedStemBlock() = default;
 
 short StrippedWarpedStemBlock::getId() const {
-  if (axis == AXIS_X) return 16170;
-  if (axis == AXIS_Y) return 16171;
-  if (axis == AXIS_Z) return 16172;
-  return 16171;
+  return 16170 + axis * 1;
 }
 
 std::shared_ptr<Block> StrippedWarpedStemBlock::clone() const {

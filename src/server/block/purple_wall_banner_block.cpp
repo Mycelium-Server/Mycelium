@@ -23,11 +23,7 @@ PurpleWallBannerBlock::PurpleWallBannerBlock() = default;
 PurpleWallBannerBlock::~PurpleWallBannerBlock() = default;
 
 short PurpleWallBannerBlock::getId() const {
-  if (facing == FACING_NORTH) return 8934;
-  if (facing == FACING_SOUTH) return 8935;
-  if (facing == FACING_WEST) return 8936;
-  if (facing == FACING_EAST) return 8937;
-  return 8934;
+  return 8934 + facing * 1;
 }
 
 std::shared_ptr<Block> PurpleWallBannerBlock::clone() const {

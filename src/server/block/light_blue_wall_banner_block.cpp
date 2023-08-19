@@ -23,11 +23,7 @@ LightBlueWallBannerBlock::LightBlueWallBannerBlock() = default;
 LightBlueWallBannerBlock::~LightBlueWallBannerBlock() = default;
 
 short LightBlueWallBannerBlock::getId() const {
-  if (facing == FACING_NORTH) return 8906;
-  if (facing == FACING_SOUTH) return 8907;
-  if (facing == FACING_WEST) return 8908;
-  if (facing == FACING_EAST) return 8909;
-  return 8906;
+  return 8906 + facing * 1;
 }
 
 std::shared_ptr<Block> LightBlueWallBannerBlock::clone() const {

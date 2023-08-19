@@ -23,9 +23,7 @@ HornCoralFanBlock::HornCoralFanBlock() = default;
 HornCoralFanBlock::~HornCoralFanBlock() = default;
 
 short HornCoralFanBlock::getId() const {
-  if (waterlogged == WATERLOGGED_TRUE) return 10439;
-  if (waterlogged == WATERLOGGED_FALSE) return 10440;
-  return 10439;
+  return 10439 + waterlogged * 1;
 }
 
 std::shared_ptr<Block> HornCoralFanBlock::clone() const {

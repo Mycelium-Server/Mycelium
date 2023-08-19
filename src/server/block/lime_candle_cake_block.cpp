@@ -23,9 +23,7 @@ LimeCandleCakeBlock::LimeCandleCakeBlock() = default;
 LimeCandleCakeBlock::~LimeCandleCakeBlock() = default;
 
 short LimeCandleCakeBlock::getId() const {
-  if (lit == LIT_TRUE) return 18597;
-  if (lit == LIT_FALSE) return 18598;
-  return 18598;
+  return 18597 + lit * 1;
 }
 
 std::shared_ptr<Block> LimeCandleCakeBlock::clone() const {

@@ -23,9 +23,7 @@ BubbleCoralFanBlock::BubbleCoralFanBlock() = default;
 BubbleCoralFanBlock::~BubbleCoralFanBlock() = default;
 
 short BubbleCoralFanBlock::getId() const {
-  if (waterlogged == WATERLOGGED_TRUE) return 10435;
-  if (waterlogged == WATERLOGGED_FALSE) return 10436;
-  return 10435;
+  return 10435 + waterlogged * 1;
 }
 
 std::shared_ptr<Block> BubbleCoralFanBlock::clone() const {

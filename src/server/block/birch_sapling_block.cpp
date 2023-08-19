@@ -23,9 +23,7 @@ BirchSaplingBlock::BirchSaplingBlock() = default;
 BirchSaplingBlock::~BirchSaplingBlock() = default;
 
 short BirchSaplingBlock::getId() const {
-  if (stage == STAGE_0) return 26;
-  if (stage == STAGE_1) return 27;
-  return 26;
+  return 26 + stage * 1;
 }
 
 std::shared_ptr<Block> BirchSaplingBlock::clone() const {

@@ -23,9 +23,7 @@ TntBlock::TntBlock() = default;
 TntBlock::~TntBlock() = default;
 
 short TntBlock::getId() const {
-  if (unstable == UNSTABLE_TRUE) return 1684;
-  if (unstable == UNSTABLE_FALSE) return 1685;
-  return 1685;
+  return 1684 + unstable * 1;
 }
 
 std::shared_ptr<Block> TntBlock::clone() const {

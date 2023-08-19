@@ -23,9 +23,7 @@ BubbleColumnBlock::BubbleColumnBlock() = default;
 BubbleColumnBlock::~BubbleColumnBlock() = default;
 
 short BubbleColumnBlock::getId() const {
-  if (drag == DRAG_TRUE) return 10548;
-  if (drag == DRAG_FALSE) return 10549;
-  return 10548;
+  return 10548 + drag * 1;
 }
 
 std::shared_ptr<Block> BubbleColumnBlock::clone() const {

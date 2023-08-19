@@ -9,3 +9,4 @@ tools/block-generator/generated
 fix_licenses.py
 tools/item-generator/res
 tools/item-generator/generated
+tools/dump-data/data

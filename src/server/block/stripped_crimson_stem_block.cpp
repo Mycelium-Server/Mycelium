@@ -23,10 +23,7 @@ StrippedCrimsonStemBlock::StrippedCrimsonStemBlock() = default;
 StrippedCrimsonStemBlock::~StrippedCrimsonStemBlock() = default;
 
 short StrippedCrimsonStemBlock::getId() const {
-  if (axis == AXIS_X) return 16187;
-  if (axis == AXIS_Y) return 16188;
-  if (axis == AXIS_Z) return 16189;
-  return 16188;
+  return 16187 + axis * 1;
 }
 
 std::shared_ptr<Block> StrippedCrimsonStemBlock::clone() const {

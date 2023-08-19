@@ -23,9 +23,7 @@ PolishedBlackstonePressurePlateBlock::PolishedBlackstonePressurePlateBlock() = d
 PolishedBlackstonePressurePlateBlock::~PolishedBlackstonePressurePlateBlock() = default;
 
 short PolishedBlackstonePressurePlateBlock::getId() const {
-  if (powered == POWERED_TRUE) return 17960;
-  if (powered == POWERED_FALSE) return 17961;
-  return 17961;
+  return 17960 + powered * 1;
 }
 
 std::shared_ptr<Block> PolishedBlackstonePressurePlateBlock::clone() const {

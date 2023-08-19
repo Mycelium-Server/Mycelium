@@ -23,9 +23,7 @@ RedstoneOreBlock::RedstoneOreBlock() = default;
 RedstoneOreBlock::~RedstoneOreBlock() = default;
 
 short RedstoneOreBlock::getId() const {
-  if (lit == LIT_TRUE) return 4192;
-  if (lit == LIT_FALSE) return 4193;
-  return 4193;
+  return 4192 + lit * 1;
 }
 
 std::shared_ptr<Block> RedstoneOreBlock::clone() const {

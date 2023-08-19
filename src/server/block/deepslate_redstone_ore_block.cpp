@@ -23,9 +23,7 @@ DeepslateRedstoneOreBlock::DeepslateRedstoneOreBlock() = default;
 DeepslateRedstoneOreBlock::~DeepslateRedstoneOreBlock() = default;
 
 short DeepslateRedstoneOreBlock::getId() const {
-  if (lit == LIT_TRUE) return 4194;
-  if (lit == LIT_FALSE) return 4195;
-  return 4195;
+  return 4194 + lit * 1;
 }
 
 std::shared_ptr<Block> DeepslateRedstoneOreBlock::clone() const {

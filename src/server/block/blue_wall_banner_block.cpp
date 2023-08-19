@@ -23,11 +23,7 @@ BlueWallBannerBlock::BlueWallBannerBlock() = default;
 BlueWallBannerBlock::~BlueWallBannerBlock() = default;
 
 short BlueWallBannerBlock::getId() const {
-  if (facing == FACING_NORTH) return 8938;
-  if (facing == FACING_SOUTH) return 8939;
-  if (facing == FACING_WEST) return 8940;
-  if (facing == FACING_EAST) return 8941;
-  return 8938;
+  return 8938 + facing * 1;
 }
 
 std::shared_ptr<Block> BlueWallBannerBlock::clone() const {

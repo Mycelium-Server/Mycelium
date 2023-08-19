@@ -23,9 +23,7 @@ StonePressurePlateBlock::StonePressurePlateBlock() = default;
 StonePressurePlateBlock::~StonePressurePlateBlock() = default;
 
 short StonePressurePlateBlock::getId() const {
-  if (powered == POWERED_TRUE) return 4112;
-  if (powered == POWERED_FALSE) return 4113;
-  return 4113;
+  return 4112 + powered * 1;
 }
 
 std::shared_ptr<Block> StonePressurePlateBlock::clone() const {

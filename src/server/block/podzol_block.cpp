@@ -23,9 +23,7 @@ PodzolBlock::PodzolBlock() = default;
 PodzolBlock::~PodzolBlock() = default;
 
 short PodzolBlock::getId() const {
-  if (snowy == SNOWY_TRUE) return 12;
-  if (snowy == SNOWY_FALSE) return 13;
-  return 13;
+  return 12 + snowy * 1;
 }
 
 std::shared_ptr<Block> PodzolBlock::clone() const {

@@ -23,11 +23,7 @@ YellowWallBannerBlock::YellowWallBannerBlock() = default;
 YellowWallBannerBlock::~YellowWallBannerBlock() = default;
 
 short YellowWallBannerBlock::getId() const {
-  if (facing == FACING_NORTH) return 8910;
-  if (facing == FACING_SOUTH) return 8911;
-  if (facing == FACING_WEST) return 8912;
-  if (facing == FACING_EAST) return 8913;
-  return 8910;
+  return 8910 + facing * 1;
 }
 
 std::shared_ptr<Block> YellowWallBannerBlock::clone() const {

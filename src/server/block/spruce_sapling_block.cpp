@@ -23,9 +23,7 @@ SpruceSaplingBlock::SpruceSaplingBlock() = default;
 SpruceSaplingBlock::~SpruceSaplingBlock() = default;
 
 short SpruceSaplingBlock::getId() const {
-  if (stage == STAGE_0) return 24;
-  if (stage == STAGE_1) return 25;
-  return 24;
+  return 24 + stage * 1;
 }
 
 std::shared_ptr<Block> SpruceSaplingBlock::clone() const {

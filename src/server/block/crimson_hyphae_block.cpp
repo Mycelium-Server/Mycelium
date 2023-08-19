@@ -23,10 +23,7 @@ CrimsonHyphaeBlock::CrimsonHyphaeBlock() = default;
 CrimsonHyphaeBlock::~CrimsonHyphaeBlock() = default;
 
 short CrimsonHyphaeBlock::getId() const {
-  if (axis == AXIS_X) return 16190;
-  if (axis == AXIS_Y) return 16191;
-  if (axis == AXIS_Z) return 16192;
-  return 16191;
+  return 16190 + axis * 1;
 }
 
 std::shared_ptr<Block> CrimsonHyphaeBlock::clone() const {

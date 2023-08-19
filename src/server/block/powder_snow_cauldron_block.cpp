@@ -23,10 +23,7 @@ PowderSnowCauldronBlock::PowderSnowCauldronBlock() = default;
 PowderSnowCauldronBlock::~PowderSnowCauldronBlock() = default;
 
 short PowderSnowCauldronBlock::getId() const {
-  if (level == LEVEL_1) return 5733;
-  if (level == LEVEL_2) return 5734;
-  if (level == LEVEL_3) return 5735;
-  return 5733;
+  return 5733 + level * 1;
 }
 
 std::shared_ptr<Block> PowderSnowCauldronBlock::clone() const {

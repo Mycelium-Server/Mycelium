@@ -23,9 +23,7 @@ CandleCakeBlock::CandleCakeBlock() = default;
 CandleCakeBlock::~CandleCakeBlock() = default;
 
 short CandleCakeBlock::getId() const {
-  if (lit == LIT_TRUE) return 18585;
-  if (lit == LIT_FALSE) return 18586;
-  return 18586;
+  return 18585 + lit * 1;
 }
 
 std::shared_ptr<Block> CandleCakeBlock::clone() const {

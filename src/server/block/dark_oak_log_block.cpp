@@ -23,10 +23,7 @@ DarkOakLogBlock::DarkOakLogBlock() = default;
 DarkOakLogBlock::~DarkOakLogBlock() = default;
 
 short DarkOakLogBlock::getId() const {
-  if (axis == AXIS_X) return 132;
-  if (axis == AXIS_Y) return 133;
-  if (axis == AXIS_Z) return 134;
-  return 133;
+  return 132 + axis * 1;
 }
 
 std::shared_ptr<Block> DarkOakLogBlock::clone() const {

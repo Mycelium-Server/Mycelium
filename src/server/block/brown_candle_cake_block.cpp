@@ -23,9 +23,7 @@ BrownCandleCakeBlock::BrownCandleCakeBlock() = default;
 BrownCandleCakeBlock::~BrownCandleCakeBlock() = default;
 
 short BrownCandleCakeBlock::getId() const {
-  if (lit == LIT_TRUE) return 18611;
-  if (lit == LIT_FALSE) return 18612;
-  return 18612;
+  return 18611 + lit * 1;
 }
 
 std::shared_ptr<Block> BrownCandleCakeBlock::clone() const {

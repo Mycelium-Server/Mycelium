@@ -23,11 +23,7 @@ CreeperWallHeadBlock::CreeperWallHeadBlock() = default;
 CreeperWallHeadBlock::~CreeperWallHeadBlock() = default;
 
 short CreeperWallHeadBlock::getId() const {
-  if (facing == FACING_NORTH) return 7203;
-  if (facing == FACING_SOUTH) return 7204;
-  if (facing == FACING_WEST) return 7205;
-  if (facing == FACING_EAST) return 7206;
-  return 7203;
+  return 7203 + facing * 1;
 }
 
 std::shared_ptr<Block> CreeperWallHeadBlock::clone() const {

@@ -23,9 +23,7 @@ TubeCoralBlock::TubeCoralBlock() = default;
 TubeCoralBlock::~TubeCoralBlock() = default;
 
 short TubeCoralBlock::getId() const {
-  if (waterlogged == WATERLOGGED_TRUE) return 10411;
-  if (waterlogged == WATERLOGGED_FALSE) return 10412;
-  return 10411;
+  return 10411 + waterlogged * 1;
 }
 
 std::shared_ptr<Block> TubeCoralBlock::clone() const {

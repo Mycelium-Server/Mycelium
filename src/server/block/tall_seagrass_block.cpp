@@ -23,9 +23,7 @@ TallSeagrassBlock::TallSeagrassBlock() = default;
 TallSeagrassBlock::~TallSeagrassBlock() = default;
 
 short TallSeagrassBlock::getId() const {
-  if (half == HALF_UPPER) return 1600;
-  if (half == HALF_LOWER) return 1601;
-  return 1601;
+  return 1600 + half * 1;
 }
 
 std::shared_ptr<Block> TallSeagrassBlock::clone() const {

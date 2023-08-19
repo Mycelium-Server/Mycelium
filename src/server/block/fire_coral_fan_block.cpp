@@ -23,9 +23,7 @@ FireCoralFanBlock::FireCoralFanBlock() = default;
 FireCoralFanBlock::~FireCoralFanBlock() = default;
 
 short FireCoralFanBlock::getId() const {
-  if (waterlogged == WATERLOGGED_TRUE) return 10437;
-  if (waterlogged == WATERLOGGED_FALSE) return 10438;
-  return 10437;
+  return 10437 + waterlogged * 1;
 }
 
 std::shared_ptr<Block> FireCoralFanBlock::clone() const {

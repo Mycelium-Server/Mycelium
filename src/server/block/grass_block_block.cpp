@@ -23,9 +23,7 @@ GrassBlockBlock::GrassBlockBlock() = default;
 GrassBlockBlock::~GrassBlockBlock() = default;
 
 short GrassBlockBlock::getId() const {
-  if (snowy == SNOWY_TRUE) return 8;
-  if (snowy == SNOWY_FALSE) return 9;
-  return 9;
+  return 8 + snowy * 1;
 }
 
 std::shared_ptr<Block> GrassBlockBlock::clone() const {

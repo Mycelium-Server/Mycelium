@@ -23,10 +23,7 @@ MuddyMangroveRootsBlock::MuddyMangroveRootsBlock() = default;
 MuddyMangroveRootsBlock::~MuddyMangroveRootsBlock() = default;
 
 short MuddyMangroveRootsBlock::getId() const {
-  if (axis == AXIS_X) return 140;
-  if (axis == AXIS_Y) return 141;
-  if (axis == AXIS_Z) return 142;
-  return 141;
+  return 140 + axis * 1;
 }
 
 std::shared_ptr<Block> MuddyMangroveRootsBlock::clone() const {

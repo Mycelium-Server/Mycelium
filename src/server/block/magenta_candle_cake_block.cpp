@@ -23,9 +23,7 @@ MagentaCandleCakeBlock::MagentaCandleCakeBlock() = default;
 MagentaCandleCakeBlock::~MagentaCandleCakeBlock() = default;
 
 short MagentaCandleCakeBlock::getId() const {
-  if (lit == LIT_TRUE) return 18591;
-  if (lit == LIT_FALSE) return 18592;
-  return 18592;
+  return 18591 + lit * 1;
 }
 
 std::shared_ptr<Block> MagentaCandleCakeBlock::clone() const {

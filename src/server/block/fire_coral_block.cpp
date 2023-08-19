@@ -23,9 +23,7 @@ FireCoralBlock::FireCoralBlock() = default;
 FireCoralBlock::~FireCoralBlock() = default;
 
 short FireCoralBlock::getId() const {
-  if (waterlogged == WATERLOGGED_TRUE) return 10417;
-  if (waterlogged == WATERLOGGED_FALSE) return 10418;
-  return 10417;
+  return 10417 + waterlogged * 1;
 }
 
 std::shared_ptr<Block> FireCoralBlock::clone() const {

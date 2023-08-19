@@ -23,9 +23,7 @@ WhiteCandleCakeBlock::WhiteCandleCakeBlock() = default;
 WhiteCandleCakeBlock::~WhiteCandleCakeBlock() = default;
 
 short WhiteCandleCakeBlock::getId() const {
-  if (lit == LIT_TRUE) return 18587;
-  if (lit == LIT_FALSE) return 18588;
-  return 18588;
+  return 18587 + lit * 1;
 }
 
 std::shared_ptr<Block> WhiteCandleCakeBlock::clone() const {

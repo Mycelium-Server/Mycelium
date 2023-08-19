@@ -23,9 +23,7 @@ HornCoralBlock::HornCoralBlock() = default;
 HornCoralBlock::~HornCoralBlock() = default;
 
 short HornCoralBlock::getId() const {
-  if (waterlogged == WATERLOGGED_TRUE) return 10419;
-  if (waterlogged == WATERLOGGED_FALSE) return 10420;
-  return 10419;
+  return 10419 + waterlogged * 1;
 }
 
 std::shared_ptr<Block> HornCoralBlock::clone() const {

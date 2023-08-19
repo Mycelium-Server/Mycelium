@@ -23,10 +23,7 @@ BirchLogBlock::BirchLogBlock() = default;
 BirchLogBlock::~BirchLogBlock() = default;
 
 short BirchLogBlock::getId() const {
-  if (axis == AXIS_X) return 123;
-  if (axis == AXIS_Y) return 124;
-  if (axis == AXIS_Z) return 125;
-  return 124;
+  return 123 + axis * 1;
 }
 
 std::shared_ptr<Block> BirchLogBlock::clone() const {

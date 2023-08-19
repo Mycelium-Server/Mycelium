@@ -23,9 +23,7 @@ OrangeCandleCakeBlock::OrangeCandleCakeBlock() = default;
 OrangeCandleCakeBlock::~OrangeCandleCakeBlock() = default;
 
 short OrangeCandleCakeBlock::getId() const {
-  if (lit == LIT_TRUE) return 18589;
-  if (lit == LIT_FALSE) return 18590;
-  return 18590;
+  return 18589 + lit * 1;
 }
 
 std::shared_ptr<Block> OrangeCandleCakeBlock::clone() const {

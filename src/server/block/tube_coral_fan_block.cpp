@@ -23,9 +23,7 @@ TubeCoralFanBlock::TubeCoralFanBlock() = default;
 TubeCoralFanBlock::~TubeCoralFanBlock() = default;
 
 short TubeCoralFanBlock::getId() const {
-  if (waterlogged == WATERLOGGED_TRUE) return 10431;
-  if (waterlogged == WATERLOGGED_FALSE) return 10432;
-  return 10431;
+  return 10431 + waterlogged * 1;
 }
 
 std::shared_ptr<Block> TubeCoralFanBlock::clone() const {

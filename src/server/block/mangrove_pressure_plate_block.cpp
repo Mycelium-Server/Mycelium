@@ -23,9 +23,7 @@ MangrovePressurePlateBlock::MangrovePressurePlateBlock() = default;
 MangrovePressurePlateBlock::~MangrovePressurePlateBlock() = default;
 
 short MangrovePressurePlateBlock::getId() const {
-  if (powered == POWERED_TRUE) return 4190;
-  if (powered == POWERED_FALSE) return 4191;
-  return 4191;
+  return 4190 + powered * 1;
 }
 
 std::shared_ptr<Block> MangrovePressurePlateBlock::clone() const {

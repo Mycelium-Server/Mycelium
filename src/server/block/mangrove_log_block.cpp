@@ -23,10 +23,7 @@ MangroveLogBlock::MangroveLogBlock() = default;
 MangroveLogBlock::~MangroveLogBlock() = default;
 
 short MangroveLogBlock::getId() const {
-  if (axis == AXIS_X) return 135;
-  if (axis == AXIS_Y) return 136;
-  if (axis == AXIS_Z) return 137;
-  return 136;
+  return 135 + axis * 1;
 }
 
 std::shared_ptr<Block> MangroveLogBlock::clone() const {

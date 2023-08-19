@@ -23,9 +23,7 @@ SculkCatalystBlock::SculkCatalystBlock() = default;
 SculkCatalystBlock::~SculkCatalystBlock() = default;
 
 short SculkCatalystBlock::getId() const {
-  if (bloom == BLOOM_TRUE) return 18898;
-  if (bloom == BLOOM_FALSE) return 18899;
-  return 18899;
+  return 18898 + bloom * 1;
 }
 
 std::shared_ptr<Block> SculkCatalystBlock::clone() const {

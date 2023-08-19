@@ -23,9 +23,7 @@ DeadBrainCoralBlock::DeadBrainCoralBlock() = default;
 DeadBrainCoralBlock::~DeadBrainCoralBlock() = default;
 
 short DeadBrainCoralBlock::getId() const {
-  if (waterlogged == WATERLOGGED_TRUE) return 10403;
-  if (waterlogged == WATERLOGGED_FALSE) return 10404;
-  return 10403;
+  return 10403 + waterlogged * 1;
 }
 
 std::shared_ptr<Block> DeadBrainCoralBlock::clone() const {

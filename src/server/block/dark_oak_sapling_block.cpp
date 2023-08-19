@@ -23,9 +23,7 @@ DarkOakSaplingBlock::DarkOakSaplingBlock() = default;
 DarkOakSaplingBlock::~DarkOakSaplingBlock() = default;
 
 short DarkOakSaplingBlock::getId() const {
-  if (stage == STAGE_0) return 32;
-  if (stage == STAGE_1) return 33;
-  return 32;
+  return 32 + stage * 1;
 }
 
 std::shared_ptr<Block> DarkOakSaplingBlock::clone() const {

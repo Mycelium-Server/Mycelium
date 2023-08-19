@@ -23,9 +23,7 @@ JunglePressurePlateBlock::JunglePressurePlateBlock() = default;
 JunglePressurePlateBlock::~JunglePressurePlateBlock() = default;
 
 short JunglePressurePlateBlock::getId() const {
-  if (powered == POWERED_TRUE) return 4184;
-  if (powered == POWERED_FALSE) return 4185;
-  return 4185;
+  return 4184 + powered * 1;
 }
 
 std::shared_ptr<Block> JunglePressurePlateBlock::clone() const {

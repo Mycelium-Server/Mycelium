@@ -23,9 +23,7 @@ OakPressurePlateBlock::OakPressurePlateBlock() = default;
 OakPressurePlateBlock::~OakPressurePlateBlock() = default;
 
 short OakPressurePlateBlock::getId() const {
-  if (powered == POWERED_TRUE) return 4178;
-  if (powered == POWERED_FALSE) return 4179;
-  return 4179;
+  return 4178 + powered * 1;
 }
 
 std::shared_ptr<Block> OakPressurePlateBlock::clone() const {

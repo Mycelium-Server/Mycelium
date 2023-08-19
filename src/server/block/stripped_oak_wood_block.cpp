@@ -23,10 +23,7 @@ StrippedOakWoodBlock::StrippedOakWoodBlock() = default;
 StrippedOakWoodBlock::~StrippedOakWoodBlock() = default;
 
 short StrippedOakWoodBlock::getId() const {
-  if (axis == AXIS_X) return 185;
-  if (axis == AXIS_Y) return 186;
-  if (axis == AXIS_Z) return 187;
-  return 186;
+  return 185 + axis * 1;
 }
 
 std::shared_ptr<Block> StrippedOakWoodBlock::clone() const {

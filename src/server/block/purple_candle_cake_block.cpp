@@ -23,9 +23,7 @@ PurpleCandleCakeBlock::PurpleCandleCakeBlock() = default;
 PurpleCandleCakeBlock::~PurpleCandleCakeBlock() = default;
 
 short PurpleCandleCakeBlock::getId() const {
-  if (lit == LIT_TRUE) return 18607;
-  if (lit == LIT_FALSE) return 18608;
-  return 18608;
+  return 18607 + lit * 1;
 }
 
 std::shared_ptr<Block> PurpleCandleCakeBlock::clone() const {

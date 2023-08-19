@@ -23,10 +23,7 @@ OakWoodBlock::OakWoodBlock() = default;
 OakWoodBlock::~OakWoodBlock() = default;
 
 short OakWoodBlock::getId() const {
-  if (axis == AXIS_X) return 164;
-  if (axis == AXIS_Y) return 165;
-  if (axis == AXIS_Z) return 166;
-  return 165;
+  return 164 + axis * 1;
 }
 
 std::shared_ptr<Block> OakWoodBlock::clone() const {

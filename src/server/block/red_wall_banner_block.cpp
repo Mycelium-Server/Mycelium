@@ -23,11 +23,7 @@ RedWallBannerBlock::RedWallBannerBlock() = default;
 RedWallBannerBlock::~RedWallBannerBlock() = default;
 
 short RedWallBannerBlock::getId() const {
-  if (facing == FACING_NORTH) return 8950;
-  if (facing == FACING_SOUTH) return 8951;
-  if (facing == FACING_WEST) return 8952;
-  if (facing == FACING_EAST) return 8953;
-  return 8950;
+  return 8950 + facing * 1;
 }
 
 std::shared_ptr<Block> RedWallBannerBlock::clone() const {

@@ -23,10 +23,7 @@ StrippedCrimsonHyphaeBlock::StrippedCrimsonHyphaeBlock() = default;
 StrippedCrimsonHyphaeBlock::~StrippedCrimsonHyphaeBlock() = default;
 
 short StrippedCrimsonHyphaeBlock::getId() const {
-  if (axis == AXIS_X) return 16193;
-  if (axis == AXIS_Y) return 16194;
-  if (axis == AXIS_Z) return 16195;
-  return 16194;
+  return 16193 + axis * 1;
 }
 
 std::shared_ptr<Block> StrippedCrimsonHyphaeBlock::clone() const {

@@ -23,11 +23,7 @@ SweetBerryBushBlock::SweetBerryBushBlock() = default;
 SweetBerryBushBlock::~SweetBerryBushBlock() = default;
 
 short SweetBerryBushBlock::getId() const {
-  if (age == AGE_0) return 16163;
-  if (age == AGE_1) return 16164;
-  if (age == AGE_2) return 16165;
-  if (age == AGE_3) return 16166;
-  return 16163;
+  return 16163 + age * 1;
 }
 
 std::shared_ptr<Block> SweetBerryBushBlock::clone() const {

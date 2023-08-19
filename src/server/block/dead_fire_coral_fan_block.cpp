@@ -23,9 +23,7 @@ DeadFireCoralFanBlock::DeadFireCoralFanBlock() = default;
 DeadFireCoralFanBlock::~DeadFireCoralFanBlock() = default;
 
 short DeadFireCoralFanBlock::getId() const {
-  if (waterlogged == WATERLOGGED_TRUE) return 10427;
-  if (waterlogged == WATERLOGGED_FALSE) return 10428;
-  return 10427;
+  return 10427 + waterlogged * 1;
 }
 
 std::shared_ptr<Block> DeadFireCoralFanBlock::clone() const {

@@ -23,10 +23,7 @@ QuartzPillarBlock::QuartzPillarBlock() = default;
 QuartzPillarBlock::~QuartzPillarBlock() = default;
 
 short QuartzPillarBlock::getId() const {
-  if (axis == AXIS_X) return 7357;
-  if (axis == AXIS_Y) return 7358;
-  if (axis == AXIS_Z) return 7359;
-  return 7358;
+  return 7357 + axis * 1;
 }
 
 std::shared_ptr<Block> QuartzPillarBlock::clone() const {

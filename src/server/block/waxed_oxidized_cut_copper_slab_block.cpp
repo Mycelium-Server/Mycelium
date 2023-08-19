@@ -23,13 +23,7 @@ WaxedOxidizedCutCopperSlabBlock::WaxedOxidizedCutCopperSlabBlock() = default;
 WaxedOxidizedCutCopperSlabBlock::~WaxedOxidizedCutCopperSlabBlock() = default;
 
 short WaxedOxidizedCutCopperSlabBlock::getId() const {
-  if (type == TYPE_TOP && waterlogged == WATERLOGGED_TRUE) return 19590;
-  if (type == TYPE_TOP && waterlogged == WATERLOGGED_FALSE) return 19591;
-  if (type == TYPE_BOTTOM && waterlogged == WATERLOGGED_TRUE) return 19592;
-  if (type == TYPE_BOTTOM && waterlogged == WATERLOGGED_FALSE) return 19593;
-  if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_TRUE) return 19594;
-  if (type == TYPE_DOUBLE && waterlogged == WATERLOGGED_FALSE) return 19595;
-  return 19593;
+  return 19590 + waterlogged * 1 + type * 2;
 }
 
 std::shared_ptr<Block> WaxedOxidizedCutCopperSlabBlock::clone() const {

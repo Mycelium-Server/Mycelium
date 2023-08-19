@@ -23,9 +23,7 @@ AcaciaPressurePlateBlock::AcaciaPressurePlateBlock() = default;
 AcaciaPressurePlateBlock::~AcaciaPressurePlateBlock() = default;
 
 short AcaciaPressurePlateBlock::getId() const {
-  if (powered == POWERED_TRUE) return 4186;
-  if (powered == POWERED_FALSE) return 4187;
-  return 4187;
+  return 4186 + powered * 1;
 }
 
 std::shared_ptr<Block> AcaciaPressurePlateBlock::clone() const {

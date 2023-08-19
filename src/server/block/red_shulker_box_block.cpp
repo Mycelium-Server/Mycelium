@@ -23,13 +23,7 @@ RedShulkerBoxBlock::RedShulkerBoxBlock() = default;
 RedShulkerBoxBlock::~RedShulkerBoxBlock() = default;
 
 short RedShulkerBoxBlock::getId() const {
-  if (facing == FACING_NORTH) return 10243;
-  if (facing == FACING_EAST) return 10244;
-  if (facing == FACING_SOUTH) return 10245;
-  if (facing == FACING_WEST) return 10246;
-  if (facing == FACING_UP) return 10247;
-  if (facing == FACING_DOWN) return 10248;
-  return 10247;
+  return 10243 + facing * 1;
 }
 
 std::shared_ptr<Block> RedShulkerBoxBlock::clone() const {

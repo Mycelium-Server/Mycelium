@@ -23,9 +23,7 @@ ConduitBlock::ConduitBlock() = default;
 ConduitBlock::~ConduitBlock() = default;
 
 short ConduitBlock::getId() const {
-  if (waterlogged == WATERLOGGED_TRUE) return 10530;
-  if (waterlogged == WATERLOGGED_FALSE) return 10531;
-  return 10530;
+  return 10530 + waterlogged * 1;
 }
 
 std::shared_ptr<Block> ConduitBlock::clone() const {

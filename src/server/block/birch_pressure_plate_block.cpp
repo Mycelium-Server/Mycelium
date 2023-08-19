@@ -23,9 +23,7 @@ BirchPressurePlateBlock::BirchPressurePlateBlock() = default;
 BirchPressurePlateBlock::~BirchPressurePlateBlock() = default;
 
 short BirchPressurePlateBlock::getId() const {
-  if (powered == POWERED_TRUE) return 4182;
-  if (powered == POWERED_FALSE) return 4183;
-  return 4183;
+  return 4182 + powered * 1;
 }
 
 std::shared_ptr<Block> BirchPressurePlateBlock::clone() const {

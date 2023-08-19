@@ -75,12 +75,6 @@ def write_source(dst, data, block_id):
     cls = to_class_name(dst)
     f = open('generated/' + dst + '.cpp', 'w+')
 
-    def_id = 0
-    for state in data[block_id]['states']:
-        if state.get('default', False):
-            def_id = state['id']
-            break
-
     write_license(f)
     f.write('#include "' + dst + '.h"\n')
     f.write('\n')
@@ -88,15 +82,52 @@ def write_source(dst, data, block_id):
     f.write(cls + '::~' + cls + '() = default;\n')
     f.write('\n')
     f.write('short ' + cls + '::getId() const {\n')
-    for stateData in data[block_id]['states']:
-        if 'properties' in stateData:
-            f.write('  if (')
-            checks = []
-            for prop in stateData['properties']:
-                checks.append(to_member_name(prop) + ' == ' + (prop + '_' + stateData['properties'][prop]).upper())
-            f.write(' && '.join(checks))
-            f.write(') return ' + str(stateData['id']) + ';\n')
-    f.write('  return ' + str(def_id) + ';\n')
+    base_id = data[block_id]['states'][0]['id']
+    expression = str(base_id)
+    if 'properties' in data[block_id]:
+        prop_map = {}
+        for prop in data[block_id]['properties']:
+            counter = 0
+            for value in data[block_id]['properties'][prop]:
+                prop_map[(prop + '_' + value).upper()] = str(counter)
+                counter += 1
+
+        prev_state = {}
+        state_changes = {}
+        for stateData in data[block_id]['states']:
+            if 'properties' in stateData:
+                for prop in stateData['properties']:
+                    prop_key = to_member_name(prop)
+                    prop_value = stateData['properties'][prop]
+                    if prop_key not in prev_state:
+                        prev_state[prop_key] = prop_value
+
+                    if prop not in state_changes:
+                        state_changes[prop] = 0
+
+                    if prev_state[prop_key] != prop_value:
+                        prev_state[prop_key] = prop_value
+                        state_changes[prop] += 1
+
+        state_changes = dict(sorted(state_changes.items(), key=lambda x: x[1], reverse=True))
+
+        multiplier = 1
+        for prop in state_changes.keys():
+            expression += ' + ' + to_member_name(prop) + ' * ' + str(multiplier)
+            multiplier *= len(data[block_id]['properties'][prop])
+
+        for stateData in data[block_id]['states']:
+            if 'properties' in stateData:
+                check = expression
+                for prop in stateData['properties']:
+                    check = check.replace(' ' + to_member_name(prop) + ' ',
+                                          ' ' + prop_map[(prop + '_' + stateData['properties'][prop]).upper()] + ' ')
+
+                if eval(check) != stateData['id']:
+                    print(expression + ' (' + check + ') != ' + str(stateData['id']))
+                    exit(-1)
+
+    f.write('  return ' + expression + ';\n')
     f.write('}\n')
     f.write('\n')
     f.write('std::shared_ptr<Block> ')

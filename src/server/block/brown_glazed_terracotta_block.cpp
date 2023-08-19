@@ -23,11 +23,7 @@ BrownGlazedTerracottaBlock::BrownGlazedTerracottaBlock() = default;
 BrownGlazedTerracottaBlock::~BrownGlazedTerracottaBlock() = default;
 
 short BrownGlazedTerracottaBlock::getId() const {
-  if (facing == FACING_NORTH) return 10303;
-  if (facing == FACING_SOUTH) return 10304;
-  if (facing == FACING_WEST) return 10305;
-  if (facing == FACING_EAST) return 10306;
-  return 10303;
+  return 10303 + facing * 1;
 }
 
 std::shared_ptr<Block> BrownGlazedTerracottaBlock::clone() const {

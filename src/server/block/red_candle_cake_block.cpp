@@ -23,9 +23,7 @@ RedCandleCakeBlock::RedCandleCakeBlock() = default;
 RedCandleCakeBlock::~RedCandleCakeBlock() = default;
 
 short RedCandleCakeBlock::getId() const {
-  if (lit == LIT_TRUE) return 18615;
-  if (lit == LIT_FALSE) return 18616;
-  return 18616;
+  return 18615 + lit * 1;
 }
 
 std::shared_ptr<Block> RedCandleCakeBlock::clone() const {

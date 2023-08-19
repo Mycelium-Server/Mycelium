@@ -23,11 +23,7 @@ AttachedPumpkinStemBlock::AttachedPumpkinStemBlock() = default;
 AttachedPumpkinStemBlock::~AttachedPumpkinStemBlock() = default;
 
 short AttachedPumpkinStemBlock::getId() const {
-  if (facing == FACING_NORTH) return 5143;
-  if (facing == FACING_SOUTH) return 5144;
-  if (facing == FACING_WEST) return 5145;
-  if (facing == FACING_EAST) return 5146;
-  return 5143;
+  return 5143 + facing * 1;
 }
 
 std::shared_ptr<Block> AttachedPumpkinStemBlock::clone() const {

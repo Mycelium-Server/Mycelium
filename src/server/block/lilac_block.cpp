@@ -23,9 +23,7 @@ LilacBlock::LilacBlock() = default;
 LilacBlock::~LilacBlock() = default;
 
 short LilacBlock::getId() const {
-  if (half == HALF_UPPER) return 8628;
-  if (half == HALF_LOWER) return 8629;
-  return 8629;
+  return 8628 + half * 1;
 }
 
 std::shared_ptr<Block> LilacBlock::clone() const {

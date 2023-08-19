@@ -23,11 +23,7 @@ LimeGlazedTerracottaBlock::LimeGlazedTerracottaBlock() = default;
 LimeGlazedTerracottaBlock::~LimeGlazedTerracottaBlock() = default;
 
 short LimeGlazedTerracottaBlock::getId() const {
-  if (facing == FACING_NORTH) return 10275;
-  if (facing == FACING_SOUTH) return 10276;
-  if (facing == FACING_WEST) return 10277;
-  if (facing == FACING_EAST) return 10278;
-  return 10275;
+  return 10275 + facing * 1;
 }
 
 std::shared_ptr<Block> LimeGlazedTerracottaBlock::clone() const {
