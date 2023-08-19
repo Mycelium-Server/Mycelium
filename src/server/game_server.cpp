@@ -234,28 +234,35 @@ std::unordered_map<std::string, Command*>& GameServer::getCommands() {
   return commands;
 }
 
-#define SET_IF_EXIST(dst, path) \
-  if (tree path.has_val()) {    \
-    root path >> dst;           \
-  } else {                      \
-    root path << dst;           \
-  }
-
-#define CHECK_RANGE(value, min, max) \
-  assert((value) >= (min));          \
-  assert((value) <= (max));
-
 void GameServer::reloadConfig() {
   std::ifstream configIn("properties.yml");
   std::stringstream ss;
   ss << configIn.rdbuf();
   configIn.close();
   std::string config = ss.str();
-  char* configStr = (char*) config.c_str();
 
-  ryml::Tree tree = ryml::parse_in_place(ryml::to_substr(configStr));
+  ryml::Tree tree = ryml::parse_in_arena(ryml::to_csubstr(config));
   ryml::NodeRef root = tree.rootref();
 
+  ryml::NodeRef node;
+
+#define SET_IF_EXIST(dst, path)                            \
+  node = tree path;                                        \
+  if (node.valid() && !node.is_seed() && node.has_val()) { \
+    node >> dst;                                           \
+  } else {                                                 \
+    node << dst;                                           \
+  }
+
+#define CHECK_RANGE(value, min, max)                       \
+  if ((value) < (min) || (value) > (max)) {                \
+    std::cerr << "Unexpected value " << #value << ": "     \
+              << value << ", expected value in the range " \
+              << min << " to " << max << "." << std::endl; \
+    exit(-1);                                              \
+  }
+
+  root |= ryml::MAP;
   SET_IF_EXIST(cfg_serverIP, ["serverIP"])
   SET_IF_EXIST(cfg_serverPort, ["serverPort"])
   SET_IF_EXIST(cfg_motd, ["motd"])
@@ -272,6 +279,7 @@ void GameServer::reloadConfig() {
   SET_IF_EXIST(cfg_reducedDebugInfo, ["reducedDebugInfo"])
   SET_IF_EXIST(cfg_showRespawnScreen, ["showRespawnScreen"])
   SET_IF_EXIST(cfg_difficulty, ["difficulty"])
+  root["worldBorder"] |= ryml::MAP;
   SET_IF_EXIST(cfg_worldBorder.x, ["worldBorder"]["x"])
   SET_IF_EXIST(cfg_worldBorder.y, ["worldBorder"]["y"])
   SET_IF_EXIST(cfg_worldBorder.diameter, ["worldBorder"]["diameter"])
@@ -284,6 +292,9 @@ void GameServer::reloadConfig() {
   if (cfg_maxConnectionThreads != EventLoopFactory::getMaxThreadCount()) {
     EventLoopFactory::init(cfg_maxConnectionThreads);
   }
+
+#undef SET_IF_EXIST
+#undef CHECK_RANGE
 
   std::ofstream configOut("properties.yml", std::ios::out | std::ios::binary | std::ios::trunc);
   configOut << tree;
