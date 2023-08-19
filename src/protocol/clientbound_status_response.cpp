@@ -33,7 +33,7 @@ int ClientboundStatusResponse::getPacketID() const {
 }
 
 void ClientboundStatusResponse::construct(GameServer* server) {
-  response = R"({"version": {"name": "1.19.1","protocol": 760 },"players": {"max": )" +
+  response = R"({"version": {"name": "1.19.1/2","protocol": 760},"players": {"max": )" +
              std::to_string(server->getMaxPlayers()) + ",\"online\": " + std::to_string(server->getOnline()) +
              R"(}, "description": {"text": ")" + server->getMOTD() + R"(" },"previewChat": false})";
 }
