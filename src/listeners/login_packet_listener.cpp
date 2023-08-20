@@ -83,17 +83,27 @@ void LoginPacketListener::handleLoginStart(ConnectionContext* ctx, ServerboundLo
     auto* request = new ClientboundEncryptionRequest();
     request->serverID = "";
     request->rsa = ctx->gameServer->getRSAKeyPair();
-    uint8_t token[4];
-    RAND_bytes(token, 4);
-    request->verifyToken = {token, 4};
+    RAND_bytes(verifyToken, sizeof(verifyToken));
+    request->verifyToken = {verifyToken, sizeof(verifyToken)};
     ctx->write(request);
     delete request;
   }
 }
 
 void LoginPacketListener::handleEncryptionResponse(ConnectionContext* ctx, ServerboundEncryptionResponse* packet) {
-  // TODO: Verify token
   publicKey = ctx->gameServer->getRSAKeyPair().publicKey;
+
+  if (packet->verifyToken.has_value()) {
+    ByteBuffer clientVerifyToken = rsa_decrypt(ctx->gameServer->getRSAKeyPair(), packet->verifyToken.value());
+    if (std::memcmp(clientVerifyToken.data.data(), verifyToken, sizeof(verifyToken)) != 0) {
+      auto* disconnect = new ClientboundLoginDisconnect;
+      disconnect->reason = R"({"text":"Invalid verify token.","color":"red"})";
+      ctx->write(disconnect);
+      delete disconnect;
+      return;
+    }
+  }
+
   sharedSecret = rsa_decrypt(ctx->gameServer->getRSAKeyPair(), packet->sharedSecret);
   CipherAES aes = aes_create_cipher(sharedSecret);
   ctx->pipeline->addBefore("packet_splitter", "packet_decrypt", new PacketDecrypt(aes));

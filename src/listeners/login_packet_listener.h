@@ -33,6 +33,7 @@ class LoginPacketListener {
   std::string createHash();
 
  private:
+  uint8_t verifyToken[4];
   ByteBuffer sharedSecret;
   ByteBuffer publicKey;
 };
