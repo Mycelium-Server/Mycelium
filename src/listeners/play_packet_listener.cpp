@@ -70,11 +70,12 @@ void PlayPacketListener::handlePluginMessage(ConnectionContext* ctx, Serverbound
   }
 }
 
-void PlayPacketListener::handleConfirmTeleport(ConnectionContext*, ServerboundConfirmTeleportation* packet) {
+void PlayPacketListener::handleConfirmTeleport(ConnectionContext* ctx, ServerboundConfirmTeleportation* packet) {
   if (packet->teleportID != teleportID) {
-    std::cerr << "Invalid teleport ID" << std::endl;
-    // TODO: Disconnect
+    ctx->gameServer->disconnectRaw(&ctx->playerData, R"({"text":"Invalid teleport ID.","color":"red"})");
+    return;
   }
+
   teleportID = 0;
 }
 
