@@ -23,6 +23,7 @@
 #include <ryml_std.hpp>
 
 #include "../event_loop_factory.h"
+#include "../protocol/clientbound_disconnect.h"
 #include "../protocol/clientbound_player_info.h"
 #include "../protocol/clientbound_remove_entities.h"
 #include "../protocol/clientbound_set_equipment.h"
@@ -120,6 +121,23 @@ bool GameServer::showRespawnScreen() const {
 
 Difficulty GameServer::getDifficulty() const {
   return (Difficulty) cfg_difficulty;
+}
+
+void GameServer::disconnectRaw(PlayerData* player, const std::string& message) {
+  auto* disconnect = new ClientboundDisconnect;
+  disconnect->reason = message;
+  player->entity->connection->write(disconnect);
+  delete disconnect;
+
+  removePlayer(player);
+}
+
+void GameServer::disconnectJson(PlayerData* player, const nlohmann::json& message) {
+  disconnectRaw(player, nlohmann::to_string(message));
+}
+
+void GameServer::disconnect(PlayerData* player) {
+  disconnectRaw(player, R"({"text":"Disconnected."})");
 }
 
 void GameServer::addPlayer(PlayerData* data) {

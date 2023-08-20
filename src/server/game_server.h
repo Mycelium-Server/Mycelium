@@ -67,10 +67,14 @@ class GameServer {
   [[nodiscard]] uint32_t maxConnectionThreads() const;
   [[nodiscard]] EntityPosition getSpawnPosition();
 
+  void disconnectRaw(PlayerData*, const std::string&);
+  void disconnectJson(PlayerData*, const nlohmann::json&);
+  void disconnect(PlayerData*);
+
   void addPlayer(PlayerData*);
   void removePlayer(PlayerData*);
   std::vector<PlayerData*>& getPlayers();
-  PlayerData* getPlayer(const std::string&) const;
+  [[nodiscard]] PlayerData* getPlayer(const std::string&) const;
 
   [[nodiscard]] libdeflate_compressor* getCompressor() const;
   [[nodiscard]] libdeflate_decompressor* getDecompressor() const;

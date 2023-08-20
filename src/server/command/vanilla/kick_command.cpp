@@ -85,10 +85,7 @@ void KickCommand::execute(ConnectionContext* ctx, const std::vector<std::string>
     kickMessage["text"] = "Kicked by an operator";
   }
 
-  auto* disconnect = new ClientboundDisconnect;
-  disconnect->reason = nlohmann::to_string(kickMessage);
-  player->entity->connection->write(disconnect);
-  delete disconnect;
+  ctx->gameServer->disconnectJson(player, kickMessage);
 
   kickMessage["text"] = "[" + ctx->playerData.name + ": Kicked " + player->name + ": " + (std::string) kickMessage["text"] + "]";
   kickMessage["color"] = "gray";
@@ -100,6 +97,4 @@ void KickCommand::execute(ConnectionContext* ctx, const std::vector<std::string>
     p->entity->connection->write(info);
   }
   delete info;
-
-  ctx->gameServer->removePlayer(player);
 }
