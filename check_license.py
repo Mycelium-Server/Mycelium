@@ -2,8 +2,8 @@ import os
 
 source_dir = "src"
 
-ignore_files = [ "src/uuid.h", "src/json.hpp", "src/daft_hash.cpp", "src/daft_hash.h" ]
-ignore_dirs  = [ "src/gsl" ]
+ignore_files = ["src/uuid.h", "src/json.hpp"]
+ignore_dirs = ["src/gsl"]
 
 
 def reformat_license_header(raw):
@@ -11,6 +11,7 @@ def reformat_license_header(raw):
     new.extend(" * " + line.rstrip() if line.strip() else " *" for line in raw)
     new.extend([" */", ""])
     return new
+
 
 header_f = open("license_header.txt", "r")
 license_header = reformat_license_header(header_f.readlines())
