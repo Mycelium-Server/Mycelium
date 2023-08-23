@@ -18,8 +18,20 @@
 
 #include "chunk.h"
 
+#include "world.h"
+
+void ChunkLocation::fromID(uint64_t id) {
+  x = ((int) (uint32_t) (id >> 41)) * (id & 0x02 ? -1 : 1);
+  z = ((int) (id >> 18) & 0x7FFFFF) * (id & 0x01 ? -1 : 1);
+  world = World::getByID((uint16_t) (id >> 2));
+}
+
+[[nodiscard]] uint64_t ChunkLocation::getID() const {
+  return (uint64_t) std::abs(x) << 41 | ((uint32_t) std::abs(z) << 18) | (world->getID() << 2) | (x < 0 ? 2 : 0) | (z < 0 ? 1 : 0);
+}
+
 Chunk::Chunk(int x, int z)
-    : Chunk(ChunkLocation {x, z}) {}
+    : Chunk(ChunkLocation {nullptr, x, z}) {}
 
 Chunk::Chunk(const ChunkLocation& location)
     : location(location) {
@@ -108,9 +120,9 @@ void Chunk::write(ByteBuffer& out) const {
 }
 
 World* Chunk::getOwner() {
-  return owner;
+  return location.world;
 }
 
 void Chunk::setOwner(World* world) {
-  owner = world;
+  location.world = world;
 }

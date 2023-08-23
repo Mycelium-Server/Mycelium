@@ -21,7 +21,6 @@
 #include <openssl/rand.h>
 
 #include "../daft_hash.h"
-#include "../mojangapi/auth_request.h"
 #include "../pipeline/handlers.h"
 #include "../protocol/clientbound_change_difficulty.h"
 #include "../protocol/clientbound_chunk_data.h"
@@ -195,24 +194,25 @@ static void continueLogin(ConnectionContext* ctx) {
 
   ctx->gameServer->addPlayer(&ctx->playerData);
 
-  auto currentChunk = World::getChunkLocation(ctx->playerEntity->getLocation());
+  World* world = ctx->playerEntity->getLocation().dimension->world;
+  auto currentChunk = world->getChunkLocation(ctx->playerEntity->getLocation());
   auto* setCenterChunk = new ClientboundSetCenterChunk();
   setCenterChunk->location = currentChunk;
   ctx->write(setCenterChunk);
   delete setCenterChunk;
 
-  World* world = ctx->playerEntity->getLocation().dimension->world;
-  auto* chunkPacket = new ClientboundChunkData(nullptr);
-  for (int x = -1; x <= 1; x++) {
-    for (int z = -1; z <= 1; z++) {
-      ChunkLocation loc = {x + currentChunk.x, z + currentChunk.z};
-      chunkPacket->chunk = world->requireChunk(loc);
-      ctx->write(chunkPacket);
-      uint64_t id = (uint64_t) loc.x << 32 | (uint32_t) loc.z;
-      ((PlayPacketListener*) ctx->packetListener)->loadedChunks.push_back(id);
-    }
+#define loadInitialChunks(r)                                                                      \
+  for (int x = -r; x <= r; x++) {                                                                  \
+    for (int z = -r; z <= r; z++) {                                                                \
+      ChunkLocation loc = {world, x + currentChunk.x, z + currentChunk.z};                        \
+      if (((PlayPacketListener*) ctx->packetListener)->loadedChunks.insert(loc.getID()).second) { \
+        ClientboundChunkData chunkPacket(world->requireChunk(loc));                               \
+        ctx->write(&chunkPacket);                                                                 \
+      }                                                                                           \
+    }                                                                                             \
   }
-  delete chunkPacket;
+
+  loadInitialChunks(1);
 
   auto* worldBorder = new ClientboundInitializeWorldBorder();
   worldBorder->old = ctx->gameServer->getWorldBorder();
@@ -254,4 +254,7 @@ static void continueLogin(ConnectionContext* ctx) {
     }
     delete chatPacket;
   }
+
+  int radius = ctx->gameServer->getViewDistance();
+  loadInitialChunks(radius);
 }

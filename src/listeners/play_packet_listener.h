@@ -35,6 +35,7 @@
 #include "../protocol/serverbound_swing_arm.h"
 #include "../protocol/serverbound_use_item_on.h"
 #include "../server/world/world.h"
+#include <unordered_set>
 
 class PlayPacketListener {
  public:
@@ -67,7 +68,7 @@ class PlayPacketListener {
   void handlePlayerRotation(ConnectionContext*, float, float);
 
  public:
-  std::vector<uint64_t> loadedChunks;
+  std::unordered_set<uint64_t> loadedChunks;
 
  private:
   int teleportID = 0;

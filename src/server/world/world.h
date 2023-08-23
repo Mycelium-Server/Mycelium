@@ -31,12 +31,13 @@ class World {// TODO: to do
   ~World();
 
  public:
+  static World* getByID(uint32_t id);
   static int getChunkPosition(double);
   static int getChunkPositionI(int);
-  static ChunkLocation getChunkLocation(const BlockPosition& position);
-  static ChunkLocation getChunkLocation(const EntityPosition& position);
 
  public:
+  ChunkLocation getChunkLocation(const BlockPosition& position);
+  ChunkLocation getChunkLocation(const EntityPosition& position);
   std::map<uint64_t, Chunk*>::iterator getChunkIterator(const ChunkLocation&);
   [[nodiscard]] Chunk* getChunkByBlock(int x, int y);
   [[nodiscard]] Chunk* getChunk(const ChunkLocation&);
@@ -50,6 +51,7 @@ class World {// TODO: to do
   void createSpawnChunks();
   WorldGenerator* getWorldGenerator();
   void setWorldGenerator(WorldGenerator*);
+  uint32_t getID();
 
  public:
   std::mutex chunksMutex;
@@ -57,4 +59,5 @@ class World {// TODO: to do
 
  private:
   WorldGenerator* worldGenerator = nullptr;
+  uint32_t id;
 };

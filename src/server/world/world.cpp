@@ -21,8 +21,20 @@
 #include <cmath>
 #include <thread>
 
-World::World() = default;
+static uint32_t worldCounter = 0;
+
+static std::map<uint32_t, World*>& getWorldMap() {
+  static std::map<uint32_t, World*> worlds;
+  return worlds;
+}
+
+World::World() : id(worldCounter) {
+  getWorldMap()[id] = this;
+  ++worldCounter;
+}
+
 World::~World() {
+  getWorldMap().erase(id);
   auto it = chunks.begin();
   while (it != chunks.end()) {
     delete it->second;
@@ -38,16 +50,20 @@ int World::getChunkPosition(double block) {
   return (int) std::floor(block / 16.0);
 }
 
+World* World::getByID(uint32_t id) {
+  return getWorldMap()[id];
+}
+
 ChunkLocation World::getChunkLocation(const EntityPosition& position) {
-  return {getChunkPosition(position.x), getChunkPosition(position.z)};
+  return {this, getChunkPosition(position.x), getChunkPosition(position.z)};
 }
 
 ChunkLocation World::getChunkLocation(const BlockPosition& position) {
-  return {getChunkPositionI(position.x), getChunkPositionI(position.z)};
+  return {this, getChunkPositionI(position.x), getChunkPositionI(position.z)};
 }
 
 Chunk* World::getChunkByBlock(int x, int z) {
-  return getChunk({getChunkPosition(x), getChunkPosition(z)});
+  return getChunk({this, getChunkPosition(x), getChunkPosition(z)});
 }
 
 Chunk* World::getChunk(const ChunkLocation& location) {
@@ -69,7 +85,7 @@ bool World::setBlock(int x, int y, int z, int id) {
   if (y < -64 || y >= 360) {
     return false;
   }
-  Chunk* chunk = requireChunk({getChunkPositionI(x), getChunkPositionI(z)});
+  Chunk* chunk = requireChunk({this, getChunkPositionI(x), getChunkPositionI(z)});
   if (!chunk) {
     return false;
   }
@@ -128,7 +144,7 @@ void World::createSpawnChunks() {
   for (int x = -12; x <= 12; x++) {
     threads[x + 12] = std::thread([=]() {
       for (int z = -12; z <= 12; z++) {
-        createChunk({x, z});
+        createChunk({this, x, z});
       }
     });
   }
@@ -153,4 +169,9 @@ Chunk* World::requireChunk(const ChunkLocation& location) {
   } else {
     return createChunk(location);
   }
+}
+
+
+uint32_t World::getID() {
+  return id;
 }

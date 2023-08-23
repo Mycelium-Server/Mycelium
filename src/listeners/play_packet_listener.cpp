@@ -31,6 +31,7 @@
 #include "../protocol/clientbound_set_head_rotation.h"
 #include "../protocol/clientbound_suggestions_response.h"
 #include "../protocol/clientbound_system_message.h"
+#include "../protocol/clientbound_unload_chunk.h"
 #include "../protocol/clientbound_update_entity_position.h"
 #include "../protocol/clientbound_update_entity_position_rotation.h"
 #include "../protocol/clientbound_update_entity_rotation.h"
@@ -149,13 +150,14 @@ void PlayPacketListener::handleSetPlayerRotation(ConnectionContext* ctx, Serverb
 }
 
 void PlayPacketListener::handlePlayerPosition(ConnectionContext* ctx, const EntityPosition& position) {
-  ChunkLocation current = World::getChunkLocation(position);
-
   EntityPlayer* player = ctx->playerEntity;
   Location& location = player->getLocation();
   World* world = location.dimension->world;
+  ChunkLocation current = world->getChunkLocation(position);
+  location.setPosition(position);
 
-  if (current.x != chunkLocation.x || current.z != chunkLocation.z || std::floor(position.y) != std::floor(location.y)) {
+  bool updateChunks = current.x != chunkLocation.x || current.z != chunkLocation.z;
+  if (updateChunks || std::floor(position.y) == std::floor(location.y)) {
     auto* setCenter = new ClientboundSetCenterChunk();
     setCenter->location = current;
     ctx->write(setCenter);
@@ -163,21 +165,39 @@ void PlayPacketListener::handlePlayerPosition(ConnectionContext* ctx, const Enti
 
     chunkLocation = current;
   }
-  location.setPosition(position);
 
-  int r = player->getRenderDistance() - 1;
-  for (int x = -r; x <= r; x++) {
-    for (int z = -r; z <= r; z++) {// Ensure that chunks are always loaded
-      ChunkLocation loc = {x + current.x, z + current.z};
+  if (!updateChunks) {
+    return;
+  }
+
+  std::unordered_set<uint64_t> currentChunks;
+
+  int radius = player->getRenderDistance();
+  for (int x = -radius; x <= radius; x++) {
+    for (int z = -radius; z <= radius; z++) {
+      ChunkLocation loc = {player->location.dimension->world, x + current.x, z + current.z};
       uint64_t id = loc.getID();
-      if (std::find(loadedChunks.begin(), loadedChunks.end(), id) == loadedChunks.end()) {
-        Chunk* chunk = world->requireChunk(loc);
-        auto* packet = new ClientboundChunkData(chunk);
-        ctx->write(packet);
-        delete packet;
-        loadedChunks.push_back(id);
-      }
+      currentChunks.insert(id);
     }
+  }
+
+  for (auto it = loadedChunks.begin(); it != loadedChunks.end();) {
+    uint64_t id = *it;
+    if (currentChunks.erase(id) == 0) {
+      ClientboundUnloadChunk unloadChunk;
+      unloadChunk.location.fromID(id);
+      it = loadedChunks.erase(it);
+    } else {
+      ++it;
+    }
+  }
+
+  for (const uint64_t currentChunk : currentChunks) {
+    ChunkLocation loc;
+    loc.fromID(currentChunk);
+    ClientboundChunkData chunkData(loc.world->requireChunk(loc));
+    ctx->write(&chunkData);
+    loadedChunks.insert(currentChunk);
   }
 }
 
@@ -238,7 +258,7 @@ void PlayPacketListener::handleUseItemOn(ConnectionContext* ctx, ServerboundUseI
               packet->cursor,
               packet->insideBlock);
 
-      Chunk* targetChunk = world->requireChunk(World::getChunkLocation(target));
+      Chunk* targetChunk = world->requireChunk(world->getChunkLocation(target));
       world->setBlock(target, targetBlockID);
 
       auto* block = new ClientboundBlockUpdate();
@@ -300,7 +320,7 @@ void PlayPacketListener::handlePlayerAction(ConnectionContext* ctx, ServerboundP
     case ServerboundPlayerAction::STARTED_DIGGING: {
       if (ctx->playerData.gamemode == Gamemode::CREATIVE) {
         World* world = ctx->playerEntity->location.dimension->world;
-        Chunk* targetChunk = world->requireChunk(World::getChunkLocation(packet->location));
+        Chunk* targetChunk = world->requireChunk(world->getChunkLocation(packet->location));
         world->setBlock(packet->location, 0);
 
         auto* block = new ClientboundBlockUpdate();
