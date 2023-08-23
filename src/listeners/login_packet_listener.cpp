@@ -124,7 +124,7 @@ void LoginPacketListener::handleEncryptionResponse(ConnectionContext* ctx, Serve
 }
 
 std::string LoginPacketListener::createHash() {
-  daft_hash_impl hash;
+  daft_hash hash;
   hash.update(sharedSecret);
   hash.update(publicKey);
   return hash.finalise();
