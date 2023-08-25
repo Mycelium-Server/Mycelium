@@ -110,11 +110,11 @@ class Vector3 {
     return dot(*this);
   }
 
-  T dot(const Vector3<T>& v) {
+  T dot(const Vector3<T>& v) const {
     return x * v.x + y * v.y + z * v.z;
   }
 
-  T cross(const Vector3<T>& v) {
+  Vector3<T> cross(const Vector3<T>& v) {
     return Vector3<T>(
         y * v.z - z * v.y,
         z * v.x - x * v.z,
