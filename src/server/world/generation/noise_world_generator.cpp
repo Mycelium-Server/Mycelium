@@ -43,7 +43,7 @@ void NoiseWorldGenerator::generateChunk(Chunk* chunk) {
       int globalX = chunk->location.x * 16 + x;
       int globalZ = chunk->location.z * 16 + z;
 
-      int y = int(terrainNoise(double(globalX) / 128 - 0.5, double(globalZ) / 128 - 0.5, seed) * 20 + 50);
+      int y = int(terrainNoise(double(globalX) / 128 - 0.5, double(globalZ) / 128 - 0.5, seed) * 60 + 50);
       chunk->setBlock(x, 0, z, bedrock);
       for (int d = 1; d < y; d++) {
         chunk->setBlock(x, d, z, dirt);

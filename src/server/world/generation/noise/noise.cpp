@@ -21,18 +21,15 @@
 #include <noise/module/perlin.h>
 #include <algorithm>
 
-#define HILL_THRESHOLD 0.98
-
 static noise::module::Perlin generator;
 
 double terrainNoise(double nx, double ny, int seed) {
+  generator.SetFrequency(1.0);
+  generator.SetPersistence(0.5);
   generator.SetNoiseQuality(noise::NoiseQuality::QUALITY_FAST);
   generator.SetSeed(seed);
   double base = generator.GetValue(nx / 4, ny / 4, 0) / 2.0 + 0.5 +
-                std::max(0.0, generator.GetValue(nx / 4, 0, ny / 4) * 2);
-  double hill = generator.GetValue(nx / 3, ny / 3, 0) - HILL_THRESHOLD;
-  if (hill > 0) {
-    base += hill * 6;
-  }
-  return base;
+                std::max(0.0, generator.GetValue(nx / 4, 0, ny / 4) * 2) * 0;
+  double hill = generator.GetValue(nx / 4, ny / 4, 0);
+  return base * hill;
 }
