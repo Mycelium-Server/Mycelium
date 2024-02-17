@@ -1,0 +1,10 @@
+#pragma once
+
+enum Direction {
+  DIRECTION_DOWN = 0,
+  DIRECTION_UP = 1,
+  DIRECTION_NORTH = 2,
+  DIRECTION_SOUTH = 3,
+  DIRECTION_WEST = 4,
+  DIRECTION_EAST = 5
+};

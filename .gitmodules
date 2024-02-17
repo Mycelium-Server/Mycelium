@@ -1,0 +1,18 @@
+[submodule "Source/ThirdParty/curl/curl"]
+	path = Source/ThirdParty/curl/curl
+	url = https://github.com/curl/curl
+[submodule "Source/ThirdParty/GSL"]
+	path = Source/ThirdParty/GSL
+	url = https://github.com/microsoft/GSL
+[submodule "Source/ThirdParty/libdeflate"]
+	path = Source/ThirdParty/libdeflate
+	url = https://github.com/ebiggers/libdeflate
+[submodule "Source/ThirdParty/nlohmann_json/json"]
+	path = Source/ThirdParty/nlohmann_json/json
+	url = https://github.com/nlohmann/json
+[submodule "Source/ThirdParty/rapidyaml"]
+	path = Source/ThirdParty/rapidyaml
+	url = https://github.com/biojppm/rapidyaml
+[submodule "Source/ThirdParty/asio/asio"]
+	path = Source/ThirdParty/asio/asio
+	url = https://github.com/chriskohlhoff/asio

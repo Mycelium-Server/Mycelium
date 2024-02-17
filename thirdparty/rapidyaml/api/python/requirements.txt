@@ -1,5 +1,0 @@
-ruamel.yaml
-ninja
-pyyaml
-prettytable
-nose
