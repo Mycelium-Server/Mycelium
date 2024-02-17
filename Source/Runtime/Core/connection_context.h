@@ -7,10 +7,10 @@
 #include "mojangapi/auth_request.h"
 #include "pipeline.h"
 #include "server/client_settings.h"
-#include "server/entity/entity.h"
-#include "server/entity/player.h"
+#include "world/entity/entity.h"
+#include "world/entity/player.h"
 #include "server/game_server.h"
-#include "server/player_data.h"
+#include "world/player_data.h"
 
 enum ConnectionState {
   NONE = 0,

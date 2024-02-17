@@ -5,8 +5,8 @@ project(Mycelium LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(LIBDEFLATE_BUILD_SHARED_LIB OFF)
 set(BUILD_SHARED_LIBS OFF)
+option(LIBDEFLATE_BUILD_SHARED_LIB OFF)
 
 add_subdirectory(Source/ThirdParty/asio)
 add_subdirectory(Source/ThirdParty/curl)

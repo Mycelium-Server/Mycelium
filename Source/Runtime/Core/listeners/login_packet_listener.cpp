@@ -5,26 +5,26 @@
 #include <openssl/rand.h>
 
 #include "../daft_hash.h"
-#include "../pipeline/handlers.h"
-#include "../protocol/clientbound_change_difficulty.h"
-#include "../protocol/clientbound_chunk_data.h"
-#include "../protocol/clientbound_commands.h"
-#include "../protocol/clientbound_encryption_request.h"
-#include "../protocol/clientbound_initialize_world_border.h"
-#include "../protocol/clientbound_keepalive.h"
-#include "../protocol/clientbound_login.h"
-#include "../protocol/clientbound_login_disconnect.h"
-#include "../protocol/clientbound_login_success.h"
-#include "../protocol/clientbound_player_abilities.h"
-#include "../protocol/clientbound_plugin_message.h"
-#include "../protocol/clientbound_set_center_chunk.h"
-#include "../protocol/clientbound_set_compression.h"
-#include "../protocol/clientbound_set_default_spawn_position.h"
-#include "../protocol/clientbound_synchronize_player_position.h"
-#include "../protocol/clientbound_system_message.h"
-#include "../protocol/plugin_channels.h"
+#include "../network/pipeline/handlers.h"
+#include "../network/protocol/clientbound_change_difficulty.h"
+#include "../network/protocol/clientbound_chunk_data.h"
+#include "../network/protocol/clientbound_commands.h"
+#include "../network/protocol/clientbound_encryption_request.h"
+#include "../network/protocol/clientbound_initialize_world_border.h"
+#include "../network/protocol/clientbound_keepalive.h"
+#include "../network/protocol/clientbound_login.h"
+#include "../network/protocol/clientbound_login_disconnect.h"
+#include "../network/protocol/clientbound_login_success.h"
+#include "../network/protocol/clientbound_player_abilities.h"
+#include "../network/protocol/clientbound_plugin_message.h"
+#include "../network/protocol/clientbound_set_center_chunk.h"
+#include "../network/protocol/clientbound_set_compression.h"
+#include "../network/protocol/clientbound_set_default_spawn_position.h"
+#include "../network/protocol/clientbound_synchronize_player_position.h"
+#include "../network/protocol/clientbound_system_message.h"
+#include "../network/protocol/plugin_channels.h"
 #include "../registry_codec.h"
-#include "../server/world/world.h"
+#include "../world/level/world.h"
 #include "../time.h"
 #include "play_packet_listener.h"
 
@@ -67,7 +67,7 @@ void LoginPacketListener::handleLoginStart(ConnectionContext* ctx, ServerboundLo
     request->serverID = "";
     request->rsa = ctx->gameServer->getRSAKeyPair();
     RAND_bytes(verifyToken, sizeof(verifyToken));
-    request->verifyToken = {verifyToken, sizeof(verifyToken)};
+    request->verifyToken = {(const byte_t *) verifyToken, sizeof(verifyToken)};
     ctx->write(request);
     delete request;
   }

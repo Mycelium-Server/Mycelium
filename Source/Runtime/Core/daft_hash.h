@@ -1,8 +1,10 @@
 #pragma once
 
-#include "byte_buffer.h"
 #include <openssl/sha.h>
+
 #include <string>
+
+#include "network/byte_buffer.h"
 
 class daft_hash {
  public:

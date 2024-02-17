@@ -10,8 +10,8 @@
 #include "command/command_node.h"
 #include "command/root_command_node.h"
 #include "difficulty.h"
-#include "player_data.h"
-#include "world/world_border.h"
+#include "../world/player_data.h"
+#include "../world/level/world_border.h"
 
 class GameServer {
  public:

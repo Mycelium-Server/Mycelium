@@ -4,8 +4,8 @@
 
 #include <iostream>
 
-#include "../protocol/clientbound_ping_response.h"
-#include "../protocol/clientbound_status_response.h"
+#include "../network/protocol/clientbound_ping_response.h"
+#include "../network/protocol/clientbound_status_response.h"
 
 StatusPacketListener::StatusPacketListener() = default;
 StatusPacketListener::~StatusPacketListener() = default;

@@ -1,8 +1,8 @@
 #pragma once
 
 #include "../connection_context.h"
-#include "../protocol/serverbound_ping_request.h"
-#include "../protocol/serverbound_status_request.h"
+#include "../network/protocol/serverbound_ping_request.h"
+#include "../network/protocol/serverbound_status_request.h"
 
 class StatusPacketListener {
  public:

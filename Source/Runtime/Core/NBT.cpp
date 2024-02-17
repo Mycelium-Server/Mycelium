@@ -41,8 +41,8 @@ std::shared_ptr<NBT_Component> nbt_read_raw_data(ByteBuffer& buf, int type) {
 
     case 7: {
       int length = buf.readInt();
-      std::vector<uint8_t> bytes = buf.readBytes(length);
-      return std::make_shared<TAG_Byte_Array>(bytes.size(), bytes.data());
+      std::vector<byte_t> bytes = buf.readBytes(length);
+      return std::make_shared<TAG_Byte_Array>(bytes.size(), reinterpret_cast<uint8_t*>(bytes.data()));
     }
 
     case 8: {
@@ -120,7 +120,7 @@ std::shared_ptr<NBT_Component> read_nbt_gzipped(ByteBuffer& buf) {
   size_t slen = buf.length();
   size_t dlen = buf.length() * 2;
   while (true) {
-    auto* rbuf = (uint8_t*) malloc(dlen);
+    auto* rbuf = (byte_t*) malloc(dlen);
     libdeflate_result res = libdeflate_gzip_decompress(decompressor, buf.data.data(), slen, rbuf, dlen, &dlen);
     if (res != LIBDEFLATE_INSUFFICIENT_SPACE) {
       if (res != LIBDEFLATE_SUCCESS) {
@@ -143,7 +143,7 @@ std::shared_ptr<NBT_Component> read_nbt_zlib(ByteBuffer& buf) {
   size_t slen = buf.length();
   size_t dlen = buf.length() * 2;
   while (true) {
-    auto* rbuf = (uint8_t*) malloc(dlen);
+    auto* rbuf = (byte_t*) malloc(dlen);
     libdeflate_result res = libdeflate_zlib_decompress(decompressor, buf.data.data(), slen, rbuf, dlen, &dlen);
     if (res != LIBDEFLATE_INSUFFICIENT_SPACE) {
       if (res != LIBDEFLATE_SUCCESS) {

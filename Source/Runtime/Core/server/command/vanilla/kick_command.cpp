@@ -2,8 +2,8 @@
 #include "kick_command.h"
 
 #include "../../../connection_context.h"
-#include "../../../protocol/clientbound_disconnect.h"
-#include "../../../protocol/clientbound_system_message.h"
+#include "../../../network/protocol/clientbound_disconnect.h"
+#include "../../../network/protocol/clientbound_system_message.h"
 #include "../argument_command_node.h"
 #include "../literal_command_node.h"
 #include "../parser/entity.h"

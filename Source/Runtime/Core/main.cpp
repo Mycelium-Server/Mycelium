@@ -1,16 +1,16 @@
 
 
 #include "mojangapi/http.h"
-#include "pipeline/handlers.h"
-#include "protocol/protocol.h"
+#include "network/pipeline/handlers.h"
+#include "network/protocol/protocol.h"
 #include "server.h"
-#include "server/block/block_registry.h"
+#include "world/block/builtin/block_registry.h"
 #include "server/command/command_graph.h"
 #include "server/command/vanilla/kick_command.h"
 #include "server/dimension.h"
-#include "server/item/item_registry.h"
-#include "server/world/generation/noise_world_generator.h"
-#include "server/world/world.h"
+#include "world/item/builtin/item_registry.h"
+#include "world/level/generation/noise_world_generator.h"
+#include "world/level/world.h"
 #include "time.h"
 
 static GameServer* server;

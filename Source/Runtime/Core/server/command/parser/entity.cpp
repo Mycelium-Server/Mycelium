@@ -9,7 +9,7 @@ int EntityParser::getID() const {
 }
 
 std::string EntityParser::getIdentifier() const {
-  return "minecraft:entity";
+  return "minecraft:Entity";
 }
 
 void EntityParser::writeProperties(ByteBuffer& buf) const {

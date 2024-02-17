@@ -1,8 +1,8 @@
 #pragma once
 
 #include "../connection_context.h"
-#include "../protocol/serverbound_encryption_response.h"
-#include "../protocol/serverbound_login_start.h"
+#include "../network/protocol/serverbound_encryption_response.h"
+#include "../network/protocol/serverbound_login_start.h"
 
 class LoginPacketListener {
  public:

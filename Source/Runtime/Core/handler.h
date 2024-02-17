@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "byte_buffer.h"
+#include "network/byte_buffer.h"
 
 class ConnectionContext;
 
