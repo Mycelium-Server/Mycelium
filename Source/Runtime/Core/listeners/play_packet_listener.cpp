@@ -2,28 +2,28 @@
 
 #include "play_packet_listener.h"
 
-#include "../network/protocol/clientbound_ack_block_change.h"
-#include "../network/protocol/clientbound_block_update.h"
-#include "../network/protocol/clientbound_chunk_data.h"
-#include "../network/protocol/clientbound_entity_animation.h"
-#include "../network/protocol/clientbound_set_center_chunk.h"
-#include "../network/protocol/clientbound_set_entity_metadata.h"
-#include "../network/protocol/clientbound_set_head_rotation.h"
-#include "../network/protocol/clientbound_suggestions_response.h"
-#include "../network/protocol/clientbound_system_message.h"
-#include "../network/protocol/clientbound_unload_chunk.h"
-#include "../network/protocol/clientbound_update_entity_position.h"
-#include "../network/protocol/clientbound_update_entity_position_rotation.h"
-#include "../network/protocol/clientbound_update_entity_rotation.h"
+#include <iostream>
+#include <nlohmann/json.hpp>
+#include <regex>
+
+#include "../network/protocol/game/clientbound_ack_block_change.h"
+#include "../network/protocol/game/clientbound_block_update.h"
+#include "../network/protocol/game/clientbound_chunk_data.h"
+#include "../network/protocol/game/clientbound_entity_animation.h"
+#include "../network/protocol/game/clientbound_set_center_chunk.h"
+#include "../network/protocol/game/clientbound_set_entity_metadata.h"
+#include "../network/protocol/game/clientbound_set_head_rotation.h"
+#include "../network/protocol/game/clientbound_suggestions_response.h"
+#include "../network/protocol/game/clientbound_system_message.h"
+#include "../network/protocol/game/clientbound_unload_chunk.h"
+#include "../network/protocol/game/clientbound_update_entity_position.h"
+#include "../network/protocol/game/clientbound_update_entity_position_rotation.h"
+#include "../network/protocol/game/clientbound_update_entity_rotation.h"
 #include "../network/protocol/plugin_channels.h"
 #include "../server/dimension.h"
 #include "../world/entity/metadata/player_metadata.h"
 #include "../world/item/builtin/block_item.h"
 #include "../world/item/builtin/item_registry.h"
-
-#include <iostream>
-#include <regex>
-#include <nlohmann/json.hpp>
 
 PlayPacketListener::PlayPacketListener() = default;
 PlayPacketListener::~PlayPacketListener() = default;

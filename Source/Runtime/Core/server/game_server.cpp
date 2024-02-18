@@ -6,11 +6,11 @@
 #include <ryml_std.hpp>
 
 #include "../event_loop_factory.h"
-#include "../network/protocol/clientbound_disconnect.h"
-#include "../network/protocol/clientbound_player_info.h"
-#include "../network/protocol/clientbound_remove_entities.h"
-#include "../network/protocol/clientbound_set_equipment.h"
-#include "../network/protocol/clientbound_spawn_player.h"
+#include "../network/protocol/common/clientbound_disconnect.h"
+#include "../network/protocol/game/clientbound_player_info.h"
+#include "../network/protocol/game/clientbound_remove_entities.h"
+#include "../network/protocol/game/clientbound_set_equipment.h"
+#include "../network/protocol/game/clientbound_spawn_player.h"
 #include "command/command_graph.h"
 
 GameServer::GameServer() {

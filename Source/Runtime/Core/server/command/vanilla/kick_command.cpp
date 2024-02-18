@@ -1,15 +1,15 @@
 
 #include "kick_command.h"
 
+#include <nlohmann/json.hpp>
+
 #include "../../../connection_context.h"
-#include "../../../network/protocol/clientbound_disconnect.h"
-#include "../../../network/protocol/clientbound_system_message.h"
+#include "../../../network/protocol/common/clientbound_disconnect.h"
+#include "../../../network/protocol/game/clientbound_system_message.h"
 #include "../argument_command_node.h"
 #include "../literal_command_node.h"
 #include "../parser/entity.h"
 #include "../parser/message_parser.h"
-
-#include <nlohmann/json.hpp>
 
 KickCommand::KickCommand() = default;
 KickCommand::~KickCommand() = default;

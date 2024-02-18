@@ -1,9 +1,9 @@
 
 #include "player_inventory.h"
 
-#include "../../network/protocol/clientbound_set_container_slot.h"
-#include "../../network/protocol/clientbound_set_equipment.h"
-#include "../../network/protocol/clientbound_set_held_item.h"
+#include "../../network/protocol/game/clientbound_set_container_slot.h"
+#include "../../network/protocol/game/clientbound_set_equipment.h"
+#include "../../network/protocol/game/clientbound_set_held_item.h"
 
 PlayerInventory::PlayerInventory() = default;
 PlayerInventory::~PlayerInventory() = default;

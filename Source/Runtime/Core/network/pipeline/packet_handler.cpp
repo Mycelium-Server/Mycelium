@@ -3,7 +3,7 @@
 #include "../../listeners/login_packet_listener.h"
 #include "../../listeners/play_packet_listener.h"
 #include "../../listeners/status_packet_listener.h"
-#include "../protocol/clientbound_system_message.h"
+#include "../protocol/game/clientbound_system_message.h"
 #include "../protocol/packet.h"
 #include "handlers.h"
 

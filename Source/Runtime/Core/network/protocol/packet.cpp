@@ -4,11 +4,11 @@
 
 #include <map>
 
-#include "serverbound_confirm_teleportation.h"
-#include "serverbound_encryption_response.h"
-#include "serverbound_login_start.h"
-#include "serverbound_ping_request.h"
-#include "serverbound_status_request.h"
+#include "game/serverbound_confirm_teleportation.h"
+#include "login/serverbound_encryption_response.h"
+#include "login/serverbound_login_start.h"
+#include "status/serverbound_ping_request.h"
+#include "status/serverbound_status_request.h"
 
 static std::map<int, ServerboundPacket*> registered;
 
