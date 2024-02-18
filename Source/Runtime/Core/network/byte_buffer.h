@@ -21,11 +21,13 @@
 #include <iostream>
 #include <string>
 #include <vector>
-
 #include "../../../ThirdParty/uuid.h"
+
 #include "../location.h"
 
 struct ItemStack;
+
+class NBT_Component;
 
 typedef char byte_t;
 
@@ -40,6 +42,9 @@ class ByteBuffer {
  public:
   byte_t readByte();
   void writeByte(byte_t);
+
+  bool readBoolean();
+  void writeBoolean(bool);
 
   short readShort();
   void writeShort(short);
@@ -67,6 +72,9 @@ class ByteBuffer {
 
   void writeItemStack(const ItemStack&);
   ItemStack readItemStack();
+
+  void writeNbt(const std::optional<std::shared_ptr<NBT_Component>>&);
+  std::optional<std::shared_ptr<NBT_Component>> readNbt();
 
   void writeBlockPosition(const BlockPosition&);
   BlockPosition readBlockPosition();

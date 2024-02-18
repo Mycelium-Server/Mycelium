@@ -35,6 +35,7 @@ class NBT_Component {
   NBT_Component(NBT_Component&&) = default;
 
  public:
+  // TODO: the work with serialization should be carried out from here
   virtual ByteBuffer asByteBuffer() = 0;
   virtual ByteBuffer payload() = 0;
   virtual TAG_TypeID getType() = 0;
@@ -495,14 +496,4 @@ class TAG_Long_Array : public NBT_Component {
   int64_t* array;
 };
 
-
 typedef std::vector<std::shared_ptr<NBT_Component>> NBT_Components;
-
-std::string nbt_read_name(ByteBuffer& buf);
-std::shared_ptr<NBT_Component> nbt_read_raw_data(ByteBuffer& buf, int type);
-std::shared_ptr<NBT_Component> read_nbt_uncompressed(ByteBuffer&);
-std::shared_ptr<NBT_Component> read_nbt_gzipped(ByteBuffer&);
-std::shared_ptr<NBT_Component> read_nbt_zlib(ByteBuffer&);
-std::shared_ptr<NBT_Component> read_nbt(ByteBuffer&);
-
-// TODO: json -> nbt

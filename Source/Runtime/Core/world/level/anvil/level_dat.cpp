@@ -1,6 +1,8 @@
 
 #include "level_dat.h"
 
+#include "../../../NBTIO.h"
+
 #define assert(expr)                                \
   if (!(expr)) {                                    \
     std::cerr << "assertion failed at " << __FILE__ \
@@ -13,7 +15,7 @@ LevelDat::LevelDat() = default;
 LevelDat::~LevelDat() = default;
 
 void LevelDat::read(ByteBuffer& buf) {
-  std::shared_ptr<NBT_Component> nbt = read_nbt(buf);
+  std::shared_ptr<NBT_Component> nbt = NBTIO::readAnyTag(buf);
   assert(nbt->getType() == Type_TAG_Compound);
   std::shared_ptr<TAG_Compound>
       rootTag = std::static_pointer_cast<TAG_Compound>(nbt);

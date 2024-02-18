@@ -4,6 +4,8 @@
 #include <fstream>
 
 #include "../world/item/ItemStack.h"
+#include "../NBT.h"
+#include "../NBTIO.h"
 
 ByteBuffer::ByteBuffer() = default;
 
@@ -42,9 +44,17 @@ byte_t ByteBuffer::readByte() {
   return data[readerIdx++];
 }
 
-void ByteBuffer::writeByte(byte_t b) {
+void ByteBuffer::writeByte(byte_t value) {
   ensureWritableBytes(1);
-  data[writerIdx++] = b;
+  data[writerIdx++] = value;
+}
+
+bool ByteBuffer::readBoolean() {
+  return readByte() == 1;
+}
+
+void ByteBuffer::writeBoolean(bool value) {
+  writeByte(value ? 1 : 0);
 }
 
 short ByteBuffer::readShort() {
@@ -221,31 +231,40 @@ void ByteBuffer::writeUUID(const uuids::uuid& uuid) {
 }
 
 void ByteBuffer::writeItemStack(const ItemStack& value) {
-  writeByte(value.present ? 1 : 0);
+  writeBoolean(value.present);
   if (value.present) {
     writeVarInt(value.itemID);
     writeByte(value.count);
-    if (value.nbt.has_value()) {
-      ByteBuffer nbt = value.nbt.value()->asByteBuffer();
-      writeBytes(nbt);
-    } else {
-      writeByte(0);
-    }
+    writeNbt(value.nbt);
   }
 }
 
 ItemStack ByteBuffer::readItemStack() {
   ItemStack is {};
-  is.present = readByte();
+  is.present = readBoolean();
   if (is.present) {
     is.itemID = readVarInt();
     is.count = readByte();
-    std::shared_ptr<NBT_Component> nbt = read_nbt(*this);
-    if (nbt->getType() != Type_TAG_End) {
-      is.nbt = nbt;
-    }
+    is.nbt = readNbt();
   }
   return is;
+}
+
+void ByteBuffer::writeNbt(const std::optional<std::shared_ptr<NBT_Component>>& value) {
+  if (!value.has_value()) {
+    writeByte(0);
+    return;
+  }
+  NBTIO::writeAnyTag(*this, value.value().get());
+}
+
+std::optional<std::shared_ptr<NBT_Component>> ByteBuffer::readNbt() {
+  std::shared_ptr<NBT_Component> nbt = NBTIO::readAnyTag(*this);
+  if (nbt->getType() == Type_TAG_End) {
+    return std::nullopt;
+  } else {
+    return nbt;
+  }
 }
 
 void ByteBuffer::writeBlockPosition(const BlockPosition& pos) {
